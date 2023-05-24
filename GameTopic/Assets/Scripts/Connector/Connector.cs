@@ -78,6 +78,12 @@ public class Connector : MonoBehaviour
     }
 
 
+    List<Target> Dump()
+    {
+        return targetList;
+    }
+
+
     void TrackPositionUpdate(Vector2 pos)
     {
         selfRigidbody.MovePosition(pos);
@@ -128,7 +134,7 @@ public class Connector : MonoBehaviour
 
         c.linkedTarget.LinkTarget(c);
         c.selfJoint.connectedBody = c.linkedTarget.ownerConnector.selfRigidbody;
-        c.selfJoint.connectedAnchor = c.selectedTargetObj.transform.position;
+        c.selfJoint.connectedAnchor = c.selectedTargetObj.transform.localPosition;
         c.selfJoint.enabled = true;
     }
     void SwitchSelecting(bool b)

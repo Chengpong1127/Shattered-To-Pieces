@@ -18,6 +18,18 @@ public class Target : MonoBehaviour
         aimerConnector = null;
     }
 
+
+    Connector Dump()
+    {
+        return aimerConnector;
+    }
+
+    void Load(Connector ac)
+    {
+        aimerConnector = ac;
+    }
+
+
     public void SetOwner(Connector oc)
     {
         ownerConnector = oc;
