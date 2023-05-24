@@ -24,6 +24,8 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
     }
 
+    public Dictionary<ConnecterPoint, ConnecterPoint> ConnectorMap => throw new System.NotImplementedException();
+
     public void DumpInfo(){
 
     }
