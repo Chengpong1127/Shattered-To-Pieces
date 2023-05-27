@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameComponent : MonoBehaviour, IGameComponent
 {
-    public int GameComponentID;
+    private int _gameComponentID;
     private IConnector connector;
     private ICoreComponent coreComponent;
 
@@ -25,6 +25,8 @@ public class GameComponent : MonoBehaviour, IGameComponent
     }
 
     public Dictionary<ConnecterPoint, ConnecterPoint> ConnectorMap => throw new System.NotImplementedException();
+
+    public int ComponentID => _gameComponentID;
 
     public void DumpInfo(){
 
