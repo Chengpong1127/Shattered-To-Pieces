@@ -13,7 +13,7 @@ public struct ConnectorInfo
 }
 
 
-public class Connector : MonoBehaviour
+public class Connector : MonoBehaviour, IConnector
 {
     int connectorID;
 
@@ -197,5 +197,10 @@ public class Connector : MonoBehaviour
         combineMode = b;
         selfRigidbody.freezeRotation = b;
         SwitchTargetActive(b);
+    }
+
+    public void ConnectToComponent(IConnector connecterPoint, int targetID)
+    {
+        throw new System.NotImplementedException();
     }
 }
