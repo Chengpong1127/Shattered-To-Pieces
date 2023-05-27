@@ -10,9 +10,6 @@ using UnityEngine;
  */
 public class Target : MonoBehaviour
 {
-    public int targetID;
-
-
     public Connector ownerConnector;
     Connector aimerConnector;
 
@@ -22,14 +19,14 @@ public class Target : MonoBehaviour
     }
 
 
-    int Dump()
+    Connector Dump()
     {
-        return targetID;
+        return aimerConnector;
     }
 
-    void Load(int tid)
+    void Load(Connector ac)
     {
-        targetID = tid;
+        aimerConnector = ac;
     }
 
 
