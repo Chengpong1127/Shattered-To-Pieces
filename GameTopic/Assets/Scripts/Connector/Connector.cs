@@ -8,6 +8,7 @@ using static UnityEditor.PlayerSettings;
 public struct ConnectorInfo
 {
     public int connectorID;
+    public int linkedConnectorID;
     public int linkedTargetID;
     public List<int> ownTargetID;
 }
@@ -93,6 +94,7 @@ public class Connector : MonoBehaviour
         ConnectorInfo info = new ConnectorInfo();
         info.ownTargetID = new List<int>();
         info.connectorID = connectorID;
+        info.linkedConnectorID = linkedTarget != null ? linkedTarget.ownerConnector.connectorID : -1;
         info.linkedTargetID = linkedTarget != null ? linkedTarget.targetID : -1;
         targetList.ForEach(target =>
         {
@@ -101,15 +103,14 @@ public class Connector : MonoBehaviour
         return info;
     }
 
-    void LoadID(int Cid, List<int> Tids)
+    void LoadID(int Cid)
     {
         connectorID = Cid;
 
-        if(targetList.Count != Tids.Count) { Debug.Log("wrong target number."); return; }
         int index = 0;
         targetList.ForEach(target =>
         {
-            target.targetID = Tids[index++];
+            target.targetID = index++;
         });
     }
 
@@ -118,6 +119,13 @@ public class Connector : MonoBehaviour
         linkedTarget = lt;
         LinkTarget(this);
     }
+
+    void LoadLink(Connector oc, int tid)
+    {
+        linkedTarget = oc.targetList.Count >= tid ? oc.targetList[tid] : null ;
+        LinkTarget(this);
+    }
+
 
     void TrackPositionUpdate(Vector2 pos)
     {
