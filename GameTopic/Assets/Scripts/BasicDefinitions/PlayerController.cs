@@ -1,23 +1,13 @@
-using UnityEngine;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+
 public interface IPlayerController{
-    void CreateDeviceInstance();
-    void SaveComponentCount(Dictionary<String, int> counts);
-
-    Dictionary<String, int> LoadComponentCount();
-
+    void CreateDeviceInstance(IDeviceInfo info);
+    
 }
-public class SaveData
+public class PlayerController : IPlayerController
 {
-    public string playerId;
-    public Dictionary<String, int> ComponentCounts;
-
-    public SaveData(string playerId, Dictionary<String, int> ComponentCounts)
+    public void CreateDeviceInstance(IDeviceInfo info)
     {
-        this.playerId = playerId;
-        this.ComponentCounts = ComponentCounts;
+        string encodedInfo = info.Encode();
+        info.Decode(encodedInfo);
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class DeviceInfo : IDeviceInfo
 {
     private Guid deviceID;
-    public List<GameComponent> ComponentList;
+    public List<IGameComponent> ComponentList;
 
 
     private Dictionary<int, int> ComponentIDMap;

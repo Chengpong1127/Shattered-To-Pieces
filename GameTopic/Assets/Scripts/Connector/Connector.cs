@@ -4,8 +4,19 @@ using UnityEngine;
 using UnityEngine.Events;
 using static UnityEditor.PlayerSettings;
 
+
+public struct ConnectorInfo
+{
+    public int connectorID;
+    public int linkedTargetID;
+    public List<int> ownTargetID;
+}
+
+
 public class Connector : MonoBehaviour
 {
+    int connectorID;
+
     bool combineMode;   // is the game in combine mode
     bool selecting;     // is this connector be selecting
 
@@ -77,12 +88,36 @@ public class Connector : MonoBehaviour
         TrackPositionUpdate((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
 
-
-    List<Target> Dump()
+    ConnectorInfo Dump()
     {
-        return targetList;
+        ConnectorInfo info = new ConnectorInfo();
+        info.ownTargetID = new List<int>();
+        info.connectorID = connectorID;
+        info.linkedTargetID = linkedTarget != null ? linkedTarget.targetID : -1;
+        targetList.ForEach(target =>
+        {
+            info.ownTargetID.Add(target.targetID);
+        });
+        return info;
     }
 
+    void LoadID(int Cid, List<int> Tids)
+    {
+        connectorID = Cid;
+
+        if(targetList.Count != Tids.Count) { Debug.Log("wrong target number."); return; }
+        int index = 0;
+        targetList.ForEach(target =>
+        {
+            target.targetID = Tids[index++];
+        });
+    }
+
+    void LoadLink(Target lt)
+    {
+        linkedTarget = lt;
+        LinkTarget(this);
+    }
 
     void TrackPositionUpdate(Vector2 pos)
     {
@@ -125,30 +160,40 @@ public class Connector : MonoBehaviour
         selfJoint.enabled = false;
         linkedTarget?.UnLinkTarget();
     }
-    static void LinkTarget(Connector c)
+    static void LinkObject(Connector c)
     {
         if(c == null) return;
         if(c.selectedTargetObj == null || c.collisionResult.Count == 0) return;
         c.linkedTarget = c.selectedTargetObj.GetComponent<Target>();
         if(c.linkedTarget == null) { return; }
 
+        LinkTarget(c);
+    }
+
+    static void LinkTarget(Connector c)
+    {
+        if (c.linkedTarget == null) { return; }
+
         c.linkedTarget.LinkTarget(c);
         c.selfJoint.connectedBody = c.linkedTarget.ownerConnector.selfRigidbody;
         c.selfJoint.connectedAnchor = c.selectedTargetObj.transform.localPosition;
         c.selfJoint.enabled = true;
     }
+
     void SwitchSelecting(bool b)
     {
         selecting = b;
         selfRigidbody.gravityScale = b ? 0 : 1;
         selfCollider.isTrigger = b;
         BreakTatgetLink();
-        if (b) ResetCompareVariable(); else LinkTarget(this); 
+        if (b) ResetCompareVariable(); else LinkObject(this); 
         SwitchTargetActive(!b);
         linkedHandler.Invoke(b);
     }
     void SwitchCombineMode(bool b)
     {
+        if(!b) SwitchSelecting(false);
+
         combineMode = b;
         selfRigidbody.freezeRotation = b;
         SwitchTargetActive(b);
