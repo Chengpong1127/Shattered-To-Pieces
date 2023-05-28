@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class DeviceInfo : IDeviceInfo
 {
     private Guid deviceID;
-    public List<int> _componentIDList;
+    private Dictionary<int, int> _componentIDMap; // <DeviceComponentID, GameComponentID>
 
 
     private Dictionary<int, int> ComponentIDMap;
@@ -12,9 +12,9 @@ public class DeviceInfo : IDeviceInfo
 
     Guid IDeviceInfo.DeviceID { get => deviceID; set => deviceID = value; }
 
-    public List<int> GameComponentIDList => _componentIDList;
+    public Dictionary<int, int> GameComponentIDMap{ get => _componentIDMap; set => _componentIDMap = value; }
 
-    public Dictionary<int, List<ConnectorPoint>> ConnecterMap => _connecterMap;
+    public Dictionary<int, List<ConnectorPoint>> ConnecterMap { get => _connecterMap; set => _connecterMap = value; }
     public void Decode(string json)
     {
         var info = JsonConvert.DeserializeObject<DeviceInfo>(json);

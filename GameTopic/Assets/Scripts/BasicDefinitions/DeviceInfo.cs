@@ -3,7 +3,7 @@ using System.Collections.Generic;
 public interface IDeviceInfo
 {
     Guid DeviceID { get; set; }
-    public List<int> GameComponentIDList { get; }
+    public Dictionary<int, int> GameComponentIDMap { get; }
     public Dictionary<int, List<ConnectorPoint>> ConnecterMap { get; }
     string Encode();
     void Decode(string json);
