@@ -15,14 +15,14 @@ public class GameComponentFactory : MonoBehaviour
     public GameObject ComponentPrefab0;
     public GameObject ComponentPrefab1;
 
-    public GameObject CreateComponent(int componentID)
+    public GameObject CreateComponent(int componentGUID, int componentID)
     {
         var component = new GameObject();
-        if (componentID == 0)
+        if (componentGUID == 0)
         {
             component = Instantiate(ComponentPrefab0);
         }
-        else if (componentID == 1)
+        else if (componentGUID == 1)
         {
             component = Instantiate(ComponentPrefab1);
         }
@@ -39,6 +39,7 @@ public class GameComponentFactory : MonoBehaviour
             return null;
         }
         GameComponent.ComponentID = componentID;
+        GameComponent.ComponentGUID = componentGUID;
         return component;
     }
 }
