@@ -60,4 +60,21 @@ public class Target : MonoBehaviour, ITarget
         aimerConnector = null;
         SwitchActive(true);
     }
+
+    // interface imp.
+
+    public void ActiveITarget(bool active)
+    {
+        this.SwitchActive(active);
+    }
+
+    public void LinkTarget(IConnector lic)
+    {
+        throw new System.NotImplementedException();
+    }
+    public void UnLinkTarget(IConnector ulic)
+    {
+        throw new System.NotImplementedException();
+    }
+
 }

@@ -11,6 +11,10 @@ public interface ITarget
 {
     int targetID { get; set; }
     IConnector ownerIConnector { get; set; }
+
+    void LinkTarget(IConnector lic);
+    void UnLinkTarget(IConnector ulic);
+    void ActiveITarget(bool active);
 }
 
 public interface IConnector
