@@ -12,7 +12,11 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public ICoreComponent CoreComponent => coreComponent;
 
 
-    public int ComponentID => _gameComponentID;
+    public int ComponentID
+    {
+        get => _gameComponentID;
+        set => _gameComponentID = value;
+    }
 
     public void Connect(IGameComponent otherComponent, int targetID)
     {

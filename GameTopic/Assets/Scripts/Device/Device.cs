@@ -10,11 +10,16 @@ public class Device: MonoBehaviour
     public Dictionary<int, List<int>> ConnecterMap;
 
     public void LoadDevice(IDeviceInfo info){
-        createGameComponents(info.GameComponentIDList);
+        createGameComponents(info.GameComponentIDMap);
         connect(info.ConnecterMap);
     }
-    private void createGameComponents(List<int> componentIDList){
-        
+    private void createGameComponents(Dictionary<int, int> componentIDMap){
+        foreach(var pair in componentIDMap){
+            var component = GameComponentFactory.Instance.CreateComponent(pair.Value).GetComponent<IGameComponent>();
+            component.ComponentID = pair.Key;
+            ComponentMap.Add(component.ComponentID, component);
+            ComponentIDList.Add(component.ComponentID);
+        }
     }
     private void connect(Dictionary<int, List<ConnectorPoint>> connecterMap){
         foreach(var pair in connecterMap){

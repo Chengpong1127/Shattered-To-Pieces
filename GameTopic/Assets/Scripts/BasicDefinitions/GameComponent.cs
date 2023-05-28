@@ -3,7 +3,7 @@ using System.Collections.Generic;
 // Description: Defines the basic interfaces for the game components.
 public interface IGameComponent
 {
-    int ComponentID { get; }
+    int ComponentID { get; set;}
     public IConnector Connector { get; }
     public ICoreComponent CoreComponent { get; }
     void Connect(IGameComponent otherComponent, int targetID);
