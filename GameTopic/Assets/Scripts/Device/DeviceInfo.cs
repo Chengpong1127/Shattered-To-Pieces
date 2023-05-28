@@ -4,20 +4,21 @@ using System.Collections.Generic;
 public class DeviceInfo : IDeviceInfo
 {
     private Guid deviceID;
-    public List<GameComponent> ComponentList;
+    public List<int> _componentIDList;
 
 
     private Dictionary<int, int> ComponentIDMap;
-    private Dictionary<ConnecterPoint, ConnecterPoint> ConnecterMap;
+    private Dictionary<int, List<ConnectorPoint>> _connecterMap;
 
     Guid IDeviceInfo.DeviceID { get => deviceID; set => deviceID = value; }
 
+    public List<int> GameComponentIDList => _componentIDList;
 
+    public Dictionary<int, List<ConnectorPoint>> ConnecterMap => _connecterMap;
     public void Decode(string json)
     {
         var info = JsonConvert.DeserializeObject<DeviceInfo>(json);
         deviceID = info.deviceID;
-        ComponentList = info.ComponentList;
     }
 
     public string Encode()
