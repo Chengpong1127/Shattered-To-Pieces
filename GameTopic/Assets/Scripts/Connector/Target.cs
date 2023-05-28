@@ -72,6 +72,7 @@ public class Target : MonoBehaviour, ITarget
     public void LinkTarget(IConnector lic)
     {
         if(lic == null) { return; }
+        if(aimerConnector != null) { return ; }
         UnLinkTarget();
         SwitchActive(false);
         aimerConnector = lic;
