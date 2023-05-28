@@ -27,4 +27,10 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public void DumpInfo(){
 
     }
+
+    private void Start()
+    {
+        connector = GetComponent<Connector>();
+        coreComponent = null;
+    }
 }

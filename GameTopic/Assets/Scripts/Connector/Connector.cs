@@ -13,10 +13,18 @@ public struct ConnectorInfo
     public List<int> ownTargetID;
 }
 
-
+/*
+ * 暫時測試方法 : 
+ * 按 Z 進入編輯模式，X 退出編輯模式
+ * 在編輯模式中使用滑鼠來選取物件並按住滑鼠拖曳來將元件連接到其他元件上
+ * 
+ * 在 unity 編輯器中需要先將 rigidbody 等unity 元件連接至本腳本否則會報錯
+ * 
+ */
 public class Connector : MonoBehaviour, IConnector
 {
-    int connectorID;    // self unique id
+    public int connectorID { get; set; }    // self unique id
+    public UnityAction<bool> linkSelectAction { get;set; }
 
     bool combineMode;   // is the game in combine mode
     bool selecting;     // is this connector be selecting
@@ -43,6 +51,9 @@ public class Connector : MonoBehaviour, IConnector
     private void Start()
     {
         if(selfRigidbody == null || selfCollider == null || selfJoint == null) { Debug.Log("Missing variable in Connector.\n"); }
+
+        // add listener function
+        linkSelectAction += SwitchLinkingSelect;
 
         // initialize for filter
         targetLayerFilter.useLayerMask = true;
@@ -91,7 +102,7 @@ public class Connector : MonoBehaviour, IConnector
     }
 
     // dump connecotr info with ConnectorInfo structure
-    ConnectorInfo Dump()
+    public ConnectorInfo Dump()
     {
         ConnectorInfo info = new ConnectorInfo();
         info.ownTargetID = new List<int>();
@@ -105,7 +116,7 @@ public class Connector : MonoBehaviour, IConnector
         return info;
     }
 
-    void LoadID(int Cid)
+    public void LoadID(int Cid)
     {
         connectorID = Cid;
 
@@ -211,6 +222,8 @@ public class Connector : MonoBehaviour, IConnector
     // control the connector is selected or not.
     void SwitchSelecting(bool b)
     {
+        if(selecting == b ) return;
+
         selecting = b;
         selfRigidbody.gravityScale = b ? 0 : 1;
         selfCollider.isTrigger = b;
@@ -230,13 +243,25 @@ public class Connector : MonoBehaviour, IConnector
         SwitchTargetActive(b);
     }
 
-    public void ConnectToComponent(IConnector connecterPoint, int targetID)
+    // interface imp.
+
+    public ITarget GetTargetByIndex(int targetID)
     {
-        throw new System.NotImplementedException();
+        return targetList.Count > targetID ? targetList[targetID] : null;
     }
 
-    public void ConnectToComponent(Connector linkedConnector, int targetID)
+    public void ConnectToComponent(IConnector connecterPoint, int targetID)
     {
-        this.LoadLink(linkedConnector, targetID);
+        ITarget target = GetTargetByIndex(targetID);
+        target?.LinkTarget(this);
+    }
+
+    public void AddLinkSelectListener(UnityAction<bool> actionFunction)
+    {
+        linkedHandler.AddListener(actionFunction);
+    }
+    public void RemoveLinkSelectListener(UnityAction<bool> uafactionFunction)
+    {
+        linkedHandler.RemoveListener(uafactionFunction);
     }
 }
