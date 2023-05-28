@@ -16,7 +16,7 @@ public struct ConnectorInfo
 
 public class Connector : MonoBehaviour, IConnector
 {
-    int connectorID;    // self unique id
+    public int connectorID { get; set; }    // self unique id
 
     bool combineMode;   // is the game in combine mode
     bool selecting;     // is this connector be selecting
@@ -91,7 +91,7 @@ public class Connector : MonoBehaviour, IConnector
     }
 
     // dump connecotr info with ConnectorInfo structure
-    ConnectorInfo Dump()
+    public ConnectorInfo Dump()
     {
         ConnectorInfo info = new ConnectorInfo();
         info.ownTargetID = new List<int>();
@@ -228,6 +228,13 @@ public class Connector : MonoBehaviour, IConnector
         combineMode = b;
         selfRigidbody.freezeRotation = b;
         SwitchTargetActive(b);
+    }
+
+    // interface imp.
+
+    public ITarget GetTargetByIndex(int targetID)
+    {
+        return targetList.Count > targetID ? targetList[targetID] : null;
     }
 
     public void ConnectToComponent(IConnector connecterPoint, int targetID)

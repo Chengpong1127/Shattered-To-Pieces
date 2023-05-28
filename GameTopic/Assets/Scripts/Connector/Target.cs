@@ -8,11 +8,11 @@ using UnityEngine;
  * 在 Connector 中以子物件存在，必須置於擁有 Connector 的 GameObject 底下，
  * 在其他 Connector 連接時會參考 Target 所有物件相對於父物件的 position 作為 Joint 連接時的座標。
  */
-public class Target : MonoBehaviour
+public class Target : MonoBehaviour, ITarget
 {
-    public int targetID;
+    public int targetID { get; set; }
 
-
+    public IConnector ownerIConnector { get; set; }
     public Connector ownerConnector;
     Connector aimerConnector;
 

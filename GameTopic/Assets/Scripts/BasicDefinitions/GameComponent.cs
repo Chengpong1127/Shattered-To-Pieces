@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 // Description: Defines the basic interfaces for the game components.
 public interface IGameComponent
@@ -6,8 +7,16 @@ public interface IGameComponent
     Dictionary<ConnecterPoint, ConnecterPoint> ConnectorMap { get; }
 }
 
+public interface ITarget
+{
+    int targetID { get; set; }
+    IConnector ownerIConnector { get; set; }
+}
+
 public interface IConnector
 {
+    int connectorID { get; set; }
+    ITarget GetTargetByIndex(int targetID);
     void ConnectToComponent(IConnector connecterPoint, int targetID);
 }
 
