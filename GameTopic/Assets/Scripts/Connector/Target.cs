@@ -40,7 +40,7 @@ public class Target : MonoBehaviour, ITarget
 
     public void SwitchActive(bool b)
     {
-        // if (aimerConnector != null) { return; }
+        if (aimerConnector != null) { return; }
         this.gameObject.SetActive(b);
     }
 

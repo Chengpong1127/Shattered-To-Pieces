@@ -13,7 +13,14 @@ public struct ConnectorInfo
     public List<int> ownTargetID;
 }
 
-
+/*
+ * 暫時測試方法 : 
+ * 按 Z 進入編輯模式，X 退出編輯模式
+ * 在編輯模式中使用滑鼠來選取物件並按住滑鼠拖曳來將元件連接到其他元件上
+ * 
+ * 在 unity 編輯器中需要先將 rigidbody 等unity 元件連接至本腳本否則會報錯
+ * 
+ */
 public class Connector : MonoBehaviour, IConnector
 {
     public int connectorID { get; set; }    // self unique id
