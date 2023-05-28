@@ -5,7 +5,11 @@ using UnityEngine.Events;
 // Description: Defines the basic interfaces for the game components.
 public interface IGameComponent
 {
-    Dictionary<ConnecterPoint, ConnecterPoint> ConnectorMap { get; }
+    int ComponentID { get; set;}
+    int ComponentGUID { get; set; }
+    public IConnector Connector { get; }
+    public ICoreComponent CoreComponent { get; }
+    void Connect(IGameComponent otherComponent, int targetID);
 }
 
 public interface ITarget

@@ -4,27 +4,25 @@ using UnityEngine;
 
 public class GameComponent : MonoBehaviour, IGameComponent
 {
-    public int GameComponentID;
+    private int _gameComponentID;
     private IConnector connector;
     private ICoreComponent coreComponent;
 
-    public IConnector Connector
-    {
-        get
-        {
-            return connector;
-        }
-    }
+    public IConnector Connector => connector;
+    public ICoreComponent CoreComponent => coreComponent;
 
-    public ICoreComponent CoreComponent
-    {
-        get
-        {
-            return coreComponent;
-        }
-    }
 
-    public Dictionary<ConnecterPoint, ConnecterPoint> ConnectorMap => throw new System.NotImplementedException();
+    public int ComponentID
+    {
+        get => _gameComponentID;
+        set => _gameComponentID = value;
+    }
+    public int ComponentGUID { get; set; }
+
+    public void Connect(IGameComponent otherComponent, int targetID)
+    {
+        connector.ConnectToComponent(otherComponent.Connector, targetID);
+    }
 
     public void DumpInfo(){
 
