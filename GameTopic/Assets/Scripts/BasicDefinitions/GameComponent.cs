@@ -9,7 +9,7 @@ public interface IGameComponent
 
 public interface IConnector
 {
-    
+    void ConnectToComponent(IConnector connecterPoint, int targetID);
 }
 
 public interface ICoreComponent
