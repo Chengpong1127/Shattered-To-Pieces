@@ -4,10 +4,8 @@ using System.Collections.Generic;
 public class DeviceInfo : IDeviceInfo
 {
     private Guid deviceID;
-    private Dictionary<int, int> _componentIDMap; // <DeviceComponentID, GameComponentID>
+    private Dictionary<int, int> _componentIDMap; // <ComponentID, ComponentGUID>
 
-
-    private Dictionary<int, int> ComponentIDMap;
     private Dictionary<int, List<ConnectorPoint>> _connecterMap;
 
     Guid IDeviceInfo.DeviceID { get => deviceID; set => deviceID = value; }

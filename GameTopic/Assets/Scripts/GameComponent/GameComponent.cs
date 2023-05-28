@@ -17,6 +17,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
         get => _gameComponentID;
         set => _gameComponentID = value;
     }
+    public int ComponentGUID { get; set; }
 
     public void Connect(IGameComponent otherComponent, int targetID)
     {
