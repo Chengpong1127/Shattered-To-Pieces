@@ -17,6 +17,7 @@ public struct ConnectorInfo
 public class Connector : MonoBehaviour, IConnector
 {
     public int connectorID { get; set; }    // self unique id
+    public UnityAction<bool> linkSelectAction { get;set; }
 
     bool combineMode;   // is the game in combine mode
     bool selecting;     // is this connector be selecting
@@ -43,6 +44,9 @@ public class Connector : MonoBehaviour, IConnector
     private void Start()
     {
         if(selfRigidbody == null || selfCollider == null || selfJoint == null) { Debug.Log("Missing variable in Connector.\n"); }
+
+        // add listener function
+        linkSelectAction += SwitchLinkingSelect;
 
         // initialize for filter
         targetLayerFilter.useLayerMask = true;
@@ -105,7 +109,7 @@ public class Connector : MonoBehaviour, IConnector
         return info;
     }
 
-    void LoadID(int Cid)
+    public void LoadID(int Cid)
     {
         connectorID = Cid;
 
@@ -211,6 +215,8 @@ public class Connector : MonoBehaviour, IConnector
     // control the connector is selected or not.
     void SwitchSelecting(bool b)
     {
+        if(selecting == b ) return;
+
         selecting = b;
         selfRigidbody.gravityScale = b ? 0 : 1;
         selfCollider.isTrigger = b;
@@ -239,11 +245,16 @@ public class Connector : MonoBehaviour, IConnector
 
     public void ConnectToComponent(IConnector connecterPoint, int targetID)
     {
-        throw new System.NotImplementedException();
+        ITarget target = GetTargetByIndex(targetID);
+        target?.LinkTarget(this);
     }
 
-    public void ConnectToComponent(Connector linkedConnector, int targetID)
+    public void AddLinkSelectListener(UnityAction<bool> actionFunction)
     {
-        this.LoadLink(linkedConnector, targetID);
+        linkedHandler.AddListener(actionFunction);
+    }
+    public void RemoveLinkSelectListener(UnityAction<bool> uafactionFunction)
+    {
+        linkedHandler.RemoveListener(uafactionFunction);
     }
 }

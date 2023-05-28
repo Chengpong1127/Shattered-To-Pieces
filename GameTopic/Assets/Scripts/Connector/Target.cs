@@ -14,7 +14,7 @@ public class Target : MonoBehaviour, ITarget
 
     public IConnector ownerIConnector { get; set; }
     public Connector ownerConnector;
-    Connector aimerConnector;
+    IConnector aimerConnector;
 
     private void Start()
     {
@@ -40,10 +40,11 @@ public class Target : MonoBehaviour, ITarget
 
     public void SwitchActive(bool b)
     {
-        if (aimerConnector != null) { return; }
+        // if (aimerConnector != null) { return; }
         this.gameObject.SetActive(b);
     }
 
+    /*
     public void LinkTarget(Connector lc)
     {
         if(lc == null) { return; }
@@ -53,6 +54,7 @@ public class Target : MonoBehaviour, ITarget
         ownerConnector.linkedHandler.AddListener(aimerConnector.SwitchLinkingSelect);
     }
 
+    
     public void UnLinkTarget()
     {
         if(aimerConnector == null) { return; }
@@ -60,21 +62,26 @@ public class Target : MonoBehaviour, ITarget
         aimerConnector = null;
         SwitchActive(true);
     }
+    */
 
     // interface imp.
-
     public void ActiveITarget(bool active)
     {
         this.SwitchActive(active);
     }
-
     public void LinkTarget(IConnector lic)
     {
-        throw new System.NotImplementedException();
+        if(lic == null) { return; }
+        UnLinkTarget();
+        SwitchActive(false);
+        aimerConnector = lic;
+        ownerConnector.AddLinkSelectListener(aimerConnector.linkSelectAction);
     }
-    public void UnLinkTarget(IConnector ulic)
+    public void UnLinkTarget()
     {
-        throw new System.NotImplementedException();
+        if (aimerConnector == null) { return; }
+        ownerConnector.RemoveLinkSelectListener(aimerConnector.linkSelectAction);
+        aimerConnector = null;
+        SwitchActive(true);
     }
-
 }
