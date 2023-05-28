@@ -8,25 +8,16 @@ public class GameComponent : MonoBehaviour, IGameComponent
     private IConnector connector;
     private ICoreComponent coreComponent;
 
-    public IConnector Connector
-    {
-        get
-        {
-            return connector;
-        }
-    }
+    public IConnector Connector => connector;
+    public ICoreComponent CoreComponent => coreComponent;
 
-    public ICoreComponent CoreComponent
-    {
-        get
-        {
-            return coreComponent;
-        }
-    }
-
-    public Dictionary<ConnecterPoint, ConnecterPoint> ConnectorMap => throw new System.NotImplementedException();
 
     public int ComponentID => _gameComponentID;
+
+    public void Connect(IGameComponent otherComponent, int targetID)
+    {
+        connector.ConnectToComponent(otherComponent.Connector, targetID);
+    }
 
     public void DumpInfo(){
 

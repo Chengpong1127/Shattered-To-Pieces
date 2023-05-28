@@ -5,7 +5,9 @@ using UnityEngine;
 public interface IGameComponent
 {
     int ComponentID { get; }
-    Dictionary<ConnecterPoint, ConnecterPoint> ConnectorMap { get; }
+    public IConnector Connector { get; }
+    public ICoreComponent CoreComponent { get; }
+    void Connect(IGameComponent otherComponent, int targetID);
 }
 
 public interface ITarget
