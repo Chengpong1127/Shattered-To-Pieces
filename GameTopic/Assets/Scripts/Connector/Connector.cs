@@ -48,7 +48,7 @@ public class Connector : MonoBehaviour, IConnector
     List<Collider2D> collisionResult;
     Vector2 movePosition;
 
-    private void Start()
+    private void Awake()
     {
         if(selfRigidbody == null || selfCollider == null || selfJoint == null) { Debug.Log("Missing variable in Connector.\n"); }
 
