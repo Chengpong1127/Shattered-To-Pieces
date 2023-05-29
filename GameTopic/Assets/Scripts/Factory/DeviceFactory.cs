@@ -19,7 +19,8 @@ public class DeviceFactory : MonoBehaviour
         info.GameComponentIDMap.Add(1, 1);
         info.GameComponentIDMap.Add(2, 1);
         info.ConnecterMap = new Dictionary<int, ConnectorPoint>();
-
+        info.ConnecterMap.Add(1, new ConnectorPoint{ComponentID = 0, TargetID = 0});
+        info.ConnecterMap.Add(2, new ConnectorPoint{ComponentID = 0, TargetID = 1});
         var device = CreateDevice(info);
         device.transform.position = new Vector3(0, 0, 0);
     }

@@ -5,7 +5,7 @@ using System;
 
 public class Device: MonoBehaviour
 {
-    public Dictionary<int, IGameComponent> ComponentMap;
+    public Dictionary<int, IGameComponent> ComponentMap = new Dictionary<int, IGameComponent>();
 
 
     public void LoadDevice(IDeviceInfo info){
@@ -15,6 +15,7 @@ public class Device: MonoBehaviour
     private void createGameComponents(Dictionary<int, int> componentIDMap){
         foreach(var pair in componentIDMap){
             var component = GameComponentFactory.Instance.CreateComponent(pair.Value, pair.Key).GetComponent<IGameComponent>();
+            Debug.Assert(component != null);
             component.ComponentID = pair.Key;
             ComponentMap.Add(component.ComponentID, component);
         }
@@ -23,6 +24,8 @@ public class Device: MonoBehaviour
         foreach(var pair in connecterMap){
             var component = ComponentMap[pair.Key];
             var otherComponent = ComponentMap[pair.Value.ComponentID];
+            Debug.Assert(component != null);
+            Debug.Assert(otherComponent != null);
             component.Connect(otherComponent, pair.Value.TargetID);
         }
     }

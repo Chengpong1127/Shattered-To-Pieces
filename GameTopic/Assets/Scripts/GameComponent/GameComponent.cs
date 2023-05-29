@@ -21,6 +21,9 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     public void Connect(IGameComponent otherComponent, int targetID)
     {
+        Debug.Assert(otherComponent != null);
+        Debug.Assert(connector != null);
+        Debug.Assert(otherComponent.Connector != null);
         connector.ConnectToComponent(otherComponent.Connector, targetID);
     }
 
@@ -28,9 +31,10 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     }
 
-    private void Start()
+    private void Awake()
     {
-        connector = GetComponent<Connector>();
+        connector = GetComponentInChildren<Connector>();
+        Debug.Assert(connector != null, "Connector not found");
         coreComponent = null;
     }
 }
