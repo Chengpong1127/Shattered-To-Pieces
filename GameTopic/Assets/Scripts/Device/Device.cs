@@ -19,20 +19,18 @@ public class Device: MonoBehaviour
             ComponentMap.Add(component.ComponentID, component);
         }
     }
-    private void connect(Dictionary<int, List<ConnectorPoint>> connecterMap){
+    private void connect(Dictionary<int, ConnectorPoint> connecterMap){
         foreach(var pair in connecterMap){
             var component = ComponentMap[pair.Key];
-            foreach(var point in pair.Value){
-                var otherComponent = ComponentMap[point.ComponentID];
-                component.Connect(otherComponent, point.TargetID);
-            }
+            var otherComponent = ComponentMap[pair.Value.ComponentID];
+            component.Connect(otherComponent, pair.Value.TargetID);
         }
     }
 
     public DeviceInfo DumpDeviceInfo(){
         var info = new DeviceInfo();
         info.GameComponentIDMap = new Dictionary<int, int>();
-        info.ConnecterMap = new Dictionary<int, List<ConnectorPoint>>();
+        info.ConnecterMap = new Dictionary<int, ConnectorPoint>();
         foreach(var componentID in ComponentMap.Keys){
             var component = ComponentMap[componentID];
             info.GameComponentIDMap.Add(componentID, component.ComponentGUID);
