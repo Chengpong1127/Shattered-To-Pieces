@@ -39,7 +39,7 @@ public class Connector : MonoBehaviour, IConnector
     // for record connector linking state
     public UnityEvent<bool> linkedHandler;
     GameObject selectedTargetObj;
-    Target linkedTarget;
+    ITarget linkedTarget;
 
     // some variable for detect hited trigget when the connector itself be selecting
     static ContactFilter2D targetLayerFilter = new ContactFilter2D();
@@ -215,7 +215,13 @@ public class Connector : MonoBehaviour, IConnector
 
         c.linkedTarget.LinkTarget(c);
         c.selfJoint.connectedBody = c.linkedTarget.ownerIConnector.GetSelfRigidbody();
-        c.selfJoint.connectedAnchor = c.selectedTargetObj.transform.localPosition;
+
+        Debug.Assert(c);
+        Debug.Assert(c.selfJoint);
+        Debug.Assert(c.linkedTarget != null);
+        Debug.Assert(c.linkedTarget.targetPoint);
+
+        c.selfJoint.connectedAnchor = c.linkedTarget.targetPoint.transform.localPosition;
         c.selfJoint.enabled = true;
     }
 
@@ -252,8 +258,8 @@ public class Connector : MonoBehaviour, IConnector
 
     public void ConnectToComponent(IConnector connecterPoint, int targetID)
     {
-        ITarget target = GetTargetByIndex(targetID);
-        target?.LinkTarget(this);
+        linkedTarget = connecterPoint.GetTargetByIndex(targetID);
+        LinkTarget(this);
     }
 
     public void AddLinkSelectListener(UnityAction<bool> actionFunction)

@@ -15,6 +15,7 @@ public interface IGameComponent
 public interface ITarget
 {
     int targetID { get; set; }
+    GameObject targetPoint { get; set; }
     IConnector ownerIConnector { get; set; }
     void LinkTarget(IConnector lic);
     void UnLinkTarget();

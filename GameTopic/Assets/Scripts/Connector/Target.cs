@@ -11,16 +11,17 @@ using UnityEngine;
 public class Target : MonoBehaviour, ITarget
 {
     public int targetID { get; set; }
-
-    // public Connector ownerConnector { get; set; }
+    public GameObject targetPoint { get; set; }
     public IConnector ownerIConnector { get; set; }
 
 
     IConnector aimerConnector;
 
-    private void Start()
+    private void Awake()
     {
         aimerConnector = null;
+        Debug.Log(gameObject);
+        targetPoint = gameObject;
     }
 
 
