@@ -30,6 +30,8 @@ public interface IConnector
 
     void AddLinkSelectListener(UnityAction<bool> actionFunction);
     void RemoveLinkSelectListener(UnityAction<bool> uafactionFunction);
+
+    Rigidbody2D GetSelfRigidbody();
 }
 
 public interface ICoreComponent

@@ -107,7 +107,7 @@ public class Connector : MonoBehaviour, IConnector
         ConnectorInfo info = new ConnectorInfo();
         info.ownTargetID = new List<int>();
         info.connectorID = connectorID;
-        info.linkedConnectorID = linkedTarget != null ? linkedTarget.ownerConnector.connectorID : -1;
+        info.linkedConnectorID = linkedTarget != null ? linkedTarget.ownerIConnector.connectorID : -1;
         info.linkedTargetID = linkedTarget != null ? linkedTarget.targetID : -1;
         targetList.ForEach(target =>
         {
@@ -214,7 +214,7 @@ public class Connector : MonoBehaviour, IConnector
         if (c.linkedTarget == null) { return; }
 
         c.linkedTarget.LinkTarget(c);
-        c.selfJoint.connectedBody = c.linkedTarget.ownerConnector.selfRigidbody;
+        c.selfJoint.connectedBody = c.linkedTarget.ownerIConnector.GetSelfRigidbody();
         c.selfJoint.connectedAnchor = c.selectedTargetObj.transform.localPosition;
         c.selfJoint.enabled = true;
     }
@@ -263,5 +263,10 @@ public class Connector : MonoBehaviour, IConnector
     public void RemoveLinkSelectListener(UnityAction<bool> uafactionFunction)
     {
         linkedHandler.RemoveListener(uafactionFunction);
+    }
+
+    public Rigidbody2D GetSelfRigidbody()
+    {
+        return this.selfRigidbody;
     }
 }

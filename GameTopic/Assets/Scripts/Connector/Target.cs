@@ -12,8 +12,10 @@ public class Target : MonoBehaviour, ITarget
 {
     public int targetID { get; set; }
 
+    // public Connector ownerConnector { get; set; }
     public IConnector ownerIConnector { get; set; }
-    public Connector ownerConnector;
+
+
     IConnector aimerConnector;
 
     private void Start()
@@ -35,7 +37,7 @@ public class Target : MonoBehaviour, ITarget
 
     public void SetOwner(Connector oc)
     {
-        ownerConnector = oc;
+        ownerIConnector = oc;
     }
 
     public void SwitchActive(bool b)
@@ -76,12 +78,12 @@ public class Target : MonoBehaviour, ITarget
         UnLinkTarget();
         SwitchActive(false);
         aimerConnector = lic;
-        ownerConnector.AddLinkSelectListener(aimerConnector.linkSelectAction);
+        ownerIConnector.AddLinkSelectListener(aimerConnector.linkSelectAction);
     }
     public void UnLinkTarget()
     {
         if (aimerConnector == null) { return; }
-        ownerConnector.RemoveLinkSelectListener(aimerConnector.linkSelectAction);
+        ownerIConnector.RemoveLinkSelectListener(aimerConnector.linkSelectAction);
         aimerConnector = null;
         SwitchActive(true);
     }
