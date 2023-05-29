@@ -20,8 +20,9 @@ public class Target : MonoBehaviour, ITarget
     private void Awake()
     {
         aimerConnector = null;
-        Debug.Log(gameObject);
         targetPoint = gameObject;
+
+        targetPoint.SetActive(false);
     }
 
 

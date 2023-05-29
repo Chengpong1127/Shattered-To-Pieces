@@ -17,7 +17,7 @@ public class GameComponentFactory : MonoBehaviour
 
     public GameObject CreateComponent(int componentGUID, int componentID)
     {
-        var component = new GameObject();
+        GameObject component;// = new GameObject();
         if (componentGUID == 0)
         {
             component = Instantiate(ComponentPrefab0);

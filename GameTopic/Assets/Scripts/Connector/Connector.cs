@@ -216,12 +216,9 @@ public class Connector : MonoBehaviour, IConnector
         c.linkedTarget.LinkTarget(c);
         c.selfJoint.connectedBody = c.linkedTarget.ownerIConnector.GetSelfRigidbody();
 
-        Debug.Assert(c);
-        Debug.Assert(c.selfJoint);
-        Debug.Assert(c.linkedTarget != null);
-        Debug.Assert(c.linkedTarget.targetPoint);
+        Debug.Log(c.linkedTarget.targetPoint.transform.localPosition);
 
-        c.selfJoint.connectedAnchor = c.linkedTarget.targetPoint.transform.localPosition;
+        c.selfJoint.connectedAnchor = (Vector2)c.linkedTarget.targetPoint.transform.localPosition;
         c.selfJoint.enabled = true;
     }
 
