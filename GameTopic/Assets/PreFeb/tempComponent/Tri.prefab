@@ -128,6 +128,7 @@ GameObject:
   - component: {fileID: 5505349297188332525}
   - component: {fileID: 7356278536475625055}
   - component: {fileID: 1713589700941737367}
+  - component: {fileID: 4477144044792074113}
   m_Layer: 0
   m_Name: Tri
   m_TagString: Untagged
@@ -203,6 +204,34 @@ FixedJoint2D:
   m_ConnectedAnchor: {x: 0, y: 0}
   m_DampingRatio: 0
   m_Frequency: 0
+--- !u!60 &4477144044792074113
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3287168864450067047}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 1.15}
+      - {x: -1, y: -0.57733}
+      - {x: 1, y: -0.57733}
 --- !u!1001 &5638237224729805095
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -271,6 +300,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1713589700941737367}
     - target: {fileID: 1283073023187933543, guid: cd36266b0a6ef9646ba18a2a0e706b3e, type: 3}
+      propertyPath: selfCollider
+      value: 
+      objectReference: {fileID: 4477144044792074113}
+    - target: {fileID: 1283073023187933543, guid: cd36266b0a6ef9646ba18a2a0e706b3e, type: 3}
       propertyPath: selfRigidbody
       value: 
       objectReference: {fileID: 7356278536475625055}
@@ -297,6 +330,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 1283073023187933536, guid: cd36266b0a6ef9646ba18a2a0e706b3e, type: 3}
     - {fileID: 1283073023187933537, guid: cd36266b0a6ef9646ba18a2a0e706b3e, type: 3}
+    - {fileID: 1283073023187933538, guid: cd36266b0a6ef9646ba18a2a0e706b3e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cd36266b0a6ef9646ba18a2a0e706b3e, type: 3}
 --- !u!4 &6913428947764467777 stripped
 Transform:
