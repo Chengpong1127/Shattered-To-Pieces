@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 7356278536475625055}
   - component: {fileID: 1713589700941737367}
   - component: {fileID: 4477144044792074113}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tri
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 5854875068153699644}
   - component: {fileID: 1273654725031024030}
   - component: {fileID: 7759839642389273492}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
 --- !u!1 &6474699793280458432
 GameObject:
