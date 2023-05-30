@@ -12,27 +12,11 @@ public interface IGameComponent
     void Connect(IGameComponent otherComponent, int targetID);
 }
 
-public interface ITarget
-{
-    int targetID { get; set; }
-    GameObject targetPoint { get; set; }
-    IConnector ownerIConnector { get; set; }
-    void LinkTarget(IConnector lic);
-    void UnLinkTarget();
-    void ActiveITarget(bool active);
-}
-
 public interface IConnector
 {
     int connectorID { get; set; }
-    UnityAction<bool> linkSelectAction { get; set; }
-    ITarget GetTargetByIndex(int targetID);
+    GameObject GetTargetObjByIndex(int targetID);
     void ConnectToComponent(IConnector connecterPoint, int targetID);
-
-    void AddLinkSelectListener(UnityAction<bool> actionFunction);
-    void RemoveLinkSelectListener(UnityAction<bool> uafactionFunction);
-
-    Rigidbody2D GetSelfRigidbody();
 }
 
 public interface ICoreComponent
