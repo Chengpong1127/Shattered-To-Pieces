@@ -87,12 +87,10 @@ public class Connector : MonoBehaviour, IConnector
 
     private void OnMouseDown()
     {
-        if(!combineMode) { return; }
         SwitchSelecting(true);
     }
     private void OnMouseUp()
     {
-        if (!combineMode) { return; }
         SwitchSelecting(false);
     }
     private void OnMouseDrag()
@@ -216,7 +214,8 @@ public class Connector : MonoBehaviour, IConnector
     // control the connector is selected or not.
     void SwitchSelecting(bool b)
     {
-        if(selecting == b ) return;
+        if (!combineMode) { return; }
+        if (selecting == b ) return;
 
         selecting = b;
         selfRigidbody.gravityScale = b ? 0 : 1;
