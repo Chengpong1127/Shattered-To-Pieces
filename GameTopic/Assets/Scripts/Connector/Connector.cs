@@ -1,17 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEditor.PlayerSettings;
-
-
-public struct ConnectorInfo
-{
-    public int connectorID;
-    public int linkedConnectorID;
-    public int linkedTargetID;
-    public List<int> ownTargetID;
-}
+using static UnityEngine.GraphicsBuffer;
 
 /*
  * 暫時測試方法 : 
@@ -24,7 +17,6 @@ public struct ConnectorInfo
 public class Connector : MonoBehaviour, IConnector
 {
     public int connectorID { get; set; }    // self unique id
-    public UnityAction<bool> linkSelectAction { get;set; }
 
     bool combineMode;   // is the game in combine mode
     bool selecting;     // is this connector be selecting
@@ -39,7 +31,7 @@ public class Connector : MonoBehaviour, IConnector
     // for record connector linking state
     public UnityEvent<bool> linkedHandler;
     GameObject selectedTargetObj;
-    ITarget linkedTarget;
+    Target linkedTarget;
 
     // some variable for detect hited trigget when the connector itself be selecting
     static ContactFilter2D targetLayerFilter = new ContactFilter2D();
@@ -51,9 +43,9 @@ public class Connector : MonoBehaviour, IConnector
     private void Awake()
     {
         if(selfRigidbody == null || selfCollider == null || selfJoint == null) { Debug.Log("Missing variable in Connector.\n"); }
-
-        // add listener function
-        linkSelectAction += SwitchLinkingSelect;
+        Debug.Assert(selfRigidbody);
+        Debug.Assert(selfCollider);
+        Debug.Assert(selfJoint);
 
         // initialize for filter
         targetLayerFilter.useLayerMask = true;
@@ -61,9 +53,10 @@ public class Connector : MonoBehaviour, IConnector
         targetLayerFilter.SetLayerMask(LayerMask.GetMask("targetLayer"));// this string should be Target's layer
 
 
-
+        int loopindex = 0;
         targetList.ForEach(target => {
             target.SetOwner(this);
+            target.targetID = loopindex++;
         });
         selectedObjDist = float.PositiveInfinity;
         selectedTargetObj = null;
@@ -86,12 +79,10 @@ public class Connector : MonoBehaviour, IConnector
 
     private void OnMouseDown()
     {
-        if(!combineMode) { return; }
         SwitchSelecting(true);
     }
     private void OnMouseUp()
     {
-        if (!combineMode) { return; }
         SwitchSelecting(false);
     }
     private void OnMouseDrag()
@@ -105,38 +96,16 @@ public class Connector : MonoBehaviour, IConnector
     public ConnectorInfo Dump()
     {
         ConnectorInfo info = new ConnectorInfo();
-        info.ownTargetID = new List<int>();
         info.connectorID = connectorID;
-        info.linkedConnectorID = linkedTarget != null ? linkedTarget.ownerIConnector.connectorID : -1;
+        info.linkedConnectorID = linkedTarget != null ? linkedTarget.ownerConnector.connectorID : -1;
         info.linkedTargetID = linkedTarget != null ? linkedTarget.targetID : -1;
-        targetList.ForEach(target =>
-        {
-            info.ownTargetID.Add(target.targetID);
-        });
+
         return info;
     }
 
     public void LoadID(int Cid)
     {
         connectorID = Cid;
-
-        int index = 0;
-        targetList.ForEach(target =>
-        {
-            target.targetID = index++;
-        });
-    }
-
-    void LoadLink(Target lt)
-    {
-        linkedTarget = lt;
-        LinkTarget(this);
-    }
-
-    void LoadLink(Connector oc, int tid)
-    {
-        linkedTarget = oc.targetList.Count >= tid ? oc.targetList[tid] : null ;
-        LinkTarget(this);
     }
 
     // move connector to  position by rigidbody.
@@ -194,15 +163,23 @@ public class Connector : MonoBehaviour, IConnector
     // break the link between two connector.
     void BreakTatgetLink() {
         selfJoint.enabled = false;
-        linkedTarget?.UnLinkTarget();
+
+        Debug.Assert(linkedTarget);
+        Debug.Assert(linkedTarget.ownerConnector);
+
+        linkedTarget?.UnLinkToTarget();
+        linkedTarget?.ownerConnector.linkedHandler.RemoveListener(this.SwitchLinkingSelect);
     }
 
     // linke connector c to other connector which is record(gameobject) by c itself.
     static void LinkObject(Connector c)
     {
         if(c == null) return;
-        if(c.selectedTargetObj == null || c.collisionResult.Count == 0) return;
+        if(c.selectedTargetObj == null) return;
         c.linkedTarget = c.selectedTargetObj.GetComponent<Target>();
+
+        Debug.Assert(c.linkedTarget);
+
         if(c.linkedTarget == null) { return; }
 
         LinkTarget(c);
@@ -211,13 +188,17 @@ public class Connector : MonoBehaviour, IConnector
     // linke connector c to other connector which is record(Target) by c itself.
     static void LinkTarget(Connector c)
     {
+        Debug.Assert(c.linkedTarget);
+        Debug.Assert(c.selfJoint);
+        Debug.Assert(c.linkedTarget.targetPoint);
+
+
+
         if (c.linkedTarget == null) { return; }
 
-        c.linkedTarget.LinkTarget(c);
-        c.selfJoint.connectedBody = c.linkedTarget.ownerIConnector.GetSelfRigidbody();
-
-        Debug.Log(c.linkedTarget.targetPoint.transform.localPosition);
-
+        if(!c.linkedTarget.LinkToTarget(c)) { return; }
+        c.linkedTarget.ownerConnector.linkedHandler.AddListener(c.SwitchLinkingSelect);
+        c.selfJoint.connectedBody = c.linkedTarget.ownerConnector.selfRigidbody;
         c.selfJoint.connectedAnchor = (Vector2)c.linkedTarget.targetPoint.transform.localPosition;
         c.selfJoint.enabled = true;
     }
@@ -225,7 +206,8 @@ public class Connector : MonoBehaviour, IConnector
     // control the connector is selected or not.
     void SwitchSelecting(bool b)
     {
-        if(selecting == b ) return;
+        if (!combineMode) { return; }
+        if (selecting == b ) return;
 
         selecting = b;
         selfRigidbody.gravityScale = b ? 0 : 1;
@@ -248,28 +230,24 @@ public class Connector : MonoBehaviour, IConnector
 
     // interface imp.
 
-    public ITarget GetTargetByIndex(int targetID)
+    public GameObject GetTargetObjByIndex(int targetID)
     {
-        return targetList.Count > targetID ? targetList[targetID] : null;
+        return targetList.Count > targetID ? targetList[targetID].gameObject : null;
     }
 
-    public void ConnectToComponent(IConnector connecterPoint, int targetID)
+    // implement connect connector to oth connector by interface.
+    public void ConnectToComponent(IConnector connectorPoint, int targetID)
     {
-        linkedTarget = connecterPoint.GetTargetByIndex(targetID);
-        LinkTarget(this);
+        selectedTargetObj = connectorPoint.GetTargetObjByIndex(targetID);
+        Debug.Assert(selectedTargetObj);
+        LinkObject(this);
     }
 
-    public void AddLinkSelectListener(UnityAction<bool> actionFunction)
+    // not implement rotation yet
+    public void ConnectToComponent(IConnector connectorPoint, ConnectorInfo info)
     {
-        linkedHandler.AddListener(actionFunction);
-    }
-    public void RemoveLinkSelectListener(UnityAction<bool> uafactionFunction)
-    {
-        linkedHandler.RemoveListener(uafactionFunction);
-    }
-
-    public Rigidbody2D GetSelfRigidbody()
-    {
-        return this.selfRigidbody;
+        selectedTargetObj = connectorPoint.GetTargetObjByIndex(info.linkedTargetID);
+        Debug.Assert(selectedTargetObj);
+        LinkObject(this);
     }
 }

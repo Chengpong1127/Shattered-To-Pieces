@@ -2,6 +2,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+// dump or load info for IConnector
+public struct ConnectorInfo
+{
+    public int connectorID;
+    public int linkedConnectorID;
+    public int linkedTargetID;
+    public Vector2 connectorRotation;
+}
+
+
 // Description: Defines the basic interfaces for the game components.
 public interface IGameComponent
 {
@@ -12,27 +22,13 @@ public interface IGameComponent
     void Connect(IGameComponent otherComponent, int targetID);
 }
 
-public interface ITarget
-{
-    int targetID { get; set; }
-    GameObject targetPoint { get; set; }
-    IConnector ownerIConnector { get; set; }
-    void LinkTarget(IConnector lic);
-    void UnLinkTarget();
-    void ActiveITarget(bool active);
-}
-
 public interface IConnector
 {
     int connectorID { get; set; }
-    UnityAction<bool> linkSelectAction { get; set; }
-    ITarget GetTargetByIndex(int targetID);
-    void ConnectToComponent(IConnector connecterPoint, int targetID);
+    GameObject GetTargetObjByIndex(int targetID);
+    void ConnectToComponent(IConnector connectorPoint, int targetID);
 
-    void AddLinkSelectListener(UnityAction<bool> actionFunction);
-    void RemoveLinkSelectListener(UnityAction<bool> uafactionFunction);
-
-    Rigidbody2D GetSelfRigidbody();
+    void ConnectToComponent(IConnector connectorPoint, ConnectorInfo info);
 }
 
 public interface ICoreComponent
