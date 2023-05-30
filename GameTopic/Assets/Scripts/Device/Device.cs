@@ -12,6 +12,14 @@ public class Device: MonoBehaviour
         createGameComponents(info.GameComponentIDMap);
         connect(info.ConnecterMap);
     }
+
+    public DeviceInfo DumpDevice(){
+        var info = new DeviceInfo();
+        
+
+
+        return info;
+    }
     private void createGameComponents(Dictionary<int, int> componentIDMap){
         foreach(var pair in componentIDMap){
             var component = GameComponentFactory.Instance.CreateComponent(pair.Value, pair.Key).GetComponent<IGameComponent>();
