@@ -4,15 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEditor.PlayerSettings;
-
-
-public struct ConnectorInfo
-{
-    public int connectorID;
-    public int linkedConnectorID;
-    public int linkedTargetID;
-    public Vector2 connectorRotation;
-}
+using static UnityEngine.GraphicsBuffer;
 
 /*
  * 暫時測試方法 : 
@@ -243,9 +235,18 @@ public class Connector : MonoBehaviour, IConnector
         return targetList.Count > targetID ? targetList[targetID].gameObject : null;
     }
 
-    public void ConnectToComponent(IConnector connecterPoint, int targetID)
+    // implement connect connector to oth connector by interface.
+    public void ConnectToComponent(IConnector connectorPoint, int targetID)
     {
-        selectedTargetObj = connecterPoint.GetTargetObjByIndex(targetID);
+        selectedTargetObj = connectorPoint.GetTargetObjByIndex(targetID);
+        Debug.Assert(selectedTargetObj);
+        LinkObject(this);
+    }
+
+    // not implement rotation yet
+    public void ConnectToComponent(IConnector connectorPoint, ConnectorInfo info)
+    {
+        selectedTargetObj = connectorPoint.GetTargetObjByIndex(info.linkedTargetID);
         Debug.Assert(selectedTargetObj);
         LinkObject(this);
     }
