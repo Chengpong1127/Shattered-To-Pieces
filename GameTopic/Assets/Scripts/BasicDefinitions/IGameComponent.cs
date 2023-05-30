@@ -19,7 +19,7 @@ public interface IGameComponent
     int ComponentGUID { get; set; }
     public IConnector Connector { get; }
     public ICoreComponent CoreComponent { get; }
-    void Connect(IGameComponent otherComponent, int targetID);
+    void Connect(IGameComponent otherComponent, ConnectorInfo info);
 }
 
 public interface IConnector

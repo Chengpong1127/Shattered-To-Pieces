@@ -19,13 +19,12 @@ public class GameComponent : MonoBehaviour, IGameComponent
     }
     public int ComponentGUID { get; set; }
 
-    public void Connect(IGameComponent otherComponent, int targetID)
+    public void Connect(IGameComponent otherComponent, ConnectorInfo info)
     {
         Debug.Assert(otherComponent != null);
         Debug.Assert(connector != null);
         Debug.Assert(otherComponent.Connector != null);
-        Debug.Log("Connect Component:" + ComponentID + " to Component:" + otherComponent.ComponentID + " at target:" + targetID);
-        connector.ConnectToComponent(otherComponent.Connector, targetID);
+        connector.ConnectToComponent(otherComponent.Connector, info);
         
     }
 

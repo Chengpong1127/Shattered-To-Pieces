@@ -38,7 +38,7 @@ public class Device: MonoBehaviour
             var otherComponent = ComponentMap[pair.Value.linkedConnectorID];
             Debug.Assert(component != null);
             Debug.Assert(otherComponent != null);
-            component.Connect(otherComponent, pair.Value.linkedTargetID);
+            component.Connect(otherComponent, pair.Value);
         }
     }
 }
