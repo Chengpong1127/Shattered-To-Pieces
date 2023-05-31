@@ -15,7 +15,7 @@ public class GameComponentFactory : MonoBehaviour
     public GameObject ComponentPrefab0;
     public GameObject ComponentPrefab1;
 
-    public GameObject CreateComponent(int componentGUID, int componentID)
+    public GameObject CreateComponent(int componentGUID)
     {
         GameObject component;// = new GameObject();
         if (componentGUID == 0)
@@ -38,7 +38,6 @@ public class GameComponentFactory : MonoBehaviour
             Debug.LogError("GameComponent not found");
             return null;
         }
-        GameComponent.ComponentID = componentID;
         GameComponent.ComponentGUID = componentGUID;
         return component;
     }

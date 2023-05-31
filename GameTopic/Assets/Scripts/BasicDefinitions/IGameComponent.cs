@@ -20,6 +20,7 @@ public interface IGameComponent
     public IConnector Connector { get; }
     public ICoreComponent CoreComponent { get; }
     void Connect(IGameComponent otherComponent, ConnectorInfo info);
+    GameComponentInfo DumpInfo();
 }
 
 public interface IConnector

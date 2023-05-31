@@ -14,17 +14,13 @@ public class DeviceFactory : MonoBehaviour
     }
     private void Start() {
         DeviceInfo info = new DeviceInfo();
-        info.GameComponentIDMap = new Dictionary<int, int>();
-        info.GameComponentIDMap.Add(0, 0);
-        info.GameComponentIDMap.Add(1, 1);
-        info.GameComponentIDMap.Add(2, 1);
-        info.ConnecterMap = new Dictionary<int, ConnectorInfo>();
-        info.ConnecterMap.Add(1, new ConnectorInfo{linkedConnectorID = 0, linkedTargetID = 0});
-        info.ConnecterMap.Add(2, new ConnectorInfo{linkedConnectorID = 0, linkedTargetID = 1});
+        info.GameComponentInfoMap.Add(0, new GameComponentInfo{componentGUID = 0, connectorInfo = new ConnectorInfo()});
+        info.GameComponentInfoMap.Add(1, new GameComponentInfo{componentGUID = 1, connectorInfo = new ConnectorInfo{linkedConnectorID = 0, linkedTargetID = 2}});
+        info.GameComponentInfoMap.Add(2, new GameComponentInfo{componentGUID = 1, connectorInfo = new ConnectorInfo{linkedConnectorID = 0, linkedTargetID = 1}});
         var device = CreateDevice(info);
         device.transform.position = new Vector3(0, 0, 0);
     }
-    public GameObject CreateDevice(IDeviceInfo info)
+    public GameObject CreateDevice(DeviceInfo info)
     {
         var device = new GameObject();
         var deviceComponent = device.AddComponent<Device>();

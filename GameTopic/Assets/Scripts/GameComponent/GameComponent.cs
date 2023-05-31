@@ -28,8 +28,11 @@ public class GameComponent : MonoBehaviour, IGameComponent
         
     }
 
-    public void DumpInfo(){
-
+    public GameComponentInfo DumpInfo(){
+        var info = new GameComponentInfo();
+        info.componentGUID = ComponentGUID;
+        //info.connectorInfo = connector.Dump();
+        return info;
     }
 
     private void Awake()
