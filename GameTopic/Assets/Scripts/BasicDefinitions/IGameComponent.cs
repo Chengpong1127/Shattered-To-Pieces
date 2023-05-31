@@ -32,6 +32,8 @@ public interface IConnector
     ConnectorInfo Dump();
     public event Action<IConnector> OnConnectConnector;
     public event Action<int> OnDisconnectConnector;
+    public event Action<IConnector> OnConnectorIsConnected;
+    public event Action<int> OnConnectorIsDisconnected;
 }
 
 public interface ICoreComponent

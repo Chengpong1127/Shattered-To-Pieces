@@ -42,6 +42,8 @@ public class Connector : MonoBehaviour, IConnector
 
     public event Action<IConnector> OnConnectConnector;
     public event Action<int> OnDisconnectConnector;
+    public event Action<IConnector> OnConnectorIsConnected;
+    public event Action<int> OnConnectorIsDisconnected;
 
     private void Awake()
     {
@@ -171,6 +173,9 @@ public class Connector : MonoBehaviour, IConnector
 
         linkedTarget.UnLinkToTarget();
         linkedTarget.ownerConnector.linkedHandler.RemoveListener(this.SwitchLinkingSelect);
+
+        OnDisconnectConnector?.Invoke(linkedTarget.ownerConnector.connectorID);
+        linkedTarget.ownerConnector.OnConnectorIsDisconnected?.Invoke(connectorID);
     }
 
     // linke connector c to other connector which is record(gameobject) by c itself.
@@ -203,6 +208,9 @@ public class Connector : MonoBehaviour, IConnector
         c.selfJoint.connectedBody = c.linkedTarget.ownerConnector.selfRigidbody;
         c.selfJoint.connectedAnchor = (Vector2)c.linkedTarget.targetPoint.transform.localPosition;
         c.selfJoint.enabled = true;
+
+        c.OnConnectConnector?.Invoke(c.linkedTarget.ownerConnector);
+        c.linkedTarget.ownerConnector.OnConnectorIsConnected?.Invoke(c);
     }
 
     // control the connector is selected or not.
