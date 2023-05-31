@@ -49,9 +49,14 @@ public class TempSaver : MonoBehaviour
         gameobj.transform.position = new Vector3(0, 5, 0);
     }
     private void CleanAllGameComponent(){
+        var Devices = GameObject.FindObjectsOfType<Device>();
+        foreach(var device in Devices){
+            Destroy(device.gameObject);
+        }
         var components = GameObject.FindObjectsOfType<GameComponent>();
         foreach(var component in components){
             Destroy(component.gameObject);
         }
+        
     }
 }

@@ -49,14 +49,27 @@ public class Device: MonoBehaviour
         }
     }
     private void AddNewComponent(IGameComponent component){
+        Debug.Assert(ComponentMap.ContainsKey(component.ComponentID) == false);
         component.Connector.OnConnectConnector += AddConnectedConnector;
+        component.Connector.OnConnectorIsConnected += AddConnectedConnector;
         component.Connector.OnDisconnectConnector += RemoveDisconnectedComponent;
+        component.Connector.OnConnectorIsDisconnected += RemoveDisconnectedComponent;
         ComponentMap.Add(component.ComponentID, component);
+        Debug.Log("Add new component");
+    }
+    private void RemoveBindingComponent(IGameComponent component){
+        component.Connector.OnConnectConnector -= AddConnectedConnector;
+        component.Connector.OnConnectorIsConnected -= AddConnectedConnector;
+        component.Connector.OnDisconnectConnector -= RemoveDisconnectedComponent;
+        component.Connector.OnConnectorIsDisconnected -= RemoveDisconnectedComponent;
     }
     private void RemoveComponent(IGameComponent component){
         component.Connector.OnConnectConnector -= AddConnectedConnector;
+        component.Connector.OnConnectorIsConnected -= AddConnectedConnector;
         component.Connector.OnDisconnectConnector -= RemoveDisconnectedComponent;
+        component.Connector.OnConnectorIsDisconnected -= RemoveDisconnectedComponent;
         ComponentMap.Remove(component.ComponentID);
+        Debug.Log("Remove component");
     }
     private void AddConnectedConnector(IConnector connector){
         Debug.Assert(connector != null);
@@ -85,5 +98,11 @@ public class Device: MonoBehaviour
             newID++;
         }
         return newID;
+    }
+    private void OnDestroy() {
+        foreach(var componentID in ComponentMap.Keys){
+            var component = ComponentMap[componentID];
+            RemoveBindingComponent(component);
+        }
     }
 }
