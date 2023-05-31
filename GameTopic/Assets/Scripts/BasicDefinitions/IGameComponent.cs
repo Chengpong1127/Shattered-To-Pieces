@@ -30,6 +30,7 @@ public interface IConnector
     void ConnectToComponent(IConnector connectorPoint, int targetID);
 
     void ConnectToComponent(IConnector connectorPoint, ConnectorInfo info);
+    ConnectorInfo Dump();
 }
 
 public interface ICoreComponent

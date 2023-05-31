@@ -31,7 +31,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public GameComponentInfo DumpInfo(){
         var info = new GameComponentInfo();
         info.componentGUID = ComponentGUID;
-        //info.connectorInfo = connector.Dump();
+        info.connectorInfo = connector.Dump();
         return info;
     }
 
