@@ -19,6 +19,11 @@ public class DeviceFactory : MonoBehaviour
         info.GameComponentInfoMap.Add(2, new GameComponentInfo{componentGUID = 1, connectorInfo = new ConnectorInfo{linkedConnectorID = 0, linkedTargetID = 1}});
         var device = CreateDevice(info);
         device.transform.position = new Vector3(0, 0, 0);
+
+        var d = device.GetComponent<Device>();
+        var info2 = d.DumpDevice();
+        var device2 = CreateDevice(info2);
+        device2.transform.position = new Vector3(0, 0, 10);
     }
     public GameObject CreateDevice(DeviceInfo info)
     {
