@@ -8,7 +8,7 @@ public struct ConnectorInfo
     public int connectorID;
     public int linkedConnectorID;
     public int linkedTargetID;
-    public Vector2 connectorRotation;
+    public float connectorRotation;
 }
 
 
@@ -27,8 +27,6 @@ public interface IConnector
 {
     int connectorID { get; set; }
     GameObject GetTargetObjByIndex(int targetID);
-    void ConnectToComponent(IConnector connectorPoint, int targetID);
-
     void ConnectToComponent(IConnector connectorPoint, ConnectorInfo info);
     ConnectorInfo Dump();
 }

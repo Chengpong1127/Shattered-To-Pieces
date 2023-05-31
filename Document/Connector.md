@@ -20,3 +20,13 @@ Connector 是用於連接遊戲中的元件，並且會記錄連接到哪一個 
 
 提交自己的 Connector ID、連接到的 Target ID 以及自己所有的 Target ID，Dump 出的格式為 Connector.cs 中定義的 ConnectorInfo。
 
+#### 有關編輯模式與拖曳
+
+- SwitchCombineMode(bool)  
+	用於使 Connector 進入或退出編輯模式。
+- SwitchSelecting(bool)  
+	用於選定或取消選定 Connector。
+- HitTriggerUpdate()  
+	用於更新 Collider 碰撞到的 Target。(應該要進入選取中才使用這個 function)
+- TrackPositionUpdate(vec2)  
+	用於指定元件應該要被移動到甚麼位置，例如玩家選取了一個物件之後使用游標拖曳，那麼將游標的 world position 以參數傳入就能使元件跟隨游標移動。(應該要進入選取中才使用這個 function)

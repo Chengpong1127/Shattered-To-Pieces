@@ -7,11 +7,11 @@ using static UnityEditor.PlayerSettings;
 using static UnityEngine.GraphicsBuffer;
 
 /*
- * ¼È®É´ú¸Õ¤èªk : 
- * «ö Z ¶i¤J½s¿è¼Ò¦¡¡AX °h¥X½s¿è¼Ò¦¡
- * ¦b½s¿è¼Ò¦¡¤¤¨Ï¥Î·Æ¹«¨Ó¿ï¨úª«¥ó¨Ã«ö¦í·Æ¹«©ì¦²¨Ó±N¤¸¥ó³s±µ¨ì¨ä¥L¤¸¥ó¤W
+ * ï¿½È®É´ï¿½ï¿½Õ¤ï¿½k : 
+ * ï¿½ï¿½ Z ï¿½iï¿½Jï¿½sï¿½ï¿½Ò¦ï¿½ï¿½AX ï¿½hï¿½Xï¿½sï¿½ï¿½Ò¦ï¿½
+ * ï¿½bï¿½sï¿½ï¿½Ò¦ï¿½ï¿½ï¿½ï¿½Ï¥Î·Æ¹ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã«ï¿½ï¿½ï¿½ï¿½Æ¹ï¿½ï¿½ì¦²ï¿½Ó±Nï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½ï¿½W
  * 
- * ¦b unity ½s¿è¾¹¤¤»Ý­n¥ý±N rigidbody µ¥unity ¤¸¥ó³s±µ¦Ü¥»¸}¥»§_«h·|³ø¿ù
+ * ï¿½b unity ï¿½sï¿½è¾¹ï¿½ï¿½ï¿½Ý­nï¿½ï¿½ï¿½N rigidbody ï¿½ï¿½unity ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Ü¥ï¿½ï¿½}ï¿½ï¿½ï¿½_ï¿½hï¿½|ï¿½ï¿½ï¿½ï¿½
  * 
  */
 public class Connector : MonoBehaviour, IConnector
@@ -236,12 +236,6 @@ public class Connector : MonoBehaviour, IConnector
     }
 
     // implement connect connector to oth connector by interface.
-    public void ConnectToComponent(IConnector connectorPoint, int targetID)
-    {
-        selectedTargetObj = connectorPoint.GetTargetObjByIndex(targetID);
-        Debug.Assert(selectedTargetObj);
-        LinkObject(this);
-    }
 
     // not implement rotation yet
     public void ConnectToComponent(IConnector connectorPoint, ConnectorInfo info)
