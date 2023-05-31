@@ -1190,7 +1190,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tri
+  m_text: Sel
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1326,7 +1326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ComponentPrefab0: {fileID: 6031731869860076646, guid: 909f3229539c244c4bbafa1b571634cf, type: 3}
-  ComponentPrefab1: {fileID: 3287168864450067047, guid: 6735bc73057ff43aa8ba01aaea63c86a, type: 3}
+  ComponentPrefab1: {fileID: 7843846250203337776, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
 --- !u!114 &1115408708
 MonoBehaviour:
   m_ObjectHideFlags: 0
