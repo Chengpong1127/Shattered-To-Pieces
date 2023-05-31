@@ -164,11 +164,10 @@ public class Connector : MonoBehaviour, IConnector
     void BreakTatgetLink() {
         selfJoint.enabled = false;
 
-        Debug.Assert(linkedTarget);
-        Debug.Assert(linkedTarget.ownerConnector);
+        if(linkedTarget == null) { return; }
 
-        linkedTarget?.UnLinkToTarget();
-        linkedTarget?.ownerConnector.linkedHandler.RemoveListener(this.SwitchLinkingSelect);
+        linkedTarget.UnLinkToTarget();
+        linkedTarget.ownerConnector.linkedHandler.RemoveListener(this.SwitchLinkingSelect);
     }
 
     // linke connector c to other connector which is record(gameobject) by c itself.
