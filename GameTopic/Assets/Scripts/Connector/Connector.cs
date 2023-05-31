@@ -171,6 +171,8 @@ public class Connector : MonoBehaviour, IConnector
 
         linkedTarget.UnLinkToTarget();
         linkedTarget.ownerConnector.linkedHandler.RemoveListener(this.SwitchLinkingSelect);
+
+        OnDisconnectConnector.Invoke(connectorID);
     }
 
     // linke connector c to other connector which is record(gameobject) by c itself.
@@ -203,6 +205,8 @@ public class Connector : MonoBehaviour, IConnector
         c.selfJoint.connectedBody = c.linkedTarget.ownerConnector.selfRigidbody;
         c.selfJoint.connectedAnchor = (Vector2)c.linkedTarget.targetPoint.transform.localPosition;
         c.selfJoint.enabled = true;
+
+        c.OnConnectConnector.Invoke(c.linkedTarget.ownerConnector);
     }
 
     // control the connector is selected or not.
