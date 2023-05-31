@@ -36,6 +36,9 @@ public class Device: MonoBehaviour
     }
     private void connect(Dictionary<int, GameComponentInfo> GameComponentInfoMap){
         foreach(var pair in GameComponentInfoMap){
+            if(pair.Value.connectorInfo.linkedConnectorID == -1 || pair.Value.connectorInfo.linkedTargetID == -1){
+                continue;
+            }
             var componentID = pair.Key;
             var info = pair.Value;
             var component = ComponentMap[componentID];
