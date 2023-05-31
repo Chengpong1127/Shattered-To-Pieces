@@ -31,7 +31,7 @@ public class Device: MonoBehaviour
             Debug.Assert(component != null);
             component.ComponentID = componentID;
             component.ComponentGUID = info.componentGUID;
-            ComponentMap.Add(componentID, component);
+            AddNewComponent(component);
         }
     }
     private void connect(Dictionary<int, GameComponentInfo> GameComponentInfoMap){
@@ -48,9 +48,42 @@ public class Device: MonoBehaviour
             component.Connect(otherComponent, info.connectorInfo);
         }
     }
-    private void AddComponent(IGameComponent component){
-        int newID = ComponentMap.Count;
-        ComponentMap.Add(newID, component);
+    private void AddNewComponent(IGameComponent component){
+        component.Connector.OnConnectConnector += AddConnectedConnector;
+        component.Connector.OnDisconnectConnector += RemoveDisconnectedComponent;
+        ComponentMap.Add(component.ComponentID, component);
+    }
+    private void RemoveComponent(IGameComponent component){
+        component.Connector.OnConnectConnector -= AddConnectedConnector;
+        component.Connector.OnDisconnectConnector -= RemoveDisconnectedComponent;
+        ComponentMap.Remove(component.ComponentID);
+    }
+    private void AddConnectedConnector(IConnector connector){
+        Debug.Assert(connector != null);
+        if(connector is MonoBehaviour){
+            IGameComponent gameComponent = (connector as MonoBehaviour).GetComponentInParent<IGameComponent>();
+            if(gameComponent != null){
+                AddConnectedComponent(gameComponent);
+            }
+            else{
+                Debug.Log("Cannot find IGameComponent");
+            }
+        }
+        
+    }
+    private void AddConnectedComponent(IGameComponent component){
+        int newID = GetNewComponentID();
         component.ComponentID = newID;
+        AddNewComponent(component);
+    }
+    private void RemoveDisconnectedComponent(int componentID){
+        RemoveComponent(ComponentMap[componentID]);
+    }
+    private int GetNewComponentID(){
+        var newID = 0;
+        while(ComponentMap.ContainsKey(newID)){
+            newID++;
+        }
+        return newID;
     }
 }
