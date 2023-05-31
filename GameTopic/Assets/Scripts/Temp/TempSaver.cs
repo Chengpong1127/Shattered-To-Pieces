@@ -41,7 +41,17 @@ public class TempSaver : MonoBehaviour
         infos[currentDeviceID] = DeviceObject.DumpDevice();
         infos[currentDeviceID].printAllInfo();
     }
+    public void Clear(){
+        Debug.Log("Clear");
+        infos[currentDeviceID] = DefaultInfo();
+        load(currentDeviceID);
+    }
     public void load(int id){
+        if(DeviceObject != null){
+            Destroy(DeviceObject.gameObject);
+            Destroy(DeviceObject);
+        }
+            
         CleanAllGameComponent();
         var info = infos[id];
         var gameobj = DeviceFactory.Instance.CreateDevice(info);
