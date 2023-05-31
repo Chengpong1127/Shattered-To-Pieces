@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
 
 // dump or load info for IConnector
 public struct ConnectorInfo
@@ -29,6 +30,8 @@ public interface IConnector
     GameObject GetTargetObjByIndex(int targetID);
     void ConnectToComponent(IConnector connectorPoint, ConnectorInfo info);
     ConnectorInfo Dump();
+    public event Action<IConnector> OnConnectConnector;
+    public event Action<int> OnDisconnectConnector;
 }
 
 public interface ICoreComponent

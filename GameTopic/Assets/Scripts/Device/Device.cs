@@ -48,4 +48,9 @@ public class Device: MonoBehaviour
             component.Connect(otherComponent, info.connectorInfo);
         }
     }
+    private void AddComponent(IGameComponent component){
+        int newID = ComponentMap.Count;
+        ComponentMap.Add(newID, component);
+        component.ComponentID = newID;
+    }
 }
