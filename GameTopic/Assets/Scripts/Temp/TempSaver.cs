@@ -54,9 +54,9 @@ public class TempSaver : MonoBehaviour
             
         CleanAllGameComponent();
         var info = infos[id];
-        var gameobj = DeviceFactory.Instance.CreateDevice(info);
-        DeviceObject = gameobj.GetComponent<Device>();
-        gameobj.transform.position = new Vector3(0, 5, 0);
+        //var gameobj = DeviceFactory.Instance.CreateDevice(info);
+       // DeviceObject = gameobj.GetComponent<Device>();
+       // gameobj.transform.position = new Vector3(0, 5, 0);
     }
     private void CleanAllGameComponent(){
         var Devices = GameObject.FindObjectsOfType<Device>();

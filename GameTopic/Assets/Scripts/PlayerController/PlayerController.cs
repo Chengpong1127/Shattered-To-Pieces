@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 public class PlayerController : IPlayerController
 {
+
     private DeviceInfo deviceInfo;
     private Dictionary<String, int> ComponentCounts;
     private string playerId="1";//這邊先預設id是1
@@ -70,6 +71,7 @@ public class PlayerController : IPlayerController
         }
         return null;
     }
+
 
    
 }
