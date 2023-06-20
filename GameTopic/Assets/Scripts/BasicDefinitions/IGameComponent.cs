@@ -38,7 +38,7 @@ public interface IConnector
 
 public interface ICoreComponent
 {
-    Dictionary<string, Ability> Abilities { get; }
+    Dictionary<string, Ability> AllAbilities { get; }
 }
 
 public struct Ability{
