@@ -62,7 +62,7 @@ public class DeviceFactory : MonoBehaviour
             }
         }
     }
-    public void CreateGameObject(int GameObjectID)
+    public GameObject CreateGameObject(int GameObjectID)
     {
         foreach (var i in Enum.GetValues(typeof(GameObjectType)))
         {
@@ -71,7 +71,7 @@ public class DeviceFactory : MonoBehaviour
                 GameObject prefab = Resources.Load<GameObject>(i.ToString());
                 if (prefab != null)
                 {
-                    Instantiate(prefab);
+                    var obj = Instantiate(prefab);
                     if (prefabCounts.ContainsKey(i.ToString()))
                     {
                         prefabCounts[i.ToString()]++;
@@ -80,6 +80,7 @@ public class DeviceFactory : MonoBehaviour
                     {
                         prefabCounts.Add(i.ToString(), 1);
                     }
+                    return obj;
                 }
                 else
                 {
@@ -88,5 +89,6 @@ public class DeviceFactory : MonoBehaviour
                 prefab.transform.position = new Vector3(0, 5, 0);
             }
         }
+        return null;
     }
 }

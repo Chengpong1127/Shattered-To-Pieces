@@ -15,7 +15,11 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public int ComponentID
     {
         get => _gameComponentID;
-        set => _gameComponentID = value;
+        set {
+            _gameComponentID = value;
+            Debug.Assert(connector != null);
+            connector.connectorID = value;
+        } 
     }
     public int ComponentGUID { get; set; }
 
@@ -39,6 +43,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
     {
         connector = GetComponentInChildren<Connector>();
         Debug.Assert(connector != null, "Connector not found");
+        connector.connectorID = ComponentID;
         coreComponent = null;
     }
 }
