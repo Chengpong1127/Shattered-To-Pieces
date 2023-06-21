@@ -9,7 +9,8 @@ public class DeviceFactory : MonoBehaviour
     public enum GameObjectType
     {
         Square,
-        Tri
+        Tri,
+        Wheel
     }
     public static DeviceFactory Instance { get; private set; }
     private void Awake()
