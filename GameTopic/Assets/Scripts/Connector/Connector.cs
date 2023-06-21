@@ -254,4 +254,9 @@ public class Connector : MonoBehaviour, IConnector
         Debug.Assert(selectedTargetObj);
         LinkObject(this);
     }
+
+    public (IConnector, int) GetAvailableConnector()
+    {
+        throw new NotImplementedException();
+    }
 }

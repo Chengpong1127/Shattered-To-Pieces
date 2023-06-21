@@ -39,10 +39,7 @@ public interface IConnector
     GameObject GetTargetObjByIndex(int targetID);
     void ConnectToComponent(IConnector connectorPoint, ConnectorInfo info);
     ConnectorInfo Dump();
-    public event Action<IConnector> OnConnectConnector;
-    public event Action<int> OnDisconnectConnector;
-    public event Action<IConnector> OnConnectorIsConnected;
-    public event Action<int> OnConnectorIsDisconnected;
+    (IConnector, int) GetAvailableConnector(); // return the first available connector and target ID
 }
 
 public interface ICoreComponent
