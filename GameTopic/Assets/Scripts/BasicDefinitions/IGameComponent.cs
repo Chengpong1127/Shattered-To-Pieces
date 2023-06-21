@@ -10,6 +10,15 @@ public struct ConnectorInfo
     public int linkedConnectorID;
     public int linkedTargetID;
     public float connectorRotation;
+    public bool IsConnected => linkedConnectorID != -1;
+    public static ConnectorInfo NoConnection(int connectorID){
+        return new ConnectorInfo{
+            connectorID = connectorID,
+            linkedConnectorID = -1,
+            linkedTargetID = -1,
+            connectorRotation = 0f
+        };
+    }
 }
 
 

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Device: MonoBehaviour
+public class Device: MonoBehaviour, IDevice
 {
     public Dictionary<int, IGameComponent> ComponentMap = new Dictionary<int, IGameComponent>();
 
 
     public void LoadDevice(DeviceInfo info){
-        createGameComponents(info.GameComponentInfoMap);
-        connect(info.GameComponentInfoMap);
+        createAllComponents(info.GameComponentInfoMap);
+        connectAllComponents(info.GameComponentInfoMap);
     }
 
     public DeviceInfo DumpDevice(){
@@ -19,11 +19,9 @@ public class Device: MonoBehaviour
             var component = ComponentMap[componentID];
             info.GameComponentInfoMap.Add(componentID,component.DumpInfo());
         }
-
-
         return info;
     }
-    private void createGameComponents(Dictionary<int, GameComponentInfo> GameComponentInfoMap){
+    private void createAllComponents(Dictionary<int, GameComponentInfo> GameComponentInfoMap){
         foreach(var pair in GameComponentInfoMap){
             var componentID = pair.Key;
             var info = pair.Value;
@@ -34,20 +32,47 @@ public class Device: MonoBehaviour
             AddNewComponent(component);
         }
     }
-    private void connect(Dictionary<int, GameComponentInfo> GameComponentInfoMap){
+    private void connectAllComponents(Dictionary<int, GameComponentInfo> GameComponentInfoMap){
         foreach(var pair in GameComponentInfoMap){
-            if(pair.Value.connectorInfo.linkedConnectorID == -1 || pair.Value.connectorInfo.linkedTargetID == -1){
+            if(pair.Value.connectorInfo.IsConnected == false){
                 continue;
             }
             var componentID = pair.Key;
             var info = pair.Value;
             var component = ComponentMap[componentID];
-            var otherComponent = ComponentMap[info.connectorInfo.linkedConnectorID];
+            var linkedComponent = ComponentMap[info.connectorInfo.linkedConnectorID];
             Debug.Assert(component != null);
-            Debug.Assert(otherComponent != null);
-            component.Connect(otherComponent, info.connectorInfo);
+            Debug.Assert(linkedComponent != null);
+            component.Connect(linkedComponent, info.connectorInfo);
         }
     }
+    public void ConnectNewComponent(IGameComponent newComponent, ConnectorInfo info){
+        Debug.Assert(newComponent != null);
+        Debug.Assert(info.connectorID == newComponent.ComponentID);
+        var ConnectedComponent = ComponentMap[info.linkedConnectorID];
+        newComponent.Connect(ConnectedComponent, info);
+    }
+    public void ConnectNewComponent(IGameComponent newComponent){
+        Debug.Assert(newComponent != null);
+        newComponent.ComponentID = GetNewComponentID();
+    }
+    public void RemoveConnectedComponent(IGameComponent component){
+        Debug.Assert(component != null);
+        
+    }
+    public void RemoveConnectedComponent(int componentID){
+        Debug.Assert(ComponentMap.ContainsKey(componentID));
+        
+    }
+    public void ChangeConnectedInfo(IGameComponent component, ConnectorInfo info){
+        Debug.Assert(component != null);
+        Debug.Assert(info.connectorID == component.ComponentID);
+        var ConnectedComponent = ComponentMap[info.linkedConnectorID];
+  
+    }
+
+
+
     private void AddNewComponent(IGameComponent component){
         Debug.Assert(ComponentMap.ContainsKey(component.ComponentID) == false);
         component.Connector.OnConnectConnector += AddConnectedConnector;
@@ -104,5 +129,30 @@ public class Device: MonoBehaviour
             var component = ComponentMap[componentID];
             RemoveBindingComponent(component);
         }
+    }
+
+    public void AddComponent(IGameComponent newComponent)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void AddComponent(IGameComponent newComponent, ConnectorInfo info)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SetConnection(ConnectorInfo info)
+    {
+        throw new NotImplementedException();
+    }
+
+    void IDevice.RemoveComponent(IGameComponent component)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RemoveComponent(int componentID)
+    {
+        throw new NotImplementedException();
     }
 }
