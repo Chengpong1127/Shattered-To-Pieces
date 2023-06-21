@@ -38,11 +38,4 @@ public class ConnectTests
         Assert.AreEqual(c2_info.connectorInfo.linkedTargetID, 1);
         Assert.AreEqual(c2_info.connectorInfo.connectorRotation, 0f);
     }
-
-    [UnityTest]
-    public IEnumerator ConnectTestsWithEnumeratorPasses()
-    {
-        
-        yield return null;
-    }
 }
