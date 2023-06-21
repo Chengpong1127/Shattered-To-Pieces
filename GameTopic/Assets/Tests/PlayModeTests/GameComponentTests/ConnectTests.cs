@@ -12,9 +12,9 @@ public class ConnectTests
     {
         var componentFactory = new GameObject().AddComponent<DeviceFactory>();
         var component = componentFactory.CreateGameObject(0).GetComponent<IGameComponent>();
-        component.ComponentID = 5;
+        component.LocalComponentID = 5;
 
-        Assert.AreEqual(component.ComponentID, 5);
+        Assert.AreEqual(component.LocalComponentID, 5);
         Assert.AreEqual(component.Connector.connectorID, 5);
     }
 
@@ -25,8 +25,8 @@ public class ConnectTests
         var componentFactory = new GameObject().AddComponent<DeviceFactory>();
         var c1 = componentFactory.CreateGameObject(0).GetComponent<IGameComponent>();
         var c2 = componentFactory.CreateGameObject(0).GetComponent<IGameComponent>();
-        c1.ComponentID = 0;
-        c2.ComponentID = 1;
+        c1.LocalComponentID = 0;
+        c2.LocalComponentID = 1;
         var info = new ConnectorInfo{ connectorID = 1, linkedConnectorID = 0, linkedTargetID = 1, connectorRotation = 0f };
         c2.Connect(c1, info);
 

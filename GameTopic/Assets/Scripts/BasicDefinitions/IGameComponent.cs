@@ -25,7 +25,8 @@ public struct ConnectorInfo
 // Description: Defines the basic interfaces for the game components.
 public interface IGameComponent
 {
-    int ComponentID { get; set;}
+    bool IsInDevice { get; }
+    int? LocalComponentID { get; set;}
     int ComponentGUID { get; set; }
     public IConnector Connector { get; }
     public ICoreComponent CoreComponent { get; }
