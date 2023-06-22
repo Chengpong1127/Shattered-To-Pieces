@@ -73,7 +73,7 @@ public class Connector : MonoBehaviour, IConnector
         tinfo.connectorID = this.connectorID;
         tinfo.linkedConnectorID = ic.connectorID;
         tinfo.linkedTargetID = tid;
-        tinfo.connectorRotation = 0f;
+        tinfo.connectorRotation = this.gameObject.transform.rotation.eulerAngles.z;
 
         ConnectToComponent(ic, tinfo);
     }
@@ -189,7 +189,7 @@ public class Connector : MonoBehaviour, IConnector
         res.connectorID = this.connectorID;
         res.linkedConnectorID = linkedTarget == null ? -1 : linkedTarget.ownerConnector.connectorID;
         res.linkedTargetID = linkedTarget == null ? -1 : linkedTarget.targetID;
-        res.connectorRotation = Quaternion.Angle(this.gameObject.transform.rotation, Quaternion.identity);
+        res.connectorRotation = this.gameObject.transform.rotation.eulerAngles.z;
         return res;
     }
 }
