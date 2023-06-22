@@ -20,20 +20,10 @@ public class Target : MonoBehaviour
     private void Awake()
     {
         aimerConnector = null;
+        aimerRBonnector = null; // for RBconnector
         targetPoint = gameObject;
 
         targetPoint.SetActive(false);
-    }
-
-
-    int Dump()
-    {
-        return targetID;
-    }
-
-    void Load(int tid)
-    {
-        targetID = tid;
     }
 
 
@@ -48,11 +38,6 @@ public class Target : MonoBehaviour
         this.gameObject.SetActive(b);
     }
 
-    // interface imp.
-    public void ActiveITarget(bool active)
-    {
-        this.SwitchActive(active);
-    }
     public bool LinkToTarget(Connector lic)
     {
         if(lic == null) { return false; }
@@ -73,20 +58,25 @@ public class Target : MonoBehaviour
 
     // for RBconnector
     public RBconnector ownerRBconnector { get; set; }
-    RBconnector aimerRBonnector { get; set; }
+    public RBconnector aimerRBonnector { get; set; }
 
     public bool RB_LinkToTarget(RBconnector lic) {
         if (lic == null) { return false; }
-        if (aimerConnector != null) { return false; }
+        if (aimerRBonnector != null) { return false; }
         RB_UnLinkToTarget();
-        SwitchActive(false);
+        RB_SwitchActive(false);
         aimerRBonnector = lic;
 
         return true;
     }
     public void RB_UnLinkToTarget() {
-        if (aimerConnector == null) { return; }
+        if (aimerRBonnector == null) { return; }
         aimerRBonnector = null;
-        SwitchActive(true);
+        RB_SwitchActive(true);
+    }
+
+    public void  RB_SwitchActive(bool b) {
+        if (aimerRBonnector != null) { return; }
+        this.gameObject.SetActive(b);
     }
 }
