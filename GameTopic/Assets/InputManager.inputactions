@@ -1,0 +1,46 @@
+{
+    "name": "InputManager",
+    "maps": [
+        {
+            "name": "menu",
+            "id": "12770697-a6a7-41a0-9ea7-56be72fce1b0",
+            "actions": [
+                {
+                    "name": "Drag",
+                    "type": "Button",
+                    "id": "e7ebee42-b76f-4ed3-81ec-f7e1bcfba742",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.1)",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "21fac6ed-286e-44e6-851a-075fccdbc4b3",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse",
+                    "action": "Drag",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Mouse",
+            "bindingGroup": "Mouse",
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
