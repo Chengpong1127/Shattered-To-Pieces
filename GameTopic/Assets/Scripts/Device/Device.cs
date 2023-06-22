@@ -27,7 +27,7 @@ public class Device: MonoBehaviour, IDevice
             var info = pair.Value;
             var component = GameComponentFactory.Instance.CreateComponent(info.componentGUID).GetComponent<IGameComponent>();
             Debug.Assert(component != null);
-            component.ComponentID = componentID;
+            component.LocalComponentID = componentID;
             component.ComponentGUID = info.componentGUID;
             //AddNewComponent(component);
         }
@@ -48,13 +48,13 @@ public class Device: MonoBehaviour, IDevice
     }
     public void ConnectNewComponent(IGameComponent newComponent, ConnectorInfo info){
         Debug.Assert(newComponent != null);
-        Debug.Assert(info.connectorID == newComponent.ComponentID);
+        Debug.Assert(info.connectorID == newComponent.LocalComponentID);
         var ConnectedComponent = ComponentMap[info.linkedConnectorID];
         newComponent.Connect(ConnectedComponent, info);
     }
     public void ConnectNewComponent(IGameComponent newComponent){
         Debug.Assert(newComponent != null);
-        newComponent.ComponentID = GetNewComponentID();
+        newComponent.LocalComponentID = GetNewComponentID();
     }
     public void RemoveConnectedComponent(IGameComponent component){
         Debug.Assert(component != null);
@@ -66,7 +66,7 @@ public class Device: MonoBehaviour, IDevice
     }
     public void ChangeConnectedInfo(IGameComponent component, ConnectorInfo info){
         Debug.Assert(component != null);
-        Debug.Assert(info.connectorID == component.ComponentID);
+        Debug.Assert(info.connectorID == component.LocalComponentID);
         var ConnectedComponent = ComponentMap[info.linkedConnectorID];
   
     }
@@ -86,7 +86,7 @@ public class Device: MonoBehaviour, IDevice
     }
     private void AddConnectedComponent(IGameComponent component){
         int newID = GetNewComponentID();
-        component.ComponentID = newID;
+        component.LocalComponentID = newID;
         //AddNewComponent(component);
     }
     private void RemoveDisconnectedComponent(int componentID){

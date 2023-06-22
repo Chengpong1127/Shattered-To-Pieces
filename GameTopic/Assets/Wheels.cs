@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Wheels : MonoBehaviour, IGameComponent, ICoreComponent
+public class Wheels : MonoBehaviour, ICoreComponent
 {
-    public int ComponentID { get; set; }
+    public int LocalComponentID { get; set; }
     public int ComponentGUID { get; set; }
     public IConnector Connector { get; }
 
@@ -44,16 +44,6 @@ public class Wheels : MonoBehaviour, IGameComponent, ICoreComponent
     private void TurnLeft()
     {
         rb.AddForce(Vector2.left * MoveForce);
-    }
-
-    public void Connect(IGameComponent otherComponent, ConnectorInfo info)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public GameComponentInfo DumpInfo()
-    {
-        throw new System.NotImplementedException();
     }
 }
 

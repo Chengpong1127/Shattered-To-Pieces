@@ -4,21 +4,24 @@ using UnityEngine;
 
 public class GameComponent : MonoBehaviour, IGameComponent
 {
-    private int _gameComponentID;
+    private int? _gameComponentID;
     private IConnector connector;
     private ICoreComponent coreComponent;
 
     public IConnector Connector => connector;
     public ICoreComponent CoreComponent => coreComponent;
+    public bool IsInDevice => LocalComponentID != null;
 
-
-    public int ComponentID
+    public int? LocalComponentID
     {
         get => _gameComponentID;
         set {
             _gameComponentID = value;
             Debug.Assert(connector != null);
-            connector.connectorID = value;
+            if (value != null){
+                connector.connectorID = (int)value;
+            }
+            
         } 
     }
     public int ComponentGUID { get; set; }
@@ -43,7 +46,9 @@ public class GameComponent : MonoBehaviour, IGameComponent
     {
         connector = GetComponentInChildren<Connector>();
         Debug.Assert(connector != null, "Connector not found");
-        connector.connectorID = ComponentID;
+        if (LocalComponentID != null){
+            connector.connectorID = (int)LocalComponentID;
+        }
         coreComponent = null;
     }
 }
