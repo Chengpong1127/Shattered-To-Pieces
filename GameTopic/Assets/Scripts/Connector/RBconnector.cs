@@ -23,16 +23,18 @@ public class RBconnector : MonoBehaviour, IConnector
     [SerializeField] AnchoredJoint2D selfJoint;
     [SerializeField] List<Target> targetList;
 
+    Target linkedTarget = null;
+
 
     //==================================functions==================================//
 
 
     private void Awake()
     {
-        
     }
 
-    void SwitchInitial(bool b) { }
+
+    // State chang function
     void SwitchCombine(bool b) {
         if(!b) { SwitchSelecting(false); }
         currState = ConnectorState.COMBINE;
@@ -65,6 +67,35 @@ public class RBconnector : MonoBehaviour, IConnector
         });
     }
 
+    // Target interact
+    void LinkToConnector(RBconnector connector, ConnectorInfo info) {
+        if (connector.connectorID != info.connectorID ||
+             this.connectorID != info.linkedConnectorID ||
+             !(connector.targetList.Count > info.linkedTargetID) ||
+             !connector.targetList[info.linkedTargetID].RB_LinkToTarget(this)
+            ) { return; }
+
+        this.transform.rotation = Quaternion.Euler(0, 0, info.connectorRotation);
+
+        connector.targetList[info.linkedTargetID].ownerRBconnector.attachHandler.AddListener(this.SwitchAttach);
+        this.selfJoint.connectedBody = connector.selfRigidbody;
+        this.selfJoint.connectedAnchor = (Vector2)connector.targetList[info.linkedTargetID].targetPoint.transform.localPosition;
+        this.selfJoint.enabled = true;
+    }
+    void UnlinkToConnector() {
+        this.selfJoint.enabled = false;
+
+        if (linkedTarget == null) { return; }
+         
+        linkedTarget.RB_UnLinkToTarget();
+        linkedTarget.ownerRBconnector.attachHandler.RemoveListener(this.SwitchAttach);
+        linkedTarget = null;
+    }
+    Target DetectTarget() {
+        return new Target();
+    }
+
+
     // implement interface
 
     public GameObject GetTargetObjByIndex(int targetID) { return gameObject; }
@@ -72,6 +103,10 @@ public class RBconnector : MonoBehaviour, IConnector
     public (IConnector, int) GetAvailableConnector() { return (this, 0); }
     public ConnectorInfo Dump() {
         var res = new ConnectorInfo();
+        res.connectorID = this.connectorID;
+        res.linkedConnectorID = linkedTarget == null ? -1 : linkedTarget.ownerRBconnector.connectorID;
+        res.linkedTargetID = linkedTarget == null ? -1 : linkedTarget.targetID;
+        res.connectorRotation = Quaternion.Angle(this.gameObject.transform.rotation, Quaternion.identity);
         return res;
     }
 }

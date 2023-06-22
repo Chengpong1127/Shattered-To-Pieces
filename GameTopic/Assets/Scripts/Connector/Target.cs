@@ -10,6 +10,7 @@ using UnityEngine;
  */
 public class Target : MonoBehaviour
 {
+
     public int targetID { get; set; }
     public GameObject targetPoint { get; set; }
     public Connector ownerConnector { get; set; }
@@ -66,6 +67,26 @@ public class Target : MonoBehaviour
     {
         if (aimerConnector == null) { return; }
         aimerConnector = null;
+        SwitchActive(true);
+    }
+
+
+    // for RBconnector
+    public RBconnector ownerRBconnector { get; set; }
+    RBconnector aimerRBonnector { get; set; }
+
+    public bool RB_LinkToTarget(RBconnector lic) {
+        if (lic == null) { return false; }
+        if (aimerConnector != null) { return false; }
+        RB_UnLinkToTarget();
+        SwitchActive(false);
+        aimerRBonnector = lic;
+
+        return true;
+    }
+    public void RB_UnLinkToTarget() {
+        if (aimerConnector == null) { return; }
+        aimerRBonnector = null;
         SwitchActive(true);
     }
 }
