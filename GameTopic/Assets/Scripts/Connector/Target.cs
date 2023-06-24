@@ -10,12 +10,11 @@ using UnityEngine;
  */
 public class Target : MonoBehaviour
 {
-
-    public int targetID { get; set; }
+    public int targetID { get; set; } = -1;
     public GameObject targetPoint { get; set; }
-    public Connector ownerConnector { get; set; }
+    public Connector ownerConnector { get; set; } = null;
 
-    Connector aimerConnector { get; set; }
+    Connector aimerConnector { get; set; } = null;
 
     private void Awake()
     {

@@ -5,13 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum ConnectorState
-{
-    INITIAL,
-    COMBINE,
-    SELECT,
-    ATTACH
-}
+
 
 public class RBconnector : MonoBehaviour, IConnector
 {

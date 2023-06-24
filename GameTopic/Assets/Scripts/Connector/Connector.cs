@@ -1,15 +1,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.GraphicsBuffer;
 
+public enum ConnectorState {
+    INITIAL,
+    COMBINE,
+    SELECT,
+    ATTACH
+}
 
 public class Connector : MonoBehaviour, IConnector
 {
-    public int connectorID { get; set; }
+    public int connectorID { get; set; } = -1;
     public ConnectorState currState { get; set; } = ConnectorState.INITIAL;
     UnityEvent<bool> attachHandler = new UnityEvent<bool>();
     Vector2 movePosition;
@@ -51,7 +58,7 @@ public class Connector : MonoBehaviour, IConnector
         });
     }
 
-
+    // use for demo
     private void Update() {
         if (Input.GetKey(KeyCode.Z)) {
             SwitchCombine(true);
@@ -60,7 +67,6 @@ public class Connector : MonoBehaviour, IConnector
             SwitchCombine(false);
         }
     }
-
     private void OnMouseDown() {
         SwitchSelecting(true);
     }
@@ -77,7 +83,6 @@ public class Connector : MonoBehaviour, IConnector
 
         ConnectToComponent(ic, tinfo);
     }
-
     private void OnMouseDrag() {
         if (!(currState == ConnectorState.SELECT)) { return; }
         DetectTarget();
@@ -126,8 +131,8 @@ public class Connector : MonoBehaviour, IConnector
     // Target interact
     void LinkToConnector(Connector connector, ConnectorInfo info) {
         if (connector == null ||
-            connector.connectorID != info.connectorID ||
-            this.connectorID != info.linkedConnectorID ||
+            this.connectorID != info.connectorID ||
+            connector.connectorID != info.linkedConnectorID ||
             !(connector.targetList.Count > info.linkedTargetID) ||
             !connector.targetList[info.linkedTargetID].LinkToTarget(this)
             ) { return; }
@@ -165,14 +170,37 @@ public class Connector : MonoBehaviour, IConnector
         detectedTarget = selectedTargetObj?.GetComponent<Target>();
     }
 
-    void TrackPositionUpdate(Vector2 pos) {
+    // connector cintrol
+    public void TrackPositionUpdate(Vector2 pos) {
         selfRigidbody.MovePosition(pos);
     }
+    
+
+    // TestProgram functitons
+    public void AssignTargetList(List<Target> tl) {
+        targetList = tl;
+        int tid = 0;
+        targetList.ForEach(t => {
+            t.targetID = tid++;
+            t.SetOwner(this);
+        });
+        return;
+    }
+    public List<Target> GetTargetList() {  return targetList; }
+
+    public void AssignDetectedTarget(Target t) {
+        detectedTarget = t;
+    }
+
+    public void AssignLinkedTarget(Target t) {
+        linkedTarget = t;
+    }
+
 
     // implement interface
 
     public GameObject GetTargetObjByIndex(int targetID) {
-        return this.targetList.Count > targetID ? this.targetList[targetID].gameObject : null;
+        return (targetID >= 0 && this.targetList.Count > targetID) ? this.targetList[targetID].gameObject : null;
     }
     public void ConnectToComponent(IConnector connectorPoint, ConnectorInfo info) {
         detectedTarget = connectorPoint?.GetTargetObjByIndex(info.linkedTargetID)?.gameObject.GetComponent<Target>();
