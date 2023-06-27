@@ -96,6 +96,6 @@ public class DeviceFactory : MonoBehaviour, IGameComponentFactory
     }
     public void onClickCreate(int GameObjectID)
     {
-        CreateGameObject(GameObjectID);
+        CreateGameComponentObject(GameObjectID);
     }
 }
