@@ -5,8 +5,8 @@ using System;
 
 public class Device: MonoBehaviour, IDevice
 {
-    public Dictionary<int, IGameComponent> ComponentMap = new Dictionary<int, IGameComponent>();
-
+    public Dictionary<int, IGameComponent> ComponentMap {get; private set; } = new Dictionary<int, IGameComponent>();
+    public IGameComponentFactory GameComponentFactory;
 
     public void LoadDevice(DeviceInfo info){
         createAllComponents(info.GameComponentInfoMap);
@@ -22,10 +22,11 @@ public class Device: MonoBehaviour, IDevice
         return info;
     }
     private void createAllComponents(Dictionary<int, GameComponentInfo> GameComponentInfoMap){
+        Debug.Assert(GameComponentFactory != null, "GameComponentFactory is null");
         foreach(var pair in GameComponentInfoMap){
             var componentID = pair.Key;
             var info = pair.Value;
-            var component = GameComponentFactory.Instance.CreateComponent(info.componentGUID).GetComponent<IGameComponent>();
+            var component = GameComponentFactory.CreateGameComponentObject(info.componentGUID);
             Debug.Assert(component != null);
             component.LocalComponentID = componentID;
             component.ComponentGUID = info.componentGUID;
@@ -71,13 +72,20 @@ public class Device: MonoBehaviour, IDevice
     /// <param name="info"></param>
     public void SetConnection(ConnectorInfo info)
     {
-        Debug.Assert(ComponentMap.ContainsKey((int)info.connectorID));
-        Debug.Assert(ComponentMap.ContainsKey((int)info.linkedConnectorID));
-        var component = ComponentMap[(int)info.connectorID];
-        var linkedComponent = ComponentMap[(int)info.linkedConnectorID];
-        Debug.Assert(component != null);
-        Debug.Assert(linkedComponent != null);
-        component.Connect(linkedComponent, info);
+        if(info.IsConnected == false){
+            Debug.Assert(ComponentMap.ContainsKey((int)info.connectorID));
+            var _component = ComponentMap[(int)info.connectorID];
+            Debug.Assert(_component != null);
+            _component.Disconnect();
+        }else{
+            Debug.Assert(ComponentMap.ContainsKey((int)info.connectorID));
+            Debug.Assert(ComponentMap.ContainsKey((int)info.linkedConnectorID));
+            var component = ComponentMap[(int)info.connectorID];
+            var linkedComponent = ComponentMap[(int)info.linkedConnectorID];
+            Debug.Assert(component != null);
+            Debug.Assert(linkedComponent != null);
+            component.Connect(linkedComponent, info);
+        }
     }
     /// <summary>
     /// Remove a component from the device. The component need to be NoConnection before removing.

@@ -11,7 +11,7 @@ public class ConnectTests
     public void SetComponentIDTest()
     {
         var componentFactory = new GameObject().AddComponent<DeviceFactory>();
-        var component = componentFactory.CreateGameObject(0).GetComponent<IGameComponent>();
+        var component = componentFactory.CreateGameComponentObject(0);
         component.LocalComponentID = 5;
 
         Assert.AreEqual(component.LocalComponentID, 5);
@@ -23,8 +23,8 @@ public class ConnectTests
     public void ConnectSingleComponentTest()
     {
         var componentFactory = new GameObject().AddComponent<DeviceFactory>();
-        var c1 = componentFactory.CreateGameObject(0).GetComponent<IGameComponent>();
-        var c2 = componentFactory.CreateGameObject(0).GetComponent<IGameComponent>();
+        var c1 = componentFactory.CreateGameComponentObject(0);
+        var c2 = componentFactory.CreateGameComponentObject(0);
         c1.LocalComponentID = 0;
         c2.LocalComponentID = 1;
         var info = new ConnectorInfo{ connectorID = 1, linkedConnectorID = 0, linkedTargetID = 1, connectorRotation = 0f };

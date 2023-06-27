@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-public class DeviceFactory : MonoBehaviour
+public class DeviceFactory : MonoBehaviour, IGameComponentFactory
 {
     private PlayerController playerController;
     private Dictionary<String, int> prefabCounts;
@@ -63,7 +63,7 @@ public class DeviceFactory : MonoBehaviour
             }
         }
     }
-    public GameObject CreateGameObject(int GameObjectID)
+    public IGameComponent CreateGameComponentObject(int GameObjectID)
     {
         foreach (var i in Enum.GetValues(typeof(GameObjectType)))
         {
@@ -81,7 +81,7 @@ public class DeviceFactory : MonoBehaviour
                     {
                         prefabCounts.Add(i.ToString(), 1);
                     }
-                    return obj;
+                    return obj.GetComponent<IGameComponent>();
                 }
                 else
                 {
