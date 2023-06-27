@@ -225,17 +225,17 @@ public class Connector : MonoBehaviour, IConnector
     {
         //if (linkedTarget == null)
         //{
-        //    // ¨S¦³³s±µªº¥Ø¼Ð¡Aª½±µ°h¥X¨ç¦¡
+        //    // ï¿½Sï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½Ø¼Ð¡Aï¿½ï¿½ï¿½ï¿½ï¿½hï¿½Xï¿½ç¦¡
         //    return;
         //}
 
-        //// Ãö³¬Áp±µ
+        //// ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½ï¿½
         //selfJoint.enabled = false;
 
-        //// ±q¤w³s±µªº¥Ø¼Ð¤¤¸Ñ°£³s±µ
+        //// ï¿½qï¿½wï¿½sï¿½ï¿½ï¿½ï¿½ï¿½Ø¼Ð¤ï¿½ï¿½Ñ°ï¿½ï¿½sï¿½ï¿½
         //linkedTarget.UnLinkToTarget();
 
-        //// ²M°£¤Þ¥Î
+        //// ï¿½Mï¿½ï¿½ï¿½Þ¥ï¿½
         //linkedTarget = null;
     }
 }

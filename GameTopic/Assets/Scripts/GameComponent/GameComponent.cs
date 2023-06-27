@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameComponent : MonoBehaviour, IGameComponent
 {
@@ -11,7 +12,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public IConnector Connector => connector;
     public ICoreComponent CoreComponent => coreComponent;
     public bool IsInDevice => LocalComponentID != null;
-
+    public Guid? GlobalComponentID { get; set; }
     public int? LocalComponentID
     {
         get => _gameComponentID;
