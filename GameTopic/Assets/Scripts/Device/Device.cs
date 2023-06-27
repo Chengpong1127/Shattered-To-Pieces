@@ -63,7 +63,7 @@ public class Device: MonoBehaviour, IDevice
         }
         Debug.Assert(ComponentMap.ContainsKey((int)newComponent.LocalComponentID) == false, "Component ID already exists");
         ComponentMap.Add((int)newComponent.LocalComponentID, newComponent);
-        //SetConnection(ConnectorInfo.NoConnection((int)newComponent.LocalComponentID));
+        SetConnection(ConnectorInfo.NoConnection((int)newComponent.LocalComponentID));
     }
     /// <summary>
     /// Set the connection for a connector.
