@@ -108,26 +108,36 @@ public class Device: MonoBehaviour, IDevice
 
     public void AddComponent(IGameComponent newComponent)
     {
-        throw new NotImplementedException();
-    }
-
-    public void AddComponent(IGameComponent newComponent, ConnectorInfo info)
-    {
-        throw new NotImplementedException();
+        if(newComponent.LocalComponentID != null){
+            Debug.LogWarning("Component already has ID");
+        }
+        newComponent.LocalComponentID = GetNewComponentID();
+        ComponentMap.Add((int)newComponent.LocalComponentID, newComponent);
+        SetConnection(ConnectorInfo.NoConnection((int)newComponent.LocalComponentID));
     }
 
     public void SetConnection(ConnectorInfo info)
     {
-        throw new NotImplementedException();
+        Debug.Assert(ComponentMap.ContainsKey((int)info.connectorID));
+        Debug.Assert(ComponentMap.ContainsKey((int)info.linkedConnectorID));
+        var component = ComponentMap[(int)info.connectorID];
+        var linkedComponent = ComponentMap[(int)info.linkedConnectorID];
+        Debug.Assert(component != null);
+        Debug.Assert(linkedComponent != null);
+        component.Connect(linkedComponent, info);
     }
 
-    void IDevice.RemoveComponent(IGameComponent component)
+    public void RemoveComponent(IGameComponent component)
     {
-        throw new NotImplementedException();
+        Debug.Assert(component != null);
+        Debug.Assert(ComponentMap.ContainsKey((int)component.LocalComponentID));
+        ComponentMap.Remove((int)component.LocalComponentID);
+        component.LocalComponentID = null;
     }
 
     public void RemoveComponent(int componentID)
     {
-        throw new NotImplementedException();
+        Debug.Assert(ComponentMap.ContainsKey(componentID));
+        RemoveComponent(ComponentMap[componentID]);
     }
 }

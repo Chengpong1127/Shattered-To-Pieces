@@ -220,4 +220,9 @@ public class Connector : MonoBehaviour, IConnector
         res.connectorRotation = this.gameObject.transform.rotation.eulerAngles.z;
         return res;
     }
+
+    public void Disconnect()
+    {
+        throw new NotImplementedException();
+    }
 }

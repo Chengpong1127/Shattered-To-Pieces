@@ -192,4 +192,9 @@ public class RBconnector : MonoBehaviour, IConnector
         res.connectorRotation = Quaternion.Angle(this.gameObject.transform.rotation, Quaternion.identity);
         return res;
     }
+
+    public void Disconnect()
+    {
+        throw new NotImplementedException();
+    }
 }

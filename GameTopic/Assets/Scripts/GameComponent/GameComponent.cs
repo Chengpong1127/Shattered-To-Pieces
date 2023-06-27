@@ -35,6 +35,11 @@ public class GameComponent : MonoBehaviour, IGameComponent
         
     }
 
+    public void Disconnect()
+    {
+        
+    }
+
     public GameComponentInfo DumpInfo(){
         var info = new GameComponentInfo();
         info.componentGUID = ComponentGUID;
