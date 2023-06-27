@@ -60,16 +60,6 @@ public class Device: MonoBehaviour, IDevice
         Debug.Assert(component != null);
         
     }
-    public void RemoveConnectedComponent(int componentID){
-        Debug.Assert(ComponentMap.ContainsKey(componentID));
-        
-    }
-    public void ChangeConnectedInfo(IGameComponent component, ConnectorInfo info){
-        Debug.Assert(component != null);
-        Debug.Assert(info.connectorID == component.LocalComponentID);
-        var ConnectedComponent = ComponentMap[info.linkedConnectorID];
-  
-    }
 
     private void AddConnectedConnector(IConnector connector){
         Debug.Assert(connector != null);

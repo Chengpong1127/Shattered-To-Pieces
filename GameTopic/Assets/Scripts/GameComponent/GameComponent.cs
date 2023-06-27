@@ -37,7 +37,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     public void Disconnect()
     {
-        
+        connector.Disconnect();
     }
 
     public GameComponentInfo DumpInfo(){
