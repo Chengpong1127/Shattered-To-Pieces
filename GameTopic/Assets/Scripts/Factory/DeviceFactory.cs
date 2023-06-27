@@ -94,4 +94,8 @@ public class DeviceFactory : MonoBehaviour, IGameComponentFactory
         }
         return null;
     }
+    public void onClickCreate(int GameObjectID)
+    {
+        CreateGameObject(GameObjectID);
+    }
 }

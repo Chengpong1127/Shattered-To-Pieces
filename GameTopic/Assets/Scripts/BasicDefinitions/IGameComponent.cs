@@ -40,6 +40,8 @@ public interface IConnector
     int connectorID { get; set; }
     GameObject GetTargetObjByIndex(int targetID);
     void ConnectToComponent(IConnector connectorPoint, ConnectorInfo info);
+
+    void UnlinkToConnector();
     void Disconnect();
     ConnectorInfo Dump();
     (IConnector, int) GetAvailableConnector(); // return the first available connector and target ID
