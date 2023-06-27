@@ -134,12 +134,12 @@ public class Connector : MonoBehaviour, IConnector
             this.connectorID != info.connectorID ||
             connector.connectorID != info.linkedConnectorID ||
             !(connector.targetList.Count > info.linkedTargetID) ||
-            !connector.targetList[info.linkedTargetID].LinkToTarget(this)
+            !connector.targetList[(int)info.linkedTargetID].LinkToTarget(this)
             ) { return; }
 
         this.transform.rotation = Quaternion.Euler(0, 0, info.connectorRotation);
 
-        linkedTarget = connector.targetList[info.linkedTargetID];
+        linkedTarget = connector.targetList[(int)info.linkedTargetID];
 
         linkedTarget.ownerConnector.attachHandler.AddListener(this.SwitchAttach);
         this.selfJoint.connectedBody = connector.selfRigidbody;
@@ -203,7 +203,7 @@ public class Connector : MonoBehaviour, IConnector
         return (targetID >= 0 && this.targetList.Count > targetID) ? this.targetList[targetID].gameObject : null;
     }
     public void ConnectToComponent(IConnector connectorPoint, ConnectorInfo info) {
-        detectedTarget = connectorPoint?.GetTargetObjByIndex(info.linkedTargetID)?.gameObject.GetComponent<Target>();
+        detectedTarget = connectorPoint?.GetTargetObjByIndex((int)info.linkedTargetID)?.gameObject.GetComponent<Target>();
         if (detectedTarget == null) { return; }
         this.LinkToConnector(detectedTarget.ownerConnector, info);
     }

@@ -59,7 +59,6 @@ public class DeviceFactory : MonoBehaviour, IGameComponentFactory
             for (int i = 0; i < count; i++)
             {
                 Instantiate(prefab);
-                prefab.transform.position = new Vector3(0, 5, 0);
             }
         }
     }
@@ -89,7 +88,6 @@ public class DeviceFactory : MonoBehaviour, IGameComponentFactory
                 {
                     Debug.Log("Prefab not found: " + i.ToString());
                 }
-                prefab.transform.position = new Vector3(0, 5, 0);
             }
         }
         return null;

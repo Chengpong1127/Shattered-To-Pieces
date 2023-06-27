@@ -7,8 +7,8 @@ using System;
 public struct ConnectorInfo
 {
     public int connectorID;
-    public int linkedConnectorID;
-    public int linkedTargetID;
+    public int? linkedConnectorID;
+    public int? linkedTargetID;
     public float connectorRotation;
     public bool IsConnected => linkedConnectorID != -1;
     public static ConnectorInfo NoConnection(int connectorID){
