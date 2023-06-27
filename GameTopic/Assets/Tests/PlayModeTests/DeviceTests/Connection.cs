@@ -102,6 +102,26 @@ public class Connection
             linkedTargetID = 0});
     }
 
+    [Test]
+    public void RemoveComponentTest(){
+        var componentFactory = new GameObject().AddComponent<DeviceFactory>();
+        var device = createSimpleDevice();
+        device.GameComponentFactory = componentFactory;
+        var deviceInfo = createSimpleDeviceInfo();
+        device.LoadDevice(deviceInfo);
+        var dumpInfo = device.DumpDevice();
+
+        Assert.AreEqual(device.ComponentMap[1].Connector.Dump(), new ConnectorInfo{
+            connectorID = 1,
+            linkedConnectorID = 0, 
+            linkedTargetID = 0});
+        var removedComponent = device.ComponentMap[1];
+        device.RemoveComponent(removedComponent);
+        Assert.AreEqual(removedComponent.Connector.Dump().IsConnected, false);
+
+        Assert.AreEqual(removedComponent.ComponentGUID, 1);
+        Assert.AreEqual(removedComponent.LocalComponentID, null);
+    }
     private Device createSimpleDevice(){
         var device = new GameObject("Device").AddComponent<Device>();
         return device;
@@ -122,15 +142,5 @@ public class Connection
                     linkedTargetID = 0}});
         
         return deviceInfo;
-    }
-
-    // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-    // `yield return null;` to skip a frame.
-    [UnityTest]
-    public IEnumerator ConnectionWithEnumeratorPasses()
-    {
-        // Use the Assert class to test conditions.
-        // Use yield to skip a frame.
-        yield return null;
     }
 }

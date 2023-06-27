@@ -94,6 +94,7 @@ public class Device: MonoBehaviour, IDevice
     {
         Debug.Assert(component != null);
         Debug.Assert(ComponentMap.ContainsKey((int)component.LocalComponentID));
+        SetConnection(ConnectorInfo.NoConnection((int)component.LocalComponentID));
         ComponentMap.Remove((int)component.LocalComponentID);
         component.LocalComponentID = null;
     }
