@@ -29,7 +29,7 @@ public class Device: MonoBehaviour, IDevice
             Debug.Assert(component != null);
             component.LocalComponentID = componentID;
             component.ComponentGUID = info.componentGUID;
-            //AddNewComponent(component);
+            AddComponent(component);
         }
     }
     private void connectAllComponents(Dictionary<int, GameComponentInfo> GameComponentInfoMap){
@@ -37,51 +37,14 @@ public class Device: MonoBehaviour, IDevice
             if(pair.Value.connectorInfo.IsConnected == false){
                 continue;
             }
-            var componentID = pair.Key;
             var info = pair.Value;
-            var component = ComponentMap[componentID];
-            var linkedComponent = ComponentMap[info.connectorInfo.linkedConnectorID];
-            Debug.Assert(component != null);
-            Debug.Assert(linkedComponent != null);
-            component.Connect(linkedComponent, info.connectorInfo);
+            SetConnection(info.connectorInfo);
         }
     }
-    public void ConnectNewComponent(IGameComponent newComponent, ConnectorInfo info){
-        Debug.Assert(newComponent != null);
-        Debug.Assert(info.connectorID == newComponent.LocalComponentID);
-        var ConnectedComponent = ComponentMap[info.linkedConnectorID];
-        newComponent.Connect(ConnectedComponent, info);
-    }
-    public void ConnectNewComponent(IGameComponent newComponent){
-        Debug.Assert(newComponent != null);
-        newComponent.LocalComponentID = GetNewComponentID();
-    }
-    public void RemoveConnectedComponent(IGameComponent component){
-        Debug.Assert(component != null);
-        
-    }
-
-    private void AddConnectedConnector(IConnector connector){
-        Debug.Assert(connector != null);
-        if(connector is MonoBehaviour){
-            IGameComponent gameComponent = (connector as MonoBehaviour).GetComponentInParent<IGameComponent>();
-            if(gameComponent != null){
-                AddConnectedComponent(gameComponent);
-            }
-            else{
-                Debug.Log("Cannot find IGameComponent");
-            }
-        }
-        
-    }
-    private void AddConnectedComponent(IGameComponent component){
-        int newID = GetNewComponentID();
-        component.LocalComponentID = newID;
-        //AddNewComponent(component);
-    }
-    private void RemoveDisconnectedComponent(int componentID){
-        //RemoveComponent(ComponentMap[componentID]);
-    }
+    /// <summary>
+    /// Get a new local ID for a component.
+    /// </summary>
+    /// <returns></returns>
     private int GetNewComponentID(){
         var newID = 0;
         while(ComponentMap.ContainsKey(newID)){
@@ -89,23 +52,23 @@ public class Device: MonoBehaviour, IDevice
         }
         return newID;
     }
-    private void OnDestroy() {
-        foreach(var componentID in ComponentMap.Keys){
-            var component = ComponentMap[componentID];
-            //RemoveBindingComponent(component);
-        }
-    }
-
+    /// <summary>
+    /// Add a new component to the device, the method will assign a new ID to the component, and set the connection to NoConnection
+    /// </summary>
+    /// <param name="newComponent">The component created by factory.</param>
     public void AddComponent(IGameComponent newComponent)
     {
-        if(newComponent.LocalComponentID != null){
-            Debug.LogWarning("Component already has ID");
+        if(newComponent.LocalComponentID == null){
+            newComponent.LocalComponentID = GetNewComponentID();
         }
-        newComponent.LocalComponentID = GetNewComponentID();
+        Debug.Assert(ComponentMap.ContainsKey((int)newComponent.LocalComponentID) == false, "Component ID already exists");
         ComponentMap.Add((int)newComponent.LocalComponentID, newComponent);
         SetConnection(ConnectorInfo.NoConnection((int)newComponent.LocalComponentID));
     }
-
+    /// <summary>
+    /// Set the connection for a connector.
+    /// </summary>
+    /// <param name="info"></param>
     public void SetConnection(ConnectorInfo info)
     {
         Debug.Assert(ComponentMap.ContainsKey((int)info.connectorID));
@@ -116,7 +79,10 @@ public class Device: MonoBehaviour, IDevice
         Debug.Assert(linkedComponent != null);
         component.Connect(linkedComponent, info);
     }
-
+    /// <summary>
+    /// Remove a component from the device. The component need to be NoConnection before removing.
+    /// </summary>
+    /// <param name="component"></param>
     public void RemoveComponent(IGameComponent component)
     {
         Debug.Assert(component != null);
@@ -124,7 +90,10 @@ public class Device: MonoBehaviour, IDevice
         ComponentMap.Remove((int)component.LocalComponentID);
         component.LocalComponentID = null;
     }
-
+    /// <summary>
+    /// Remove a component from the device. The component need to be NoConnection before removing.
+    /// </summary>
+    /// <param name="componentID"></param>
     public void RemoveComponent(int componentID)
     {
         Debug.Assert(ComponentMap.ContainsKey(componentID));
