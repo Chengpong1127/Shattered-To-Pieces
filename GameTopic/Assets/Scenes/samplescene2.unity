@@ -824,7 +824,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1115408708}
         m_TargetAssemblyTypeName: DeviceFactory, Scripts
-        m_MethodName: CreateGameObject
+        m_MethodName: onClickCreate
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1694,7 +1694,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1115408708}
         m_TargetAssemblyTypeName: DeviceFactory, Scripts
-        m_MethodName: CreateGameObject
+        m_MethodName: onClickCreate
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2097,7 +2097,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1115408708}
         m_TargetAssemblyTypeName: DeviceFactory, Scripts
-        m_MethodName: CreateGameObject
+        m_MethodName: onClickCreate
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

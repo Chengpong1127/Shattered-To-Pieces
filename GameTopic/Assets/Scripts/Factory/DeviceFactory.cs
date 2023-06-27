@@ -92,4 +92,8 @@ public class DeviceFactory : MonoBehaviour
         }
         return null;
     }
+    public void onClickCreate(int GameObjectID)
+    {
+        CreateGameObject(GameObjectID);
+    }
 }

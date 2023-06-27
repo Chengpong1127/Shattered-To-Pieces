@@ -146,7 +146,7 @@ public class Connector : MonoBehaviour, IConnector
         this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
         this.selfJoint.enabled = true;
     }
-    void UnlinkToConnector() {
+    public void UnlinkToConnector() {
         this.selfJoint.enabled = false;
 
         if (linkedTarget == null) { return; }
@@ -223,6 +223,19 @@ public class Connector : MonoBehaviour, IConnector
 
     public void Disconnect()
     {
-        throw new NotImplementedException();
+        //if (linkedTarget == null)
+        //{
+        //    // 沒有連接的目標，直接退出函式
+        //    return;
+        //}
+
+        //// 關閉聯接
+        //selfJoint.enabled = false;
+
+        //// 從已連接的目標中解除連接
+        //linkedTarget.UnLinkToTarget();
+
+        //// 清除引用
+        //linkedTarget = null;
     }
 }
