@@ -29,7 +29,6 @@ public class Device: MonoBehaviour, IDevice
             var component = GameComponentFactory.CreateGameComponentObject(info.componentGUID);
             Debug.Assert(component != null);
             component.LocalComponentID = componentID;
-            component.ComponentGUID = info.componentGUID;
             AddComponent(component);
         }
     }
@@ -64,7 +63,7 @@ public class Device: MonoBehaviour, IDevice
         }
         Debug.Assert(ComponentMap.ContainsKey((int)newComponent.LocalComponentID) == false, "Component ID already exists");
         ComponentMap.Add((int)newComponent.LocalComponentID, newComponent);
-        SetConnection(ConnectorInfo.NoConnection((int)newComponent.LocalComponentID));
+        //SetConnection(ConnectorInfo.NoConnection((int)newComponent.LocalComponentID));
     }
     /// <summary>
     /// Set the connection for a connector.

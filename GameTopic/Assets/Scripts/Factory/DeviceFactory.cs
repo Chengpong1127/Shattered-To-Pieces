@@ -81,7 +81,9 @@ public class DeviceFactory : MonoBehaviour, IGameComponentFactory
                     {
                         prefabCounts.Add(i.ToString(), 1);
                     }
-                    return obj.GetComponent<IGameComponent>();
+                    var component = obj.GetComponent<IGameComponent>();
+                    component.ComponentGUID = GameObjectID;
+                    return component;
                 }
                 else
                 {
