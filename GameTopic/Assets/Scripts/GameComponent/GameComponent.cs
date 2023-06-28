@@ -13,6 +13,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public ICoreComponent CoreComponent => coreComponent;
     public bool IsInDevice => LocalComponentID != null;
     public Guid? GlobalComponentID { get; set; }
+    public Transform CoreTransform { get => transform; }
     public int? LocalComponentID
     {
         get => _gameComponentID;

@@ -9,6 +9,7 @@ using System;
 // Description: Defines the basic interfaces for the game components.
 public interface IGameComponent
 {
+    public Transform CoreTransform { get; }
     public bool IsInDevice { get; }
     public Guid? GlobalComponentID { get; set; }
     public int? LocalComponentID { get; set; }
