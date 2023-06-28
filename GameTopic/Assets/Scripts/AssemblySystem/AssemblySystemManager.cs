@@ -13,6 +13,12 @@ public class AssemblySystemManager : MonoBehaviour
     private void Start() {
         componentMover = gameObject.AddComponent<ComponentMover>();
         componentMover.inputManager = new InputManager();
+
+    }
+
+
+    private void handleComponentDraggedTo(IGameComponent component, Vector2 targetPosition)
+    {
         
     }
 }

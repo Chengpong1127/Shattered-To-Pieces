@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 public class ComponentMover: MonoBehaviour
 {
     public InputManager inputManager;
     public Camera mainCamera;
+    public event Action<IGameComponent, Vector2> OnComponentDraggedTo;
+
+
     private IGameComponent draggedComponent = null;
     private bool isDragging = false;
     private void Start() {
@@ -31,6 +35,13 @@ public class ComponentMover: MonoBehaviour
     private void DragCanceled(InputAction.CallbackContext ctx)
     {
         isDragging = false;
+        if (draggedComponent == null)
+        {
+            return;
+        }
+        var mousePosition = Mouse.current.position.ReadValue();
+        var targetPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+        OnComponentDraggedTo?.Invoke(draggedComponent, targetPosition);
         draggedComponent = null;
     }
 
