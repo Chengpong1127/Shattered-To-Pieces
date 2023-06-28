@@ -58,4 +58,12 @@ public struct ConnectorInfo
             connectorRotation = 0f
         };
     }
+    public static ConnectorInfo NoConnection(){
+        return new ConnectorInfo{
+            connectorID = -1,
+            linkedConnectorID = -1,
+            linkedTargetID = -1,
+            connectorRotation = 0f
+        };
+    }
 }
