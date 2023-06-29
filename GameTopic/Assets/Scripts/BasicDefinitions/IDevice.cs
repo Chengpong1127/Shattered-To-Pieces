@@ -1,6 +1,6 @@
 
 
-interface IDevice{
+public interface IDevice{
     public void LoadDevice(DeviceInfo info);
     public DeviceInfo DumpDevice();
     public void AddComponent(IGameComponent newComponent);

@@ -5,7 +5,7 @@ using System;
 
 public class AssemblySystemManager : MonoBehaviour
 {
-    IDevice ControlledDevice;
+    public IDevice ControlledDevice;
     IGameComponentFactory GameComponentFactory;
     ComponentMover componentMover;
     public Dictionary<Guid, IGameComponent> GlobalComponentMap {get; private set; } = new Dictionary<Guid, IGameComponent>();
@@ -25,7 +25,10 @@ public class AssemblySystemManager : MonoBehaviour
             Debug.Log("No available connection");
             return;
         }
-        Debug.Log($"Connecting {component} to {gameComponent}");
-        component.Connect(gameComponent, connectorInfo);
+        if (gameComponent.IsInDevice){
+            Debug.Log($"Connecting {component} to {gameComponent}");
+            component.Connect(gameComponent, connectorInfo);
+        }
+        
     }
 }
