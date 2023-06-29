@@ -26,48 +26,9 @@ public class Connection
 
         Assert.AreEqual(device.ComponentMap[0].Connector.Dump().IsConnected, false);
 
-        Assert.AreEqual(device.ComponentMap[1].Connector.Dump(), new ConnectorInfo{
-            connectorID = 1,
+        Assert.AreEqual(device.ComponentMap[1].Connector.Dump(), new ConnectionInfo{
             linkedConnectorID = 0, 
             linkedTargetID = 0});
-        
-    }
-
-
-    [Test]
-    public void AddComponentTest(){
-        var componentFactory = new GameObject().AddComponent<DeviceFactory>();
-        var device = createSimpleDevice();
-        device.GameComponentFactory = componentFactory;
-        var deviceInfo = createSimpleDeviceInfo();
-        device.LoadDevice(deviceInfo);
-        var dumpInfo = device.DumpDevice();
-        Assert.AreEqual(deviceInfo.GameComponentInfoMap.Count, 2);
-        Assert.AreEqual(device.ComponentMap[0].ComponentGUID, 0);
-        Assert.AreEqual(device.ComponentMap[1].ComponentGUID, 1);
-
-        Assert.AreEqual(device.ComponentMap[0].LocalComponentID, 0);
-        Assert.AreEqual(device.ComponentMap[1].LocalComponentID, 1);
-
-        Assert.AreEqual(device.ComponentMap[0].Connector.connectorID, 0);
-        Assert.AreEqual(device.ComponentMap[1].Connector.connectorID, 1);
-
-        Assert.AreEqual(device.ComponentMap[0].Connector.Dump().IsConnected, false);
-
-        Assert.AreEqual(device.ComponentMap[1].Connector.Dump(), new ConnectorInfo{
-            connectorID = 1,
-            linkedConnectorID = 0, 
-            linkedTargetID = 0});
-
-        var newComponent = componentFactory.CreateGameComponentObject(1);
-        Assert.AreEqual(newComponent.ComponentGUID, 1);
-        Assert.AreEqual(newComponent.LocalComponentID, null);
-        device.AddComponent(newComponent);
-        Assert.AreEqual(device.ComponentMap[2].ComponentGUID, 1);
-        Assert.AreEqual(device.ComponentMap[2].LocalComponentID, 2);
-        Assert.AreEqual(device.ComponentMap[2].Connector.connectorID, 2);
-        Assert.AreEqual(device.ComponentMap[2].Connector.Dump().IsConnected, false);
-        
         
     }
 
@@ -81,47 +42,20 @@ public class Connection
         var dumpInfo = device.DumpDevice();
 
 
-        Assert.AreEqual(device.ComponentMap[1].Connector.Dump(), new ConnectorInfo{
-            connectorID = 1,
+        Assert.AreEqual(device.ComponentMap[1].Connector.Dump(), new ConnectionInfo{
             linkedConnectorID = 0, 
             linkedTargetID = 0});
         
-        device.SetConnection(new ConnectorInfo{
-            connectorID = 0,
-            linkedConnectorID = 1, 
-            linkedTargetID = 1});
-        
-        Assert.AreEqual(device.ComponentMap[0].Connector.Dump(), new ConnectorInfo{
-            connectorID = 0,
+
+        Assert.AreEqual(device.ComponentMap[0].Connector.Dump(), new ConnectionInfo{
             linkedConnectorID = 1, 
             linkedTargetID = 1});
 
-        Assert.AreEqual(device.ComponentMap[1].Connector.Dump(), new ConnectorInfo{
-            connectorID = 1,
+        Assert.AreEqual(device.ComponentMap[1].Connector.Dump(), new ConnectionInfo{
             linkedConnectorID = 0, 
             linkedTargetID = 0});
     }
 
-    [Test]
-    public void RemoveComponentTest(){
-        var componentFactory = new GameObject().AddComponent<DeviceFactory>();
-        var device = createSimpleDevice();
-        device.GameComponentFactory = componentFactory;
-        var deviceInfo = createSimpleDeviceInfo();
-        device.LoadDevice(deviceInfo);
-        var dumpInfo = device.DumpDevice();
-
-        Assert.AreEqual(device.ComponentMap[1].Connector.Dump(), new ConnectorInfo{
-            connectorID = 1,
-            linkedConnectorID = 0, 
-            linkedTargetID = 0});
-        var removedComponent = device.ComponentMap[1];
-        device.RemoveComponent(removedComponent);
-        Assert.AreEqual(removedComponent.Connector.Dump().IsConnected, false);
-
-        Assert.AreEqual(removedComponent.ComponentGUID, 1);
-        Assert.AreEqual(removedComponent.LocalComponentID, null);
-    }
     private Device createSimpleDevice(){
         var device = new GameObject("Device").AddComponent<Device>();
         return device;
@@ -132,12 +66,11 @@ public class Connection
         deviceInfo.GameComponentInfoMap.Add(
             0, new GameComponentInfo{
                 componentGUID = 0, 
-                connectorInfo = ConnectorInfo.NoConnection(0)});
+                connectorInfo = ConnectionInfo.NoConnection()});
         deviceInfo.GameComponentInfoMap.Add(
             1, new GameComponentInfo{
                 componentGUID = 1, 
-                connectorInfo = new ConnectorInfo{
-                    connectorID = 1,
+                connectorInfo = new ConnectionInfo{
                     linkedConnectorID = 0, 
                     linkedTargetID = 0}});
         

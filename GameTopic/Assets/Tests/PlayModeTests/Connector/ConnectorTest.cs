@@ -59,14 +59,13 @@ public class ConnectorTest
         c2.connectorID = 1;
         c2.AssignLinkedTarget(tl[1]);
 
-        ConnectorInfo info = new ConnectorInfo();
-        info.connectorID = 1;
+        ConnectionInfo info = new ConnectionInfo();
         info.linkedConnectorID = 0;
         info.linkedTargetID = 1;
         info.connectorRotation = 0f;
 
 
-        Assert.AreEqual(c.Dump(), ConnectorInfo.NoConnection(c.connectorID));
+        Assert.AreEqual(c.Dump(), ConnectionInfo.NoConnection());
         Assert.AreEqual(c2.Dump(), info);
     }
 
@@ -88,8 +87,7 @@ public class ConnectorTest
 
         c.connectorID = 0;
         c.AssignTargetList(tl);
-        ConnectorInfo info = new ConnectorInfo();
-        info.connectorID = 1;
+        ConnectionInfo info = new ConnectionInfo();
         info.linkedConnectorID = 0;
         info.linkedTargetID = 1;
         info.connectorRotation = 0.5f;
@@ -97,13 +95,12 @@ public class ConnectorTest
         c2.connectorID = 1;
         c2.ConnectToComponent(c, info);
 
-        ConnectorInfo c2info = c2.Dump();
-        Debug.Log(c2info.connectorID);
+        ConnectionInfo c2info = c2.Dump();
         Debug.Log(c2info.linkedConnectorID);
         Debug.Log(c2info.linkedTargetID);
         Debug.Log(c2info.connectorRotation);
 
-        Assert.AreEqual(c.Dump(), ConnectorInfo.NoConnection(c.connectorID));
+        Assert.AreEqual(c.Dump(), ConnectionInfo.NoConnection());
         Assert.AreEqual(c2.Dump(), info);
     }
     [Test]

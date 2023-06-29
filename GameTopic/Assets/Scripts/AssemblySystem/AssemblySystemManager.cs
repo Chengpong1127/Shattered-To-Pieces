@@ -29,15 +29,11 @@ public class AssemblySystemManager : MonoBehaviour
     private void handleComponentDraggedTo(IGameComponent component, Vector2 targetPosition)
     {
         var (gameComponent, connectorInfo) = component.GetAvailableConnection();
-        if (gameComponent == null){
+        if (gameComponent == null || gameComponent == component){
             Debug.Log("No available connection");
             return;
         }
-        if (gameComponent.IsInDevice){
-            Debug.Log($"Connecting {component} to {gameComponent}");
-            ControlledDevice.AddComponent(component);
-            ControlledDevice.SetConnection(connectorInfo);
-        }
+        gameComponent.Connect(component, connectorInfo);
         
     }
 
@@ -45,7 +41,7 @@ public class AssemblySystemManager : MonoBehaviour
         var info = new DeviceInfo();
         info.GameComponentInfoMap.Add(0, new GameComponentInfo{
             componentGUID = 0,
-            connectorInfo = ConnectorInfo.NoConnection(0)
+            connectorInfo = ConnectionInfo.NoConnection()
         });
         return info;
     }

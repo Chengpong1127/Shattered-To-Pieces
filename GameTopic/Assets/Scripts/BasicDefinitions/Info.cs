@@ -37,30 +37,20 @@ public class DeviceInfo
 
 public struct GameComponentInfo{
     public int componentGUID;
-    public ConnectorInfo connectorInfo;
+    public ConnectionInfo connectorInfo;
     
 
 }
 
 // dump or load info for IConnector
-public struct ConnectorInfo
+public struct ConnectionInfo
 {
-    public int connectorID;
     public int linkedConnectorID;
     public int linkedTargetID;
     public float connectorRotation;
     public bool IsConnected => linkedConnectorID != -1;
-    public static ConnectorInfo NoConnection(int connectorID){
-        return new ConnectorInfo{
-            connectorID = connectorID,
-            linkedConnectorID = -1,
-            linkedTargetID = -1,
-            connectorRotation = 0f
-        };
-    }
-    public static ConnectorInfo NoConnection(){
-        return new ConnectorInfo{
-            connectorID = -1,
+    public static ConnectionInfo NoConnection(){
+        return new ConnectionInfo{
             linkedConnectorID = -1,
             linkedTargetID = -1,
             connectorRotation = 0f

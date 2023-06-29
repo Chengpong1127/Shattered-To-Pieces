@@ -25,9 +25,9 @@ public class DeviceFactory : MonoBehaviour, IGameComponentFactory
 
     public DeviceInfo exampleInfo(){
         DeviceInfo info = new DeviceInfo();
-        info.GameComponentInfoMap.Add(0, new GameComponentInfo{componentGUID = 0, connectorInfo = new ConnectorInfo{linkedConnectorID = -1, linkedTargetID = -1}});
-        info.GameComponentInfoMap.Add(1, new GameComponentInfo{componentGUID = 1, connectorInfo = new ConnectorInfo{linkedConnectorID = 0, linkedTargetID = 0}});
-        info.GameComponentInfoMap.Add(2, new GameComponentInfo{componentGUID = 1, connectorInfo = new ConnectorInfo{linkedConnectorID = 0, linkedTargetID = 1}});
+        info.GameComponentInfoMap.Add(0, new GameComponentInfo{componentGUID = 0, connectorInfo = new ConnectionInfo{linkedConnectorID = -1, linkedTargetID = -1}});
+        info.GameComponentInfoMap.Add(1, new GameComponentInfo{componentGUID = 1, connectorInfo = new ConnectionInfo{linkedConnectorID = 0, linkedTargetID = 0}});
+        info.GameComponentInfoMap.Add(2, new GameComponentInfo{componentGUID = 1, connectorInfo = new ConnectionInfo{linkedConnectorID = 0, linkedTargetID = 1}});
         return info;
     }
 

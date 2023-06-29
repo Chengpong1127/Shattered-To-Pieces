@@ -82,8 +82,7 @@ public class Connector : MonoBehaviour, IConnector
 
         (IConnector ic, int tid) = GetAvailableConnector();
         if (ic == null || tid == -1) { return; }
-        ConnectorInfo tinfo = new ConnectorInfo();
-        tinfo.connectorID = this.connectorID;
+        ConnectionInfo tinfo = new ConnectionInfo();
         tinfo.linkedConnectorID = ic.connectorID;
         tinfo.linkedTargetID = tid;
         tinfo.connectorRotation = this.gameObject.transform.rotation.eulerAngles.z;
@@ -136,9 +135,8 @@ public class Connector : MonoBehaviour, IConnector
     }
 
     // Target interact
-    void LinkToConnector(Connector connector, ConnectorInfo info) {
+    void LinkToConnector(Connector connector, ConnectionInfo info) {
         if (connector == null ||
-            this.connectorID != info.connectorID ||
             connector.connectorID != info.linkedConnectorID ||
             !(connector.targetList.Count > info.linkedTargetID) ||
             !connector.targetList[(int)info.linkedTargetID].LinkToTarget(this)
@@ -209,7 +207,7 @@ public class Connector : MonoBehaviour, IConnector
     public GameObject GetTargetObjByIndex(int targetID) {
         return (targetID >= 0 && this.targetList.Count > targetID) ? this.targetList[targetID].gameObject : null;
     }
-    public void ConnectToComponent(IConnector connectorPoint, ConnectorInfo info) {
+    public void ConnectToComponent(IConnector connectorPoint, ConnectionInfo info) {
         detectedTarget = connectorPoint?.GetTargetObjByIndex((int)info.linkedTargetID)?.gameObject.GetComponent<Target>();
         if (detectedTarget == null) { return; }
         this.LinkToConnector(detectedTarget.ownerConnector, info);
@@ -220,9 +218,8 @@ public class Connector : MonoBehaviour, IConnector
         int resTid = detectedTarget == null ? -1 : detectedTarget.targetID;
         return (resIC, resTid);
     }
-    public ConnectorInfo Dump() {
-        var res = new ConnectorInfo();
-        res.connectorID = this.connectorID;
+    public ConnectionInfo Dump() {
+        var res = new ConnectionInfo();
         res.linkedConnectorID = linkedTarget == null ? -1 : linkedTarget.ownerConnector.connectorID;
         res.linkedTargetID = linkedTarget == null ? -1 : linkedTarget.targetID;
         res.connectorRotation = this.gameObject.transform.rotation.eulerAngles.z;

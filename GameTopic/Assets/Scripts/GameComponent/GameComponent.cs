@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class GameComponent : MonoBehaviour, IGameComponent
+public class GameComponent : MonoBehaviour, IGameComponent, IUnit
 {
+    public int UnitID { get; set; }
     private int? _gameComponentID;
     private IConnector connector;
     private ICoreComponent coreComponent;
@@ -28,7 +29,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
     }
     public int ComponentGUID { get; set; }
 
-    public void Connect(IGameComponent otherComponent, ConnectorInfo info)
+    public void Connect(IGameComponent otherComponent, ConnectionInfo info)
     {
         Debug.Assert(otherComponent != null);
         Debug.Assert(connector != null);
@@ -49,16 +50,15 @@ public class GameComponent : MonoBehaviour, IGameComponent
         return info;
     }
 
-    public (IGameComponent, ConnectorInfo) GetAvailableConnection(){
+    public (IGameComponent, ConnectionInfo) GetAvailableConnection(){
         var (connectorPoint, targetID) = connector.GetAvailableConnector();
         Debug.Log($"Available connector: {connectorPoint}, {targetID}");
         if (connectorPoint == null){
-            return (null, ConnectorInfo.NoConnection(connector.connectorID));
+            return (null, ConnectionInfo.NoConnection());
         }
         var gameComponent = (connectorPoint as MonoBehaviour).GetComponentInParent<GameComponent>();
         Debug.Assert(gameComponent != null);
-        var newInfo = new ConnectorInfo{
-            connectorID = connector.connectorID,
+        var newInfo = new ConnectionInfo{
             linkedConnectorID = connectorPoint.connectorID,
             linkedTargetID = targetID,
         };
