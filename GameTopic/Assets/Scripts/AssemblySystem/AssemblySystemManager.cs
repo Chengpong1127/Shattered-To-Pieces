@@ -11,10 +11,18 @@ public class AssemblySystemManager : MonoBehaviour
     public Dictionary<Guid, IGameComponent> GlobalComponentMap {get; private set; } = new Dictionary<Guid, IGameComponent>();
 
     private void Start() {
+        GameComponentFactory = GetComponent<IGameComponentFactory>();
+
         componentMover = gameObject.AddComponent<ComponentMover>();
         componentMover.inputManager = new InputManager();
         componentMover.OnComponentDraggedTo += handleComponentDraggedTo;
 
+        if (ControlledDevice == null){
+            ControlledDevice = new GameObject("Device").AddComponent<Device>();
+            var device = ControlledDevice as Device;
+            device.GameComponentFactory = GameComponentFactory;
+            ControlledDevice.LoadDevice(defaultDeviceInfo());
+        }
     }
 
 
@@ -27,8 +35,18 @@ public class AssemblySystemManager : MonoBehaviour
         }
         if (gameComponent.IsInDevice){
             Debug.Log($"Connecting {component} to {gameComponent}");
-            component.Connect(gameComponent, connectorInfo);
+            ControlledDevice.AddComponent(component);
+            ControlledDevice.SetConnection(connectorInfo);
         }
         
+    }
+
+    private DeviceInfo defaultDeviceInfo(){
+        var info = new DeviceInfo();
+        info.GameComponentInfoMap.Add(0, new GameComponentInfo{
+            componentGUID = 0,
+            connectorInfo = ConnectorInfo.NoConnection(0)
+        });
+        return info;
     }
 }
