@@ -49,6 +49,22 @@ public class GameComponent : MonoBehaviour, IGameComponent
         return info;
     }
 
+    public (IGameComponent, ConnectorInfo) GetAvailableConnection(){
+        var (connectorPoint, targetID) = connector.GetAvailableConnector();
+        Debug.Log($"Available connector: {connectorPoint}, {targetID}");
+        if (connectorPoint == null){
+            return (null, ConnectorInfo.NoConnection(connector.connectorID));
+        }
+        var gameComponent = (connectorPoint as MonoBehaviour).GetComponentInParent<GameComponent>();
+        Debug.Assert(gameComponent != null);
+        var newInfo = new ConnectorInfo{
+            connectorID = connector.connectorID,
+            linkedConnectorID = connectorPoint.connectorID,
+            linkedTargetID = targetID,
+        };
+        return (gameComponent, newInfo);
+    }
+
     private void Awake()
     {
         connector = GetComponentInChildren<Connector>();

@@ -67,6 +67,13 @@ public class Connector : MonoBehaviour, IConnector
             SwitchCombine(false);
         }
     }
+    public void SetConnectMode(bool connectMode){
+        if (connectMode){
+            SwitchCombine(true);
+        }else{
+            SwitchCombine(false);
+        }
+    }
     private void OnMouseDown() {
         SwitchSelecting(true);
     }
@@ -208,6 +215,7 @@ public class Connector : MonoBehaviour, IConnector
         this.LinkToConnector(detectedTarget.ownerConnector, info);
     }
     public (IConnector, int) GetAvailableConnector() {
+        DetectTarget();
         IConnector resIC = detectedTarget == null ? null : detectedTarget.ownerConnector;
         int resTid = detectedTarget == null ? -1 : detectedTarget.targetID;
         return (resIC, resTid);

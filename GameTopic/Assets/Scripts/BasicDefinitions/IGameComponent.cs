@@ -18,6 +18,7 @@ public interface IGameComponent
     public ICoreComponent CoreComponent { get; }
     public void Connect(IGameComponent otherComponent, ConnectorInfo info);
     public void Disconnect();
+    public (IGameComponent, ConnectorInfo) GetAvailableConnection();
     public GameComponentInfo DumpInfo();
 }
 
@@ -29,6 +30,7 @@ public interface IConnector
 
     void UnlinkToConnector();
     void Disconnect();
+    public void SetConnectMode(bool connectMode);
     ConnectorInfo Dump();
     (IConnector, int) GetAvailableConnector(); // return the first available connector and target ID
 }
