@@ -16,8 +16,10 @@ public enum ConnectorState {
 
 public class Connector : MonoBehaviour, IConnector
 {
-    public int connectorID { get; set; } = -1;
     public ConnectorState currState { get; set; } = ConnectorState.INITIAL;
+
+    IGameComponent IConnector.GameComponent => throw new NotImplementedException();
+
     UnityEvent<bool> attachHandler = new UnityEvent<bool>();
     Vector2 movePosition;
 
@@ -74,26 +76,6 @@ public class Connector : MonoBehaviour, IConnector
             SwitchCombine(false);
         }
     }
-    private void OnMouseDown() {
-        SwitchSelecting(true);
-    }
-    private void OnMouseUp() {
-        SwitchSelecting(false);
-
-        (IConnector ic, int tid) = GetAvailableConnector();
-        if (ic == null || tid == -1) { return; }
-        ConnectionInfo tinfo = new ConnectionInfo();
-        tinfo.linkedConnectorID = ic.connectorID;
-        tinfo.linkedTargetID = tid;
-        tinfo.connectorRotation = this.gameObject.transform.rotation.eulerAngles.z;
-
-        ConnectToComponent(ic, tinfo);
-    }
-    private void OnMouseDrag() {
-        if (!(currState == ConnectorState.SELECT)) { return; }
-        DetectTarget();
-        TrackPositionUpdate((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition));
-    }
 
     // State chang function
     void SwitchCombine(bool b) {
@@ -137,7 +119,6 @@ public class Connector : MonoBehaviour, IConnector
     // Target interact
     void LinkToConnector(Connector connector, ConnectionInfo info) {
         if (connector == null ||
-            connector.connectorID != info.linkedConnectorID ||
             !(connector.targetList.Count > info.linkedTargetID) ||
             !connector.targetList[(int)info.linkedTargetID].LinkToTarget(this)
             ) { return; }
@@ -220,7 +201,6 @@ public class Connector : MonoBehaviour, IConnector
     }
     public ConnectionInfo Dump() {
         var res = new ConnectionInfo();
-        res.linkedConnectorID = linkedTarget == null ? -1 : linkedTarget.ownerConnector.connectorID;
         res.linkedTargetID = linkedTarget == null ? -1 : linkedTarget.targetID;
         res.connectorRotation = this.gameObject.transform.rotation.eulerAngles.z;
         return res;
@@ -242,5 +222,15 @@ public class Connector : MonoBehaviour, IConnector
 
         //// �M���ޥ�
         //linkedTarget = null;
+    }
+
+    ICollection<IConnector> IConnector.GetChildConnectors()
+    {
+        throw new NotImplementedException();
+    }
+
+    IConnector IConnector.GetParentConnector()
+    {
+        throw new NotImplementedException();
     }
 }

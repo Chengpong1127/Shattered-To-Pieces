@@ -28,7 +28,6 @@ public class Device: MonoBehaviour, IDevice
             var info = pair.Value;
             var component = GameComponentFactory.CreateGameComponentObject(info.componentGUID);
             Debug.Assert(component != null);
-            component.LocalComponentID = componentID;
         }
     }
     private void connectAllComponents(Dictionary<int, GameComponentInfo> GameComponentInfoMap){
@@ -39,16 +38,5 @@ public class Device: MonoBehaviour, IDevice
             var info = pair.Value;
             //SetConnection(info.connectorInfo);
         }
-    }
-    /// <summary>
-    /// Get a new local ID for a component.
-    /// </summary>
-    /// <returns></returns>
-    private int GetNewComponentID(){
-        var newID = 0;
-        while(ComponentMap.ContainsKey(newID)){
-            newID++;
-        }
-        return newID;
     }
 }

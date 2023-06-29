@@ -11,8 +11,6 @@ public interface IGameComponent
 {
     public Transform CoreTransform { get; }
     public bool IsInDevice { get; }
-    public Guid? GlobalComponentID { get; set; }
-    public int? LocalComponentID { get; set; }
     public int ComponentGUID { get; set; }
     public IConnector Connector { get; }
     public ICoreComponent CoreComponent { get; }
@@ -24,7 +22,7 @@ public interface IGameComponent
 
 public interface IConnector
 {
-    int connectorID { get; set; }
+    public IGameComponent GameComponent { get; }
     GameObject GetTargetObjByIndex(int targetID);
     void ConnectToComponent(IConnector connectorPoint, ConnectionInfo info);
 
@@ -33,6 +31,9 @@ public interface IConnector
     public void SetConnectMode(bool connectMode);
     ConnectionInfo Dump();
     (IConnector, int) GetAvailableConnector(); // return the first available connector and target ID
+
+    public ICollection<IConnector> GetChildConnectors();
+    public IConnector GetParentConnector();
 }
 
 public interface ICoreComponent

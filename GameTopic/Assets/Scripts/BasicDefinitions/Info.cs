@@ -28,7 +28,7 @@ public class DeviceInfo
         Debug.Log("GameComponentInfoMap.Count: " + GameComponentInfoMap.Count);
         //print component info
         foreach (var componentInfo in GameComponentInfoMap){
-            Debug.Log("componentGUID: " + componentInfo.Value.componentGUID + " ComponentID: "+ componentInfo.Key + "ConnectorInfo: " + componentInfo.Value.connectorInfo.linkedConnectorID + " " + componentInfo.Value.connectorInfo.linkedTargetID);
+            Debug.Log("componentGUID: " + componentInfo.Value.componentGUID + " ComponentID: "+ componentInfo.Key + "ConnectorInfo: " + " " + componentInfo.Value.connectorInfo.linkedTargetID);
 
         }
 
@@ -45,13 +45,11 @@ public struct GameComponentInfo{
 // dump or load info for IConnector
 public struct ConnectionInfo
 {
-    public int linkedConnectorID;
     public int linkedTargetID;
     public float connectorRotation;
-    public bool IsConnected => linkedConnectorID != -1;
+    public bool IsConnected => linkedTargetID != -1;
     public static ConnectionInfo NoConnection(){
         return new ConnectionInfo{
-            linkedConnectorID = -1,
             linkedTargetID = -1,
             connectorRotation = 0f
         };

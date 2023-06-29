@@ -18,16 +18,10 @@ public class Connection
         Assert.AreEqual(device.ComponentMap[0].ComponentGUID, 0);
         Assert.AreEqual(device.ComponentMap[1].ComponentGUID, 1);
 
-        Assert.AreEqual(device.ComponentMap[0].LocalComponentID, 0);
-        Assert.AreEqual(device.ComponentMap[1].LocalComponentID, 1);
-
-        Assert.AreEqual(device.ComponentMap[0].Connector.connectorID, 0);
-        Assert.AreEqual(device.ComponentMap[1].Connector.connectorID, 1);
 
         Assert.AreEqual(device.ComponentMap[0].Connector.Dump().IsConnected, false);
 
         Assert.AreEqual(device.ComponentMap[1].Connector.Dump(), new ConnectionInfo{
-            linkedConnectorID = 0, 
             linkedTargetID = 0});
         
     }
@@ -43,16 +37,13 @@ public class Connection
 
 
         Assert.AreEqual(device.ComponentMap[1].Connector.Dump(), new ConnectionInfo{
-            linkedConnectorID = 0, 
             linkedTargetID = 0});
         
 
         Assert.AreEqual(device.ComponentMap[0].Connector.Dump(), new ConnectionInfo{
-            linkedConnectorID = 1, 
             linkedTargetID = 1});
 
         Assert.AreEqual(device.ComponentMap[1].Connector.Dump(), new ConnectionInfo{
-            linkedConnectorID = 0, 
             linkedTargetID = 0});
     }
 
@@ -71,7 +62,6 @@ public class Connection
             1, new GameComponentInfo{
                 componentGUID = 1, 
                 connectorInfo = new ConnectionInfo{
-                    linkedConnectorID = 0, 
                     linkedTargetID = 0}});
         
         return deviceInfo;

@@ -6,27 +6,13 @@ using System;
 public class GameComponent : MonoBehaviour, IGameComponent, IUnit
 {
     public int UnitID { get; set; }
-    private int? _gameComponentID;
     private IConnector connector;
     private ICoreComponent coreComponent;
 
     public IConnector Connector => connector;
     public ICoreComponent CoreComponent => coreComponent;
-    public bool IsInDevice => LocalComponentID != null;
-    public Guid? GlobalComponentID { get; set; }
+    public bool IsInDevice => false;
     public Transform CoreTransform { get => transform; }
-    public int? LocalComponentID
-    {
-        get => _gameComponentID;
-        set {
-            _gameComponentID = value;
-            Debug.Assert(connector != null);
-            if (value != null){
-                connector.connectorID = (int)value;
-            }
-            
-        } 
-    }
     public int ComponentGUID { get; set; }
 
     public void Connect(IGameComponent otherComponent, ConnectionInfo info)
@@ -59,7 +45,6 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit
         var gameComponent = (connectorPoint as MonoBehaviour).GetComponentInParent<GameComponent>();
         Debug.Assert(gameComponent != null);
         var newInfo = new ConnectionInfo{
-            linkedConnectorID = connectorPoint.connectorID,
             linkedTargetID = targetID,
         };
         return (gameComponent, newInfo);
@@ -69,9 +54,6 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit
     {
         connector = GetComponentInChildren<Connector>();
         Debug.Assert(connector != null, "Connector not found");
-        if (LocalComponentID != null){
-            connector.connectorID = (int)LocalComponentID;
-        }
         coreComponent = null;
     }
 }

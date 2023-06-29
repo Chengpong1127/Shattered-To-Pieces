@@ -25,7 +25,6 @@ public class ConnectorTest
             Assert.IsNotNull(tl[i]);
         }
 
-        c.connectorID = 0;
         c.AssignTargetList(tl);
 
         Assert.AreEqual(c.GetTargetObjByIndex(-1), null);
@@ -53,14 +52,11 @@ public class ConnectorTest
         }
 
 
-        c.connectorID = 0;
         c.AssignTargetList(tl);
 
-        c2.connectorID = 1;
         c2.AssignLinkedTarget(tl[1]);
 
         ConnectionInfo info = new ConnectionInfo();
-        info.linkedConnectorID = 0;
         info.linkedTargetID = 1;
         info.connectorRotation = 0f;
 
@@ -85,18 +81,14 @@ public class ConnectorTest
             Assert.IsNotNull(tl[i]);
         }
 
-        c.connectorID = 0;
         c.AssignTargetList(tl);
         ConnectionInfo info = new ConnectionInfo();
-        info.linkedConnectorID = 0;
         info.linkedTargetID = 1;
         info.connectorRotation = 0.5f;
 
-        c2.connectorID = 1;
         c2.ConnectToComponent(c, info);
 
         ConnectionInfo c2info = c2.Dump();
-        Debug.Log(c2info.linkedConnectorID);
         Debug.Log(c2info.linkedTargetID);
         Debug.Log(c2info.connectorRotation);
 
@@ -119,10 +111,8 @@ public class ConnectorTest
             Assert.IsNotNull(tl[i]);
         }
 
-        c.connectorID = 0;
         c.AssignTargetList(tl);
 
-        c2.connectorID = 1;
         c2.AssignDetectedTarget(tl[2]);
 
         (IConnector ic, int tid) = c2.GetAvailableConnector();
