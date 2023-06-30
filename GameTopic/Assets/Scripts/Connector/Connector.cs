@@ -211,7 +211,7 @@ public class Connector : MonoBehaviour, IConnector
         UnlinkToConnector();
     }
 
-    ICollection<IConnector> IConnector.GetChildConnectors()
+    IList<IConnector> IConnector.GetChildConnectors()
     {
         throw new NotImplementedException();
     }

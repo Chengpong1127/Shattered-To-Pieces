@@ -28,7 +28,7 @@ public class DeviceInfo
         Debug.Log("GameComponentInfoMap.Count: " + GameComponentInfoMap.Count);
         //print component info
         foreach (var componentInfo in GameComponentInfoMap){
-            Debug.Log("componentGUID: " + componentInfo.Value.componentGUID + " ComponentID: "+ componentInfo.Key + "ConnectorInfo: " + " " + componentInfo.Value.connectorInfo.linkedTargetID);
+            Debug.Log("componentGUID: " + componentInfo.Value.componentGUID + " ComponentID: "+ componentInfo.Key + "ConnectorInfo: " + " " + componentInfo.Value.connectionInfo.linkedTargetID);
 
         }
 
@@ -37,7 +37,7 @@ public class DeviceInfo
 
 public struct GameComponentInfo{
     public int componentGUID;
-    public ConnectionInfo connectorInfo;
+    public ConnectionInfo connectionInfo;
     
 
 }

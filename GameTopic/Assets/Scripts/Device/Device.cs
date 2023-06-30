@@ -32,7 +32,7 @@ public class Device: MonoBehaviour, IDevice
     }
     private void connectAllComponents(Dictionary<int, GameComponentInfo> GameComponentInfoMap){
         foreach(var pair in GameComponentInfoMap){
-            if(pair.Value.connectorInfo.IsConnected == false){
+            if(pair.Value.connectionInfo.IsConnected == false){
                 continue;
             }
             var info = pair.Value;

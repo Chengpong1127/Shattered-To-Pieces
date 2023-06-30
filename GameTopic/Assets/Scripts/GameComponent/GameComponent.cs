@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class GameComponent : MonoBehaviour, IGameComponent, IUnit
+public class GameComponent : MonoBehaviour, IGameComponent, IUnit, ITreeNode
 {
     public int UnitID { get; set; }
     private IConnector connector;
@@ -32,7 +32,7 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit
     public GameComponentInfo DumpInfo(){
         var info = new GameComponentInfo();
         info.componentGUID = ComponentGUID;
-        info.connectorInfo = connector.Dump();
+        info.connectionInfo = connector.Dump();
         return info;
     }
 
@@ -48,6 +48,18 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit
             linkedTargetID = targetID,
         };
         return (gameComponent, newInfo);
+    }
+
+    public ITreeNode GetParent(){
+        return connector.GetParentConnector().GameComponent as ITreeNode;
+    }
+    public IList<ITreeNode> GetChildren(){
+        var childConnectors = connector.GetChildConnectors();
+        var children = new List<ITreeNode>();
+        foreach (var childConnector in childConnectors){
+            children.Add(childConnector.GameComponent as ITreeNode);
+        }
+        return children;
     }
 
     private void Awake()

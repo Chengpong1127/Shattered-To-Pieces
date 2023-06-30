@@ -18,7 +18,7 @@ public class ConnectTests
         c2.ConnectToParent(c1, info);
 
         var c2_info = c2.DumpInfo();
-        Assert.AreEqual(c2_info.connectorInfo.linkedTargetID, 1);
-        Assert.AreEqual(c2_info.connectorInfo.connectorRotation, 0f);
+        Assert.AreEqual(c2_info.connectionInfo.linkedTargetID, 1);
+        Assert.AreEqual(c2_info.connectionInfo.connectorRotation, 0f);
     }
 }

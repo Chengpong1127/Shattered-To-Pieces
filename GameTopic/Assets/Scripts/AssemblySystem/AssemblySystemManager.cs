@@ -39,7 +39,7 @@ public class AssemblySystemManager : MonoBehaviour
         var info = new DeviceInfo();
         info.GameComponentInfoMap.Add(0, new GameComponentInfo{
             componentGUID = 0,
-            connectorInfo = ConnectionInfo.NoConnection()
+            connectionInfo = ConnectionInfo.NoConnection()
         });
         return info;
     }

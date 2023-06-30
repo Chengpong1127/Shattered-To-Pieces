@@ -9,7 +9,7 @@ public class TempSaver : MonoBehaviour
         var info = new DeviceInfo();
         info.GameComponentInfoMap.Add(0, new GameComponentInfo{
             componentGUID = 0,
-            connectorInfo = new ConnectionInfo{
+            connectionInfo = new ConnectionInfo{
                 linkedTargetID = -1,
             }
         });

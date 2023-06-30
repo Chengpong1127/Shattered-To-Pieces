@@ -32,7 +32,7 @@ public interface IConnector
     ConnectionInfo Dump();
     (IConnector, int) GetAvailableConnector(); // return the first available connector and target ID
 
-    public ICollection<IConnector> GetChildConnectors();
+    public IList<IConnector> GetChildConnectors();
     public IConnector GetParentConnector();
 }
 

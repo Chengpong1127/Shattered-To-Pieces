@@ -57,11 +57,11 @@ public class Connection
         deviceInfo.GameComponentInfoMap.Add(
             0, new GameComponentInfo{
                 componentGUID = 0, 
-                connectorInfo = ConnectionInfo.NoConnection()});
+                connectionInfo = ConnectionInfo.NoConnection()});
         deviceInfo.GameComponentInfoMap.Add(
             1, new GameComponentInfo{
                 componentGUID = 1, 
-                connectorInfo = new ConnectionInfo{
+                connectionInfo = new ConnectionInfo{
                     linkedTargetID = 0}});
         
         return deviceInfo;
