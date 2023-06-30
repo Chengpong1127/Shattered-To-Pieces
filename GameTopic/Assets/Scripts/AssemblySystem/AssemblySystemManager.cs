@@ -15,18 +15,23 @@ public class AssemblySystemManager : MonoBehaviour
 
         componentMover = gameObject.AddComponent<ComponentMover>();
         componentMover.inputManager = new InputManager();
-        componentMover.OnComponentDraggedTo += handleComponentDraggedTo;
+        componentMover.OnComponentDraggedStart += handleComponentDraggedStart;
+        componentMover.OnComponentDraggedEnd += handleComponentDraggedEnd;
+    }
+    private void handleComponentDraggedStart(IGameComponent draggedComponent, Vector2 targetPosition)
+    {
+        draggedComponent.DisconnectFromParent();
     }
 
 
-    private void handleComponentDraggedTo(IGameComponent component, Vector2 targetPosition)
+    private void handleComponentDraggedEnd(IGameComponent draggedComponent, Vector2 targetPosition)
     {
-        var (availableParent, connectorInfo) = component.GetAvailableConnection();
-        if (availableParent == null || availableParent == component){
+        var (availableParent, connectorInfo) = draggedComponent.GetAvailableConnection();
+        if (availableParent == null || availableParent == draggedComponent){
             Debug.Log("No available connection");
             return;
         }
-        component.ConnectToParent(availableParent, connectorInfo);
+        draggedComponent.ConnectToParent(availableParent, connectorInfo);
         
     }
 

@@ -8,7 +8,8 @@ public class ComponentMover: MonoBehaviour
 {
     public InputManager inputManager;
     public Camera mainCamera;
-    public event Action<IGameComponent, Vector2> OnComponentDraggedTo;
+    public event Action<IGameComponent, Vector2> OnComponentDraggedStart;
+    public event Action<IGameComponent, Vector2> OnComponentDraggedEnd;
 
 
     private IGameComponent draggedComponent = null;
@@ -31,6 +32,8 @@ public class ComponentMover: MonoBehaviour
         Vector2 mousePosition = Mouse.current.position.ReadValue();
         draggedComponent = getGameComponentUnderMouse(mousePosition);
         isDragging = true;
+        var worldPoint = mainCamera.ScreenToWorldPoint(mousePosition);
+        OnComponentDraggedStart?.Invoke(draggedComponent, worldPoint);
     }
     private void DragCanceled(InputAction.CallbackContext ctx)
     {
@@ -41,7 +44,7 @@ public class ComponentMover: MonoBehaviour
         }
         var mousePosition = Mouse.current.position.ReadValue();
         var targetPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-        OnComponentDraggedTo?.Invoke(draggedComponent, targetPosition);
+        OnComponentDraggedEnd?.Invoke(draggedComponent, targetPosition);
         draggedComponent = null;
     }
 
