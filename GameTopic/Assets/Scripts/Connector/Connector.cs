@@ -208,20 +208,7 @@ public class Connector : MonoBehaviour, IConnector
 
     public void Disconnect()
     {
-        //if (linkedTarget == null)
-        //{
-        //    // �S���s�����ؼСA�����h�X�禡
-        //    return;
-        //}
-
-        //// �����p��
-        //selfJoint.enabled = false;
-
-        //// �q�w�s�����ؼФ��Ѱ��s��
-        //linkedTarget.UnLinkToTarget();
-
-        //// �M���ޥ�
-        //linkedTarget = null;
+        UnlinkToConnector();
     }
 
     ICollection<IConnector> IConnector.GetChildConnectors()
