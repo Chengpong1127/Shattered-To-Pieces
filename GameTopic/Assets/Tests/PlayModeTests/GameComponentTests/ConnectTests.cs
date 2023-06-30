@@ -15,7 +15,7 @@ public class ConnectTests
         var c1 = componentFactory.CreateGameComponentObject(0);
         var c2 = componentFactory.CreateGameComponentObject(0);
         var info = new ConnectionInfo{ linkedTargetID = 1, connectorRotation = 0f };
-        c2.Connect(c1, info);
+        c2.ConnectToParent(c1, info);
 
         var c2_info = c2.DumpInfo();
         Assert.AreEqual(c2_info.connectorInfo.linkedTargetID, 1);

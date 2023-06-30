@@ -14,8 +14,8 @@ public interface IGameComponent
     public int ComponentGUID { get; set; }
     public IConnector Connector { get; }
     public ICoreComponent CoreComponent { get; }
-    public void Connect(IGameComponent otherComponent, ConnectionInfo info);
-    public void Disconnect();
+    public void ConnectToParent(IGameComponent otherComponent, ConnectionInfo info);
+    public void DisconnectFromParent();
     public (IGameComponent, ConnectionInfo) GetAvailableConnection();
     public GameComponentInfo DumpInfo();
 }

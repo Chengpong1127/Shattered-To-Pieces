@@ -15,16 +15,16 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit
     public Transform CoreTransform { get => transform; }
     public int ComponentGUID { get; set; }
 
-    public void Connect(IGameComponent otherComponent, ConnectionInfo info)
+    public void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
     {
-        Debug.Assert(otherComponent != null);
+        Debug.Assert(parentComponent != null);
         Debug.Assert(connector != null);
-        Debug.Assert(otherComponent.Connector != null);
-        connector.ConnectToComponent(otherComponent.Connector, info);
+        Debug.Assert(parentComponent.Connector != null);
+        connector.ConnectToComponent(parentComponent.Connector, info);
         
     }
 
-    public void Disconnect()
+    public void DisconnectFromParent()
     {
         connector.Disconnect();
     }
@@ -37,12 +37,12 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit
     }
 
     public (IGameComponent, ConnectionInfo) GetAvailableConnection(){
-        var (connectorPoint, targetID) = connector.GetAvailableConnector();
-        Debug.Log($"Available connector: {connectorPoint}, {targetID}");
-        if (connectorPoint == null){
+        var (availableParent, targetID) = connector.GetAvailableConnector();
+        Debug.Log($"Available connector: {availableParent}, {targetID}");
+        if (availableParent == null){
             return (null, ConnectionInfo.NoConnection());
         }
-        var gameComponent = (connectorPoint as MonoBehaviour).GetComponentInParent<GameComponent>();
+        var gameComponent = (availableParent as MonoBehaviour).GetComponentInParent<GameComponent>();
         Debug.Assert(gameComponent != null);
         var newInfo = new ConnectionInfo{
             linkedTargetID = targetID,
