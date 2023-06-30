@@ -7,12 +7,6 @@ public class TempSaver : MonoBehaviour
     private Device DeviceObject;
     private DeviceInfo DefaultInfo(){
         var info = new DeviceInfo();
-        info.GameComponentInfoMap.Add(0, new GameComponentInfo{
-            componentGUID = 0,
-            connectionInfo = new ConnectionInfo{
-                linkedTargetID = -1,
-            }
-        });
         return info;
     }
     private void Start() {
@@ -37,8 +31,8 @@ public class TempSaver : MonoBehaviour
     }
     public void Save(){
         Debug.Log("Save");
-        infos[currentDeviceID] = DeviceObject.DumpDevice();
-        infos[currentDeviceID].printAllInfo();
+        //infos[currentDeviceID] = DeviceObject.DumpDevice();
+        //infos[currentDeviceID].printAllInfo();
     }
     public void Clear(){
         Debug.Log("Clear");

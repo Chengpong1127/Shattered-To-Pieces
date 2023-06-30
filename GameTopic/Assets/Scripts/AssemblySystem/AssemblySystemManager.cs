@@ -17,6 +17,8 @@ public class AssemblySystemManager : MonoBehaviour
         componentMover.inputManager = new InputManager();
         componentMover.OnComponentDraggedStart += handleComponentDraggedStart;
         componentMover.OnComponentDraggedEnd += handleComponentDraggedEnd;
+
+        ControlledDevice = createSimpleDevice();
     }
     private void handleComponentDraggedStart(IGameComponent draggedComponent, Vector2 targetPosition)
     {
@@ -35,12 +37,22 @@ public class AssemblySystemManager : MonoBehaviour
         
     }
 
+    private IDevice createSimpleDevice(){
+        var device = new GameObject("Device").AddComponent<Device>();
+        device.GameComponentFactory = GameComponentFactory;
+        var initComponent = GameComponentFactory.CreateGameComponentObject(0);
+        device.RootGameComponent = initComponent;
+        return device;
+    }
+
     private DeviceInfo defaultDeviceInfo(){
         var info = new DeviceInfo();
-        info.GameComponentInfoMap.Add(0, new GameComponentInfo{
-            componentGUID = 0,
-            connectionInfo = ConnectionInfo.NoConnection()
-        });
+
         return info;
+    }
+
+    public void PrintDeviceInfo(){
+        var info = ControlledDevice.Dump();
+        Debug.Log(info);
     }
 }

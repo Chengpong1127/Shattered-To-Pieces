@@ -1,7 +1,5 @@
 
 
-public interface IDevice{
-    public void LoadDevice(DeviceInfo info);
-    public DeviceInfo DumpDevice();
+public interface IDevice: IDumpable{
     public IGameComponent RootGameComponent { set; get; }
 }

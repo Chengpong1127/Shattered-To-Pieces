@@ -16,7 +16,7 @@ public class DeviceFactory : MonoBehaviour, IGameComponentFactory
     private void Awake()
     {
         prefabCounts = new Dictionary<String, int>();
-        playerController =new PlayerController();
+        //playerController =new PlayerController();
         if (Instance == null)
         {
             Instance = this;

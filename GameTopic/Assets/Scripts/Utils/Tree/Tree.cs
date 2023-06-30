@@ -1,56 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class Tree
 {
     public ITreeNode root;
     public Tree(ITreeNode root){
         this.root = root;
     }
-    public void Traverse(){
-        Traverse(root);
-    }
-    public void Traverse(ITreeNode node){
-        Debug.Log(node);
-        foreach (var child in node.GetChildren()){
-            Traverse(child);
-        }
-    }
 
-    public void TraverseBFS(){
+    public void TraverseBFS(Action<ITreeNode> action){
         var queue = new Queue<ITreeNode>();
         queue.Enqueue(root);
         while (queue.Count > 0){
             var node = queue.Dequeue();
-            Debug.Log(node);
+            action(node);
             foreach (var child in node.GetChildren()){
                 queue.Enqueue(child);
             }
         }
     }
 
-    public void TraverseDFS(){
+    public void TraverseDFS(Action<ITreeNode> action){
         var stack = new Stack<ITreeNode>();
         stack.Push(root);
         while (stack.Count > 0){
             var node = stack.Pop();
-            Debug.Log(node);
+            action(node);
             foreach (var child in node.GetChildren()){
                 stack.Push(child);
             }
         }
     }
 
-    public void Dump(){
-        Dump(root);
-    }
+    public TreeInfo Dump(){
+        var treeInfo = new TreeInfo();
+        var localID = 0;
+        var tempDictionary = new Dictionary<ITreeNode, int>();
+        treeInfo.rootID = localID++;
+        TraverseBFS((node) => {
+            var gameComponent = node;
+            treeInfo.NodeInfoMap.Add(localID, gameComponent.Dump());
+            tempDictionary.Add(node, localID);
+            localID++;
+        });
 
-    public void Dump(ITreeNode node){
-        Debug.Log(node);
-        foreach (var child in node.GetChildren()){
-            Dump(child);
+        foreach (var nodePair in treeInfo.NodeInfoMap){
+            var node = nodePair.Value as ITreeNode;
+            var parent = node.GetParent();
+            if (parent == null){
+                continue;
+            }
+            var parentID = tempDictionary[parent];
+            var nodeID = tempDictionary[node];
+            treeInfo.EdgeInfoList.Add((parentID, nodeID));
         }
+
+        return treeInfo;
+
     }
+    
     
 }

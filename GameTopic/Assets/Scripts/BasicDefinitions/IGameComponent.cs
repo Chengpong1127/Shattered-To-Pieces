@@ -7,7 +7,7 @@ using System;
 
 
 // Description: Defines the basic interfaces for the game components.
-public interface IGameComponent
+public interface IGameComponent: ITreeNode
 {
     public Transform CoreTransform { get; }
     public bool IsInDevice { get; }
@@ -17,7 +17,6 @@ public interface IGameComponent
     public void ConnectToParent(IGameComponent otherComponent, ConnectionInfo info);
     public void DisconnectFromParent();
     public (IGameComponent, ConnectionInfo) GetAvailableConnection();
-    public GameComponentInfo DumpInfo();
 }
 
 public interface IConnector

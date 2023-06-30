@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
-public class DeviceInfo
+public class DeviceInfo: IInfo
 {
 
-    public Dictionary<int, GameComponentInfo> GameComponentInfoMap = new Dictionary<int, GameComponentInfo>();
+    public Dictionary<int, GameComponentInfo> gameComponentInfoMap;
+    
     public void Decode(string json)
     {
         var info = JsonConvert.DeserializeObject<DeviceInfo>(json);
@@ -16,26 +17,9 @@ public class DeviceInfo
         var result = JsonConvert.SerializeObject(this);
         return result;
     }
-    public void printAllInfo(){
-        if (GameComponentInfoMap == null){
-            Debug.Log("GameComponentInfoMap is null");
-            return;
-        }
-        if (GameComponentInfoMap.Count == 0){
-            Debug.Log("GameComponentInfoMap is empty");
-        }
-        //print component number
-        Debug.Log("GameComponentInfoMap.Count: " + GameComponentInfoMap.Count);
-        //print component info
-        foreach (var componentInfo in GameComponentInfoMap){
-            Debug.Log("componentGUID: " + componentInfo.Value.componentGUID + " ComponentID: "+ componentInfo.Key + "ConnectorInfo: " + " " + componentInfo.Value.connectionInfo.linkedTargetID);
-
-        }
-
-    }
 }
 
-public struct GameComponentInfo{
+public struct GameComponentInfo: IInfo{
     public int componentGUID;
     public ConnectionInfo connectionInfo;
     
@@ -43,7 +27,7 @@ public struct GameComponentInfo{
 }
 
 // dump or load info for IConnector
-public struct ConnectionInfo
+public struct ConnectionInfo: IInfo
 {
     public int linkedTargetID;
     public float connectorRotation;
@@ -54,4 +38,18 @@ public struct ConnectionInfo
             connectorRotation = 0f
         };
     }
+}
+
+public interface IDumpable{
+    public IInfo Dump();
+}
+
+public class TreeInfo: IInfo{
+    public int rootID;
+    public Dictionary<int, object> NodeInfoMap = new Dictionary<int, object>();
+    public List<(int, int)> EdgeInfoList = new List<(int, int)>();
+}
+
+public interface IInfo{
+
 }

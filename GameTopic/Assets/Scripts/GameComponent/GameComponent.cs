@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class GameComponent : MonoBehaviour, IGameComponent, IUnit, ITreeNode
+public class GameComponent : MonoBehaviour, IGameComponent, IUnit
 {
     public int UnitID { get; set; }
     private IConnector connector;
@@ -29,7 +29,7 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit, ITreeNode
         connector.Disconnect();
     }
 
-    public GameComponentInfo DumpInfo(){
+    public IInfo Dump(){
         var info = new GameComponentInfo();
         info.componentGUID = ComponentGUID;
         info.connectionInfo = connector.Dump();

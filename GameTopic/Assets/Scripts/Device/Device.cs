@@ -5,38 +5,20 @@ using System;
 
 public class Device: MonoBehaviour, IDevice
 {
-    public Dictionary<int, IGameComponent> ComponentMap {get; private set; } = new Dictionary<int, IGameComponent>();
     public IGameComponentFactory GameComponentFactory;
     public IGameComponent RootGameComponent { set; get; }
-    public void LoadDevice(DeviceInfo info){
-        createAllComponents(info.GameComponentInfoMap);
-        connectAllComponents(info.GameComponentInfoMap);
+    private Tree tree;
+    private void Start() {
+        tree = new Tree(RootGameComponent);
     }
 
-    public DeviceInfo DumpDevice(){
-        var info = new DeviceInfo();
-        foreach(var componentID in ComponentMap.Keys){
-            var component = ComponentMap[componentID];
-            info.GameComponentInfoMap.Add(componentID,component.DumpInfo());
-        }
-        return info;
+
+    public void LoadDevice(DeviceInfo info){
+        
     }
-    private void createAllComponents(Dictionary<int, GameComponentInfo> GameComponentInfoMap){
-        Debug.Assert(GameComponentFactory != null, "GameComponentFactory is null");
-        foreach(var pair in GameComponentInfoMap){
-            var componentID = pair.Key;
-            var info = pair.Value;
-            var component = GameComponentFactory.CreateGameComponentObject(info.componentGUID);
-            Debug.Assert(component != null);
-        }
-    }
-    private void connectAllComponents(Dictionary<int, GameComponentInfo> GameComponentInfoMap){
-        foreach(var pair in GameComponentInfoMap){
-            if(pair.Value.connectionInfo.IsConnected == false){
-                continue;
-            }
-            var info = pair.Value;
-            //SetConnection(info.connectorInfo);
-        }
+
+    public IInfo Dump()
+    {
+        return tree.Dump();
     }
 }
