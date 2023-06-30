@@ -9,7 +9,7 @@ public class PlayerController : IPlayerController
 
     private DeviceInfo deviceInfo;
     private Dictionary<String, int> ComponentCounts;
-    private string playerId="1";//³oÃä¥ý¹w³]id¬O1
+    private string playerId="1";//ï¿½oï¿½ï¿½ï¿½ï¿½wï¿½]idï¿½O1
     public PlayerController()
     {
         deviceInfo = new DeviceInfo();
@@ -39,7 +39,6 @@ public class PlayerController : IPlayerController
         string jsonFileName = "DeviceInfo.json";
         string jsonPath = Path.Combine(Application.dataPath, "Scripts", jsonFileName);
         string json = File.ReadAllText(jsonPath);
-        deviceInfo.Decode(json);
         //foreach (var component in deviceInfo.ComponentList)
         //{
         //    Debug.Log("Component ID: " + component.GameComponentID);

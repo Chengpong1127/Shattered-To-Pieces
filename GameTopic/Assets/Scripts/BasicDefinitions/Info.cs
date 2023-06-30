@@ -4,22 +4,10 @@ using Newtonsoft.Json;
 using UnityEngine;
 public class DeviceInfo: IInfo
 {
-
-    public Dictionary<int, GameComponentInfo> gameComponentInfoMap;
-    
-    public void Decode(string json)
-    {
-        var info = JsonConvert.DeserializeObject<DeviceInfo>(json);
-    }
-
-    public string Encode()
-    {
-        var result = JsonConvert.SerializeObject(this);
-        return result;
-    }
+    public TreeInfo treeInfo;
 }
 
-public struct GameComponentInfo: IInfo{
+public class GameComponentInfo: IInfo{
     public int componentGUID;
     public ConnectionInfo connectionInfo;
     
@@ -27,7 +15,7 @@ public struct GameComponentInfo: IInfo{
 }
 
 // dump or load info for IConnector
-public struct ConnectionInfo: IInfo
+public class ConnectionInfo: IInfo
 {
     public int linkedTargetID;
     public float connectorRotation;
@@ -40,8 +28,14 @@ public struct ConnectionInfo: IInfo
     }
 }
 
-public interface IDumpable{
-    public IInfo Dump();
+public interface IDumpable<T> where T: IInfo{
+    public T Dump();
+}
+public interface ILoadable<T> where T: IInfo{
+    public void Load(T info);
+}
+public interface IStorable: IDumpable<IInfo>, ILoadable<IInfo>{
+
 }
 
 public class TreeInfo: IInfo{

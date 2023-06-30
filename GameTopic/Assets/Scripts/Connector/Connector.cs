@@ -199,11 +199,18 @@ public class Connector : MonoBehaviour, IConnector
         int resTid = detectedTarget == null ? -1 : detectedTarget.targetID;
         return (resIC, resTid);
     }
-    public ConnectionInfo Dump() {
+    public IInfo Dump() {
         var res = new ConnectionInfo();
         res.linkedTargetID = linkedTarget == null ? -1 : linkedTarget.targetID;
         res.connectorRotation = this.gameObject.transform.rotation.eulerAngles.z;
         return res;
+    }
+    public void Load(IInfo info)
+    {
+        Debug.Assert(info is ConnectionInfo);
+        var res = info as ConnectionInfo;
+        
+        
     }
 
     public void Disconnect()
@@ -220,4 +227,36 @@ public class Connector : MonoBehaviour, IConnector
     {
         throw new NotImplementedException();
     }
+
+    GameObject IConnector.GetTargetObjByIndex(int targetID)
+    {
+        throw new NotImplementedException();
+    }
+
+    void IConnector.ConnectToComponent(IConnector connectorPoint, ConnectionInfo info)
+    {
+        throw new NotImplementedException();
+    }
+
+    void IConnector.UnlinkToConnector()
+    {
+        throw new NotImplementedException();
+    }
+
+    void IConnector.Disconnect()
+    {
+        throw new NotImplementedException();
+    }
+
+    void IConnector.SetConnectMode(bool connectMode)
+    {
+        throw new NotImplementedException();
+    }
+
+    (IConnector, int) IConnector.GetAvailableConnector()
+    {
+        throw new NotImplementedException();
+    }
+
+    
 }

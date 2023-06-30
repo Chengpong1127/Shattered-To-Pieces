@@ -1,5 +1,5 @@
 
 
-public interface IDevice: IDumpable{
+public interface IDevice: IStorable{
     public IGameComponent RootGameComponent { set; get; }
 }

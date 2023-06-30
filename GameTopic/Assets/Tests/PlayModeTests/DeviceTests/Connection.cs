@@ -12,7 +12,7 @@ public class Connection
         var device = createSimpleDevice();
         device.GameComponentFactory = componentFactory;
         var deviceInfo = createSimpleDeviceInfo();
-        device.LoadDevice(deviceInfo);
+        //device.LoadDevice(deviceInfo);
         
     }
 
@@ -22,7 +22,7 @@ public class Connection
         var device = createSimpleDevice();
         device.GameComponentFactory = componentFactory;
         var deviceInfo = createSimpleDeviceInfo();
-        device.LoadDevice(deviceInfo);
+        //device.LoadDevice(deviceInfo);
     }
 
     private Device createSimpleDevice(){

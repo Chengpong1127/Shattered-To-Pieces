@@ -14,12 +14,13 @@ public interface IGameComponent: ITreeNode
     public int ComponentGUID { get; set; }
     public IConnector Connector { get; }
     public ICoreComponent CoreComponent { get; }
-    public void ConnectToParent(IGameComponent otherComponent, ConnectionInfo info);
+    public void ConnectToParent(IGameComponent parentComponent);
+    public void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info);
     public void DisconnectFromParent();
     public (IGameComponent, ConnectionInfo) GetAvailableConnection();
 }
 
-public interface IConnector
+public interface IConnector: IStorable
 {
     public IGameComponent GameComponent { get; }
     GameObject GetTargetObjByIndex(int targetID);
@@ -28,7 +29,6 @@ public interface IConnector
     void UnlinkToConnector();
     void Disconnect();
     public void SetConnectMode(bool connectMode);
-    ConnectionInfo Dump();
     (IConnector, int) GetAvailableConnector(); // return the first available connector and target ID
 
     public IList<IConnector> GetChildConnectors();
