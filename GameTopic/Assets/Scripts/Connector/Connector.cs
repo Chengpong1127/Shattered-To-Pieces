@@ -220,37 +220,106 @@ public class Connector : MonoBehaviour, IConnector
 
     IList<IConnector> IConnector.GetChildConnectors()
     {
-        throw new NotImplementedException();
+        List<IConnector> childConnectors = new List<IConnector>();
+
+
+        Transform[] childTransforms = transform.GetComponentsInChildren<Transform>(true);
+
+
+        foreach (Transform childTransform in childTransforms)
+        {
+            IConnector childConnector = childTransform.GetComponent<IConnector>();
+            if (childConnector != null)
+            {
+                childConnectors.Add(childConnector);
+            }
+        }
+
+        return childConnectors;
+
     }
 
     IConnector IConnector.GetParentConnector()
     {
-        throw new NotImplementedException();
+        Transform parentTransform = transform.parent;
+        if (parentTransform == null)
+        {
+            return null;
+        }
+
+        IConnector parentConnector = parentTransform.GetComponentInParent<IConnector>();
+        return parentConnector;
     }
 
     GameObject IConnector.GetTargetObjByIndex(int targetID)
     {
-        throw new NotImplementedException();
+        if (targetID < 0 || targetID >= transform.childCount)
+        {
+            return null; 
+        }
+
+        Transform childTransform = transform.GetChild(targetID);
+        if (childTransform == null)
+        {
+            return null; 
+        }
+
+        return childTransform.gameObject;
     }
 
     void IConnector.ConnectToComponent(IConnector connectorPoint, ConnectionInfo info)
     {
-        throw new NotImplementedException();
+        if (connectorPoint == null)
+        {
+            return;
+        }
+
+        Connector connector = connectorPoint as Connector;
+        if (connector == null)
+        {
+            return;
+        }
+
+        if (connector.targetList == null || connector.targetList.Count <= info.linkedTargetID)
+        {
+            return;
+        }
+
+        Target target = connector.targetList[(int)info.linkedTargetID];
+        if (!target.LinkToTarget(this))
+        {
+            return;
+        }
+
+        this.transform.rotation = Quaternion.Euler(0, 0, info.connectorRotation);
+        linkedTarget = target;
+
+        linkedTarget.ownerConnector.attachHandler.AddListener(this.SwitchAttach);
+        this.selfJoint.connectedBody = connector.selfRigidbody;
+        this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
+        this.selfJoint.enabled = true;
     }
 
     void IConnector.UnlinkToConnector()
     {
-        throw new NotImplementedException();
+        UnlinkToConnector();
     }
 
     void IConnector.Disconnect()
     {
-        throw new NotImplementedException();
+        UnlinkToConnector();
     }
 
     void IConnector.SetConnectMode(bool connectMode)
     {
-        throw new NotImplementedException();
+        if (connectMode)
+        {
+            SwitchCombine(true);
+        }
+        else
+        {
+            SwitchCombine(false);
+        }
     }
 
     (IConnector, int) IConnector.GetAvailableConnector()
