@@ -58,6 +58,8 @@ public class Connector : MonoBehaviour, IConnector
             target.ownerConnector = this;
             target.targetID = tid++;
         });
+
+        GameComponent = GetComponentInParent<IGameComponent>();
     }
 
     // use for demo

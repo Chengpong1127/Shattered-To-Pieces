@@ -57,7 +57,11 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit
     }
 
     public ITreeNode GetParent(){
-        return connector.GetParentConnector().GameComponent as ITreeNode;
+        var parentConnector = connector.GetParentConnector();
+        if (parentConnector == null){
+            return null;
+        }
+        return parentConnector.GameComponent as ITreeNode;
     }
     public IList<ITreeNode> GetChildren(){
         var childConnectors = connector.GetChildConnectors();

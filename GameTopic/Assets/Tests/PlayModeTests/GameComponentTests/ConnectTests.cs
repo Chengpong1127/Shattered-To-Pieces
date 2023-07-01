@@ -18,8 +18,9 @@ public class ConnectTests
         Assert.AreEqual(componentGUID, info.componentGUID);
         Assert.AreNotEqual(c.Connector, null);
         Assert.AreEqual(info.connectionInfo, ConnectionInfo.NoConnection());
-
     }
+
+
     [Test]
     [TestCase(0, 0, 0f)]
     [TestCase(0, 1, 0f)]
@@ -42,8 +43,49 @@ public class ConnectTests
 
         c1.DisconnectFromParent();
         info = c1.Dump() as GameComponentInfo;
-        
+
         Assert.AreEqual(info.connectionInfo, ConnectionInfo.NoConnection());
+    }
+    [Test]
+    public void GetParentTest(){
+        var componentFactory = new GameObject().AddComponent<DeviceFactory>();
+        var c1 = componentFactory.CreateGameComponentObject(0);
+        var c2 = componentFactory.CreateGameComponentObject(0);
+        var c3 = componentFactory.CreateGameComponentObject(0);
+        var connectionInfo = new ConnectionInfo{
+            linkedTargetID = 0,
+            connectorRotation = 0f
+        };
+        c1.ConnectToParent(c2, connectionInfo);
+        c2.ConnectToParent(c3, connectionInfo);
+        Assert.True(c1.GetParent() == c2);
+        Assert.AreEqual(c2.GetParent(), c3);
+        c1.DisconnectFromParent();
+        Assert.True(c1.GetParent() == null);
+    }
+    [Test]
+    public void GetChildrenTest(){
+        var componentFactory = new GameObject().AddComponent<DeviceFactory>();
+        var c1 = componentFactory.CreateGameComponentObject(0);
+        var c2 = componentFactory.CreateGameComponentObject(0);
+        var c3 = componentFactory.CreateGameComponentObject(0);
+        var connectionInfo = new ConnectionInfo{
+            linkedTargetID = 0,
+            connectorRotation = 0f
+        };
+        c1.ConnectToParent(c2, connectionInfo);
+        c2.ConnectToParent(c3, connectionInfo);
+        Assert.True(c1.GetChildren().Count == 0);
+        Assert.True(c2.GetChildren().Count == 1);
+        Assert.True(c3.GetChildren().Count == 1);
+        Assert.True(c2.GetChildren()[0] == c1);
+        Assert.True(c3.GetChildren()[0] == c2);
+        c1.DisconnectFromParent();
+        Assert.True(c1.GetChildren().Count == 0);
+        Assert.True(c2.GetChildren().Count == 0);
+        Assert.True(c3.GetChildren().Count == 1);
+        Assert.True(c3.GetChildren()[0] == c2);
+        
     }
 
 }
