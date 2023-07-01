@@ -18,7 +18,7 @@ public class Connector : MonoBehaviour, IConnector
 {
     public ConnectorState currState { get; set; } = ConnectorState.INITIAL;
 
-    IGameComponent IConnector.GameComponent => throw new NotImplementedException();
+    public IGameComponent GameComponent { get; private set; }
 
     UnityEvent<bool> attachHandler = new UnityEvent<bool>();
     Vector2 movePosition;
@@ -200,8 +200,11 @@ public class Connector : MonoBehaviour, IConnector
         return (resIC, resTid);
     }
     public IInfo Dump() {
+        if (linkedTarget == null) {
+            return ConnectionInfo.NoConnection();
+        }
         var res = new ConnectionInfo();
-        res.linkedTargetID = linkedTarget == null ? -1 : linkedTarget.targetID;
+        res.linkedTargetID = linkedTarget.targetID;
         res.connectorRotation = this.gameObject.transform.rotation.eulerAngles.z;
         return res;
     }
@@ -298,16 +301,6 @@ public class Connector : MonoBehaviour, IConnector
         this.selfJoint.connectedBody = connector.selfRigidbody;
         this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
         this.selfJoint.enabled = true;
-    }
-
-    void IConnector.UnlinkToConnector()
-    {
-        UnlinkToConnector();
-    }
-
-    void IConnector.Disconnect()
-    {
-        UnlinkToConnector();
     }
 
     void IConnector.SetConnectMode(bool connectMode)

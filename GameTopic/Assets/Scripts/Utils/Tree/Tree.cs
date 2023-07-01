@@ -39,6 +39,9 @@ public class Tree
         var tempDictionary = new Dictionary<ITreeNode, int>();
         treeInfo.rootID = localID++;
         TraverseBFS((node) => {
+            Debug.Log(node);
+            return;
+
             var gameComponent = node;
             treeInfo.NodeInfoMap.Add(localID, gameComponent.Dump());
             tempDictionary.Add(node, localID);

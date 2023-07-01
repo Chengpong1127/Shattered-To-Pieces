@@ -7,16 +7,43 @@ using UnityEngine.TestTools;
 public class ConnectTests
 {
 
-
+    
     [Test]
-    public void ConnectSingleComponentTest()
+    [TestCase(0)]
+    public void CreateSingleComponentTest(int componentGUID)
+    {
+        var componentFactory = new GameObject().AddComponent<DeviceFactory>();
+        var c = componentFactory.CreateGameComponentObject(componentGUID);
+        var info = c.Dump() as GameComponentInfo;
+        Assert.AreEqual(componentGUID, info.componentGUID);
+        Assert.AreNotEqual(c.Connector, null);
+        Assert.AreEqual(info.connectionInfo, ConnectionInfo.NoConnection());
+
+    }
+    [Test]
+    [TestCase(0, 0, 0f)]
+    [TestCase(0, 1, 0f)]
+    [TestCase(0, 2, 0f)]
+    [TestCase(0, 3, 0f)]
+    [TestCase(0, 0, 90f)]
+    public void SingleConnectionTest(int componentGUID, int targetID, float connectorRotation)
     {
         var componentFactory = new GameObject().AddComponent<DeviceFactory>();
         var c1 = componentFactory.CreateGameComponentObject(0);
         var c2 = componentFactory.CreateGameComponentObject(0);
-        var info = new ConnectionInfo{ linkedTargetID = 1, connectorRotation = 0f };
-        c2.ConnectToParent(c1, info);
+        var connectionInfo = new ConnectionInfo{
+            linkedTargetID = targetID,
+            connectorRotation = connectorRotation
+        };
+        c1.ConnectToParent(c2, connectionInfo);
+        var info = c1.Dump() as GameComponentInfo;
+        Assert.AreEqual(targetID, info.connectionInfo.linkedTargetID);
+        Assert.AreEqual(connectorRotation, info.connectionInfo.connectorRotation);
 
-        var c2_info = c2.Dump();
+        c1.DisconnectFromParent();
+        info = c1.Dump() as GameComponentInfo;
+        
+        Assert.AreEqual(info.connectionInfo, ConnectionInfo.NoConnection());
     }
+
 }

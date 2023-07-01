@@ -17,7 +17,6 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit
 
     public void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
     {
-        Debug.Log("info: " + info.linkedTargetID);
         Debug.Assert(parentComponent != null);
         Debug.Assert(connector != null);
         Debug.Assert(parentComponent.Connector != null);
@@ -64,6 +63,9 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit
         var childConnectors = connector.GetChildConnectors();
         var children = new List<ITreeNode>();
         foreach (var childConnector in childConnectors){
+            if (childConnector == null){
+                continue;
+            }
             children.Add(childConnector.GameComponent as ITreeNode);
         }
         return children;

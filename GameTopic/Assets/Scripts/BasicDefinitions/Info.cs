@@ -26,6 +26,12 @@ public class ConnectionInfo: IInfo
             connectorRotation = 0f
         };
     }
+    public override bool Equals(object obj)
+    {
+        return obj is ConnectionInfo info &&
+               linkedTargetID == info.linkedTargetID &&
+               connectorRotation == info.connectorRotation;
+    }
 }
 
 public interface IDumpable<T> where T: IInfo{
@@ -40,7 +46,7 @@ public interface IStorable: IDumpable<IInfo>, ILoadable<IInfo>{
 
 public class TreeInfo: IInfo{
     public int rootID;
-    public Dictionary<int, object> NodeInfoMap = new Dictionary<int, object>();
+    public Dictionary<int, IInfo> NodeInfoMap = new Dictionary<int, IInfo>();
     public List<(int, int)> EdgeInfoList = new List<(int, int)>();
 }
 

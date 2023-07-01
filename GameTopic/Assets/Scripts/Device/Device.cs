@@ -33,11 +33,11 @@ public class Device: MonoBehaviour, IDevice
 
         var rootComponent = tempDictionary[deviceInfo.treeInfo.rootID];
 
-        connectAllComponents(tempDictionary, deviceInfo.treeInfo.EdgeInfoList);
+        connectAllComponents(tempDictionary, deviceInfo.treeInfo.NodeInfoMap, deviceInfo.treeInfo.EdgeInfoList);
         
     }
 
-    private Dictionary<int, IGameComponent> createAllComponents(Dictionary<int, object> nodes){
+    private Dictionary<int, IGameComponent> createAllComponents(Dictionary<int, IInfo> nodes){
         var tempDictionary = new Dictionary<int, IGameComponent>();
         foreach (var (key, value) in nodes){
             var componentInfo = value as GameComponentInfo;
@@ -47,11 +47,13 @@ public class Device: MonoBehaviour, IDevice
         return tempDictionary;
     }
 
-    private void connectAllComponents(Dictionary<int, IGameComponent> nodes, List<(int, int)> edges){
+    private void connectAllComponents(Dictionary<int, IGameComponent> nodes, Dictionary<int, IInfo> infos, List<(int, int)> edges){
         foreach (var (from, to) in edges){
             var fromComponent = nodes[from];
             var toComponent = nodes[to];
-            //toComponent.ConnectToParent(fromComponent);
+            var toInfo = infos[to] as GameComponentInfo;
+            
+            toComponent.ConnectToParent(fromComponent, toInfo.connectionInfo);
         }
     }
 
