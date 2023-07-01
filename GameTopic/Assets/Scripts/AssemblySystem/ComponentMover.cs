@@ -33,7 +33,11 @@ public class ComponentMover: MonoBehaviour
         draggedComponent = getGameComponentUnderMouse(mousePosition);
         isDragging = true;
         var worldPoint = mainCamera.ScreenToWorldPoint(mousePosition);
-        OnComponentDraggedStart?.Invoke(draggedComponent, worldPoint);
+        if (draggedComponent != null)
+        {
+            OnComponentDraggedStart?.Invoke(draggedComponent, worldPoint);
+        }
+        
     }
     private void DragCanceled(InputAction.CallbackContext ctx)
     {
