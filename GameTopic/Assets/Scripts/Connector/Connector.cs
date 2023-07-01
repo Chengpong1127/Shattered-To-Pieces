@@ -227,34 +227,32 @@ public class Connector : MonoBehaviour, IConnector
     {
         List<IConnector> childConnectors = new List<IConnector>();
 
+        IConnector[] childComponents = GetComponentsInChildren<IConnector>(true);
 
-        Transform[] childTransforms = transform.GetComponentsInChildren<Transform>(true);
-
-
-        foreach (Transform childTransform in childTransforms)
-        {
-            IConnector childConnector = childTransform.GetComponent<IConnector>();
-            if (childConnector != null)
+        foreach (IConnector childConnector in childComponents) { 
+        
+            if (childConnector != this)
             {
                 childConnectors.Add(childConnector);
             }
         }
 
         return childConnectors;
-
     }
+
 
     IConnector IConnector.GetParentConnector()
     {
-        Transform parentTransform = transform.parent;
-        if (parentTransform == null)
+        IConnector parentConnector = GetComponentInParent<IConnector>();
+
+        if (parentConnector == this)
         {
             return null;
         }
 
-        IConnector parentConnector = parentTransform.GetComponentInParent<IConnector>();
         return parentConnector;
     }
+
 
     GameObject IConnector.GetTargetObjByIndex(int targetID)
     {
