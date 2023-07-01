@@ -321,11 +321,4 @@ public class Connector : MonoBehaviour, IConnector
             SwitchCombine(false);
         }
     }
-
-    (IConnector, int) IConnector.GetAvailableConnector()
-    {
-        throw new NotImplementedException();
-    }
-
-    
 }
