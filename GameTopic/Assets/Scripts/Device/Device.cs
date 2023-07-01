@@ -7,13 +7,10 @@ public class Device: MonoBehaviour, IDevice
 {
     public IGameComponentFactory GameComponentFactory;
     public IGameComponent RootGameComponent { set; get; }
-    private Tree tree;
-    private void Start() {
-        tree = new Tree(RootGameComponent);
-    }
 
     public IInfo Dump()
     {
+        var tree = new Tree(RootGameComponent);
         var deviceInfo = new DeviceInfo();
         deviceInfo.treeInfo = tree.Dump();
         return deviceInfo;

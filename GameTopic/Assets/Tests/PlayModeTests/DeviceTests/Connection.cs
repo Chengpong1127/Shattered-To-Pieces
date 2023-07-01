@@ -7,32 +7,15 @@ using UnityEngine.TestTools;
 public class Connection
 {
     [Test]
-    public void CreateDeviceConnectionTest(){
+    public void CreateDeviceTest(){
         var componentFactory = new GameObject().AddComponent<DeviceFactory>();
-        var device = createSimpleDevice();
+        var device = new GameObject().AddComponent<Device>();
         device.GameComponentFactory = componentFactory;
-        var deviceInfo = createSimpleDeviceInfo();
-        //device.LoadDevice(deviceInfo);
+        var c1 = componentFactory.CreateGameComponentObject(0);
+
+        device.RootGameComponent = c1;
+        var info = device.Dump() as DeviceInfo;
+        Assert.True(info != null);
         
-    }
-
-    [Test]
-    public void SetConnectionTest(){
-        var componentFactory = new GameObject().AddComponent<DeviceFactory>();
-        var device = createSimpleDevice();
-        device.GameComponentFactory = componentFactory;
-        var deviceInfo = createSimpleDeviceInfo();
-        //device.LoadDevice(deviceInfo);
-    }
-
-    private Device createSimpleDevice(){
-        var device = new GameObject("Device").AddComponent<Device>();
-        return device;
-    }
-
-    private DeviceInfo createSimpleDeviceInfo(){
-        var deviceInfo = new DeviceInfo();
-        
-        return deviceInfo;
     }
 }
