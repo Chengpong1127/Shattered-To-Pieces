@@ -30,6 +30,8 @@ public interface IConnector: IDumpable<IInfo>
 
     public IList<IConnector> GetChildConnectors();
     public IConnector GetParentConnector();
+    public IList<IConnector> ChildConnectors { get; set; }
+    public IConnector ParentConnector { get; set; }
 }
 
 public interface ICoreComponent

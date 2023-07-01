@@ -18,6 +18,9 @@ public class Connector : MonoBehaviour, IConnector
 {
     public ConnectorState currState { get; set; } = ConnectorState.INITIAL;
 
+    public IList<IConnector> ChildConnectors { get; set; }
+
+    public IConnector ParentConnector { get; set; }
     public IGameComponent GameComponent { get; private set; }
 
     UnityEvent<bool> attachHandler = new UnityEvent<bool>();
@@ -60,6 +63,7 @@ public class Connector : MonoBehaviour, IConnector
         });
 
         GameComponent = GetComponentInParent<IGameComponent>();
+        ChildConnectors = new List<IConnector>();
     }
 
     // use for demo
@@ -221,36 +225,19 @@ public class Connector : MonoBehaviour, IConnector
     public void Disconnect()
     {
         UnlinkToConnector();
+        if(ParentConnector!=null)ParentConnector.ChildConnectors.Remove(this as IConnector);
+        ParentConnector = null;
     }
 
     IList<IConnector> IConnector.GetChildConnectors()
     {
-        List<IConnector> childConnectors = new List<IConnector>();
-
-        IConnector[] childComponents = GetComponentsInChildren<IConnector>(true);
-
-        foreach (IConnector childConnector in childComponents) { 
-        
-            if (childConnector != this)
-            {
-                childConnectors.Add(childConnector);
-            }
-        }
-
-        return childConnectors;
+        return ChildConnectors;
     }
 
 
     IConnector IConnector.GetParentConnector()
     {
-        IConnector parentConnector = GetComponentInParent<IConnector>();
-
-        if (parentConnector == this)
-        {
-            return null;
-        }
-
-        return parentConnector;
+        return ParentConnector;
     }
 
 
@@ -272,35 +259,11 @@ public class Connector : MonoBehaviour, IConnector
 
     void IConnector.ConnectToComponent(IConnector connectorPoint, ConnectionInfo info)
     {
-        if (connectorPoint == null)
-        {
-            return;
-        }
-
-        Connector connector = connectorPoint as Connector;
-        if (connector == null)
-        {
-            return;
-        }
-
-        if (connector.targetList == null || connector.targetList.Count <= info.linkedTargetID)
-        {
-            return;
-        }
-
-        Target target = connector.targetList[(int)info.linkedTargetID];
-        if (!target.LinkToTarget(this))
-        {
-            return;
-        }
-
-        this.transform.rotation = Quaternion.Euler(0, 0, info.connectorRotation);
-        linkedTarget = target;
-
-        linkedTarget.ownerConnector.attachHandler.AddListener(this.SwitchAttach);
-        this.selfJoint.connectedBody = connector.selfRigidbody;
-        this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
-        this.selfJoint.enabled = true;
+        detectedTarget = connectorPoint?.GetTargetObjByIndex((int)info.linkedTargetID)?.gameObject.GetComponent<Target>();
+        if (detectedTarget == null) {  return; }
+        this.LinkToConnector(detectedTarget.ownerConnector, info);
+        this.ParentConnector = connectorPoint;
+        connectorPoint.ChildConnectors.Add(this as IConnector);
     }
 
     void IConnector.SetConnectMode(bool connectMode)

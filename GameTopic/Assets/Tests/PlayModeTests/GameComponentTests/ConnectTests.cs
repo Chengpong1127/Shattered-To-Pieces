@@ -63,12 +63,15 @@ public class ConnectTests
         };
         c1.ConnectToParent(c2, connectionInfo);
         c2.ConnectToParent(c3, connectionInfo);
+        Assert.True(c1.GetParent() != null);
         Assert.True(c1.GetParent() == c2);
         Assert.AreEqual(c2.GetParent(), c3);
         c1.DisconnectFromParent();
         Assert.True(c1.GetParent() == null);
     }
-    [Test]
+
+
+        [Test]
     public void GetChildrenTest(){
         var componentFactory = new GameObject().AddComponent<DeviceFactory>();
         var c1 = componentFactory.CreateGameComponentObject(0);
