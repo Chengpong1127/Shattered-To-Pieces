@@ -18,6 +18,10 @@ public class ConnectTests
         Assert.AreEqual(componentGUID, info.componentGUID);
         Assert.AreNotEqual(c.Connector, null);
         Assert.AreEqual(info.connectionInfo, ConnectionInfo.NoConnection());
+        Assert.AreEqual(c.GetParent(), null);
+        Assert.AreEqual(c.GetChildren().Count, 0);
+        Assert.True(c.Connector != null);
+
     }
 
 
@@ -45,6 +49,7 @@ public class ConnectTests
         info = c1.Dump() as GameComponentInfo;
 
         Assert.AreEqual(info.connectionInfo, ConnectionInfo.NoConnection());
+        
     }
     [Test]
     public void GetParentTest(){
