@@ -15,22 +15,13 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit
     public Transform CoreTransform { get => transform; }
     public int ComponentGUID { get; set; }
 
-    public void ConnectToParent(IGameComponent parentComponent)
-    {
-        Debug.Assert(parentComponent != null);
-        Debug.Assert(connector != null);
-        Debug.Assert(parentComponent.Connector != null);
-        var componentInfo = Dump() as GameComponentInfo;
-        var info = componentInfo.connectionInfo;
-        connector.ConnectToComponent(parentComponent.Connector, info);
-    }
     public void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
     {
+        Debug.Log("info: " + info.linkedTargetID);
         Debug.Assert(parentComponent != null);
         Debug.Assert(connector != null);
         Debug.Assert(parentComponent.Connector != null);
-        Load(info);
-        ConnectToParent(parentComponent);
+        connector.ConnectToComponent(parentComponent.Connector, info);
     }
 
     public void DisconnectFromParent()
@@ -49,7 +40,7 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit
         Debug.Assert(info is GameComponentInfo);
         var componentInfo = info as GameComponentInfo;
         ComponentGUID = componentInfo.componentGUID;
-        connector.Load(componentInfo.connectionInfo);
+        //connector.Load(componentInfo.connectionInfo);
     }
 
     public (IGameComponent, ConnectionInfo) GetAvailableConnection(){

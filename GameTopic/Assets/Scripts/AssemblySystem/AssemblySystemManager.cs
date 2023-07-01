@@ -30,7 +30,6 @@ public class AssemblySystemManager : MonoBehaviour
     {
         var (availableParent, connectorInfo) = draggedComponent.GetAvailableConnection();
         if (availableParent == null || availableParent == draggedComponent){
-            Debug.Log("No available connection");
             return;
         }
         draggedComponent.ConnectToParent(availableParent, connectorInfo);

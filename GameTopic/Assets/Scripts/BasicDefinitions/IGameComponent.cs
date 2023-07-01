@@ -14,13 +14,12 @@ public interface IGameComponent: ITreeNode
     public int ComponentGUID { get; set; }
     public IConnector Connector { get; }
     public ICoreComponent CoreComponent { get; }
-    public void ConnectToParent(IGameComponent parentComponent);
     public void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info);
     public void DisconnectFromParent();
     public (IGameComponent, ConnectionInfo) GetAvailableConnection();
 }
 
-public interface IConnector: IStorable
+public interface IConnector: IDumpable<IInfo>
 {
     public IGameComponent GameComponent { get; }
     GameObject GetTargetObjByIndex(int targetID);

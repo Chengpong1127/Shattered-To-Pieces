@@ -51,7 +51,7 @@ public class Device: MonoBehaviour, IDevice
         foreach (var (from, to) in edges){
             var fromComponent = nodes[from];
             var toComponent = nodes[to];
-            toComponent.ConnectToParent(fromComponent);
+            //toComponent.ConnectToParent(fromComponent);
         }
     }
 
