@@ -39,12 +39,10 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit
         Debug.Assert(info is GameComponentInfo);
         var componentInfo = info as GameComponentInfo;
         ComponentGUID = componentInfo.componentGUID;
-        //connector.Load(componentInfo.connectionInfo);
     }
 
     public (IGameComponent, ConnectionInfo) GetAvailableConnection(){
         var (availableParent, targetID) = connector.GetAvailableConnector();
-        Debug.Log($"Available connector: {availableParent}, {targetID}");
         if (availableParent == null){
             return (null, ConnectionInfo.NoConnection());
         }

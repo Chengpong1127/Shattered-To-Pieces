@@ -77,6 +77,7 @@ public class ConnectTests
         var c1 = componentFactory.CreateGameComponentObject(0);
         var c2 = componentFactory.CreateGameComponentObject(0);
         var c3 = componentFactory.CreateGameComponentObject(0);
+        var c4 = componentFactory.CreateGameComponentObject(0);
         var connectionInfo = new ConnectionInfo{
             linkedTargetID = 0,
             connectorRotation = 0f
@@ -93,7 +94,31 @@ public class ConnectTests
         Assert.True(c2.GetChildren().Count == 0);
         Assert.True(c3.GetChildren().Count == 1);
         Assert.True(c3.GetChildren()[0] == c2);
+
+        c1.DisconnectFromParent();
+        Assert.True(c1.GetChildren().Count == 0);
+        c2.DisconnectFromParent();
+        Assert.True(c2.GetChildren().Count == 0);
+        c3.DisconnectFromParent();
+        Assert.True(c3.GetChildren().Count == 0);
+        c4.DisconnectFromParent();
+        Assert.True(c4.GetChildren().Count == 0);
+
+        c1.ConnectToParent(c2, connectionInfo);
+        c3.ConnectToParent(c2, connectionInfo);
+        c4.ConnectToParent(c2, connectionInfo);
+        Assert.True(c1.GetChildren().Count == 0);
+        Assert.True(c2.GetChildren().Count == 3);
+        Assert.True(c3.GetChildren().Count == 0);
+        Assert.True(c4.GetChildren().Count == 0);
         
+        Assert.AreEqual(c2.GetChildren()[0], c1);
+        Assert.AreEqual(c2.GetChildren()[1], c3);
+        Assert.AreEqual(c2.GetChildren()[2], c4);
+
+        Assert.AreEqual(c1.GetParent(), c2);
+        Assert.AreEqual(c3.GetParent(), c2);
+        Assert.AreEqual(c4.GetParent(), c2);
     }
 
 }

@@ -1,55 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class TempSaver : MonoBehaviour
 {
     private Device DeviceObject;
+    private IGameComponentFactory GameComponentFactory;
+    private IInfo SavedInfo;
     private DeviceInfo DefaultInfo(){
         var info = new DeviceInfo();
+        info.treeInfo = new TreeInfo();
+        info.treeInfo.rootID = 0;
+        info.treeInfo.NodeInfoMap = new Dictionary<int, IInfo>();
+        info.treeInfo.EdgeInfoList = new List<(int, int)>();
+        info.treeInfo.NodeInfoMap.Add(0, new GameComponentInfo{
+            componentGUID = 0,
+            connectionInfo = ConnectionInfo.NoConnection()
+        });
         return info;
     }
     private void Start() {
-        for(int i = 0; i < 3; i++){
-            infos[i] = DefaultInfo();
-        }
-        load(0);
+        GameComponentFactory = gameObject.AddComponent<DeviceFactory>();
+        Clear();
+        
     }
-    public void Create0(){
-        var component = GameComponentFactory.Instance.CreateComponent(0);
-        component.transform.position = new Vector3(0, 5, 0);
+    public void Create(int id){
+        var component = GameComponentFactory.CreateGameComponentObject(id);
     }
-    public void Create1(){
-        var component = GameComponentFactory.Instance.CreateComponent(1);
-        component.transform.position = new Vector3(0, 5, 0);
-    }
-    private int currentDeviceID = 0;
-    private DeviceInfo[] infos = new DeviceInfo[3];
-    public void ChooseInfo(int id){
-        currentDeviceID = id;
-        load(id);
-    }
+
     public void Save(){
         Debug.Log("Save");
-        //infos[currentDeviceID] = DeviceObject.DumpDevice();
-        //infos[currentDeviceID].printAllInfo();
+        SavedInfo = DeviceObject.Dump();
+        Debug.Log(toJson(SavedInfo));
     }
     public void Clear(){
         Debug.Log("Clear");
-        infos[currentDeviceID] = DefaultInfo();
-        load(currentDeviceID);
+        SavedInfo = DefaultInfo();
+        load();
     }
-    public void load(int id){
+    public void load(){
         if(DeviceObject != null){
             Destroy(DeviceObject.gameObject);
             Destroy(DeviceObject);
         }
             
         CleanAllGameComponent();
-        var info = infos[id];
-        //var gameobj = DeviceFactory.Instance.CreateDevice(info);
-       // DeviceObject = gameobj.GetComponent<Device>();
-       // gameobj.transform.position = new Vector3(0, 5, 0);
+        DeviceObject = new GameObject().AddComponent<Device>();
+        DeviceObject.GameComponentFactory = GameComponentFactory;
+        DeviceObject.Load(SavedInfo);
     }
     private void CleanAllGameComponent(){
         var Devices = GameObject.FindObjectsOfType<Device>();
@@ -61,5 +60,9 @@ public class TempSaver : MonoBehaviour
             Destroy(component.gameObject);
         }
         
+    }
+
+    private string toJson(IInfo info){
+        return JsonConvert.SerializeObject(info);
     }
 }

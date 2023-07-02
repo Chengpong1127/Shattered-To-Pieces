@@ -10,6 +10,7 @@ public class Device: MonoBehaviour, IDevice
 
     public IInfo Dump()
     {
+        Debug.Assert(RootGameComponent != null, "RootGameComponent is null");
         var tree = new Tree(RootGameComponent);
         var deviceInfo = new DeviceInfo();
         deviceInfo.treeInfo = tree.Dump();
@@ -28,13 +29,13 @@ public class Device: MonoBehaviour, IDevice
             component.Load(componentInfo);
         }
 
-        var rootComponent = tempDictionary[deviceInfo.treeInfo.rootID];
+        RootGameComponent = tempDictionary[deviceInfo.treeInfo.rootID];
 
         connectAllComponents(tempDictionary, deviceInfo.treeInfo.NodeInfoMap, deviceInfo.treeInfo.EdgeInfoList);
-        
     }
 
     private Dictionary<int, IGameComponent> createAllComponents(Dictionary<int, IInfo> nodes){
+        Debug.Assert(GameComponentFactory != null, "GameComponentFactory is null");
         var tempDictionary = new Dictionary<int, IGameComponent>();
         foreach (var (key, value) in nodes){
             var componentInfo = value as GameComponentInfo;

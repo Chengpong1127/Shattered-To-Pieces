@@ -18,7 +18,7 @@ public class AssemblySystemManager : MonoBehaviour
         componentMover.OnComponentDraggedStart += handleComponentDraggedStart;
         componentMover.OnComponentDraggedEnd += handleComponentDraggedEnd;
 
-        ControlledDevice = createSimpleDevice();
+        //ControlledDevice = createSimpleDevice();
     }
     private void handleComponentDraggedStart(IGameComponent draggedComponent, Vector2 targetPosition)
     {
@@ -51,7 +51,17 @@ public class AssemblySystemManager : MonoBehaviour
     }
 
     public void PrintDeviceInfo(){
-        var info = ControlledDevice.Dump();
-        Debug.Log(info);
+        var info = ControlledDevice.Dump() as DeviceInfo;
+
+        foreach (var (key, value) in info.treeInfo.NodeInfoMap){
+            Debug.Log(key);
+            Debug.Log(value);
+        }
+
+        foreach (var (from, to) in info.treeInfo.EdgeInfoList){
+            Debug.Log(from);
+            Debug.Log(to);
+        }
+
     }
 }

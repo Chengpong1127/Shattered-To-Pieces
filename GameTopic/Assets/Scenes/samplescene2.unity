@@ -822,9 +822,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1115408708}
-        m_TargetAssemblyTypeName: DeviceFactory, Scripts
-        m_MethodName: onClickCreate
+      - m_Target: {fileID: 1115408706}
+        m_TargetAssemblyTypeName: TempSaver, Scripts
+        m_MethodName: Create
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -956,9 +956,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1115408710}
-        m_TargetAssemblyTypeName: AssemblySystemManager, Scripts
-        m_MethodName: PrintDeviceInfo
+      - m_Target: {fileID: 1115408706}
+        m_TargetAssemblyTypeName: TempSaver, Scripts
+        m_MethodName: Save
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1090,9 +1090,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1115408708}
-        m_TargetAssemblyTypeName: DeviceFactory, Scripts
-        m_MethodName: CreateDevice
+      - m_Target: {fileID: 1115408706}
+        m_TargetAssemblyTypeName: TempSaver, Scripts
+        m_MethodName: load
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1692,9 +1692,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1115408708}
-        m_TargetAssemblyTypeName: DeviceFactory, Scripts
-        m_MethodName: onClickCreate
+      - m_Target: {fileID: 1115408706}
+        m_TargetAssemblyTypeName: TempSaver, Scripts
+        m_MethodName: Create
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2095,9 +2095,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1115408708}
-        m_TargetAssemblyTypeName: DeviceFactory, Scripts
-        m_MethodName: onClickCreate
+      - m_Target: {fileID: 1115408706}
+        m_TargetAssemblyTypeName: TempSaver, Scripts
+        m_MethodName: Create
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -37,10 +37,8 @@ public class Tree
         var treeInfo = new TreeInfo();
         var localID = 0;
         var tempDictionary = new Dictionary<ITreeNode, int>();
-        treeInfo.rootID = localID++;
+        treeInfo.rootID = localID;
         TraverseBFS((node) => {
-            Debug.Log(node);
-            return;
 
             var gameComponent = node;
             treeInfo.NodeInfoMap.Add(localID, gameComponent.Dump());
@@ -48,14 +46,13 @@ public class Tree
             localID++;
         });
 
-        foreach (var nodePair in treeInfo.NodeInfoMap){
-            var node = nodePair.Value as ITreeNode;
+        foreach (var (node, _localID) in tempDictionary){
             var parent = node.GetParent();
             if (parent == null){
                 continue;
             }
             var parentID = tempDictionary[parent];
-            var nodeID = tempDictionary[node];
+            var nodeID = _localID;
             treeInfo.EdgeInfoList.Add((parentID, nodeID));
         }
 
