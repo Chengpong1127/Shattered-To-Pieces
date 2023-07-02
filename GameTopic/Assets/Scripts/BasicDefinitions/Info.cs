@@ -32,6 +32,14 @@ public class ConnectionInfo: IInfo
                linkedTargetID == info.linkedTargetID &&
                connectorRotation == info.connectorRotation;
     }
+    public override int GetHashCode()
+    {
+        int hashCode = 1861411795;
+        hashCode = hashCode * -1521134295 + linkedTargetID.GetHashCode();
+        hashCode = hashCode * -1521134295 + connectorRotation.GetHashCode();
+        return hashCode;
+    }
+
 }
 
 public interface IDumpable<T> where T: IInfo{
