@@ -36,10 +36,14 @@ public class TempSaver : MonoBehaviour
     }
     public void Clear(){
         Debug.Log("Clear");
-        SavedInfo = DefaultInfo();
-        load();
+
+        load(DefaultInfo());
     }
-    public void load(){
+    public void Load(){
+        Debug.Log("Load");
+        load(SavedInfo);
+    }
+    public void load(IInfo info){
         if(DeviceObject != null){
             Destroy(DeviceObject.gameObject);
             Destroy(DeviceObject);
@@ -48,7 +52,7 @@ public class TempSaver : MonoBehaviour
         CleanAllGameComponent();
         DeviceObject = new GameObject().AddComponent<Device>();
         DeviceObject.GameComponentFactory = GameComponentFactory;
-        DeviceObject.Load(SavedInfo);
+        DeviceObject.Load(info);
     }
     private void CleanAllGameComponent(){
         var Devices = GameObject.FindObjectsOfType<Device>();
