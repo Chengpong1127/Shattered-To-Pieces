@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class GameComponent : MonoBehaviour, IGameComponent, IUnit
+public class GameComponent : MonoBehaviour, IGameComponent
 {
     public int UnitID { get; set; }
     private IConnector connector;

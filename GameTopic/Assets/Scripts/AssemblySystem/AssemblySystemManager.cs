@@ -8,6 +8,13 @@ public class AssemblySystemManager : MonoBehaviour
     ComponentMover componentMover;
     public Dictionary<Guid, IGameComponent> GlobalComponentMap {get; private set; } = new Dictionary<Guid, IGameComponent>();
 
+    public void EnableDragComponents(){
+        componentMover.enabled = true;
+    }
+    public void DisableDragComponents(){
+        componentMover.enabled = false;
+    }
+
     private void Awake() {
         componentMover = gameObject.AddComponent<ComponentMover>();
         componentMover.inputManager = new InputManager();
