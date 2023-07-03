@@ -201,8 +201,20 @@ public class Connector : MonoBehaviour, IConnector
     }
     public (IConnector, int) GetAvailableConnector() {
         DetectTarget();
-        IConnector resIC = detectedTarget == null ? null : detectedTarget.ownerConnector;
-        int resTid = detectedTarget == null ? -1 : detectedTarget.targetID;
+        IConnector resIC = null;
+        int resTid = -1;
+
+        if (detectedTarget != null)
+        {
+            resIC = detectedTarget.ownerConnector;
+            resTid = detectedTarget.targetID;
+            if (resIC == this)
+            {
+                resIC = null;
+                resTid = -1;
+            }
+        }
+
         return (resIC, resTid);
     }
     public IInfo Dump() {
