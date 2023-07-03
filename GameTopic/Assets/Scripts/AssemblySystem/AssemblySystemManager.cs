@@ -11,14 +11,14 @@ public class AssemblySystemManager : MonoBehaviour
     public Dictionary<Guid, IGameComponent> GlobalComponentMap {get; private set; } = new Dictionary<Guid, IGameComponent>();
 
     private void Start() {
-        GameComponentFactory = GetComponent<IGameComponentFactory>();
+        GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
 
         componentMover = gameObject.AddComponent<ComponentMover>();
         componentMover.inputManager = new InputManager();
         componentMover.OnComponentDraggedStart += handleComponentDraggedStart;
         componentMover.OnComponentDraggedEnd += handleComponentDraggedEnd;
 
-        //ControlledDevice = createSimpleDevice();
+        ControlledDevice = createSimpleDevice();
     }
     private void handleComponentDraggedStart(IGameComponent draggedComponent, Vector2 targetPosition)
     {
@@ -29,7 +29,11 @@ public class AssemblySystemManager : MonoBehaviour
     private void handleComponentDraggedEnd(IGameComponent draggedComponent, Vector2 targetPosition)
     {
         var (availableParent, connectorInfo) = draggedComponent.GetAvailableConnection();
-        if (availableParent == null || availableParent == draggedComponent){
+        if (availableParent == null){
+            return;
+        }
+        if (availableParent == draggedComponent){
+            Debug.LogWarning("Cannot connect to self");
             return;
         }
         draggedComponent.ConnectToParent(availableParent, connectorInfo);
@@ -42,26 +46,5 @@ public class AssemblySystemManager : MonoBehaviour
         var initComponent = GameComponentFactory.CreateGameComponentObject(0);
         device.RootGameComponent = initComponent;
         return device;
-    }
-
-    private DeviceInfo defaultDeviceInfo(){
-        var info = new DeviceInfo();
-
-        return info;
-    }
-
-    public void PrintDeviceInfo(){
-        var info = ControlledDevice.Dump() as DeviceInfo;
-
-        foreach (var (key, value) in info.treeInfo.NodeInfoMap){
-            Debug.Log(key);
-            Debug.Log(value);
-        }
-
-        foreach (var (from, to) in info.treeInfo.EdgeInfoList){
-            Debug.Log(from);
-            Debug.Log(to);
-        }
-
     }
 }

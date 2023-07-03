@@ -12,7 +12,7 @@ public class ConnectTests
     [TestCase(0)]
     public void CreateSingleComponentTest(int componentGUID)
     {
-        var componentFactory = new GameObject().AddComponent<DeviceFactory>();
+        var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
         var c = componentFactory.CreateGameComponentObject(componentGUID);
         var info = c.Dump() as GameComponentInfo;
         Assert.AreEqual(componentGUID, info.componentGUID);
@@ -33,7 +33,7 @@ public class ConnectTests
     [TestCase(0, 0, 90f)]
     public void SingleConnectionTest(int componentGUID, int targetID, float connectorRotation)
     {
-        var componentFactory = new GameObject().AddComponent<DeviceFactory>();
+        var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
         var c1 = componentFactory.CreateGameComponentObject(0);
         var c2 = componentFactory.CreateGameComponentObject(0);
         var connectionInfo = new ConnectionInfo{
@@ -53,7 +53,7 @@ public class ConnectTests
     }
     [Test]
     public void GetParentTest(){
-        var componentFactory = new GameObject().AddComponent<DeviceFactory>();
+        var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
         var c1 = componentFactory.CreateGameComponentObject(0);
         var c2 = componentFactory.CreateGameComponentObject(0);
         var c3 = componentFactory.CreateGameComponentObject(0);
@@ -73,7 +73,7 @@ public class ConnectTests
 
         [Test]
     public void GetChildrenTest(){
-        var componentFactory = new GameObject().AddComponent<DeviceFactory>();
+        var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
         var c1 = componentFactory.CreateGameComponentObject(0);
         var c2 = componentFactory.CreateGameComponentObject(0);
         var c3 = componentFactory.CreateGameComponentObject(0);

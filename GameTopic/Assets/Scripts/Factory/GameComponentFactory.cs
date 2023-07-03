@@ -1,44 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class GameComponentFactory : MonoBehaviour
+using System;
+public class GameComponentFactory : MonoBehaviour, IGameComponentFactory
 {
-    public static GameComponentFactory Instance { get; private set; }
-    private void Awake()
+    private PlayerController playerController;
+    private Dictionary<String, int> prefabCounts;
+    public enum GameObjectType
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
+        Square,
+        Tri,
+        Wheel
     }
-    public GameObject ComponentPrefab0;
-    public GameObject ComponentPrefab1;
-
-    public GameObject CreateComponent(int componentGUID)
+    public IGameComponent CreateGameComponentObject(int GameObjectID)
     {
-        GameObject component;// = new GameObject();
-        if (componentGUID == 0)
-        {
-            component = Instantiate(ComponentPrefab0);
-        }
-        else if (componentGUID == 1)
-        {
-            component = Instantiate(ComponentPrefab1);
-        }
-        else{
-            Debug.LogError("Component ID not found");
-            return null;
-        }
-
-
-        var GameComponent = component.GetComponent<IGameComponent>();
-        if (GameComponent == null)
-        {
-            Debug.LogError("GameComponent not found");
-            return null;
-        }
-        GameComponent.ComponentGUID = componentGUID;
-        return component;
+        var objectName = ((GameObjectType)GameObjectID).ToString();
+        return CreateGameComponentObject(objectName);
     }
+    public IGameComponent CreateGameComponentObject(string gameComponentName)
+    {
+        GameObject prefab = Resources.Load<GameObject>(gameComponentName);
+        if (prefab != null)
+        {
+            var obj = Instantiate(prefab);
+            var component = obj.GetComponent<IGameComponent>();
+            return component;
+        }
+        else
+        {
+            Debug.LogWarning("Cannot find prefab: " + gameComponentName);
+        }
+        return null;
+    }
+
 }

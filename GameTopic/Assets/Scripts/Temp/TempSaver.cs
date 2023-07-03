@@ -21,7 +21,7 @@ public class TempSaver : MonoBehaviour
         return info;
     }
     private void Start() {
-        GameComponentFactory = gameObject.AddComponent<DeviceFactory>();
+        GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
         Clear();
         
     }

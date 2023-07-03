@@ -8,7 +8,7 @@ public class Connection
 {
     [Test]
     public void CreateDeviceTest(){
-        var componentFactory = new GameObject().AddComponent<DeviceFactory>();
+        var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
         var device = new GameObject().AddComponent<Device>();
         device.GameComponentFactory = componentFactory;
         var c1 = componentFactory.CreateGameComponentObject(0);
