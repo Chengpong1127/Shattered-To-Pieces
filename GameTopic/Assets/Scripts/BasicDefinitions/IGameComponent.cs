@@ -7,7 +7,7 @@ using System;
 
 
 // Description: Defines the basic interfaces for the game components.
-public interface IGameComponent: ITreeNode
+public interface IGameComponent: ITreeNode, IUnit
 {
     public Transform CoreTransform { get; }
     public bool IsInDevice { get; }

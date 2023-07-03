@@ -14,19 +14,31 @@ public class AssemblyRoom : MonoBehaviour
     public IDevice ControlledDevice;
     IGameComponentFactory GameComponentFactory;
     AssemblySystemManager assemblySystemManager;
+    UnitManager GameComponentsUnitManager;
 
     public AssemblyRoomMode Mode {get; private set;} = AssemblyRoomMode.ConnectionMode;
 
     private void Awake() {
         GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
         assemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
+        GameComponentsUnitManager = new UnitManager();
 
         ControlledDevice = createSimpleDevice();
+        GameComponentsUnitManager.AddUnit(ControlledDevice.RootGameComponent);
+    }
+    public void CreateNewComponent(int componentID){
+        var newComponent = GameComponentFactory.CreateGameComponentObject(componentID);
+        GameComponentsUnitManager.AddUnit(newComponent);
     }
 
-    public void SetMode(AssemblyRoomMode mode){
-        Mode = mode;
-        
+    public void SetPlayMode(){
+        Mode = AssemblyRoomMode.PlayMode;
+        assemblySystemManager.DisableDragComponents();
+    }
+
+    public void SetConnectMode(){
+        Mode = AssemblyRoomMode.ConnectionMode;
+        assemblySystemManager.EnableDragComponents();
     }
 
 

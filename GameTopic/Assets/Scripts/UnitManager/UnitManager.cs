@@ -45,5 +45,12 @@ public class UnitManager
         }
         return newID;
     }
+    public void ForEachUnit(System.Action<IUnit> action)
+    {
+        foreach (var unit in UnitMap.Values)
+        {
+            action(unit);
+        }
+    }
 
 }
