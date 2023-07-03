@@ -43,15 +43,15 @@ public class GameComponent : MonoBehaviour, IGameComponent, IUnit
 
     public (IGameComponent, ConnectionInfo) GetAvailableConnection(){
         var (availableParent, targetID) = connector.GetAvailableConnector();
+        Debug.Log("Available parent: " + availableParent + " targetID: " + targetID);
         if (availableParent == null){
             return (null, ConnectionInfo.NoConnection());
         }
-        var gameComponent = (availableParent as MonoBehaviour).GetComponentInParent<GameComponent>();
-        Debug.Assert(gameComponent != null);
+        Debug.Assert(availableParent.GameComponent != null);
         var newInfo = new ConnectionInfo{
             linkedTargetID = targetID,
         };
-        return (gameComponent, newInfo);
+        return (availableParent.GameComponent, newInfo);
     }
 
     public ITreeNode GetParent(){
