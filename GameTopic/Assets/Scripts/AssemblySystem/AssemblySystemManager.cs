@@ -5,20 +5,14 @@ using System;
 
 public class AssemblySystemManager : MonoBehaviour
 {
-    public IDevice ControlledDevice;
-    IGameComponentFactory GameComponentFactory;
     ComponentMover componentMover;
     public Dictionary<Guid, IGameComponent> GlobalComponentMap {get; private set; } = new Dictionary<Guid, IGameComponent>();
 
-    private void Start() {
-        GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
-
+    private void Awake() {
         componentMover = gameObject.AddComponent<ComponentMover>();
         componentMover.inputManager = new InputManager();
         componentMover.OnComponentDraggedStart += handleComponentDraggedStart;
         componentMover.OnComponentDraggedEnd += handleComponentDraggedEnd;
-
-        ControlledDevice = createSimpleDevice();
     }
     private void handleComponentDraggedStart(IGameComponent draggedComponent, Vector2 targetPosition)
     {
@@ -40,11 +34,4 @@ public class AssemblySystemManager : MonoBehaviour
         
     }
 
-    private IDevice createSimpleDevice(){
-        var device = new GameObject("Device").AddComponent<Device>();
-        device.GameComponentFactory = GameComponentFactory;
-        var initComponent = GameComponentFactory.CreateGameComponentObject(0);
-        device.RootGameComponent = initComponent;
-        return device;
-    }
 }
