@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.InputSystem;
 
 public enum ConnectorState {
     INITIAL,
@@ -23,6 +24,7 @@ public class Connector : MonoBehaviour, IConnector
     public IConnector ParentConnector { get; set; }
     public IGameComponent GameComponent { get; private set; }
 
+    InputManager inputManager;
     UnityEvent<bool> attachHandler = new UnityEvent<bool>();
     Vector2 movePosition;
 
@@ -47,7 +49,10 @@ public class Connector : MonoBehaviour, IConnector
         Debug.Assert(selfRigidbody);
         Debug.Assert(selfCollider);
         Debug.Assert(selfJoint);
-
+        inputManager = new InputManager();
+        inputManager.menu.Enable();
+        inputManager.menu.Drag.performed += Drag;
+        inputManager.menu.Drag.canceled += Drag;
         linkedTarget = null;
         selectedObjDist = float.PositiveInfinity;
 
@@ -66,6 +71,17 @@ public class Connector : MonoBehaviour, IConnector
         ChildConnectors = new List<IConnector>();
     }
 
+    public void Drag(InputAction.CallbackContext ctx)
+    {
+        //if (ctx.performed)
+        //{
+        //    SwitchSelecting(true);
+        //}
+        //else if (ctx.canceled)
+        //{
+        //    SwitchSelecting(false);
+        //}
+    }
     // use for demo
     private void Update() {
         if (Input.GetKey(KeyCode.Z)) {
@@ -82,7 +98,15 @@ public class Connector : MonoBehaviour, IConnector
             SwitchCombine(false);
         }
     }
+    private void OnMouseDown()
+    {      
+        SwitchSelecting(true);
+    }
 
+    private void OnMouseUp()
+    {
+        SwitchSelecting(false);
+    }
     // State chang function
     void SwitchCombine(bool b) {
         if (!b) { SwitchSelecting(false); }
@@ -92,7 +116,7 @@ public class Connector : MonoBehaviour, IConnector
 
         if (!b) { currState = ConnectorState.INITIAL; }
     }
-    void SwitchSelecting(bool b) {
+    public void SwitchSelecting(bool b) {
         if (currState != ConnectorState.SELECT && currState != ConnectorState.COMBINE) { return; }
         currState = ConnectorState.SELECT;
 
@@ -147,20 +171,27 @@ public class Connector : MonoBehaviour, IConnector
         linkedTarget.ownerConnector.attachHandler.RemoveListener(this.SwitchAttach);
         linkedTarget = null;
     }
-    public void DetectTarget() {
+    public void DetectTarget()
+    {
         GameObject selectedTargetObj = null;
         selectedObjDist = float.PositiveInfinity;
         selfCollider.OverlapCollider(targetLayerFilter, collisionResult);
 
-        collisionResult.ForEach(c => {
+        collisionResult.ForEach(c =>
+        {
             compareObjDist = selfCollider.Distance(c).distance;
-            if (compareObjDist < selectedObjDist) {
+            if (compareObjDist < selectedObjDist&&c.gameObject!=gameObject&&!c.gameObject.transform.IsChildOf(transform))
+            {
                 selectedTargetObj = c.gameObject;
             }
         });
 
         detectedTarget = selectedTargetObj?.GetComponent<Target>();
     }
+
+
+
+
 
     // connector cintrol
     public void TrackPositionUpdate(Vector2 pos) {
@@ -251,7 +282,6 @@ public class Connector : MonoBehaviour, IConnector
     {
         return ParentConnector;
     }
-
 
     GameObject IConnector.GetTargetObjByIndex(int targetID)
     {
