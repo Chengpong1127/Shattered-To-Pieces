@@ -72,6 +72,14 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
         return children;
     }
+    public void SetAssemblyMode(bool assemblyMode){
+        Debug.Assert(connector != null);
+        connector.SetSelectingMode(assemblyMode);
+    }
+    public void SetAvailableForConnection(bool available){
+        Debug.Assert(connector != null);
+        connector.SetDisplayTargets(available);
+    }
 
     private void Awake()
     {

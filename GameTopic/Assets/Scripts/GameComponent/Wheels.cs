@@ -12,8 +12,9 @@ public class Wheels : MonoBehaviour, ICoreComponent
         Debug.Assert(wheelJoint != null, "wheelJoint is null");
         AllAbilities = new Dictionary<string, Ability>
         {
-            { "turnRight", new Ability("turnRight", TurnRight) },
-            { "turnLeft", new Ability("turnLeft", TurnLeft) }
+            {"TurnLeft", new Ability("TurnLeft", TurnLeft)},
+            {"TurnRight", new Ability("TurnRight", TurnRight)},
+            {"Stop", new Ability("Stop", Stop)},
         };
     }
     private void TurnRight()
@@ -21,7 +22,7 @@ public class Wheels : MonoBehaviour, ICoreComponent
         wheelJoint.useMotor = true;
         wheelJoint.motor = new JointMotor2D
         {
-            motorSpeed = -MoveForce,
+            motorSpeed = MoveForce,
             maxMotorTorque = 10000
         };
     }
@@ -31,9 +32,13 @@ public class Wheels : MonoBehaviour, ICoreComponent
         wheelJoint.useMotor = true;
         wheelJoint.motor = new JointMotor2D
         {
-            motorSpeed = MoveForce,
+            motorSpeed = -MoveForce,
             maxMotorTorque = 10000
         };
+    }
+
+    private void Stop(){
+        wheelJoint.useMotor = false;
     }
 }
 

@@ -17,11 +17,11 @@ public class TempButtonGenerator : MonoBehaviour
             int index = i; // Create a local variable to capture the current value of i
             button.GetComponent<Button>().onClick.AddListener(() => abilities[index].action());
             button.GetComponentInChildren<TMP_Text>().text = abilities[i].name;
-            button.transform.position = new Vector3(0 + i * 220, 100, 0);
+            button.transform.position = new Vector3(100, 600 - i * 50, 0);
             buttons.Add(button);
         }
     }
-    private void clearAllButtons(){
+    public void clearAllButtons(){
         foreach(var button in buttons){
             Destroy(button);
         }

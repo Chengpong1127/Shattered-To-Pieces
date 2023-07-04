@@ -24,6 +24,8 @@ public class AssemblyRoom : MonoBehaviour
         assemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
         GameComponentsUnitManager = new UnitManager();
 
+
+        assemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
         ControlledDevice = createSimpleDevice();
         GameComponentsUnitManager.AddUnit(ControlledDevice.RootGameComponent);
         tempButtonGenerator = gameObject.GetComponent<TempButtonGenerator>();
@@ -32,18 +34,19 @@ public class AssemblyRoom : MonoBehaviour
         var newComponent = GameComponentFactory.CreateGameComponentObject(componentID);
         GameComponentsUnitManager.AddUnit(newComponent);
 
-        newComponent.CoreTransform.position = new Vector3(0, 5, 0);
+        newComponent.CoreTransform.position = new Vector3(0, 0, 0);
     }
 
     public void SetPlayMode(){
         Mode = AssemblyRoomMode.PlayMode;
-        assemblySystemManager.DisableDragComponents();
+        assemblySystemManager.DisableAssemblyComponents();
         tempButtonGenerator.GenerateButtons(ControlledDevice.getAbilityList());
     }
 
     public void SetConnectMode(){
+        tempButtonGenerator.clearAllButtons();
         Mode = AssemblyRoomMode.ConnectionMode;
-        assemblySystemManager.EnableDragComponents();
+        assemblySystemManager.EnableAssemblyComponents();
     }
 
 
