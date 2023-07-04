@@ -26,12 +26,14 @@ public interface IConnector: IDumpable<IInfo>
     void ConnectToComponent(IConnector connectorPoint, ConnectionInfo info);
     void Disconnect();
     public void SetConnectMode(bool connectMode);
+    public void SetSelectMode(bool selectMode);
     (IConnector, int) GetAvailableConnector(); // return the first available connector and target ID
 
     public IList<IConnector> GetChildConnectors();
     public IConnector GetParentConnector();
     public IList<IConnector> ChildConnectors { get; set; }
     public IConnector ParentConnector { get; set; }
+
 }
 
 public interface ICoreComponent

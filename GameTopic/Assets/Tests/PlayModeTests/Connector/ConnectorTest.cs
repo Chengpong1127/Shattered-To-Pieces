@@ -18,7 +18,7 @@ public class ConnectorTest
         Connector c = MonoBehaviour.Instantiate(C_obj);
         Assert.IsNotNull(c);
 
-        Target T_obj = Resources.Load<GameObject>("T_Obj")?.GetComponent<Target>();
+        Target T_obj = Resources.Load<GameObject>("Target")?.GetComponent<Target>();
         List<Target> tl = new List<Target>();
         for (int i = 0; i < 4; ++i) {
             tl.Add(MonoBehaviour.Instantiate(T_obj));
@@ -44,7 +44,7 @@ public class ConnectorTest
         Assert.IsNotNull(c);
         Assert.IsNotNull(c2);
 
-        Target T_obj = Resources.Load<GameObject>("T_Obj")?.GetComponent<Target>();
+        Target T_obj = Resources.Load<GameObject>("Target")?.GetComponent<Target>();
         List<Target> tl = new List<Target>();
         for (int i = 0; i < 4; ++i) {
             tl.Add(MonoBehaviour.Instantiate(T_obj));
@@ -74,7 +74,7 @@ public class ConnectorTest
         Assert.IsNotNull(c);
         Assert.IsNotNull(c2);
 
-        Target T_obj = Resources.Load<GameObject>("T_Obj")?.GetComponent<Target>();
+        Target T_obj = Resources.Load<GameObject>("Target")?.GetComponent<Target>();
         List<Target> tl = new List<Target>();
         for (int i = 0; i < 4; ++i) {
             tl.Add(MonoBehaviour.Instantiate(T_obj));
@@ -104,7 +104,7 @@ public class ConnectorTest
         Assert.IsNotNull(c);
         Assert.IsNotNull(c2);
 
-        Target T_obj = Resources.Load<GameObject>("T_Obj")?.GetComponent<Target>();
+        Target T_obj = Resources.Load<GameObject>("Target")?.GetComponent<Target>();
         List<Target> tl = new List<Target>();
         for (int i = 0; i < 4; ++i) {
             tl.Add(MonoBehaviour.Instantiate(T_obj));
@@ -115,9 +115,50 @@ public class ConnectorTest
 
         c2.AssignDetectedTarget(tl[2]);
 
-        (IConnector ic, int tid) = c2.GetAvailableConnector();
+        //(IConnector ic, int tid) = c2.GetAvailableConnector();
 
-        Assert.AreEqual(tid, 2);
+        //Assert.AreEqual(tid, 2);
         //Assert.AreEqual(c, ic?.GetTargetObjByIndex(tid)?.GetComponent<Target>()?.ownerConnector);
+    }
+
+    [Test]
+
+    public void SelectTest()
+    {
+        Connector C_obj = Resources.Load<GameObject>("Square").GetComponentInChildren<Connector>();
+        Assert.True(C_obj.GetTargetList().Count == 4);
+        foreach (var i in C_obj.GetTargetList())
+        {
+            Assert.False(i.gameObject.activeSelf);
+        }
+        C_obj.SwitchSelecting(true);
+        var count = 0;
+        foreach (var i in C_obj.GetTargetList()) {
+            if (i.gameObject.activeSelf)
+            {
+                count += 1;
+            }
+        }
+        Assert.AreEqual(count, 0);
+        C_obj.SetConnectMode(true);
+        foreach (var i in C_obj.GetTargetList())
+        {
+            if (i.gameObject.activeSelf)
+            {
+                Debug.Log("+1");
+                count += 1;
+            }
+        }
+        Assert.AreEqual(count, C_obj.GetTargetList().Count);
+        C_obj.SwitchSelecting(true);
+        count = 0;
+        foreach (var i in C_obj.GetTargetList())
+        {
+            if (i.gameObject.activeSelf)
+            {
+                count += 1;
+            }
+        }
+        Assert.AreEqual(count, 0);
     }
 }

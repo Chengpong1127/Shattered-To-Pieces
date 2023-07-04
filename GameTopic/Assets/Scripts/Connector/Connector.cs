@@ -319,4 +319,8 @@ public class Connector : MonoBehaviour, IConnector
             SwitchCombine(false);
         }
     }
+    void IConnector.SetSelectMode(bool selectMode)
+    {
+        SwitchSelecting(selectMode);
+    }
 }
