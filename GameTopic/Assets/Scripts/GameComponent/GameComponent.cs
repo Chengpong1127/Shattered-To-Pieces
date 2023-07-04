@@ -76,7 +76,10 @@ public class GameComponent : MonoBehaviour, IGameComponent
     private void Awake()
     {
         connector = GetComponentInChildren<Connector>();
-        Debug.Assert(connector != null, "Connector not found");
-        coreComponent = null;
+        Debug.Assert(connector != null, "Connector not found at " + gameObject.name);
+        coreComponent = GetComponentInChildren<ICoreComponent>();
+        if (coreComponent == null){
+            Debug.LogWarning("Core component not found at " + gameObject.name);
+        }
     }
 }
