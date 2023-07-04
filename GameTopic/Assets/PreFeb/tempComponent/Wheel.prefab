@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1392195491703223198}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.007, y: 0.394, z: 0}
+  m_LocalPosition: {x: 0.007, y: 0.394, z: -0.66}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -94,7 +94,6 @@ GameObject:
   m_Component:
   - component: {fileID: 715885695416372310}
   - component: {fileID: 2302268447764341296}
-  - component: {fileID: 3623214633802482707}
   m_Layer: 6
   m_Name: Circle
   m_TagString: Untagged
@@ -170,22 +169,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &3623214633802482707
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6178586601143454320}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!1 &7843846250203337776
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +180,8 @@ GameObject:
   - component: {fileID: 1393285882947467407}
   - component: {fileID: 5819516346846567092}
   - component: {fileID: 4850908579361456580}
-  - component: {fileID: 6937677511328600294}
+  - component: {fileID: 2695862299148288496}
+  - component: {fileID: 497222553103557081}
   m_Layer: 6
   m_Name: Wheel
   m_TagString: Untagged
@@ -255,8 +239,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!255 &6937677511328600294
-FixedJoint2D:
+--- !u!235 &2695862299148288496
+WheelJoint2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -271,8 +255,30 @@ FixedJoint2D:
   m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
-  m_DampingRatio: 0
-  m_Frequency: 0
+  m_Suspension:
+    m_DampingRatio: 0.7
+    m_Frequency: 2
+    m_Angle: 90
+  m_UseMotor: 0
+  m_Motor:
+    m_MotorSpeed: 0
+    m_MaximumMotorForce: 10000
+--- !u!58 &497222553103557081
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7843846250203337776}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &9125824287503984889
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,6 +324,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selfRigidbody: {fileID: 4850908579361456580}
-  selfCollider: {fileID: 3623214633802482707}
-  selfJoint: {fileID: 6937677511328600294}
+  selfCollider: {fileID: 497222553103557081}
+  selfJoint: {fileID: 2695862299148288496}
   targetList: []

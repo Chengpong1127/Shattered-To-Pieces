@@ -17,6 +17,7 @@ public class AssemblySystemManager : MonoBehaviour
 
     private void Awake() {
         componentMover = gameObject.AddComponent<ComponentMover>();
+        componentMover.enabled = false;
         componentMover.inputManager = new InputManager();
         componentMover.OnComponentDraggedStart += handleComponentDraggedStart;
         componentMover.OnComponentDraggedEnd += handleComponentDraggedEnd;

@@ -10,7 +10,9 @@ public class UnitManager
     }
     public void AddUnit(IUnit unit)
     {
-        UnitMap.Add(unit.UnitID, unit);
+        int newID = GetNewUnitID();
+        unit.UnitID = newID;
+        UnitMap.Add(newID, unit);
     }
     public void RemoveUnit(IUnit unit)
     {

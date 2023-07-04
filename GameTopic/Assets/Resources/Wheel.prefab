@@ -51,26 +51,58 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2695862299148288496, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
+      propertyPath: m_Anchor.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2695862299148288496, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
+      propertyPath: m_UseMotor
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2695862299148288496, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2695862299148288496, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
+      propertyPath: m_Motor.m_MotorSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4521235674233203972, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
+      propertyPath: selfCollider
+      value: 
+      objectReference: {fileID: 3521007519410637108}
     - target: {fileID: 7843846250203337776, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
       propertyPath: m_Name
       value: Wheel
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3623214633802482707, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
---- !u!1 &7171387773446480541 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6178586601143454320, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
+--- !u!235 &1392452940046117149 stripped
+WheelJoint2D:
+  m_CorrespondingSourceObject: {fileID: 2695862299148288496, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
   m_PrefabInstance: {fileID: 3907819253612390637}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7188419509035730410
+--- !u!58 &3521007519410637108 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 497222553103557081, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
+  m_PrefabInstance: {fileID: 3907819253612390637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6548704943930997981 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7843846250203337776, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
+  m_PrefabInstance: {fileID: 3907819253612390637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4178570210049292311
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7171387773446480541}
+  m_GameObject: {fileID: 6548704943930997981}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f5b3dfda2451da6448fa1069c1c33565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wheelJoint: {fileID: 1392452940046117149}

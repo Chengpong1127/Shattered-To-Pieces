@@ -11,10 +11,11 @@ public enum AssemblyRoomMode{
 
 public class AssemblyRoom : MonoBehaviour
 {
-    public IDevice ControlledDevice;
+    public Device ControlledDevice;
     IGameComponentFactory GameComponentFactory;
     AssemblySystemManager assemblySystemManager;
     UnitManager GameComponentsUnitManager;
+    TempButtonGenerator tempButtonGenerator;
 
     public AssemblyRoomMode Mode {get; private set;} = AssemblyRoomMode.ConnectionMode;
 
@@ -25,15 +26,19 @@ public class AssemblyRoom : MonoBehaviour
 
         ControlledDevice = createSimpleDevice();
         GameComponentsUnitManager.AddUnit(ControlledDevice.RootGameComponent);
+        tempButtonGenerator = gameObject.GetComponent<TempButtonGenerator>();
     }
     public void CreateNewComponent(int componentID){
         var newComponent = GameComponentFactory.CreateGameComponentObject(componentID);
         GameComponentsUnitManager.AddUnit(newComponent);
+
+        newComponent.CoreTransform.position = new Vector3(0, 5, 0);
     }
 
     public void SetPlayMode(){
         Mode = AssemblyRoomMode.PlayMode;
         assemblySystemManager.DisableDragComponents();
+        tempButtonGenerator.GenerateButtons(ControlledDevice.getAbilityList());
     }
 
     public void SetConnectMode(){
@@ -42,7 +47,7 @@ public class AssemblyRoom : MonoBehaviour
     }
 
 
-    private IDevice createSimpleDevice(){
+    private Device createSimpleDevice(){
         var device = new GameObject("Device").AddComponent<Device>();
         device.GameComponentFactory = GameComponentFactory;
         var initComponent = GameComponentFactory.CreateGameComponentObject(0);

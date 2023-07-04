@@ -16,8 +16,6 @@ public class ComponentMover: MonoBehaviour
     private bool isDragging = false;
     private void Start() {
         inputManager.menu.Enable();
-        inputManager.menu.Drag.started += DragStarted;
-        inputManager.menu.Drag.canceled += DragCanceled;
         mainCamera = Camera.main;
     }
     private void Update() {
@@ -25,6 +23,19 @@ public class ComponentMover: MonoBehaviour
         {
             Vector2 mousePosition = Mouse.current.position.ReadValue();
             setDraggedComponentPosition(mousePosition);
+        }
+    }
+    private void OnEnable() {
+        if (inputManager != null){
+            inputManager.menu.Drag.started += DragStarted;
+            inputManager.menu.Drag.canceled += DragCanceled;
+        }
+        
+    }
+    private void OnDisable() {
+        if (inputManager != null){
+            inputManager.menu.Drag.started -= DragStarted;
+            inputManager.menu.Drag.canceled -= DragCanceled;
         }
     }
     private void DragStarted(InputAction.CallbackContext ctx)
