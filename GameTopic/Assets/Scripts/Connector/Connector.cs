@@ -91,7 +91,7 @@ public class Connector : MonoBehaviour, IConnector
             SwitchCombine(false);
         }
     }
-    public void SetDisplayTargets(bool draggingMode){
+    public void SetConnectMode(bool draggingMode){
         SwitchCombine(draggingMode);
     }
     public void SetSelectingMode(bool selectingMode){

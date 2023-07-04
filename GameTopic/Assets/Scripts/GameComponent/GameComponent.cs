@@ -78,7 +78,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
     }
     public void SetAvailableForConnection(bool available){
         Debug.Assert(connector != null);
-        connector.SetDisplayTargets(available);
+        connector.SetConnectMode(available);
     }
 
     private void Awake()

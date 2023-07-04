@@ -27,7 +27,7 @@ public interface IConnector: IDumpable<IInfo>
     GameObject GetTargetObjByIndex(int targetID);
     void ConnectToComponent(IConnector connectorPoint, ConnectionInfo info);
     void Disconnect();
-    public void SetDisplayTargets(bool display);
+    public void SetConnectMode(bool display);
     public void SetSelectingMode(bool selectingMode);
     (IConnector, int) GetAvailableConnector(); // return the first available connector and target ID
 
