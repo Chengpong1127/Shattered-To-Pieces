@@ -32,7 +32,7 @@ public class TempSaver : MonoBehaviour
     public void Save(){
         Debug.Log("Save");
         SavedInfo = DeviceObject.Dump();
-        Debug.Log(toJson(SavedInfo));
+        Debug.Log(DeviceObject.getAbilityList().Count);
     }
     public void Clear(){
         Debug.Log("Clear");

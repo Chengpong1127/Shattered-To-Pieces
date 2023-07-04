@@ -5,40 +5,64 @@ using System;
 
 public class AssemblySystemManager : MonoBehaviour
 {
-    ComponentMover componentMover;
-    public Dictionary<Guid, IGameComponent> GlobalComponentMap {get; private set; } = new Dictionary<Guid, IGameComponent>();
+    private ComponentMover componentMover;
+    public UnitManager GameComponentsUnitManager;
 
-    public void EnableDragComponents(){
+    public void EnableAssemblyComponents(){
         componentMover.enabled = true;
+        Debug.Assert(GameComponentsUnitManager != null, "GameComponentsUnitManager is null");
+        GameComponentsUnitManager.ForEachUnit((unit) => {
+            var gameComponent = unit as IGameComponent;
+            if (gameComponent != null){
+                gameComponent.SetAssemblyMode(true);
+            }
+        });
     }
-    public void DisableDragComponents(){
+    public void DisableAssemblyComponents(){
         componentMover.enabled = false;
+        Debug.Assert(GameComponentsUnitManager != null, "GameComponentsUnitManager is null");
+        GameComponentsUnitManager.ForEachUnit((unit) => {
+            var gameComponent = unit as IGameComponent;
+            if (gameComponent != null){
+                gameComponent.SetAssemblyMode(false);
+            }
+        });
     }
 
     private void Awake() {
         componentMover = gameObject.AddComponent<ComponentMover>();
+        componentMover.enabled = false;
         componentMover.inputManager = new InputManager();
         componentMover.OnComponentDraggedStart += handleComponentDraggedStart;
         componentMover.OnComponentDraggedEnd += handleComponentDraggedEnd;
     }
     private void handleComponentDraggedStart(IGameComponent draggedComponent, Vector2 targetPosition)
     {
+        Debug.Assert(draggedComponent != null, "draggedComponent is null");
         draggedComponent.DisconnectFromParent();
+        GameComponentsUnitManager.ForEachUnit((unit) => {
+            var gameComponent = unit as IGameComponent;
+            if (gameComponent != null){
+                gameComponent.SetAvailableForConnection(true);
+            }
+        });
     }
 
 
     private void handleComponentDraggedEnd(IGameComponent draggedComponent, Vector2 targetPosition)
     {
-        var (availableParent, connectorInfo) = draggedComponent.GetAvailableConnection();
-        if (availableParent == null){
-            return;
-        }
-        if (availableParent == draggedComponent){
-            Debug.LogWarning("Cannot connect to self");
-            return;
-        }
-        draggedComponent.ConnectToParent(availableParent, connectorInfo);
+        Debug.Assert(draggedComponent != null, "draggedComponent is null");
         
+        var (availableParent, connectorInfo) = draggedComponent.GetAvailableConnection();
+        if (availableParent != null){
+            draggedComponent.ConnectToParent(availableParent, connectorInfo);
+        }
+        GameComponentsUnitManager.ForEachUnit((unit) => {
+            var gameComponent = unit as IGameComponent;
+            if (gameComponent != null){
+                gameComponent.SetAvailableForConnection(false);
+            }
+        });
     }
 
 }

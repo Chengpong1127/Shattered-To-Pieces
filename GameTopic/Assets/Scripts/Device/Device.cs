@@ -55,4 +55,20 @@ public class Device: MonoBehaviour, IDevice
         }
     }
 
+    public List<Ability> getAbilityList(){
+        var abilityList = new List<Ability>();
+        var tree = new Tree(RootGameComponent);
+        tree.TraverseBFS((node) => {
+            var component = node as IGameComponent;
+            Debug.Assert(component != null);
+            if(component.CoreComponent == null)
+                return;
+            var abilities = component.CoreComponent.AllAbilities;
+            foreach (var ability in abilities){
+                abilityList.Add(ability.Value);
+            }
+        });
+        return abilityList;
+    }
+
 }

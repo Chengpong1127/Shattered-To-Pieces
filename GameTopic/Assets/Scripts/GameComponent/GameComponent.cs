@@ -72,11 +72,22 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
         return children;
     }
+    public void SetAssemblyMode(bool assemblyMode){
+        Debug.Assert(connector != null);
+        connector.SetSelectingMode(assemblyMode);
+    }
+    public void SetAvailableForConnection(bool available){
+        Debug.Assert(connector != null);
+        connector.SetDisplayTargets(available);
+    }
 
     private void Awake()
     {
         connector = GetComponentInChildren<Connector>();
-        Debug.Assert(connector != null, "Connector not found");
-        coreComponent = null;
+        Debug.Assert(connector != null, "Connector not found at " + gameObject.name);
+        coreComponent = GetComponentInChildren<ICoreComponent>();
+        if (coreComponent == null){
+            Debug.LogWarning("Core component not found at " + gameObject.name);
+        }
     }
 }

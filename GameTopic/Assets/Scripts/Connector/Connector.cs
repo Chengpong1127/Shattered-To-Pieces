@@ -91,16 +91,11 @@ public class Connector : MonoBehaviour, IConnector
             SwitchCombine(false);
         }
     }
-    public void SetConnectMode(bool connectMode){
-        if (connectMode){
-            SwitchCombine(true);
-        }else{
-            SwitchCombine(false);
-        }
+    public void SetDisplayTargets(bool draggingMode){
+        SwitchCombine(draggingMode);
     }
-    private void OnMouseDown()
-    {      
-        SwitchSelecting(true);
+    public void SetSelectingMode(bool selectingMode){
+        SwitchSelecting(selectingMode);
     }
 
     private void OnMouseUp()
@@ -306,21 +301,5 @@ public class Connector : MonoBehaviour, IConnector
         this.LinkToConnector(detectedTarget.ownerConnector, info);
         this.ParentConnector = connectorPoint;
         connectorPoint.ChildConnectors.Add(this as IConnector);
-    }
-
-    void IConnector.SetConnectMode(bool connectMode)
-    {
-        if (connectMode)
-        {
-            SwitchCombine(true);
-        }
-        else
-        {
-            SwitchCombine(false);
-        }
-    }
-    void IConnector.SetSelectMode(bool selectMode)
-    {
-        SwitchSelecting(selectMode);
     }
 }
