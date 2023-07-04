@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 715885695416372310}
   - component: {fileID: 2302268447764341296}
+  - component: {fileID: 9202249870123160984}
   m_Layer: 6
   m_Name: Circle
   m_TagString: Untagged
@@ -169,6 +170,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &9202249870123160984
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6178586601143454320}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &7843846250203337776
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,7 +198,7 @@ GameObject:
   - component: {fileID: 5819516346846567092}
   - component: {fileID: 4850908579361456580}
   - component: {fileID: 2695862299148288496}
-  - component: {fileID: 497222553103557081}
+  - component: {fileID: 7840369267717829227}
   m_Layer: 6
   m_Name: Wheel
   m_TagString: Untagged
@@ -263,22 +280,19 @@ WheelJoint2D:
   m_Motor:
     m_MotorSpeed: 0
     m_MaximumMotorForce: 10000
---- !u!58 &497222553103557081
-CircleCollider2D:
+--- !u!114 &7840369267717829227
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7843846250203337776}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5b3dfda2451da6448fa1069c1c33565, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelJoint: {fileID: 2695862299148288496}
 --- !u!1 &9125824287503984889
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,6 +338,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selfRigidbody: {fileID: 4850908579361456580}
-  selfCollider: {fileID: 497222553103557081}
+  selfCollider: {fileID: 9202249870123160984}
   selfJoint: {fileID: 2695862299148288496}
   targetList: []
