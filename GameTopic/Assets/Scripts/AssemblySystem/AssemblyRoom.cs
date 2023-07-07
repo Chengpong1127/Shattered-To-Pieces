@@ -34,7 +34,7 @@ public class AssemblyRoom : MonoBehaviour
         var newComponent = GameComponentFactory.CreateGameComponentObject(componentID);
         GameComponentsUnitManager.AddUnit(newComponent);
 
-        newComponent.CoreTransform.position = new Vector3(0, 0, 0);
+        newComponent.DragableTransform.position = new Vector3(0, 0, 0);
     }
 
     public void SetPlayMode(){

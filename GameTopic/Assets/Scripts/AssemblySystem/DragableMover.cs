@@ -4,15 +4,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 
-public class ComponentMover: MonoBehaviour
+public class DragableMover: MonoBehaviour
 {
     public InputManager inputManager;
     public Camera mainCamera;
-    public event Action<IGameComponent, Vector2> OnComponentDraggedStart;
-    public event Action<IGameComponent, Vector2> OnComponentDraggedEnd;
+    public event Action<IDragable, Vector2> OnDragStart;
+    public event Action<IDragable, Vector2> OnDragEnd;
 
 
-    private IGameComponent draggedComponent = null;
+    private IDragable draggedComponent = null;
     private bool isDragging = false;
     private void Start() {
         inputManager.menu.Enable();
@@ -22,7 +22,7 @@ public class ComponentMover: MonoBehaviour
         if (isDragging)
         {
             Vector2 mousePosition = Mouse.current.position.ReadValue();
-            setDraggedComponentPosition(mousePosition);
+            setDragablePosition(mousePosition);
         }
     }
     private void OnEnable() {
@@ -41,12 +41,12 @@ public class ComponentMover: MonoBehaviour
     private void DragStarted(InputAction.CallbackContext ctx)
     {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
-        draggedComponent = getGameComponentUnderMouse(mousePosition);
+        draggedComponent = getDragableUnderMouse(mousePosition);
         isDragging = true;
         var worldPoint = mainCamera.ScreenToWorldPoint(mousePosition);
         if (draggedComponent != null)
         {
-            OnComponentDraggedStart?.Invoke(draggedComponent, worldPoint);
+            OnDragStart?.Invoke(draggedComponent, worldPoint);
         }
         
     }
@@ -59,16 +59,16 @@ public class ComponentMover: MonoBehaviour
         }
         var mousePosition = Mouse.current.position.ReadValue();
         var targetPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-        OnComponentDraggedEnd?.Invoke(draggedComponent, targetPosition);
+        OnDragEnd?.Invoke(draggedComponent, targetPosition);
         draggedComponent = null;
     }
 
-    private IGameComponent getGameComponentUnderMouse(Vector2 mousePosition)
+    private IDragable getDragableUnderMouse(Vector2 mousePosition)
     {
         var gameObject = getGameObjectUnderMouse(mousePosition);
         if (gameObject != null)
         {
-            return gameObject.GetComponentInParent<IGameComponent>();
+            return gameObject.GetComponentInParent<IDragable>();
         }
         else{
             return null;
@@ -92,13 +92,13 @@ public class ComponentMover: MonoBehaviour
         }
     }
 
-    private void setDraggedComponentPosition(Vector2 mousePosition)
+    private void setDragablePosition(Vector2 mousePosition)
     {
         var newPosition = mainCamera.ScreenToWorldPoint(mousePosition);
         newPosition.z = 0;
         if (draggedComponent != null)
         {
-            draggedComponent.CoreTransform.position = newPosition;
+            draggedComponent.DragableTransform.position = newPosition;
         }
     }
 }
