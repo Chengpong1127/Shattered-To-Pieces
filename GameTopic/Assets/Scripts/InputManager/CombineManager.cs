@@ -13,6 +13,7 @@ public class CombineManager : MonoBehaviour
         inputManager=new InputManager();
         inputManager.menu.Enable();
         inputManager.menu.Drag.performed+=Drag;
+        inputManager.menu.Click.performed += Click;
         inputManager.menu.Drag.canceled += Drag;
     }
 
@@ -25,7 +26,13 @@ public class CombineManager : MonoBehaviour
             Debug.Log("Dragging, Mouse Position:" + mousePosition);
         }
     }
-
+    public void Click(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            Debug.Log(ctx.control.name);
+        }
+    }
     public void Drag(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
