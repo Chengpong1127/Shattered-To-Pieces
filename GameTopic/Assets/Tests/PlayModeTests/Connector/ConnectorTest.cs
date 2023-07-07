@@ -129,12 +129,13 @@ public class ConnectorTest
         Assert.True(C_obj.GetTargetList().Count == 4);
         foreach (var i in C_obj.GetTargetList())
         {
-            Assert.False(i.gameObject.activeSelf);
+            Assert.False(i.gameObject.activeInHierarchy);
         }
         C_obj.SwitchSelecting(true);
         var count = 0;
-        foreach (var i in C_obj.GetTargetList()) {
-            if (i.gameObject.activeSelf)
+        foreach (var i in C_obj.GetTargetList())
+        {
+            if (i.gameObject.activeInHierarchy)
             {
                 count += 1;
             }
@@ -143,7 +144,7 @@ public class ConnectorTest
         C_obj.SetConnectMode(true);
         foreach (var i in C_obj.GetTargetList())
         {
-            if (i.gameObject.activeSelf)
+            if (i.gameObject.activeInHierarchy)
             {
                 Debug.Log("+1");
                 count += 1;
@@ -154,7 +155,7 @@ public class ConnectorTest
         count = 0;
         foreach (var i in C_obj.GetTargetList())
         {
-            if (i.gameObject.activeSelf)
+            if (i.gameObject.activeInHierarchy)
             {
                 count += 1;
             }

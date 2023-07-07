@@ -26,7 +26,6 @@ public class Connector : MonoBehaviour, IConnector
 
     InputManager inputManager;
     UnityEvent<bool> attachHandler = new UnityEvent<bool>();
-    Vector2 movePosition;
 
     [SerializeField] Rigidbody2D selfRigidbody;
     [SerializeField] Collider2D selfCollider;
@@ -49,10 +48,6 @@ public class Connector : MonoBehaviour, IConnector
         Debug.Assert(selfRigidbody);
         Debug.Assert(selfCollider);
         Debug.Assert(selfJoint);
-        inputManager = new InputManager();
-        inputManager.menu.Enable();
-        inputManager.menu.Drag.performed += Drag;
-        inputManager.menu.Drag.canceled += Drag;
         linkedTarget = null;
         selectedObjDist = float.PositiveInfinity;
 
@@ -71,25 +66,10 @@ public class Connector : MonoBehaviour, IConnector
         ChildConnectors = new List<IConnector>();
     }
 
-    public void Drag(InputAction.CallbackContext ctx)
-    {
-        //if (ctx.performed)
-        //{
-        //    SwitchSelecting(true);
-        //}
-        //else if (ctx.canceled)
-        //{
-        //    SwitchSelecting(false);
-        //}
-    }
+
     // use for demo
     private void Update() {
-        if (Input.GetKey(KeyCode.Z)) {
-            SwitchCombine(true);
-        }
-        if (Input.GetKey(KeyCode.X)) {
-            SwitchCombine(false);
-        }
+
     }
     public void SetConnectMode(bool draggingMode){
         SwitchCombine(draggingMode);
@@ -98,10 +78,6 @@ public class Connector : MonoBehaviour, IConnector
         SwitchSelecting(selectingMode);
     }
 
-    private void OnMouseUp()
-    {
-        SwitchSelecting(false);
-    }
     // State chang function
     void SwitchCombine(bool b) {
         if (!b) { SwitchSelecting(false); }
