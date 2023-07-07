@@ -41,12 +41,3 @@ public interface ICoreComponent
 {
     Dictionary<string, Ability> AllAbilities { get; }
 }
-
-public struct Ability{
-    public string name;
-    public UnityAction action;
-    public Ability(string name, UnityAction action){
-        this.name = name;
-        this.action = action;
-    }
-}
