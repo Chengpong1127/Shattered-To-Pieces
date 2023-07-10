@@ -52,7 +52,7 @@ TextureImporter:
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: 0
+  spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -108,39 +108,35 @@ TextureImporter:
       name: base_0
       rect:
         serializedVersion: 2
-        x: 111
-        y: 110
-        width: 428
-        height: 395
+        x: 1
+        y: 2
+        width: 377
+        height: 445
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 428e32de42e7f1b41aa62ce60854174d
-      internalID: -28308899
+      spriteID: d7432dc490d26814db49cd69a33b8227
+      internalID: -100919053
       vertices: []
       indices: 
       edges: []
       weights: []
-    outline:
-    - - {x: -180, y: 217}
-      - {x: -179, y: -178}
-      - {x: 152, y: -178}
-      - {x: 248, y: 217}
+    outline: []
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      base_0: -28308899
+      base_0: -100919053
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
