@@ -13,7 +13,7 @@ public class AssemblyRoom : MonoBehaviour
 {
     public Device ControlledDevice;
     IGameComponentFactory GameComponentFactory;
-    AssemblySystemManager assemblySystemManager;
+    public AssemblySystemManager assemblySystemManager;
     UnitManager GameComponentsUnitManager;
 
     public TempAbilityInputUI tempAbilityInputUI;
