@@ -5,11 +5,12 @@ using UnityEngine;
 public class AbilityInputEntry{
     public string InputPath { get; private set; } = "";
     public const int AbilityNumber = 3;
-    public List<Ability> Abilities { get; private set; } = new List<Ability>();
+    public List<Ability> Abilities = new List<Ability>();
     public AbilityInputEntry(){
         for (int i = 0; i < AbilityNumber; i++)
         {
-            Abilities.Add(null);
+            Debug.Log("Create Empty Ability");
+            Abilities.Add(new Ability("Empty", () => {}));
         }
     }
     public void SetInputPath(string inputPath){

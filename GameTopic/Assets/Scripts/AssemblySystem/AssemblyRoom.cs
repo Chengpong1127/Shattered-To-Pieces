@@ -15,7 +15,9 @@ public class AssemblyRoom : MonoBehaviour
     IGameComponentFactory GameComponentFactory;
     AssemblySystemManager assemblySystemManager;
     UnitManager GameComponentsUnitManager;
-    TempButtonGenerator tempButtonGenerator;
+
+    public TempAbilityInputUI tempAbilityInputUI;
+    
 
     public AssemblyRoomMode Mode {get; private set;} = AssemblyRoomMode.ConnectionMode;
 
@@ -23,12 +25,11 @@ public class AssemblyRoom : MonoBehaviour
         GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
         assemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
         GameComponentsUnitManager = new UnitManager();
-
+        assemblySystemManager.tempAbilityInputUI = tempAbilityInputUI;
 
         assemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
         ControlledDevice = createSimpleDevice();
         GameComponentsUnitManager.AddUnit(ControlledDevice.RootGameComponent);
-        tempButtonGenerator = gameObject.GetComponent<TempButtonGenerator>();
     }
     public void CreateNewComponent(int componentID){
         var newComponent = GameComponentFactory.CreateGameComponentObject(componentID);
@@ -40,11 +41,9 @@ public class AssemblyRoom : MonoBehaviour
     public void SetPlayMode(){
         Mode = AssemblyRoomMode.PlayMode;
         assemblySystemManager.DisableAssemblyComponents();
-        tempButtonGenerator.GenerateButtons(ControlledDevice.getAbilityList());
     }
 
     public void SetConnectMode(){
-        tempButtonGenerator.clearAllButtons();
         Mode = AssemblyRoomMode.ConnectionMode;
         assemblySystemManager.EnableAssemblyComponents();
     }

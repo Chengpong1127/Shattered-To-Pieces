@@ -1,14 +1,18 @@
 using System;
+using UnityEngine;  
 
 
-public class Ability{
-    public string name;
+public class Ability: UnityEngine.Object{
+    public string AbilityName;
     public Action action;
     public Ability(string name, Action action){
-        this.name = name;
+        this.AbilityName = name;
         this.action = action;
     }
     public void Run(){
         action();
+    }
+    public static Ability EmptyAbility(){
+        return new Ability("Empty", () => {});
     }
 }

@@ -7,6 +7,8 @@ public class AssemblySystemManager : MonoBehaviour
 {
     private DragableMover DragableMover;
     public UnitManager GameComponentsUnitManager;
+    public TempAbilityInputUI tempAbilityInputUI;
+    public AbilityInputManager abilityInputManager;
 
     public void EnableAssemblyComponents(){
         DragableMover.enabled = true;
@@ -35,6 +37,15 @@ public class AssemblySystemManager : MonoBehaviour
         DragableMover.inputManager = new InputManager();
         DragableMover.OnDragStart += handleComponentDraggedStart;
         DragableMover.OnDragEnd += handleComponentDraggedEnd;
+        abilityInputManager = new AbilityInputManager();
+
+
+        Debug.Log(abilityInputManager.AbilityInputEntries.Count);
+    }
+    private void Start() {
+        abilityInputManager.SetAbility(0,0, new Ability("test1", ()=>{}));
+        tempAbilityInputUI.abilityInputManager = abilityInputManager;
+        
     }
     private void handleComponentDraggedStart(IDragable draggedComponent, Vector2 targetPosition)
     {
