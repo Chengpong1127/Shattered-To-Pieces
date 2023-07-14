@@ -35,6 +35,7 @@ public class TempAbilityInputUI : ObjectContainerList<Ability>
                 Debug.Log("Set ability " + abilities[i].AbilityName + " to " + entryIndex + " " + abilityIndex);
             }
             abilityInputManager.SetAbility(entryIndex, abilityIndex, abilities[i]);
+            abilityInputManager.SetPath(entryIndex, entryIndex.ToString());
         }
     }
     public override void Drop(Slot slot, ObjectContainer fromContainer)

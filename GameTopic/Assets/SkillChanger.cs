@@ -31,6 +31,22 @@ public class SkillChanger : MonoBehaviour
     {
         if (ctx.performed)
         {
+            foreach (AbilityInputEntry a in abilityInputManager.AbilityInputEntries)
+            {
+                if (a.InputPath == ctx.control.name)
+                {
+                    foreach(Ability ability in a.Abilities)
+                    {
+                        if (ability != null)
+                        {
+                            ability.Run();
+                            Debug.Log("Skill Key:" + a.InputPath + " " + ability.AbilityName + " activated");
+                        }
+                    }
+                }
+               
+            }
+        /* change skill key
             if (!KeySelected)
             {
 
@@ -38,8 +54,8 @@ public class SkillChanger : MonoBehaviour
                 {
                     if (a.InputPath == ctx.control.name)
                     {
-                        KeySelected = true;
-                        key = ctx.control.name;
+                       // KeySelected = true;
+                        //key = ctx.control.name;
                     }
                 }
             }
@@ -65,6 +81,7 @@ public class SkillChanger : MonoBehaviour
                 KeySelected=false;
             }
 
+            */
         }
     }
 }
