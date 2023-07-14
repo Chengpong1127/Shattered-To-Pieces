@@ -30,8 +30,8 @@ public class DescriptionBoxCtrl : MonoBehaviour
     }
 
     public void SwitchBoxBG(int bgid) {
-        if (bgid < 0 || bgid >= spriteList.Count || componentImage == null) { return; }
+        if (bgid < 0 || bgid >= spriteList.Count || selfImage == null) { return; }
 
-        componentImage.sprite = spriteList[bgid];
+        selfImage.sprite = spriteList[bgid];
     }
 }

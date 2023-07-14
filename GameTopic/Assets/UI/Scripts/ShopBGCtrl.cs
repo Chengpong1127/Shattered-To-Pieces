@@ -33,8 +33,38 @@ public class ShopBGCtrl : MonoBehaviour
         dp.onClickAction = () => { Debug.Log("Call Click Action."); };
 
         pageCount = 0;
-        currentlementType = 0;
 
+        currentlementType = 0;
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        currentlementType = 1;
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        currentlementType = 2;
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        currentlementType = 3;
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
+        elements[currentlementType].Add(dp);
         elements[currentlementType].Add(dp);
 
         UpDateDisplayList();
