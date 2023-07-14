@@ -11,12 +11,17 @@ public class ShopBGCtrl : MonoBehaviour
     [SerializeField] List<Sprite> spriteList;
     [SerializeField] List<ShopElementCtrl> ComponentDisplayList;
 
-    List<ElementDataPack> elements;
+    List<ElementDataPack>[] elements;
     int pageCount;
+    int currentlementType;
 
 
     private void Awake() {
-        elements = new List<ElementDataPack>();
+        elements = new List<ElementDataPack>[4];
+        for(int i = 0; i < 4; ++i) {
+            elements[i] = new List<ElementDataPack>();
+        }
+
         ElementDataPack dp = new ElementDataPack();
         ElementDescription dsc = new ElementDescription();
         dsc.description = "this is a description for test.";
@@ -27,26 +32,36 @@ public class ShopBGCtrl : MonoBehaviour
         dp.description = dsc;
         dp.onClickAction = () => { Debug.Log("Call Click Action."); };
 
-        elements.Add(dp);
-
         pageCount = 0;
+        currentlementType = 0;
+
+        elements[currentlementType].Add(dp);
 
         UpDateDisplayList();
     }
 
     public void SwitchShopBG(int bgid) {
-        if(bgid < 0 || bgid >= spriteList.Count || selfImage == null) { return; }
+        if(bgid < 0 || bgid >= spriteList.Count || selfImage == null || currentlementType == bgid) { return; }
 
         selfImage.sprite = spriteList[bgid];
+        currentlementType = bgid;
+        pageCount = 0;
+
+        UpDateDisplayList();
     }
 
     public void UpDateDisplayList() {
         int elementCount = pageCount * ComponentDisplayList.Count;
         int componentListId = 0;
-        while(elementCount < elements.Count && componentListId < ComponentDisplayList.Count) {
-            ComponentDisplayList[componentListId].SetData(elements[elementCount]);
+        while(elementCount < elements[currentlementType].Count && componentListId < ComponentDisplayList.Count) {
+            ComponentDisplayList[componentListId].SetData(elements[currentlementType][elementCount]);
+            ComponentDisplayList[componentListId].gameObject.SetActive(true);
 
             elementCount++;
+            componentListId++;
+        }
+        while(componentListId < ComponentDisplayList.Count) {
+            ComponentDisplayList[componentListId].gameObject.SetActive(false);
             componentListId++;
         }
     }
