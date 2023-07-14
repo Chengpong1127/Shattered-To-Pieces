@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DragAndDrop
 {
-    public abstract class ObjectContainerList<T> : ObjectContainer where T : UnityEngine.Object
+    public abstract class ObjectContainerList<T> : ObjectContainer where T : class
     {
         // Start is called before the first frame update
         protected List<T> objects;

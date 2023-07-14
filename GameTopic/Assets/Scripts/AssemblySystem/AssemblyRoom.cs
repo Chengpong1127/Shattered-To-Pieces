@@ -17,6 +17,8 @@ public class AssemblyRoom : MonoBehaviour
     UnitManager GameComponentsUnitManager;
 
     public TempAbilityInputUI tempAbilityInputUI;
+    public TempAbilityInputUI idleTempAbilityInputUI;
+    public AbilityInputManager abilityInputManager;
     
 
     public AssemblyRoomMode Mode {get; private set;} = AssemblyRoomMode.ConnectionMode;
@@ -25,7 +27,9 @@ public class AssemblyRoom : MonoBehaviour
         GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
         assemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
         GameComponentsUnitManager = new UnitManager();
-        assemblySystemManager.tempAbilityInputUI = tempAbilityInputUI;
+        abilityInputManager = new AbilityInputManager();
+        tempAbilityInputUI.abilityInputManager = abilityInputManager;
+
 
         assemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
         ControlledDevice = createSimpleDevice();
@@ -41,6 +45,8 @@ public class AssemblyRoom : MonoBehaviour
     public void SetPlayMode(){
         Mode = AssemblyRoomMode.PlayMode;
         assemblySystemManager.DisableAssemblyComponents();
+
+        idleTempAbilityInputUI.SetItems(ControlledDevice.getAbilityList());
     }
 
     public void SetConnectMode(){

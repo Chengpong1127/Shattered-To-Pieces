@@ -14,7 +14,7 @@ public class SkillChanger : MonoBehaviour
     void Start()
     {
         room= GetComponent<AssemblyRoom>();
-        abilityInputManager = room.assemblySystemManager.abilityInputManager;
+        //abilityInputManager = room.assemblySystemManager.abilityInputManager;
         device = FindObjectOfType<Device>();
         inputmanager = new InputManager();
         inputmanager.menu.Enable();

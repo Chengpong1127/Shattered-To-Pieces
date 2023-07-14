@@ -171,6 +171,7 @@ MonoBehaviour:
   ControlledDevice: {fileID: 0}
   assemblySystemManager: {fileID: 0}
   tempAbilityInputUI: {fileID: 1810252922}
+  idleTempAbilityInputUI: {fileID: 265094969}
 --- !u!114 &19156111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec4343a93ccbb14ab1dd75031334f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  device: {fileID: 0}
 --- !u!1 &25488316
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,6 +319,99 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 25488316}
   m_CullTransparentMesh: 1
+--- !u!1 &265094966
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 265094967}
+  - component: {fileID: 265094969}
+  - component: {fileID: 265094968}
+  m_Layer: 5
+  m_Name: IdleAssemblyPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &265094967
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265094966}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1697797111}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 420.5, y: 0}
+  m_SizeDelta: {x: 200, y: 200}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &265094968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265094966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 50, y: 50}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
+--- !u!114 &265094969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265094966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4bd3cd386023415683b39aa1cd4e79a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotPrefab: {fileID: 114753835999815552, guid: 6da5fc47d0eb4934abf423def4db6b3b, type: 3}
+  itemPrefab: {fileID: 1695565552459488365, guid: 9e5bf239023054f7d8cce93dd0ed5ddf, type: 3}
+  preMadeSlots: []
+  onDragBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  onDragEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onDragFail:
+    m_PersistentCalls:
+      m_Calls: []
+  onDragEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onDragExit:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityUIType: 0
 --- !u!1 &310934655
 GameObject:
   m_ObjectHideFlags: 0
@@ -1503,6 +1598,7 @@ RectTransform:
   - {fileID: 1654297835}
   - {fileID: 310934656}
   - {fileID: 1810252920}
+  - {fileID: 265094967}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1960,6 +2056,7 @@ MonoBehaviour:
   onDragExit:
     m_PersistentCalls:
       m_Calls: []
+  abilityUIType: 1
 --- !u!114 &1810252923
 MonoBehaviour:
   m_ObjectHideFlags: 0

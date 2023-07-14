@@ -20,12 +20,12 @@ namespace DragAndDrop
         [HideInInspector]
         public Slot slot;
         [HideInInspector]
-        public UnityEngine.Object obj;
+        public System.Object obj;
 
         // override this in derived classes, usually casting to to the type they deal with
         public abstract void UpdateObject();
 
-        public void SetObject(UnityEngine.Object o)
+        public void SetObject(System.Object o)
         {
             (transform as RectTransform).anchoredPosition = Vector3.zero;
             obj = o;
@@ -201,7 +201,7 @@ namespace DragAndDrop
                 Draggable other = _slot.item;
                 if (other)
                 {
-                    UnityEngine.Object o = obj;
+                    System.Object o = obj;
                     if (!readOnlySource)
                     {
                         SetObject(other.obj);

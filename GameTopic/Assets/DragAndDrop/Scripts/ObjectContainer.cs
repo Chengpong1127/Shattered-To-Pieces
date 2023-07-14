@@ -58,7 +58,7 @@ namespace DragAndDrop
         }
 
         // create a Slot (or use the optional supplied one) and populate it with the given object
-        protected Slot MakeSlot(UnityEngine.Object obj, Slot preMade = null)
+        protected Slot MakeSlot(System.Object obj, Slot preMade = null)
         {
             GameObject go = null;
             Slot slot = preMade;

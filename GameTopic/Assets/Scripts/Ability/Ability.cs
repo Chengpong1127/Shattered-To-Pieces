@@ -2,7 +2,7 @@ using System;
 using UnityEngine;  
 
 
-public class Ability: UnityEngine.Object{
+public class Ability{
     public string AbilityName;
     public Action action;
     public Ability(string name, Action action){

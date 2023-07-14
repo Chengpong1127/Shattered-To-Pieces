@@ -11,7 +11,7 @@ public class TempAbilityItem : Draggable
     {
         Ability ability = obj as Ability;
         if(ability != null){
-            text.text = ability.name;
+            text.text = ability.AbilityName;
         }
         else{
             text.text = "";

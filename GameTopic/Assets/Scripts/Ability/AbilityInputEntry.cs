@@ -13,8 +13,7 @@ public class AbilityInputEntry{
     public AbilityInputEntry(){
         for (int i = 0; i < AbilityNumber; i++)
         {
-            Debug.Log("Create Empty Ability");
-            Abilities.Add(new Ability("Empty", () => {}));
+            Abilities.Add(null);
         }
     }
     /// <summary>

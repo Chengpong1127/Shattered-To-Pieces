@@ -10,7 +10,7 @@ namespace DragAndDrop
     {
         // we can rely on C#'s ability to cast an array of Objects to an array of any Object-derived class here.
         // so this is a reference to say an array of Items in an inventory, or array of Spells or whatever.
-        protected UnityEngine.Object[] objects;
+        protected System.Object[] objects;
 
         // array of child UI objects which we take ownership of
         protected Slot[] slots;
