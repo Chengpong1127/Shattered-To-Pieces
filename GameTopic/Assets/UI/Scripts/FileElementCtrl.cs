@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class FileElementCtrl : MonoBehaviour
@@ -11,7 +12,12 @@ public class FileElementCtrl : MonoBehaviour
  
     public void SetInputActive(bool b) {
         if (displayInputField == null) { return; }
-        displayInputField.interactable = b;
+
+        // if(EventSystem.current.currentSelectedGameObject == displayInputField.gameObject) {
+        //     EventSystem.current.SetSelectedGameObject(null);
+        // }
+        // 
+        // displayInputField.interactable = b;
         if (b) { displayInputField.Select(); }
     }
 
