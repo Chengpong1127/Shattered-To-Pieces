@@ -48,11 +48,13 @@ public class ShopElementCtrl : MonoBehaviour, IPointerEnterHandler, IPointerExit
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
+        if(boxCtrl == null) { return; } 
         boxCtrl.SetDescriptionData(dataPack.description);
         boxCtrl.gameObject.SetActive(true);
     }
 
     public void OnPointerExit(PointerEventData eventData) {
+        if (boxCtrl == null) { return; }
         boxCtrl.gameObject.SetActive(false);
     }
 }

@@ -65,4 +65,15 @@ public class ShopBGCtrl : MonoBehaviour
             componentListId++;
         }
     }
+
+    public void NextPage() {
+        if((pageCount + 1) * ComponentDisplayList.Count >= elements[currentlementType].Count) { return; }
+        pageCount++;
+        UpDateDisplayList();
+    }
+    public void PrevPage() {
+        if(pageCount == 0) { return; }
+        pageCount--;
+        UpDateDisplayList();
+    }
 }
