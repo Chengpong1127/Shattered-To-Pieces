@@ -4767,6 +4767,18 @@ PrefabInstance:
       propertyPath: boxCtrl
       value: 
       objectReference: {fileID: 1942741906}
+    - target: {fileID: 6224651652486103881, guid: 8e8db7f13db7abb458ad3291b380bfff, type: 3}
+      propertyPath: m_Color.b
+      value: 0.19290671
+      objectReference: {fileID: 0}
+    - target: {fileID: 6224651652486103881, guid: 8e8db7f13db7abb458ad3291b380bfff, type: 3}
+      propertyPath: m_Color.g
+      value: 0.19290671
+      objectReference: {fileID: 0}
+    - target: {fileID: 6224651652486103881, guid: 8e8db7f13db7abb458ad3291b380bfff, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8018868
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e8db7f13db7abb458ad3291b380bfff, type: 3}
 --- !u!1 &2039163187
