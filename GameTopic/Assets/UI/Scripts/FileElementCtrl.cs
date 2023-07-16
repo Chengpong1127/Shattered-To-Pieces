@@ -12,12 +12,6 @@ public class FileElementCtrl : MonoBehaviour
  
     public void SetInputActive(bool b) {
         if (displayInputField == null) { return; }
-
-        // if(EventSystem.current.currentSelectedGameObject == displayInputField.gameObject) {
-        //     EventSystem.current.SetSelectedGameObject(null);
-        // }
-        // 
-        // displayInputField.interactable = b;
         if (b) { displayInputField.Select(); }
     }
 

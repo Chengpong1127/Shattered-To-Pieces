@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -105,5 +106,12 @@ public class ShopBGCtrl : MonoBehaviour
         if(pageCount == 0) { return; }
         pageCount--;
         UpDateDisplayList();
+    }
+
+    public void SetElements(List<ElementDataPack>[] eList) {
+        if(eList.Length != 4) { return; }
+        for(int i = 0; i < 4; ++i) {
+            elements[i] = eList[i];
+        }
     }
 }

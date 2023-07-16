@@ -18,7 +18,7 @@ public class GameComponentData : ScriptableObject
     /// <summary>
     /// The image of the game component. Which can be used to display the game component's image.
     /// </summary>
-    public Image DisplayImage;
+    public Sprite DisplayImage;
 
     /// <summary>
     /// The Description of the game component. Which can be used to display the game component's description.

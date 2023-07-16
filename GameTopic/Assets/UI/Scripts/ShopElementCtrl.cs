@@ -26,20 +26,23 @@ public class ShopElementCtrl : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [SerializeField] DescriptionBoxCtrl boxCtrl;
 
     ElementDataPack dataPack;
+    UnityAction onClickAction;
 
     private void Awake() {
         dataPack.onClickAction = () => { };
     }
 
     public void SetData(ElementDataPack dp) {
-        Debug.Assert(selfButton != null);
-        Debug.Assert(selfButton.onClick != null);
-        Debug.Assert(dataPack.onClickAction != null);
-
-        selfButton.onClick.RemoveListener(dataPack.onClickAction);
+        // selfButton.onClick.RemoveListener(dataPack.onClickAction);
         dataPack = dp;
-        selfButton.onClick.AddListener(dataPack.onClickAction);
+        // selfButton.onClick.AddListener(dataPack.onClickAction);
         UpDateElement();
+    }
+
+    public void SetClickAction(UnityAction oCA) {
+        selfButton.onClick.RemoveListener(onClickAction);
+        onClickAction = oCA;
+        selfButton.onClick.AddListener(onClickAction);
     }
 
     public void UpDateElement() {
