@@ -13,15 +13,11 @@ public class StoreFileCtrl : MonoBehaviour
     public UnityAction<string> StoreAction { get; set; }
     public UnityAction<string> LoadAction { get; set; }
 
-    private void Awake() {
-        
-    }
 
     public void OnClickFileBTN(int btnId) {
         if(btnId < 0 || btnId >= fileElements.Count) return;
 
         interactFileName = fileElements[btnId].fileName;
-        // Debug.Log("Get : " + interactFileName);
 
         if (isStroe) {
             StoreAction?.Invoke(interactFileName);
@@ -43,6 +39,12 @@ public class StoreFileCtrl : MonoBehaviour
     public void SetRenameAction(UnityAction<string,string> renameAction) {
         fileElements.ForEach(ele => {
             ele.renameAction += renameAction;
+        });
+    }
+
+    public void RemoveRenameAction(UnityAction<string, string> renameAction) {
+        fileElements.ForEach(ele => {
+            ele.renameAction -= renameAction;
         });
     }
 }

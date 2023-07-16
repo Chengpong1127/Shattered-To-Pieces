@@ -36,23 +36,42 @@ public class WorkShop : MonoBehaviour
         };
     }
 
-
+    /// <summary>
+    /// Set AssimblyRoom for UI which can interact with it.
+    /// </summary>
+    /// <param name="Iar">new IAssemblyRoom.</param>
     public void SetAssimblyRoom(IAssemblyRoom Iar) {
+        if(room != null) {
+            fileCtrl.RemoveRenameAction(room.RenameDevice);
+            fileCtrl.StoreAction -= room.SaveCurrentDevice;
+            // fileCtrl.LoadAction -= room.LoadDevice; return value is not void. that'll cause error.
+        }
+
         room = Iar;
 
         shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Basic), GameComponentType.Basic);
         shopPage.SetShopElementClickAction(ElementClickAction);
         fileCtrl.SetRenameAction(room.RenameDevice);
+        fileCtrl.StoreAction += room.SaveCurrentDevice;
+        // fileCtrl.LoadAction += room.LoadDevice; return value is not void. that'll cause error.
     }
 
+    /// <summary>
+    /// Invoke function for create a new component.
+    /// Depends on AssemblyRoom.
+    /// </summary>
+    /// <param name="gcd"></param>
     public void ElementClickAction(GameComponentData gcd) {
         Debug.Log("Create : " + gcd.DisplayName);
-        room?.CreateNewGameComponent(gcd, Vector2.zero);
+        room?.CreateNewGameComponent(gcd, Vector2.zero);// IDK position value.
     }
 
+    /// <summary>
+    /// Change room mode between play and combine mode.
+    /// Depends on AssemblyRoom.
+    /// </summary>
     public void SwitchRoomMode() {
         roomMode = roomMode == AssemblyRoomMode.PlayMode ? AssemblyRoomMode.ConnectionMode : AssemblyRoomMode.PlayMode;
-        // Debug.Log("switch to : " + roomMode.ToString());
         room?.SetRoomMode(roomMode);
     }
 }
