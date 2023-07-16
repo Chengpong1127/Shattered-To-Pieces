@@ -21,9 +21,13 @@ public class WorkShop : MonoBehaviour
 
     private void Awake() {
         roomMode = AssemblyRoomMode.PlayMode;
-        shopPage.SetShopElementClickAction(ElementClickAction);
-
         shoppingBTN.onClick.AddListener(SwitchRoomMode);
+
+        // delete after implement IAssemblyRooms
+        shopPage.SetShopElementClickAction(ElementClickAction);
+        fileCtrl.SetRenameAction((string oldName, string newName) => {
+            Debug.Log("Rename " + oldName + " to " + newName);
+        });
     }
 
 
@@ -32,6 +36,7 @@ public class WorkShop : MonoBehaviour
 
         shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Basic), GameComponentType.Basic);
         shopPage.SetShopElementClickAction(ElementClickAction);
+        fileCtrl.SetRenameAction(room.RenameDevice);
     }
 
     public void ElementClickAction(GameComponentData gcd) {
