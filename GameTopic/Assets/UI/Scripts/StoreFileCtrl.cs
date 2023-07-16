@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class StoreFileCtrl : MonoBehaviour
 {
-    [SerializeField] List<FileElementCtrl> fileElements;
+    [SerializeField] public List<FileElementCtrl> fileElements;
 
     bool isStroe;
     string interactFileName;

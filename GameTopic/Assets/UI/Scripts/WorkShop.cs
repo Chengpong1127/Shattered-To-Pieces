@@ -54,6 +54,7 @@ public class WorkShop : MonoBehaviour
         fileCtrl.SetRenameAction(room.RenameDevice);
         fileCtrl.StoreAction += room.SaveCurrentDevice;
         // fileCtrl.LoadAction += room.LoadDevice; return value is not void. that'll cause error.
+        SetStoreFileNames(room.GetSavedDeviceList());
     }
 
     /// <summary>
@@ -73,5 +74,11 @@ public class WorkShop : MonoBehaviour
     public void SwitchRoomMode() {
         roomMode = roomMode == AssemblyRoomMode.PlayMode ? AssemblyRoomMode.ConnectionMode : AssemblyRoomMode.PlayMode;
         room?.SetRoomMode(roomMode);
+    }
+    public void SetStoreFileNames(List<string> fileNameList) {
+        int i = 0;
+        for(; i < fileCtrl.fileElements.Count; ++i){
+            fileCtrl.fileElements[i].SetFileName(fileNameList?[i]);
+        }
     }
 }

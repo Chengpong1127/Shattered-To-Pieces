@@ -61,4 +61,13 @@ public class FileElementCtrl : MonoBehaviour
     public string GetFileName() {
         return displayInputField?.text;
     }
+
+    /// <summary>
+    /// Set default file name to UI.
+    /// </summary>
+    /// <param name="newfileName">file name</param>
+    public void SetFileName(string newfileName) {
+        fileName = newfileName;
+        displayInputField.text = newfileName;
+    }
 }
