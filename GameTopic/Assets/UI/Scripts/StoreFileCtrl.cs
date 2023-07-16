@@ -21,12 +21,12 @@ public class StoreFileCtrl : MonoBehaviour
         if(btnId < 0 || btnId >= fileElements.Count) return;
 
         interactFileName = fileElements[btnId].fileName;
-        Debug.Log("Get : " + interactFileName);
+        // Debug.Log("Get : " + interactFileName);
 
         if (isStroe) {
-            StoreAction.Invoke(interactFileName);
+            StoreAction?.Invoke(interactFileName);
         } else {
-            LoadAction.Invoke(interactFileName);
+            LoadAction?.Invoke(interactFileName);
         }
     }
 

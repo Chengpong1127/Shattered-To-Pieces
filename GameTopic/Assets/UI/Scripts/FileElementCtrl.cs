@@ -25,8 +25,7 @@ public class FileElementCtrl : MonoBehaviour
 
     public void OnFinshRename() {
         renameAction.Invoke(fileName, displayInputField.text);
-        // Debug.Log("finsh rename : " + displayInputField.text);
-        fileName = displayInputField.text;
+        fileName = displayInputField.text;  
     }
 
     public void SetRenameBTNActive(bool b) {
