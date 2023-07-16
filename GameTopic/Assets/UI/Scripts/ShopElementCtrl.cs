@@ -7,13 +7,6 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public struct ElementDataPack {
-    public Sprite img { get; set; }
-    public int price { get; set; }
-    public ElementDescription description { get; set; }
-    public UnityAction onClickAction { get; set; }
-}
-
 
 public class ShopElementCtrl : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -25,34 +18,33 @@ public class ShopElementCtrl : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [Header("Pointer Event function object")]
     [SerializeField] DescriptionBoxCtrl boxCtrl;
 
-    ElementDataPack dataPack;
-    UnityAction onClickAction;
+    GameComponentData componentData;
 
-    private void Awake() {
-        dataPack.onClickAction = () => { };
-    }
+    UnityAction<GameComponentData> onClickAction;
 
-    public void SetData(ElementDataPack dp) {
-        // selfButton.onClick.RemoveListener(dataPack.onClickAction);
-        dataPack = dp;
-        // selfButton.onClick.AddListener(dataPack.onClickAction);
+    public void SetData(GameComponentData cd) {
+        componentData = cd;
         UpDateElement();
     }
 
-    public void SetClickAction(UnityAction oCA) {
-        selfButton.onClick.RemoveListener(onClickAction);
+    public void InvokeOnClickAction() {
+        onClickAction(componentData);
+    }
+
+    public void SetClickAction(UnityAction<GameComponentData> oCA) {
+        selfButton.onClick.RemoveListener(InvokeOnClickAction);
         onClickAction = oCA;
-        selfButton.onClick.AddListener(onClickAction);
+        selfButton.onClick.AddListener(InvokeOnClickAction);
     }
 
     public void UpDateElement() {
-        componentImg.sprite = dataPack.img;
-        priceCtrl.SetPrice(dataPack.price);
+        componentImg.sprite = componentData.DisplayImage;
+        priceCtrl.SetPrice(componentData.Price);
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
         if(boxCtrl == null) { return; } 
-        boxCtrl.SetDescriptionData(dataPack.description);
+        boxCtrl.SetDescriptionData(componentData.Description, componentData.DisplayImage);
         boxCtrl.gameObject.SetActive(true);
     }
 

@@ -20,12 +20,19 @@ public class WorkShop : MonoBehaviour
 
     private void Awake() {
         isCombine = false;
+        shopPage.SetShopElementClickAction(ElementClickAction);
     }
 
 
     public void SetAssimblyRoom(IAssemblyRoom Iar) {
         room = Iar;
 
-        // shopPage.SetElements(room.GetGameComponentDataList());
+        shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Basic), GameComponentType.Basic);
+        shopPage.SetShopElementClickAction(ElementClickAction);
+    }
+
+    public void ElementClickAction(GameComponentData gcd) {
+        Debug.Log("Create : " + gcd.DisplayName);
+        room?.CreateNewGameComponent(gcd, Vector2.zero);
     }
 }

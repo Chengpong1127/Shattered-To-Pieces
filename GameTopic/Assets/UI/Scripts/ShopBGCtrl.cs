@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -12,61 +13,33 @@ public class ShopBGCtrl : MonoBehaviour
     [SerializeField] List<Sprite> spriteList;
     [SerializeField] List<ShopElementCtrl> ComponentDisplayList;
 
-    List<ElementDataPack>[] elements;
+    List<GameComponentData>[] componentList;
     int pageCount;
     int currentlementType;
 
 
     private void Awake() {
-        elements = new List<ElementDataPack>[4];
-        for(int i = 0; i < 4; ++i) {
-            elements[i] = new List<ElementDataPack>();
+        int typeCount = Enum.GetValues(typeof(GameComponentType)).Length;
+
+        componentList = new List<GameComponentData>[typeCount];
+        for(int i = 0; i < typeCount; ++i) {
+            componentList[i] = new List<GameComponentData>();
         }
 
-        ElementDataPack dp = new ElementDataPack();
-        ElementDescription dsc = new ElementDescription();
-        dsc.description = "this is a description for test.";
-        dsc.img = spriteList[2];
-
-        dp.img = spriteList[2];
-        dp.price = 123;
-        dp.description = dsc;
-        dp.onClickAction = () => { Debug.Log("Call Click Action."); };
-
         pageCount = 0;
-
         currentlementType = 0;
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        currentlementType = 1;
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        currentlementType = 2;
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        currentlementType = 3;
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
-        elements[currentlementType].Add(dp);
+
+        GameComponentData cd = new GameComponentData();
+        cd.DisplayName = "BaBa";
+        cd.DisplayImage = spriteList[0];
+        cd.Description = "this is a description for ComponentData test.";
+        cd.Price = 5566;
+        cd.Type = GameComponentType.Basic;
+        cd.ResourcePath = string.Empty;
+
+
+
+        componentList[0].Add(cd);
 
         UpDateDisplayList();
     }
@@ -84,8 +57,8 @@ public class ShopBGCtrl : MonoBehaviour
     public void UpDateDisplayList() {
         int elementCount = pageCount * ComponentDisplayList.Count;
         int componentListId = 0;
-        while(elementCount < elements[currentlementType].Count && componentListId < ComponentDisplayList.Count) {
-            ComponentDisplayList[componentListId].SetData(elements[currentlementType][elementCount]);
+        while(elementCount < componentList[currentlementType].Count && componentListId < ComponentDisplayList.Count) {
+            ComponentDisplayList[componentListId].SetData(componentList[currentlementType][elementCount]);
             ComponentDisplayList[componentListId].gameObject.SetActive(true);
 
             elementCount++;
@@ -98,7 +71,7 @@ public class ShopBGCtrl : MonoBehaviour
     }
 
     public void NextPage() {
-        if((pageCount + 1) * ComponentDisplayList.Count >= elements[currentlementType].Count) { return; }
+        if((pageCount + 1) * ComponentDisplayList.Count >= componentList[currentlementType].Count) { return; }
         pageCount++;
         UpDateDisplayList();
     }
@@ -108,10 +81,14 @@ public class ShopBGCtrl : MonoBehaviour
         UpDateDisplayList();
     }
 
-    public void SetElements(List<ElementDataPack>[] eList) {
-        if(eList.Length != 4) { return; }
-        for(int i = 0; i < 4; ++i) {
-            elements[i] = eList[i];
-        }
+
+    public void SetElements(List<GameComponentData> cdList, GameComponentType type) {
+        componentList[(int)type] = cdList;
+    }
+
+    public void SetShopElementClickAction(UnityAction<GameComponentData> ua) {
+        ComponentDisplayList.ForEach(e => {
+            e.SetClickAction(ua);
+        });
     }
 }

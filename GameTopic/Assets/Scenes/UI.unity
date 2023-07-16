@@ -614,6 +614,7 @@ MonoBehaviour:
   loladBTN: {fileID: 682583604}
   exitBTN: {fileID: 2139259993}
   shopPage: {fileID: 1624214519}
+  fileCtrl: {fileID: 1672624264}
 --- !u!1 &228177535
 GameObject:
   m_ObjectHideFlags: 0
