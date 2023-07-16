@@ -29,7 +29,7 @@ public class ShopBGCtrl : MonoBehaviour
         pageCount = 0;
         currentlementType = 0;
 
-        GameComponentData cd = new GameComponentData();
+        GameComponentData cd = ScriptableObject.CreateInstance<GameComponentData>(); // new GameComponentData();
         cd.DisplayName = "BaBa";
         cd.DisplayImage = spriteList[0];
         cd.Description = "this is a description for ComponentData test.";

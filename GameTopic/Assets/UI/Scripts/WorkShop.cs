@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class WorkShop : MonoBehaviour
 {
     IAssemblyRoom room;
-    bool isCombine;
+    AssemblyRoomMode roomMode;
 
     [SerializeField] PriceCtrl userDisplayMoney;
     [SerializeField] Button shoppingBTN;
@@ -19,8 +20,10 @@ public class WorkShop : MonoBehaviour
 
 
     private void Awake() {
-        isCombine = false;
+        roomMode = AssemblyRoomMode.PlayMode;
         shopPage.SetShopElementClickAction(ElementClickAction);
+
+        shoppingBTN.onClick.AddListener(SwitchRoomMode);
     }
 
 
@@ -34,5 +37,11 @@ public class WorkShop : MonoBehaviour
     public void ElementClickAction(GameComponentData gcd) {
         Debug.Log("Create : " + gcd.DisplayName);
         room?.CreateNewGameComponent(gcd, Vector2.zero);
+    }
+
+    public void SwitchRoomMode() {
+        roomMode = roomMode == AssemblyRoomMode.PlayMode ? AssemblyRoomMode.ConnectionMode : AssemblyRoomMode.PlayMode;
+        // Debug.Log("switch to : " + roomMode.ToString());
+        room?.SetRoomMode(roomMode);
     }
 }
