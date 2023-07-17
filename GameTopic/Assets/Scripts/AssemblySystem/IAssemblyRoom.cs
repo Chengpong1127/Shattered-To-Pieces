@@ -63,5 +63,7 @@ public interface IAssemblyRoom
 /// </summary>
 public enum GameComponentType{
     Basic,
-
+    Attack,
+    Movement,
+    Functional
 }
