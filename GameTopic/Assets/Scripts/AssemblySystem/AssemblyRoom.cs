@@ -9,7 +9,7 @@ public enum AssemblyRoomMode{
     PlayMode
 }
 
-public class AssemblyRoom : MonoBehaviour
+public class AssemblyRoom : MonoBehaviour, IAssemblyRoom
 {
     public Device ControlledDevice;
     IGameComponentFactory GameComponentFactory;
@@ -56,5 +56,45 @@ public class AssemblyRoom : MonoBehaviour
         var initComponent = GameComponentFactory.CreateGameComponentObject(0);
         device.RootGameComponent = initComponent;
         return device;
+    }
+
+    void IAssemblyRoom.CreateNewGameComponent(GameComponentData componentData, Vector2 position)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void IAssemblyRoom.SetRoomMode(AssemblyRoomMode mode)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    List<GameComponentData> IAssemblyRoom.GetGameComponentDataList(GameComponentType type)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void IAssemblyRoom.SaveCurrentDevice(string DeviceName)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void IAssemblyRoom.LoadDevice(string DeviceName)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void IAssemblyRoom.LoadDevice(string DeviceName, Vector2 position)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void IAssemblyRoom.RenameDevice(string DeviceName, string NewDeviceName)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    List<string> IAssemblyRoom.GetSavedDeviceList()
+    {
+        throw new System.NotImplementedException();
     }
 }

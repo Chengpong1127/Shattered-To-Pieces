@@ -5,6 +5,15 @@ using UnityEngine;
 public class DeviceInfo: IInfo
 {
     public TreeInfo treeInfo;
+
+    public string DumpJSON(){
+        return JsonConvert.SerializeObject(treeInfo);
+    }
+    public static DeviceInfo LoadJSON(string json){
+        var info = new DeviceInfo();
+        info.treeInfo = JsonConvert.DeserializeObject<TreeInfo>(json);
+        return info;
+    }
 }
 
 public class GameComponentInfo: IInfo{
