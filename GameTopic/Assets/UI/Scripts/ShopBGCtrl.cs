@@ -57,7 +57,7 @@ public class ShopBGCtrl : MonoBehaviour
     public void UpDateDisplayList() {
         int elementCount = pageCount * ComponentDisplayList.Count;
         int componentListId = 0;
-        while(elementCount < componentList[currentlementType].Count && componentListId < ComponentDisplayList.Count) {
+        while(elementCount < componentList[currentlementType].Count && componentListId < ComponentDisplayList.Count) {  
             ComponentDisplayList[componentListId].SetData(componentList[currentlementType][elementCount]);
             ComponentDisplayList[componentListId].gameObject.SetActive(true);
 

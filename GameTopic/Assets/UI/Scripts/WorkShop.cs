@@ -44,7 +44,7 @@ public class WorkShop : MonoBehaviour
         if(room != null) {
             fileCtrl.RemoveRenameAction(room.RenameDevice);
             fileCtrl.StoreAction -= room.SaveCurrentDevice;
-            // fileCtrl.LoadAction -= room.LoadDevice; return value is not void. that'll cause error.
+            fileCtrl.LoadAction -= room.LoadDevice;
         }
 
         room = Iar;
@@ -53,7 +53,7 @@ public class WorkShop : MonoBehaviour
         shopPage.SetShopElementClickAction(ElementClickAction);
         fileCtrl.SetRenameAction(room.RenameDevice);
         fileCtrl.StoreAction += room.SaveCurrentDevice;
-        // fileCtrl.LoadAction += room.LoadDevice; return value is not void. that'll cause error.
+        fileCtrl.LoadAction += room.LoadDevice;
         SetStoreFileNames(room.GetSavedDeviceList());
     }
 
