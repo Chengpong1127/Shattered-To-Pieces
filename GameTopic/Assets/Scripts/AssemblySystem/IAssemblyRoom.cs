@@ -34,7 +34,7 @@ public interface IAssemblyRoom
     /// </summary>
     /// <param name="DeviceName">The name of the device to be loaded.</param>
     /// <returns> The loaded device.</returns>
-    public IDevice LoadDevice(string DeviceName);
+    public void LoadDevice(string DeviceName);
 
     /// <summary>
     /// Load the device from the device list and set the position of the device.
@@ -42,7 +42,7 @@ public interface IAssemblyRoom
     /// <param name="DeviceName"> The name of the device to be loaded.</param>
     /// <param name="position"> The spawning position of the device.</param>
     /// <returns> The loaded device.</returns>
-    public IDevice LoadDevice(string DeviceName, Vector2 position);
+    public void LoadDevice(string DeviceName, Vector2 position);
 
     /// <summary>
     /// Rename the device in the device list.
