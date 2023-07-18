@@ -61,6 +61,23 @@ public class FormalAssemblyTest
 
     }
 
+    [Test]
+    public void GetSavedDeviceListTest(){
+        var roomManager = new GameObject().AddComponent<FormalAssemblyRoom>();
+        var deviceInfo = roomManager.ControlledDevice.Dump() as DeviceInfo;
+        roomManager.SaveCurrentDevice("test");
+        roomManager.SaveCurrentDevice("test2");
+        roomManager.SaveCurrentDevice("test3");
+        var deviceList = roomManager.GetSavedDeviceList();
+        foreach(var device in deviceList){
+            Debug.Log(device);
+        }
+        Assert.AreEqual(deviceList.Count, 3);
+        Assert.True(deviceList.Contains("test.json"));
+        Assert.True(deviceList.Contains("test2.json"));
+        Assert.True(deviceList.Contains("test3.json"));
+    }
+
 
     private bool CompareDeviceInfo(DeviceInfo info1, DeviceInfo info2){
         if(info1.treeInfo.rootID != info2.treeInfo.rootID) return false;

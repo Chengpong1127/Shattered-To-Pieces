@@ -82,6 +82,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         var deviceList = new List<string>();
         foreach(var file in files)
         {
+            if(file.EndsWith(".json"))
             deviceList.Add(file);
         }
         return deviceList;
