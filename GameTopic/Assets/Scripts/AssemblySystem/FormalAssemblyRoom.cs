@@ -28,6 +28,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
         assemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
         GameComponentsUnitManager = new UnitManager();
+        assemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
         deviceStorageManager = SaveLoadManager.Create("BaseDirectory","SavedDevice",SerializationMethodType.JsonDotNet);
 
         ControlledDevice = createSimpleDevice();

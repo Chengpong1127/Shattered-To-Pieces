@@ -90,6 +90,13 @@ public class FormalAssemblyTest
         
     }
 
+    [Test]
+    public void SetRoomModeTest(){
+        var roomManager = new GameObject().AddComponent<FormalAssemblyRoom>();
+        roomManager.SetRoomMode(AssemblyRoomMode.PlayMode);
+        roomManager.SetRoomMode(AssemblyRoomMode.ConnectionMode);
+    }
+
     private bool CompareDeviceInfo(DeviceInfo info1, DeviceInfo info2){
         if(info1.treeInfo.rootID != info2.treeInfo.rootID) return false;
         if(info1.treeInfo.NodeInfoMap.Count != info2.treeInfo.NodeInfoMap.Count) return false;
