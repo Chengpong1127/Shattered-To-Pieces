@@ -20,8 +20,11 @@ public class StoreFileCtrl : MonoBehaviour
         interactFileName = fileElements[btnId].fileName;
 
         if (isStroe) {
+            if (interactFileName == null || interactFileName == "") { Debug.Log("No file name enter."); interactFileName = "__" + btnId.ToString(); }
+            fileElements[btnId].SetFileName(interactFileName);
             StoreAction?.Invoke(interactFileName);
         } else {
+            if (interactFileName == null || interactFileName == "") { Debug.Log("No file name enter."); return; }
             LoadAction?.Invoke(interactFileName);
         }
     }

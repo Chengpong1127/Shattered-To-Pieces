@@ -1972,9 +1972,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1672624259}
     m_Modifications:
+    - target: {fileID: 7466965607410487236, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7466965607503149306, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
       propertyPath: m_Text
-      value: F_3
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7466965608098678104, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -2925,9 +2929,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1672624259}
     m_Modifications:
+    - target: {fileID: 7466965607410487236, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7466965607503149306, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
       propertyPath: m_Text
-      value: F_2
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7466965608098678104, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -5878,10 +5886,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1672624259}
     m_Modifications:
+    - target: {fileID: 7466965607410487236, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7466965607503149306, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7466965608098678104, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1672624264}
+    - target: {fileID: 7466965608624879916, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
+      propertyPath: m_text
+      value: "\u200B"
+      objectReference: {fileID: 0}
     - target: {fileID: 7466965608717777185, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
       propertyPath: m_Name
       value: F_1
