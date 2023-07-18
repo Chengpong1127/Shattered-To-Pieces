@@ -10,12 +10,12 @@ public class TempSaver : MonoBehaviour
     private IInfo SavedInfo;
     private DeviceInfo DefaultInfo(){
         var info = new DeviceInfo();
-        info.treeInfo = new TreeInfo();
+        info.treeInfo = new TreeInfo<GameComponentInfo>();
         info.treeInfo.rootID = 0;
-        info.treeInfo.NodeInfoMap = new Dictionary<int, IInfo>();
+        info.treeInfo.NodeInfoMap = new Dictionary<int, GameComponentInfo>();
         info.treeInfo.EdgeInfoList = new List<(int, int)>();
         info.treeInfo.NodeInfoMap.Add(0, new GameComponentInfo{
-            componentGUID = 0,
+            ComponentName = "Square",
             connectionInfo = ConnectionInfo.NoConnection()
         });
         return info;
@@ -24,9 +24,6 @@ public class TempSaver : MonoBehaviour
         GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
         Clear();
         
-    }
-    public void Create(int id){
-        var component = GameComponentFactory.CreateGameComponentObject(id);
     }
 
     public void Save(){
