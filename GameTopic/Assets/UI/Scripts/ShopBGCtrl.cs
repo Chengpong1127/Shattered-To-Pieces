@@ -29,17 +29,15 @@ public class ShopBGCtrl : MonoBehaviour
         pageCount = 0;
         currentlementType = 0;
 
-        GameComponentData cd = ScriptableObject.CreateInstance<GameComponentData>(); // new GameComponentData();
-        cd.DisplayName = "BaBa";
-        cd.DisplayImage = spriteList[0];
-        cd.Description = "this is a description for ComponentData test.";
-        cd.Price = 5566;
-        cd.Type = GameComponentType.Basic;
-        cd.ResourcePath = string.Empty;
-
-
-
-        componentList[0].Add(cd);
+        // GameComponentData cd = ScriptableObject.CreateInstance<GameComponentData>(); // new GameComponentData();
+        // cd.DisplayName = "BaBa";
+        // cd.DisplayImage = spriteList[0];
+        // cd.Description = "this is a description for ComponentData test.";
+        // cd.Price = 5566;
+        // cd.Type = GameComponentType.Basic;
+        // cd.ResourcePath = string.Empty;
+        // 
+        // componentList[0].Add(cd);
 
         UpDateDisplayList();
     }
@@ -55,6 +53,8 @@ public class ShopBGCtrl : MonoBehaviour
     }
 
     public void UpDateDisplayList() {
+        if(componentList[currentlementType] == null) { return; }
+
         int elementCount = pageCount * ComponentDisplayList.Count;
         int componentListId = 0;
         while(elementCount < componentList[currentlementType].Count && componentListId < ComponentDisplayList.Count) {  
@@ -84,6 +84,7 @@ public class ShopBGCtrl : MonoBehaviour
 
     public void SetElements(List<GameComponentData> cdList, GameComponentType type) {
         componentList[(int)type] = cdList;
+        UpDateDisplayList();
     }
 
     public void SetShopElementClickAction(UnityAction<GameComponentData> ua) {

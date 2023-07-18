@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class WorkShop : MonoBehaviour
 {
-    IAssemblyRoom room;
     AssemblyRoomMode roomMode;
 
+    [SerializeField] IAssemblyRoom room;
     [SerializeField] PriceCtrl userDisplayMoney;
     [SerializeField] Button shoppingBTN;
     [SerializeField] Button settingBTN;
@@ -20,20 +20,26 @@ public class WorkShop : MonoBehaviour
 
 
     private void Awake() {
+        // delete after implement IAssemblyRooms
+        // shopPage.SetShopElementClickAction(ElementClickAction);
+        // fileCtrl.SetRenameAction((string oldName, string newName) => {
+        //     Debug.Log("Rename " + oldName + " to " + newName);
+        // });
+        // fileCtrl.StoreAction += (string fileName) => {
+        //     Debug.Log("Get StoreFileName : " + fileName);
+        // };
+        // fileCtrl.LoadAction += (string fileName) => {
+        //     Debug.Log("Get LoadFileName : " + fileName);
+        // };
+    }
+
+    private void Start() {
         roomMode = AssemblyRoomMode.PlayMode;
         shoppingBTN.onClick.AddListener(SwitchRoomMode);
 
-        // delete after implement IAssemblyRooms
-        shopPage.SetShopElementClickAction(ElementClickAction);
-        fileCtrl.SetRenameAction((string oldName, string newName) => {
-            Debug.Log("Rename " + oldName + " to " + newName);
-        });
-        fileCtrl.StoreAction += (string fileName) => {
-            Debug.Log("Get StoreFileName : " + fileName);
-        };
-        fileCtrl.LoadAction += (string fileName) => {
-            Debug.Log("Get LoadFileName : " + fileName);
-        };
+
+        GameObject impRoom = GameObject.Find("RoomManager");
+        SetAssimblyRoom(impRoom.GetComponent<IAssemblyRoom>());
     }
 
     /// <summary>
@@ -41,6 +47,8 @@ public class WorkShop : MonoBehaviour
     /// </summary>
     /// <param name="Iar">new IAssemblyRoom.</param>
     public void SetAssimblyRoom(IAssemblyRoom Iar) {
+        if(Iar == null) { Debug.Log("IAssemblyRoom is null."); return; }
+
         if(room != null) {
             fileCtrl.RemoveRenameAction(room.RenameDevice);
             fileCtrl.StoreAction -= room.SaveCurrentDevice;
@@ -76,9 +84,11 @@ public class WorkShop : MonoBehaviour
         room?.SetRoomMode(roomMode);
     }
     public void SetStoreFileNames(List<string> fileNameList) {
+        if(fileNameList == null) { return; }
         int i = 0;
         for(; i < fileCtrl.fileElements.Count; ++i){
-            fileCtrl.fileElements[i].SetFileName(fileNameList?[i]);
+            if(fileNameList.Count >= i) { break; }
+            fileCtrl.fileElements[i].SetFileName(fileNameList[i]);
         }
     }
 }

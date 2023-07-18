@@ -66,4 +66,4 @@ public enum GameComponentType{
     Attack,
     Movement,
     Functional
-}
+}   
