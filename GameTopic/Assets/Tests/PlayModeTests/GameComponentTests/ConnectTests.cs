@@ -9,13 +9,13 @@ public class ConnectTests
 
     
     [Test]
-    [TestCase(0)]
-    public void CreateSingleComponentTest(int componentGUID)
+    [TestCase("Square")]
+    public void CreateSingleComponentTest(string componentName)
     {
         var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
-        var c = componentFactory.CreateGameComponentObject(componentGUID);
+        var c = componentFactory.CreateGameComponentObject(componentName);
         var info = c.Dump() as GameComponentInfo;
-        Assert.AreEqual(componentGUID, info.componentGUID);
+        Assert.AreEqual(componentName, info.ComponentName);
         Assert.AreNotEqual(c.Connector, null);
         Assert.AreEqual(info.connectionInfo, ConnectionInfo.NoConnection());
         Assert.AreEqual(c.GetParent(), null);

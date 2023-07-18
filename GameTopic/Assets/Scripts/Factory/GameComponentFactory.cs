@@ -24,6 +24,7 @@ public class GameComponentFactory : MonoBehaviour, IGameComponentFactory
         {
             var obj = Instantiate(prefab);
             var component = obj.GetComponent<IGameComponent>();
+            component.ComponentName = gameComponentName;
             return component;
         }
         else

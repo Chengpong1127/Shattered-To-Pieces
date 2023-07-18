@@ -11,7 +11,7 @@ public interface IGameComponent: ITreeNode, IUnit
 {
     public Transform CoreTransform { get; }
     public bool IsInDevice { get; }
-    public int ComponentGUID { get; set; }
+    public string ComponentName { get; set; }
     public IConnector Connector { get; }
     public ICoreComponent CoreComponent { get; }
     public void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info);

@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
-
+using Gameframe.SaveLoad;
 public enum AssemblyRoomMode{
     ConnectionMode,
     PlayMode
@@ -16,6 +14,7 @@ public class AssemblyRoom : MonoBehaviour, IAssemblyRoom
     AssemblySystemManager assemblySystemManager;
     UnitManager GameComponentsUnitManager;
     TempButtonGenerator tempButtonGenerator;
+    SaveLoadManager manager;
 
     public AssemblyRoomMode Mode {get; private set;} = AssemblyRoomMode.ConnectionMode;
 
@@ -23,7 +22,7 @@ public class AssemblyRoom : MonoBehaviour, IAssemblyRoom
         GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
         assemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
         GameComponentsUnitManager = new UnitManager();
-
+        manager = SaveLoadManager.Create("BaseDirectory","SavedDevice",SerializationMethodType.JsonDotNet);
 
         assemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
         ControlledDevice = createSimpleDevice();
@@ -49,6 +48,24 @@ public class AssemblyRoom : MonoBehaviour, IAssemblyRoom
         assemblySystemManager.EnableAssemblyComponents();
     }
 
+    private void LoadNewDevice(DeviceInfo deviceInfo){
+
+        ClearAllGameComponents();
+        ControlledDevice.Load(deviceInfo);
+        ControlledDevice.ForEachGameComponent((component) => {
+            GameComponentsUnitManager.AddUnit(component);
+        });
+    }
+
+    private void ClearAllGameComponents(){
+        GameComponentsUnitManager.ForEachUnit((unit) => {
+            var gameComponent = unit as GameComponent;
+            if(gameComponent != null){
+                Destroy(gameComponent.gameObject);
+            }
+        });
+        GameComponentsUnitManager.Clear();
+    }
 
     private Device createSimpleDevice(){
         var device = new GameObject("Device").AddComponent<Device>();
@@ -73,14 +90,20 @@ public class AssemblyRoom : MonoBehaviour, IAssemblyRoom
         throw new System.NotImplementedException();
     }
 
-    void IAssemblyRoom.SaveCurrentDevice(string DeviceName)
+    public void SaveCurrentDevice(string deviceName)
     {
-        throw new System.NotImplementedException();
+        var info = ControlledDevice.Dump();
+        var deviceInfo = info as DeviceInfo;
+        Debug.Assert(deviceInfo != null);
+        var filename = deviceName + ".json";
+        manager.Save(deviceInfo, filename);
     }
 
-    void IAssemblyRoom.LoadDevice(string DeviceName)
+    public void LoadDevice(string deviceName)
     {
-        throw new System.NotImplementedException();
+        var filename = deviceName + ".json";
+        var deviceInfo = manager.Load<DeviceInfo>(filename);
+        LoadNewDevice(deviceInfo);
     }
 
     void IAssemblyRoom.LoadDevice(string DeviceName, Vector2 position)

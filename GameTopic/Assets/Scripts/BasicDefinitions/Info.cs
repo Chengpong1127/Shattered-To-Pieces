@@ -4,20 +4,11 @@ using Newtonsoft.Json;
 using UnityEngine;
 public class DeviceInfo: IInfo
 {
-    public TreeInfo treeInfo;
-
-    public string DumpJSON(){
-        return JsonConvert.SerializeObject(treeInfo);
-    }
-    public static DeviceInfo LoadJSON(string json){
-        var info = new DeviceInfo();
-        info.treeInfo = JsonConvert.DeserializeObject<TreeInfo>(json);
-        return info;
-    }
+    public TreeInfo<GameComponentInfo> treeInfo;
 }
 
 public class GameComponentInfo: IInfo{
-    public int componentGUID;
+    public string ComponentName;
     public ConnectionInfo connectionInfo;
     
 
@@ -61,9 +52,9 @@ public interface IStorable: IDumpable<IInfo>, ILoadable<IInfo>{
 
 }
 
-public class TreeInfo: IInfo{
+public class TreeInfo<T>: IInfo where T: IInfo{
     public int rootID;
-    public Dictionary<int, IInfo> NodeInfoMap = new Dictionary<int, IInfo>();
+    public Dictionary<int, T> NodeInfoMap = new Dictionary<int, T>();
     public List<(int, int)> EdgeInfoList = new List<(int, int)>();
 }
 
