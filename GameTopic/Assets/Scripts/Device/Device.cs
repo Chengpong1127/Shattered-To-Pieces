@@ -13,7 +13,7 @@ public class Device: MonoBehaviour, IDevice
         Debug.Assert(RootGameComponent != null, "RootGameComponent is null");
         var tree = new Tree(RootGameComponent);
         var deviceInfo = new DeviceInfo();
-        deviceInfo.treeInfo = tree.Dump();
+        deviceInfo.treeInfo = tree.Dump<GameComponentInfo>();
         return deviceInfo;
     }
 
@@ -34,18 +34,18 @@ public class Device: MonoBehaviour, IDevice
         connectAllComponents(tempDictionary, deviceInfo.treeInfo.NodeInfoMap, deviceInfo.treeInfo.EdgeInfoList);
     }
 
-    private Dictionary<int, IGameComponent> createAllComponents(Dictionary<int, IInfo> nodes){
+    private Dictionary<int, IGameComponent> createAllComponents(Dictionary<int, GameComponentInfo> nodes){
         Debug.Assert(GameComponentFactory != null, "GameComponentFactory is null");
         var tempDictionary = new Dictionary<int, IGameComponent>();
         foreach (var (key, value) in nodes){
             var componentInfo = value as GameComponentInfo;
-            var component = GameComponentFactory.CreateGameComponentObject(componentInfo.componentGUID);
+            var component = GameComponentFactory.CreateGameComponentObject(componentInfo.ComponentName);
             tempDictionary.Add(key, component);
         }
         return tempDictionary;
     }
 
-    private void connectAllComponents(Dictionary<int, IGameComponent> nodes, Dictionary<int, IInfo> infos, List<(int, int)> edges){
+    private void connectAllComponents(Dictionary<int, IGameComponent> nodes, Dictionary<int, GameComponentInfo> infos, List<(int, int)> edges){
         foreach (var (from, to) in edges){
             var fromComponent = nodes[from];
             var toComponent = nodes[to];
@@ -69,6 +69,15 @@ public class Device: MonoBehaviour, IDevice
             }
         });
         return abilityList;
+    }
+
+    public void ForEachGameComponent(Action<IGameComponent> action){
+        var tree = new Tree(RootGameComponent);
+        tree.TraverseBFS((node) => {
+            var component = node as IGameComponent;
+            Debug.Assert(component != null);
+            action(component);
+        });
     }
 
 }
