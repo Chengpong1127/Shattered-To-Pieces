@@ -96,18 +96,12 @@ public class AssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     public void SaveCurrentDevice(string deviceName)
     {
-        var info = ControlledDevice.Dump();
-        var deviceInfo = info as DeviceInfo;
-        Debug.Assert(deviceInfo != null);
-        var filename = deviceName + ".json";
-        manager.Save(deviceInfo, filename);
+
     }
 
     public void LoadDevice(string deviceName)
     {
-        var filename = deviceName + ".json";
-        var deviceInfo = manager.Load<DeviceInfo>(filename);
-        LoadNewDevice(deviceInfo);
+
     }
 
     void IAssemblyRoom.LoadDevice(string DeviceName, Vector2 position)

@@ -34,7 +34,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     {
         GameComponentsUnitManager.ForEachUnit((unit) => {
             var component = unit as IGameComponent;
-            Destroy(component.CoreTransform);
+            Destroy(component.DragableTransform);
         });
         GameComponentsUnitManager.Clear();
     }
@@ -54,7 +54,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         var path = componentData.ResourcePath;
         var newComponent = GameComponentFactory.CreateGameComponentObject(path);
         GameComponentsUnitManager.AddUnit(newComponent);
-        newComponent.CoreTransform.position = position;
+        newComponent.DragableTransform.position = position;
     }
 
     public List<GameComponentData> GetGameComponentDataList(GameComponentType type)
@@ -85,7 +85,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         var filename = DeviceName + ".json";
         var deviceInfo = deviceStorageManager.Load<DeviceInfo>(filename);
         loadNewDevice(deviceInfo);
-        ControlledDevice.RootGameComponent.CoreTransform.position = position;
+        ControlledDevice.RootGameComponent.DragableTransform.position = position;
     }
 
     public void RenameDevice(string DeviceName, string NewDeviceName)
