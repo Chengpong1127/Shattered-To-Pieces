@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7edbe836890bd452e9486843fcac7c64, type: 3}
   m_Name: Square
   m_EditorClassIdentifier: 
-  DisplayName: 
+  DisplayName: Square
   DisplayImage: {fileID: 0}
   Description: 
   Price: 0
   Type: 0
-  ResourcePath: 
+  ResourcePath: Square

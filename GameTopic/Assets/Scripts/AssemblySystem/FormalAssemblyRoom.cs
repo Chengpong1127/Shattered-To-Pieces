@@ -29,13 +29,23 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         assemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
         GameComponentsUnitManager = new UnitManager();
         deviceStorageManager = SaveLoadManager.Create("BaseDirectory","SavedDevice",SerializationMethodType.JsonDotNet);
+
+        ControlledDevice = createSimpleDevice();
+    }
+
+    private Device createSimpleDevice(){
+        var device = new GameObject("Device").AddComponent<Device>();
+        device.GameComponentFactory = GameComponentFactory;
+        var initComponent = GameComponentFactory.CreateGameComponentObject("Square");
+        device.RootGameComponent = initComponent;
+        return device;
     }
 
     private void clearAllGameComponents()
     {
         GameComponentsUnitManager.ForEachUnit((unit) => {
             var component = unit as IGameComponent;
-            Destroy(component.DragableTransform);
+            Destroy(component.DragableTransform.gameObject);
         });
         GameComponentsUnitManager.Clear();
     }
@@ -94,9 +104,11 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     public void RenameDevice(string DeviceName, string NewDeviceName)
     {
-        deviceStorageManager.Load<string>(DeviceName);
-        deviceStorageManager.Save(NewDeviceName, DeviceName);
-        deviceStorageManager.DeleteSave(DeviceName);
+        var filename = DeviceName + ".json";
+        var newFilename = NewDeviceName + ".json";
+        var deviceInfo = deviceStorageManager.Load<DeviceInfo>(filename);
+        deviceStorageManager.Save(deviceInfo, newFilename);
+        deviceStorageManager.DeleteSave(filename);
     }
 
     public void SaveCurrentDevice(string DeviceName)
