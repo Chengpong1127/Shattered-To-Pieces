@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Gameframe.SaveLoad;
+using System.Linq;
 
 public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 {
@@ -59,7 +60,10 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     public List<GameComponentData> GetGameComponentDataList(GameComponentType type)
     {
-        throw new System.NotImplementedException();
+        var dataList = ResourceManager.LoadAllGameComponentData();
+        var filteredList = dataList.Where((data) => data.Type == type).ToList();
+
+        return filteredList;
     }
 
     public List<string> GetSavedDeviceList()
@@ -106,6 +110,13 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     public void SetRoomMode(AssemblyRoomMode mode)
     {
-        throw new System.NotImplementedException();
+        switch(mode){
+            case AssemblyRoomMode.ConnectionMode:
+                assemblySystemManager.EnableAssemblyComponents();
+                break;
+            case AssemblyRoomMode.PlayMode:
+                assemblySystemManager.DisableAssemblyComponents();
+                break;
+        }
     }
 }

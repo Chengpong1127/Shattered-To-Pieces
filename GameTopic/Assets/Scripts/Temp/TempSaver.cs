@@ -25,9 +25,6 @@ public class TempSaver : MonoBehaviour
         Clear();
         
     }
-    public void Create(int id){
-        var component = GameComponentFactory.CreateGameComponentObject(id);
-    }
 
     public void Save(){
         Debug.Log("Save");
