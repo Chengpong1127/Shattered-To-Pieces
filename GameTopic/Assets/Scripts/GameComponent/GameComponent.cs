@@ -12,7 +12,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public IConnector Connector => connector;
     public ICoreComponent CoreComponent => coreComponent;
     public bool IsInDevice => false;
-    public Transform CoreTransform { get => transform; }
+    public Transform DragableTransform { get => transform; }
     public string ComponentName { get; set; }
 
     public void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)

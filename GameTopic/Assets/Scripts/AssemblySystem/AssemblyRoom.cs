@@ -11,10 +11,13 @@ public class AssemblyRoom : MonoBehaviour, IAssemblyRoom
 {
     public Device ControlledDevice;
     IGameComponentFactory GameComponentFactory;
-    AssemblySystemManager assemblySystemManager;
+    public AssemblySystemManager assemblySystemManager;
     UnitManager GameComponentsUnitManager;
-    TempButtonGenerator tempButtonGenerator;
-    SaveLoadManager manager;
+
+    public TempAbilityInputUI tempAbilityInputUI;
+    public TempAbilityInputUI idleTempAbilityInputUI;
+    public AbilityInputManager abilityInputManager;
+    
 
     public AssemblyRoomMode Mode {get; private set;} = AssemblyRoomMode.ConnectionMode;
 
@@ -22,28 +25,29 @@ public class AssemblyRoom : MonoBehaviour, IAssemblyRoom
         GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
         assemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
         GameComponentsUnitManager = new UnitManager();
-        manager = SaveLoadManager.Create("BaseDirectory","SavedDevice",SerializationMethodType.JsonDotNet);
+        abilityInputManager = new AbilityInputManager();
+        tempAbilityInputUI.abilityInputManager = abilityInputManager;
+
 
         assemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
         ControlledDevice = createSimpleDevice();
         GameComponentsUnitManager.AddUnit(ControlledDevice.RootGameComponent);
-        tempButtonGenerator = gameObject.GetComponent<TempButtonGenerator>();
     }
     public void CreateNewComponent(int componentID){
         var newComponent = GameComponentFactory.CreateGameComponentObject(componentID);
         GameComponentsUnitManager.AddUnit(newComponent);
 
-        newComponent.CoreTransform.position = new Vector3(0, 0, 0);
+        newComponent.DragableTransform.position = new Vector3(0, 0, 0);
     }
 
     public void SetPlayMode(){
         Mode = AssemblyRoomMode.PlayMode;
         assemblySystemManager.DisableAssemblyComponents();
-        tempButtonGenerator.GenerateButtons(ControlledDevice.getAbilityList());
+
+        idleTempAbilityInputUI.SetItems(ControlledDevice.getAbilityList());
     }
 
     public void SetConnectMode(){
-        tempButtonGenerator.clearAllButtons();
         Mode = AssemblyRoomMode.ConnectionMode;
         assemblySystemManager.EnableAssemblyComponents();
     }

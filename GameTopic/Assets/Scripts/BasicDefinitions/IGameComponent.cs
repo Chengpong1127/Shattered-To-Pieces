@@ -7,9 +7,8 @@ using System;
 
 
 // Description: Defines the basic interfaces for the game components.
-public interface IGameComponent: ITreeNode, IUnit
+public interface IGameComponent: ITreeNode, IUnit, IDragable
 {
-    public Transform CoreTransform { get; }
     public bool IsInDevice { get; }
     public string ComponentName { get; set; }
     public IConnector Connector { get; }
@@ -41,13 +40,4 @@ public interface IConnector: IDumpable<IInfo>
 public interface ICoreComponent
 {
     Dictionary<string, Ability> AllAbilities { get; }
-}
-
-public struct Ability{
-    public string name;
-    public UnityAction action;
-    public Ability(string name, UnityAction action){
-        this.name = name;
-        this.action = action;
-    }
 }
