@@ -18,7 +18,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// The manager for assembly system.
     /// </summary>
     private AssemblySystemManager assemblySystemManager;
-    private UnitManager GameComponentsUnitManager;
+    public UnitManager GameComponentsUnitManager;
     /// <summary>
     /// The manager for device storage.
     /// </summary>
@@ -37,6 +37,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         var device = new GameObject("Device").AddComponent<Device>();
         device.GameComponentFactory = GameComponentFactory;
         var initComponent = GameComponentFactory.CreateGameComponentObject("Square");
+        GameComponentsUnitManager.AddUnit(initComponent);
         device.RootGameComponent = initComponent;
         return device;
     }

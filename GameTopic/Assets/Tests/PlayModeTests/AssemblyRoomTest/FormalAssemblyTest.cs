@@ -78,6 +78,17 @@ public class FormalAssemblyTest
         Assert.True(deviceList.Contains("test3.json"));
     }
 
+    [Test]
+    public void CreateNewGameComponentTest(){
+        var roomManager = new GameObject().AddComponent<FormalAssemblyRoom>();
+        var deviceInfo = roomManager.ControlledDevice.Dump() as DeviceInfo;
+        GameComponentData data = ScriptableObject.CreateInstance<GameComponentData>();
+        data.ResourcePath = "Square";
+
+        roomManager.CreateNewGameComponent(data, new Vector2(0, 0));
+        Assert.AreEqual(roomManager.GameComponentsUnitManager.UnitMap.Count, 2);
+        
+    }
 
     private bool CompareDeviceInfo(DeviceInfo info1, DeviceInfo info2){
         if(info1.treeInfo.rootID != info2.treeInfo.rootID) return false;
