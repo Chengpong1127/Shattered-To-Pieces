@@ -38,46 +38,11 @@ public class SkillChanger : MonoBehaviour
             {
                 if (a.InputPath == ctx.control.name)
                 {
+                    OnTriggeredButton?.Invoke(int.Parse(ctx.control.name));
                     a.RunAllAbilities();
                 }
                
             }
-        /* change skill key
-            if (!KeySelected)
-            {
-
-                foreach (AbilityInputEntry a in abilityInputManager.AbilityInputEntries)
-                {
-                    if (a.InputPath == ctx.control.name)
-                    {
-                       // KeySelected = true;
-                        //key = ctx.control.name;
-                    }
-                }
-            }
-            else
-            {
-                if (ctx.control.name == key) { KeySelected = false; key = ""; return; }
-                Debug.Log(ctx.control.name);
-                foreach(AbilityInputEntry a in abilityInputManager.AbilityInputEntries)
-                {
-                    if (a.InputPath == ctx.control.name)
-                    {
-                        a.SetInputPath(key);
-                    }
-                }
-                foreach (AbilityInputEntry a in abilityInputManager.AbilityInputEntries)
-                {
-                    if (a.InputPath == key)
-                    {
-                        a.SetInputPath(ctx.control.name);
-                    }
-                }
-                key = "";
-                KeySelected=false;
-            }
-
-            */
         }
     }
     public void ChangeKey(InputAction.CallbackContext ctx)
@@ -89,8 +54,8 @@ public class SkillChanger : MonoBehaviour
             {
                 if (a.InputPath == ctx.control.name)
                 {
-                    // KeySelected = true;
-                    //key = ctx.control.name;
+                    KeySelected = true;
+                    key = ctx.control.name;
                 }
             }
         }
@@ -103,6 +68,7 @@ public class SkillChanger : MonoBehaviour
                 if (a.InputPath == ctx.control.name)
                 {
                     a.SetInputPath(key);
+                    OnTriggeredChangedKey?.Invoke(int.Parse(a.InputPath),a.InputPath,ctx.control.name);
                 }
             }
             foreach (AbilityInputEntry a in abilityInputManager.AbilityInputEntries)
@@ -112,6 +78,7 @@ public class SkillChanger : MonoBehaviour
                     a.SetInputPath(ctx.control.name);
                 }
             }
+
             key = "";
             KeySelected = false;
         }
