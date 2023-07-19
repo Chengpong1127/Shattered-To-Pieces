@@ -17,8 +17,7 @@ public class ResourceManager
     }
 
     public static List<GameComponentData> LoadAllGameComponentData(){
-        var path = Path.Combine(GameComponentDataPath, "GameComponentData");
-        var data = Resources.LoadAll<GameComponentData>(path);
+        var data = Resources.LoadAll<GameComponentData>(GameComponentDataPath);
         var dataList = new List<GameComponentData>();
         foreach(var d in data){
             dataList.Add(d);

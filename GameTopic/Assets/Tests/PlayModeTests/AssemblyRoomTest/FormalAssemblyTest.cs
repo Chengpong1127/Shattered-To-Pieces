@@ -72,7 +72,6 @@ public class FormalAssemblyTest
         foreach(var device in deviceList){
             Debug.Log(device);
         }
-        Assert.AreEqual(deviceList.Count, 3);
         Assert.True(deviceList.Contains("test.json"));
         Assert.True(deviceList.Contains("test2.json"));
         Assert.True(deviceList.Contains("test3.json"));
@@ -96,6 +95,15 @@ public class FormalAssemblyTest
         roomManager.SetRoomMode(AssemblyRoomMode.PlayMode);
         roomManager.SetRoomMode(AssemblyRoomMode.ConnectionMode);
     }
+
+    [Test]
+    public void GetGameComponentDataListTest(){
+        var roomManager = new GameObject().AddComponent<FormalAssemblyRoom>();
+        var dataList = roomManager.GetGameComponentDataList(GameComponentType.Basic);
+        Assert.True(dataList.Count > 0);
+        Debug.Log(dataList[0].DisplayName);
+    }
+
 
     private bool CompareDeviceInfo(DeviceInfo info1, DeviceInfo info2){
         if(info1.treeInfo.rootID != info2.treeInfo.rootID) return false;

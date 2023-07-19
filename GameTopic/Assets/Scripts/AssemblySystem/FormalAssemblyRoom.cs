@@ -73,6 +73,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     public List<GameComponentData> GetGameComponentDataList(GameComponentType type)
     {
         var dataList = ResourceManager.LoadAllGameComponentData();
+        Debug.Assert(dataList != null);
         var filteredList = dataList.Where((data) => data.Type == type).ToList();
 
         return filteredList;
