@@ -121,19 +121,22 @@ public class Connector : MonoBehaviour, IConnector
     void LinkToConnector(Connector connector, ConnectionInfo info) {
         if (connector == null ||
             !(connector.targetList.Count > info.linkedTargetID) ||
-            !connector.targetList[(int)info.linkedTargetID].LinkToTarget(this)
-            ) { return; }
+            !connector.targetList[(int)info.linkedTargetID].LinkToTarget(this)||
+            connector.selfJoint.connectedBody == this.selfRigidbody
+            ) { Disconnect(); return; }
 
         this.transform.rotation = Quaternion.Euler(0, 0, info.connectorRotation);
 
         linkedTarget = connector.targetList[(int)info.linkedTargetID];
 
         linkedTarget.ownerConnector.attachHandler.AddListener(this.SwitchAttach);
+
         this.selfJoint.connectedBody = connector.selfRigidbody;
         this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
         this.selfJoint.enabled = true;
     }
     public void UnlinkToConnector() {
+        this.selfJoint.connectedBody = null;
         this.selfJoint.enabled = false;
 
         if (linkedTarget == null) { return; }
