@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class FileElementCtrl : MonoBehaviour
 {
     [SerializeField] TMP_InputField displayInputField;
-    [SerializeField] Button renameBTN;
+    [SerializeField] public Button renameBTN;
 
     /// <summary>
     /// The file name which be store or load.

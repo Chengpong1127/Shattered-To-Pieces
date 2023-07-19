@@ -58,6 +58,9 @@ public class WorkShop : MonoBehaviour
         room = Iar;
 
         shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Basic), GameComponentType.Basic);
+        shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Attack), GameComponentType.Attack);
+        shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Functional), GameComponentType.Functional);
+        shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Movement), GameComponentType.Movement);
         shopPage.SetShopElementClickAction(ElementClickAction);
         fileCtrl.SetRenameAction(room.RenameDevice);
         fileCtrl.StoreAction += room.SaveCurrentDevice;

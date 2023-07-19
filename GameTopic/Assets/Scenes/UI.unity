@@ -1988,6 +1988,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7466965608624879916, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
+      propertyPath: m_text
+      value: "\u200B"
+      objectReference: {fileID: 0}
     - target: {fileID: 7466965608717777185, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
       propertyPath: m_Name
       value: F_3
@@ -2947,7 +2951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7466965608624879916, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
       propertyPath: m_text
-      value: "F_1\u200B"
+      value: "\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 7466965608717777185, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
       propertyPath: m_Name
@@ -4228,7 +4232,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1672624259
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5886,6 +5890,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1672624259}
     m_Modifications:
+    - target: {fileID: 7466965607410487236, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7466965607410487236, guid: 3ee1e582aa56f7044a115990b2c62991, type: 3}
       propertyPath: m_Enabled
       value: 1
