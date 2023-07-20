@@ -123,7 +123,7 @@ public class Connector : MonoBehaviour, IConnector
             !(connector.targetList.Count > info.linkedTargetID) ||
             !connector.targetList[(int)info.linkedTargetID].LinkToTarget(this)||
             connector.selfJoint.connectedBody == this.selfRigidbody
-            ) { Disconnect(); return; }
+            ) { return; }
 
         this.transform.rotation = Quaternion.Euler(0, 0, info.connectorRotation);
 
