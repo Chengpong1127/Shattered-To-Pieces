@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Gameframe.SaveLoad;
 using System.Linq;
+using System;
 
 public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 {
@@ -23,6 +24,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// The manager for device storage.
     /// </summary>
     private SaveLoadManager deviceStorageManager;
+
+    public event Action<string> OnFinishChangeAbilityKey;
 
     private void Awake() {
         GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
@@ -134,5 +137,15 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
                 assemblySystemManager.DisableAssemblyComponents();
                 break;
         }
+    }
+
+    public void StartChangeAbilityKey(int abilityButtonID)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void EndChangeAbilityKey()
+    {
+        throw new NotImplementedException();
     }
 }

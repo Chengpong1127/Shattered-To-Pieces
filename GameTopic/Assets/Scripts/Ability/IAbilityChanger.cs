@@ -1,7 +1,7 @@
 using System;
 public interface IAbilityKeyChanger
 {
-    public void StartChangeAbility(int abilityButtonID);
-    public void EndChangeAbility();
+    public void StartChangeAbilityKey(int abilityButtonID);
+    public void EndChangeAbilityKey();
     public event Action<string> OnFinishChangeAbility;
 }
