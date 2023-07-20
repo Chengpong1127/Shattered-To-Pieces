@@ -12,6 +12,8 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
         GameObject dragObj = eventData.pointerDrag;
         if (dragObj == null) { return; }
 
+        dragObj.GetComponent<SkillCtrl>().SetDropObjectTarget(this.gameObject);
+
         Debug.Log(eventData.pointerDrag.name);
         dragObj.transform.position = transform.position;
     }
