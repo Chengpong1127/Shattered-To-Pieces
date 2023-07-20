@@ -23,9 +23,10 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
         if (dragObj == null) { return; }
 
         dragObj.GetComponent<SkillCtrl>().SetDropObjectTarget(this);
-        dragObj.transform.SetParent(skillCtrlDisplayer.transform, true);
+        // dragObj.transform.SetParent(skillCtrlDisplayer.transform, true);
+    }
 
-        // Debug.Log(eventData.pointerDrag.name);
-        // dragObj.transform.position = transform.position;
+    public void JoinSkillBox(SkillCtrl skill) {
+        skill.gameObject.transform.SetParent(skillCtrlDisplayer.transform, true);
     }
 }

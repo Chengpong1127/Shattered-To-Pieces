@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,6 +8,8 @@ using UnityEngine.UI;
 public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField] Transform canvasTransform;
+    
+    static SkillBoxCtrl NonSetBox;
 
     RectTransform selfRectTransform;
     Image selfImage;
@@ -23,6 +26,8 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
             Debug.Log("image not found.");
             gameObject.SetActive(false);
         }
+
+        NonSetBox = GameObject.Find("NonSetBox").GetComponent<SkillBoxCtrl>();
     }
 
     public void SetDropObjectTarget(SkillBoxCtrl obj) {
@@ -40,15 +45,14 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     public void OnBeginDrag(PointerEventData eventData) {
         selfImage.raycastTarget = false;
 
+        dropObjTarget = null;
         transform.SetParent(canvasTransform, false);
     }
 
     public void OnEndDrag(PointerEventData eventData) {
         selfImage.raycastTarget = true;
-        if(dropObjTarget != null) {
-            // gameObject.transform.SetParent(dropObjTarget.transform.transform);
-            // selfRectTransform.anchoredPosition = dropObjTarget.GetComponent<RectTransform>().anchoredPosition;
-        }
-    }
 
+        if(dropObjTarget != null) { dropObjTarget.JoinSkillBox(this); }
+        else { NonSetBox?.JoinSkillBox(this); }
+    }
 }
