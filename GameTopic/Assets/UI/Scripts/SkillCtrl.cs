@@ -6,9 +6,13 @@ using UnityEngine.UI;
 
 public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
+    [SerializeField] Transform canvasTransform;
+
     RectTransform selfRectTransform;
     Image selfImage;
-    GameObject dropObjTarget;
+    SkillBoxCtrl dropObjTarget;
+
+    SkillData skillData;
 
     private void Awake() {
         selfRectTransform  = GetComponent<RectTransform>();
@@ -21,7 +25,7 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         }
     }
 
-    public void SetDropObjectTarget(GameObject obj) {
+    public void SetDropObjectTarget(SkillBoxCtrl obj) {
         dropObjTarget = obj;
     }
 
@@ -35,12 +39,15 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void OnBeginDrag(PointerEventData eventData) {
         selfImage.raycastTarget = false;
+
+        transform.SetParent(canvasTransform, false);
     }
 
     public void OnEndDrag(PointerEventData eventData) {
         selfImage.raycastTarget = true;
         if(dropObjTarget != null) {
-            selfRectTransform.anchoredPosition = dropObjTarget.GetComponent<RectTransform>().anchoredPosition;
+            // gameObject.transform.SetParent(dropObjTarget.transform.transform);
+            // selfRectTransform.anchoredPosition = dropObjTarget.GetComponent<RectTransform>().anchoredPosition;
         }
     }
 
