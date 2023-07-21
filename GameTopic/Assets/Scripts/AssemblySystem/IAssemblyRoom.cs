@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public interface IAssemblyRoom
 {
@@ -56,6 +57,20 @@ public interface IAssemblyRoom
     /// </summary>
     /// <returns> The list of the saved and available devices.</returns>
     public List<string> GetSavedDeviceList();
+
+    /// <summary>
+    /// Start to listen to player's input to change the ability button.
+    /// </summary>
+    /// <param name="abilityButtonID"></param>
+    public void StartChangeAbilityKey(int abilityButtonID);
+    /// <summary>
+    /// Stop listening to player's input to change the ability button.
+    /// </summary>
+    public void EndChangeAbilityKey();
+    /// <summary>
+    /// Event that will be triggered when the ability button is changed.
+    /// </summary>
+    public event Action<string> OnFinishChangeAbilityKey;
 }
 
 /// <summary>
