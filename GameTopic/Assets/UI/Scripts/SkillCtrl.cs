@@ -10,12 +10,13 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     [SerializeField] Transform canvasTransform;
     
     static SkillBoxCtrl NonSetBox;
+    public SkillBoxCtrl ownerBox { get; set; }
 
     RectTransform selfRectTransform;
     Image selfImage;
     SkillBoxCtrl dropObjTarget;
 
-    SkillData skillData;
+    public Ability skillData { get; set; }
 
     private void Awake() {
         selfRectTransform  = GetComponent<RectTransform>();
@@ -27,7 +28,18 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
             gameObject.SetActive(false);
         }
 
+        // NonSetBox = GameObject.Find("NonSetBox").GetComponent<SkillBoxCtrl>();
+    }
+
+    private void Start() {
         NonSetBox = GameObject.Find("NonSetBox").GetComponent<SkillBoxCtrl>();
+        skillData = Ability.EmptyAbility();
+        skillData.AbilityName = selfImage.color.ToString();
+    }
+
+
+    public void UpDateSkillDisplay() {
+        // ability should have sprite
     }
 
     public void SetDropObjectTarget(SkillBoxCtrl obj) {
@@ -51,8 +63,9 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData) {
         selfImage.raycastTarget = true;
+        ownerBox.ResetSkillCtrlHierarchy(this.gameObject);
 
-        if(dropObjTarget != null) { dropObjTarget.JoinSkillBox(this); }
+        if (dropObjTarget != null) { dropObjTarget.JoinSkillBox(this); }
         else { NonSetBox?.JoinSkillBox(this); }
     }
 }

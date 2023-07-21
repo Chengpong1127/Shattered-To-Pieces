@@ -20,17 +20,6 @@ public class WorkShop : MonoBehaviour
 
 
     private void Awake() {
-        // delete after implement IAssemblyRooms
-        // shopPage.SetShopElementClickAction(ElementClickAction);
-        // fileCtrl.SetRenameAction((string oldName, string newName) => {
-        //     Debug.Log("Rename " + oldName + " to " + newName);
-        // });
-        // fileCtrl.StoreAction += (string fileName) => {
-        //     Debug.Log("Get StoreFileName : " + fileName);
-        // };
-        // fileCtrl.LoadAction += (string fileName) => {
-        //     Debug.Log("Get LoadFileName : " + fileName);
-        // };
     }
 
     private void Start() {
