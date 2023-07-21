@@ -125,7 +125,9 @@ public class ConnectorTest
 
     public void SelectTest()
     {
-        Connector C_obj = Resources.Load<GameObject>("Prefabs/Square").GetComponentInChildren<Connector>();
+        Connector c = Resources.Load<GameObject>("Prefabs/Square").GetComponentInChildren<Connector>();
+        Connector C_obj = MonoBehaviour.Instantiate(c);
+
         Assert.True(C_obj.GetTargetList().Count == 4);
         foreach (var i in C_obj.GetTargetList())
         {
