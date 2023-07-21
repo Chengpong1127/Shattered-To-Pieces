@@ -34,7 +34,7 @@ public class TempAbilityInputUI : ObjectContainerList<Ability>
             if(abilities[i] != null){
                 Debug.Log("Set ability " + abilities[i].AbilityName + " to " + entryIndex + " " + abilityIndex);
             }
-            abilityInputManager.SetAbility(entryIndex, abilityIndex, abilities[i]);
+            abilityInputManager.SetAbility(entryIndex, abilities[i]);
             abilityInputManager.SetPath(entryIndex, entryIndex.ToString());
         }
     }

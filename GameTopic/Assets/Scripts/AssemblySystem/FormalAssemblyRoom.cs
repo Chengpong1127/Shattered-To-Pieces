@@ -25,6 +25,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// </summary>
     private SaveLoadManager deviceStorageManager;
 
+    private IAbilityKeyChanger abilityKeyChanger;
+
     public event Action<string> OnFinishChangeAbilityKey;
 
     private void Awake() {

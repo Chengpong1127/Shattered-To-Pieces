@@ -25,13 +25,13 @@ public class AssemblyRoom : MonoBehaviour
         GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
         assemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
         GameComponentsUnitManager = new UnitManager();
-        abilityInputManager = new AbilityInputManager();
-        tempAbilityInputUI.abilityInputManager = abilityInputManager;
 
 
         assemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
         ControlledDevice = createSimpleDevice();
         GameComponentsUnitManager.AddUnit(ControlledDevice.RootGameComponent);
+        abilityInputManager = new AbilityInputManager(ControlledDevice);
+        tempAbilityInputUI.abilityInputManager = abilityInputManager;
     }
     public void CreateNewComponent(int componentID){
         var newComponent = GameComponentFactory.CreateGameComponentObject(componentID);
