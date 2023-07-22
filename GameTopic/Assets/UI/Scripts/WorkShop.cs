@@ -17,7 +17,7 @@ public class WorkShop : MonoBehaviour
     [SerializeField] Button exitBTN;
     [SerializeField] ShopBGCtrl shopPage;
     [SerializeField] StoreFileCtrl fileCtrl;
-
+    [SerializeField] SkillDispatcher shopDispatcher;
 
     private void Awake() {
     }
@@ -29,6 +29,9 @@ public class WorkShop : MonoBehaviour
 
         GameObject impRoom = GameObject.Find("RoomManager");
         SetAssimblyRoom(impRoom.GetComponent<IAssemblyRoom>());
+
+        shopDispatcher.setAbilityAction += SetAbilityAction;
+        // shopDispatcher.nonAbilityAction += SetAbilityAction;
     }
 
     /// <summary>
@@ -82,5 +85,14 @@ public class WorkShop : MonoBehaviour
             if(fileNameList.Count >= i) { break; }
             fileCtrl.fileElements[i].SetFileName(fileNameList[i]);
         }
+    }
+
+    public void SetAbilityAction(int boxId, Ability ability) {
+        room.AbilityManager.SetAbilityToEntry(boxId, ability);
+        shopDispatcher.abilityList = room.AbilityManager.AbilityInputEntries[boxId].Abilities;
+    }
+    public void SetAbilityOutActtion(Ability ability) {
+        room.AbilityManager.SetAbilityOutOfEntry(ability);
+        shopDispatcher.abilityList = room.AbilityManager.GetAbilitiesOutOfEntry();
     }
 }

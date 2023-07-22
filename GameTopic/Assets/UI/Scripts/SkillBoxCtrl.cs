@@ -13,9 +13,8 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
     [SerializeField] Image firstSkillDisplayImg;
     [SerializeField] GameObject skillCtrlDisplayer;
     [SerializeField] List<SkillCtrl> skillList;
-    [SerializeField] int boxID;
-
-    public UnityAction<int, Ability> SetAbilityAction;
+    public int boxID {  get; set; }
+    public UnityAction<int, Ability> SetAbilityAction { get; set; }
 
     private void Start() {
         skillList.ForEach(skillCtrl => {
@@ -28,14 +27,12 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
         SkillCtrl dragSkill = eventData.pointerDrag.GetComponent<SkillCtrl>();
         if (dragSkill == null) { return; }
 
-        dragSkill.SetDropObjectTarget(this); // should be delete after use assemblyRoom to implement skill assign
-        SetAbilityAction?.Invoke(boxID, dragSkill.skillData);
-        // Debug.Log(gameObject.name + "get skill :" + dragSkill.skillData.AbilityName);
+        dragSkill.SetDropObjectTarget(this);
     }
 
     public void JoinSkillBox(SkillCtrl skill) {
-        // skill.gameObject.transform.SetParent(skillCtrlDisplayer.transform, true);
-        Debug.Log(gameObject.name + " get skill :" + skill.skillData.AbilityName);
+        SetAbilityAction?.Invoke(boxID, skill.skillData);
+        Debug.Log(gameObject.name + " get skill");
     }
 
     public void ResetSkillCtrlHierarchy(GameObject obj) {
@@ -50,7 +47,7 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
             skillList[loopId].UpDateSkillDisplay();
         }
         for(; loopId < skillList.Count;loopId++ ) {
-            skillList[loopId].skillData = Ability.EmptyAbility();
+            skillList[loopId].skillData = null;
             skillList[loopId].UpDateSkillDisplay();
         }
     }

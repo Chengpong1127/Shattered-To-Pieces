@@ -27,19 +27,21 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
             Debug.Log("image not found.");
             gameObject.SetActive(false);
         }
-
-        // NonSetBox = GameObject.Find("NonSetBox").GetComponent<SkillBoxCtrl>();
     }
 
     private void Start() {
         NonSetBox = GameObject.Find("NonSetBox").GetComponent<SkillBoxCtrl>();
-        skillData = Ability.EmptyAbility();
-        skillData.AbilityName = selfImage.color.ToString();
+        skillData = null;
     }
 
 
     public void UpDateSkillDisplay() {
-        // ability should have sprite
+        if(skillData == null) {
+            this.gameObject.SetActive(false);
+        }
+
+        // this.gameObject.name = skillData.AbilityName;
+        this.gameObject.SetActive(true);
     }
 
     public void SetDropObjectTarget(SkillBoxCtrl obj) {
