@@ -146,11 +146,11 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     public void StartChangeAbilityKey(int abilityButtonID)
     {
-        throw new NotImplementedException();
+        abilityKeyChanger.StartChangeAbilityKey(abilityButtonID);
     }
 
     public void EndChangeAbilityKey()
     {
-        throw new NotImplementedException();
+        abilityKeyChanger.EndChangeAbilityKey();
     }
 }
