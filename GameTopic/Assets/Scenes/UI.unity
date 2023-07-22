@@ -2921,6 +2921,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSkillDisplayImg: {fileID: 968036638}
   skillCtrlDisplayer: {fileID: 1827688171}
+  skillList: []
+  boxID: 0
 --- !u!114 &1101468484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4013,7 +4015,7 @@ GameObject:
   - component: {fileID: 1355717639}
   - component: {fileID: 1355717642}
   m_Layer: 5
-  m_Name: SkillBoox
+  m_Name: SkillBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4113,6 +4115,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSkillDisplayImg: {fileID: 2030098002}
   skillCtrlDisplayer: {fileID: 2074743946}
+  skillList:
+  - {fileID: 749696165}
+  - {fileID: 197938295}
+  - {fileID: 1384805529}
+  boxID: 0
 --- !u!1 &1384805526
 GameObject:
   m_ObjectHideFlags: 0
