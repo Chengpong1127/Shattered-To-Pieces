@@ -25,6 +25,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// </summary>
     private SaveLoadManager deviceStorageManager;
 
+    public AbilityManager AbilityManager { get; private set;}
+
     private IAbilityKeyChanger abilityKeyChanger;
 
     public event Action<string> OnFinishChangeAbilityKey;
@@ -37,6 +39,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         deviceStorageManager = SaveLoadManager.Create("BaseDirectory","SavedDevice",SerializationMethodType.JsonDotNet);
 
         ControlledDevice = createSimpleDevice();
+        AbilityManager = new AbilityManager(ControlledDevice);
     }
 
     private Device createSimpleDevice(){

@@ -16,6 +16,17 @@ public class Ability{
     /// </summary>
     /// <value></value>
     public IGameComponent OwnerGameComponent;
+
+    public Ability(string name){
+        this.AbilityName = name;
+        this.action = () => {};
+    }
+
+    public Ability(string name, Action action, IGameComponent ownerGameComponent){
+        this.AbilityName = name;
+        this.action = action;
+        this.OwnerGameComponent = ownerGameComponent;
+    }
     public Ability(string name, Action action){
         this.AbilityName = name;
         this.action = action;

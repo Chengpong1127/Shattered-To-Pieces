@@ -16,7 +16,7 @@ public class AssemblyRoom : MonoBehaviour
 
     public TempAbilityInputUI tempAbilityInputUI;
     public TempAbilityInputUI idleTempAbilityInputUI;
-    public AbilityInputManager abilityInputManager;
+    public AbilityManager abilityInputManager;
     
 
     public AssemblyRoomMode Mode {get; private set;} = AssemblyRoomMode.ConnectionMode;
@@ -30,7 +30,7 @@ public class AssemblyRoom : MonoBehaviour
         assemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
         ControlledDevice = createSimpleDevice();
         GameComponentsUnitManager.AddUnit(ControlledDevice.RootGameComponent);
-        abilityInputManager = new AbilityInputManager(ControlledDevice);
+        abilityInputManager = new AbilityManager(ControlledDevice);
         tempAbilityInputUI.abilityInputManager = abilityInputManager;
     }
     public void CreateNewComponent(int componentID){

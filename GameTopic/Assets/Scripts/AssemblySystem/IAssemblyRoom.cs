@@ -23,6 +23,13 @@ public interface IAssemblyRoom
     /// <param name="type">Type specified.</param>
     /// <returns></returns>
     public List<GameComponentData> GetGameComponentDataList(GameComponentType type);
+    /// <summary>
+    /// Get the AbilityManager of the device.
+    /// </summary>
+    /// <value></value>
+    public AbilityManager AbilityManager { get; }
+
+    #region Save and Load
 
     /// <summary>
     /// Save the current device to the device list.
@@ -58,6 +65,11 @@ public interface IAssemblyRoom
     /// <returns> The list of the saved and available devices.</returns>
     public List<string> GetSavedDeviceList();
 
+
+    #endregion
+
+    #region Ability key change
+
     /// <summary>
     /// Start to listen to player's input to change the ability button.
     /// </summary>
@@ -71,6 +83,8 @@ public interface IAssemblyRoom
     /// Event that will be triggered when the ability button is changed.
     /// </summary>
     public event Action<string> OnFinishChangeAbilityKey;
+
+    #endregion
 }
 
 /// <summary>

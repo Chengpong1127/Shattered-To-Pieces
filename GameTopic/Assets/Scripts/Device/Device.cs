@@ -57,6 +57,9 @@ public class Device: MonoBehaviour, IDevice
 
     public List<Ability> getAbilityList(){
         var abilityList = new List<Ability>();
+        if (RootGameComponent == null)
+            return abilityList;
+
         var tree = new Tree(RootGameComponent);
         tree.TraverseBFS((node) => {
             var component = node as IGameComponent;

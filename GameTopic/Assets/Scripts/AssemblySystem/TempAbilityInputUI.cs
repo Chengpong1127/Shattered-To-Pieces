@@ -12,7 +12,7 @@ public enum AbilityUIType{
 }
 public class TempAbilityInputUI : ObjectContainerList<Ability>
 {
-    public AbilityInputManager abilityInputManager;
+    public AbilityManager abilityInputManager;
     public AbilityUIType abilityUIType;
     private void Start() {
         if(abilityUIType == AbilityUIType.Active){
@@ -34,7 +34,7 @@ public class TempAbilityInputUI : ObjectContainerList<Ability>
             if(abilities[i] != null){
                 Debug.Log("Set ability " + abilities[i].AbilityName + " to " + entryIndex + " " + abilityIndex);
             }
-            abilityInputManager.SetAbility(entryIndex, abilities[i]);
+            abilityInputManager.SetAbilityToEntry(entryIndex, abilities[i]);
             abilityInputManager.SetPath(entryIndex, entryIndex.ToString());
         }
     }
