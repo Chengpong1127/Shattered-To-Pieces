@@ -6,7 +6,7 @@ public class SkillChanger : MonoBehaviour
 {
     // Start is called before the first frame update
     private AssemblyRoom room; 
-    private AbilityInputManager abilityInputManager;
+    private AbilityManager abilityInputManager;
     public InputManager inputmanager;
     public Device device;
     private bool KeySelected;

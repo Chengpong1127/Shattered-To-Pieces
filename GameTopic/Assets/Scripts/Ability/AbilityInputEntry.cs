@@ -8,7 +8,7 @@ public class AbilityInputEntry{
     /// </summary>
     /// <value></value>
     public string InputPath { get; private set; } = "";
-    public const int AbilityNumber = 3;
+    public static readonly int AbilityNumber = 3;
     public List<Ability> Abilities = new List<Ability>();
     public AbilityInputEntry(){
         for (int i = 0; i < AbilityNumber; i++)
@@ -26,6 +26,11 @@ public class AbilityInputEntry{
     public void SetAbility(int index, Ability ability){
         Debug.Assert(index < Abilities.Count, "index out of range");
         Abilities[index] = ability;
+    }
+
+    public void AddAbility(Ability ability){
+        Abilities.Insert(0, ability);
+        Abilities.RemoveAt(Abilities.Count - 1);
     }
     public void RunAllAbilities(){
         foreach (var ability in Abilities)
