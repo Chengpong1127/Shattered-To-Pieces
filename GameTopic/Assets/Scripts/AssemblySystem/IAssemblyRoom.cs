@@ -6,6 +6,12 @@ using System;
 public interface IAssemblyRoom
 {
     /// <summary>
+    /// Event that will be triggered after switching the assembly room mode.
+    /// </summary>
+    public event Action<AssemblyRoomMode> OnSetRoomMode;
+
+
+    /// <summary>
     /// Create a new game component in the assembly room
     /// </summary>
     /// <param name="componentID"></param>

@@ -7,6 +7,8 @@ using System;
 
 public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 {
+    public event Action<AssemblyRoomMode> OnSetRoomMode;
+
     /// <summary>
     /// The device that the FormalAssemblyRoom is controlling.
     /// </summary>
@@ -41,11 +43,15 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         ControlledDevice = createSimpleDevice();
         AbilityManager = new AbilityManager(ControlledDevice);
     }
+    private void Start() {
+        SetRoomMode(AssemblyRoomMode.ConnectionMode);
+    }
 
     private Device createSimpleDevice(){
         var device = new GameObject("Device").AddComponent<Device>();
         device.GameComponentFactory = GameComponentFactory;
         var initComponent = GameComponentFactory.CreateGameComponentObject("ControlRoom");
+        initComponent.DisconnectFromParent();
         GameComponentsUnitManager.AddUnit(initComponent);
         device.RootGameComponent = initComponent;
         return device;
@@ -142,6 +148,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
                 assemblySystemManager.DisableAssemblyComponents();
                 break;
         }
+        OnSetRoomMode?.Invoke(mode);
     }
 
     public void StartChangeAbilityKey(int abilityButtonID)
