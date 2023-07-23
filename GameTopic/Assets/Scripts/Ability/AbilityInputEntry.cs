@@ -28,9 +28,16 @@ public class AbilityInputEntry{
         Abilities[index] = ability;
     }
 
-    public void AddAbility(Ability ability){
+    /// <summary>
+    /// Add an ability to the entry, and return the removed ability.
+    /// </summary>
+    /// <param name="ability"> The ability to be added.</param>
+    /// <returns> The removed ability.</returns>
+    public Ability AddAbility(Ability ability){
         Abilities.Insert(0, ability);
+        Ability removedAbility = Abilities[Abilities.Count - 1];
         Abilities.RemoveAt(Abilities.Count - 1);
+        return removedAbility;
     }
     public void RunAllAbilities(){
         foreach (var ability in Abilities)
