@@ -38,7 +38,31 @@ public class AbilityManagerTest
         Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities[0], ability4);
         Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities[1], ability3);
         Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities[2], ability2);
+    }
 
+    [Test]
+    public void SetAbilityTest2()
+    {
+        var device = new TestDevice();
+        var abilityManager = new AbilityManager(device);
+        var abilityOutofentry = abilityManager.GetAbilitiesOutOfEntry();
+
+        abilityManager.SetAbilityToEntry(0, abilityOutofentry[0]);
+        Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities[0], abilityOutofentry[0]);
+
+        abilityManager.SetAbilityToEntry(0, abilityOutofentry[1]);
+        Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities[0], abilityOutofentry[1]);
+
+        abilityManager.SetAbilityToEntry(0, abilityOutofentry[2]);
+        Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities[0], abilityOutofentry[2]);
+
+        abilityManager.SetAbilityToEntry(0, abilityOutofentry[3]);
+        Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities[0], abilityOutofentry[3]);
+
+        var removed = abilityOutofentry[0];
+
+        abilityOutofentry = abilityManager.GetAbilitiesOutOfEntry();
+        Assert.AreEqual(abilityOutofentry[0], removed);
     }
 
     [Test]
@@ -58,11 +82,11 @@ public class AbilityManagerTest
         var ability2 = new Ability("test2");
         abilityManager.SetAbilityOutOfEntry(ability);
         var abilityListOutOfEntry = abilityManager.GetAbilitiesOutOfEntry();
-        Assert.AreEqual(abilityListOutOfEntry.Count, 4);
+        Assert.AreEqual(abilityListOutOfEntry.Count, 5);
 
         abilityManager.SetAbilityOutOfEntry(ability2);
         abilityListOutOfEntry = abilityManager.GetAbilitiesOutOfEntry();
-        Assert.AreEqual(abilityListOutOfEntry.Count, 5);
+        Assert.AreEqual(abilityListOutOfEntry.Count, 6);
     }
 
     [Test]
@@ -71,7 +95,7 @@ public class AbilityManagerTest
         var abilityManager = new AbilityManager(device);
         
         var abilityListOutOfEntry = abilityManager.GetAbilitiesOutOfEntry();
-        Assert.AreEqual(abilityListOutOfEntry.Count, 3);
+        Assert.AreEqual(abilityListOutOfEntry.Count, 4);
         abilityManager.SetAbilityToEntry(0, abilityListOutOfEntry[0]);
         abilityManager.SetAbilityToEntry(1, abilityListOutOfEntry[1]);
 
@@ -79,12 +103,12 @@ public class AbilityManagerTest
         Assert.AreEqual(abilityManager.AbilityInputEntries[1].Abilities[0], abilityListOutOfEntry[1]);
 
         abilityListOutOfEntry = abilityManager.GetAbilitiesOutOfEntry();
-        Assert.AreEqual(abilityListOutOfEntry.Count, 1);
+        Assert.AreEqual(abilityListOutOfEntry.Count, 2);
 
         abilityManager.ReloadDeviceAbilities();
 
         abilityListOutOfEntry = abilityManager.GetAbilitiesOutOfEntry();
-        Assert.AreEqual(abilityListOutOfEntry.Count, 3);
+        Assert.AreEqual(abilityListOutOfEntry.Count, 4);
     }
 
     class TestDevice : IDevice
@@ -102,6 +126,7 @@ public class AbilityManagerTest
             abilityList.Add(new Ability("test"));
             abilityList.Add(new Ability("test2"));
             abilityList.Add(new Ability("test3"));
+            abilityList.Add(new Ability("test4"));
 
             return abilityList;
         }
