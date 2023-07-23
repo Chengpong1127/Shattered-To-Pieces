@@ -39,11 +39,36 @@ public class AbilityInputEntry{
         Abilities.RemoveAt(Abilities.Count - 1);
         return removedAbility;
     }
-    public void RunAllAbilities(){
+    /// <summary>
+    /// Trigger all of the abilities in this entry.
+    /// </summary>
+    public void TriggerAllAbilities(){
         foreach (var ability in Abilities)
         {
             if(ability != null){
-                ability.Run();
+                ability.StartAbility();
+            }
+        }
+    }
+    /// <summary>
+    /// Run all of the abilities in this entry. Call this function at each frame.
+    /// </summary>
+    public void RunAllAbilitiesForEachFrame(){
+        foreach (var ability in Abilities)
+        {
+            if(ability != null){
+                ability.RunAbility();
+            }
+        }
+    }
+    /// <summary>
+    /// End all of the abilities in this entry.
+    /// </summary>
+    public void EndAllAbilities(){
+        foreach (var ability in Abilities)
+        {
+            if(ability != null){
+                ability.EndAbility();
             }
         }
     }

@@ -6,32 +6,50 @@ public class Ability{
     /// <summary>
     /// The name of the ability.
     /// </summary>
-    public string AbilityName;
+    public readonly string AbilityName;
     /// <summary>
     /// The action that will be executed when the ability is triggered.
     /// </summary>
-    public Action action;
+    public Action ActionStarted = () => {};
+    /// <summary>
+    /// The action that will be executed each frame when the ability is running.
+    /// </summary>
+    public Action ActionRunning = () => {};
+    /// <summary>
+    /// The action that will be executed when the ability is ended.
+    /// </summary>
+    public Action ActionEnded = () => {};
+
     /// <summary>
     /// The game component that own this ability.
     /// </summary>
     /// <value></value>
-    public IGameComponent OwnerGameComponent;
+    public readonly IGameComponent OwnerGameComponent;
 
     public Ability(string name){
         this.AbilityName = name;
-        this.action = () => {};
     }
 
-    public Ability(string name, Action action, IGameComponent ownerGameComponent){
+    public Ability(string name, Action actionStarted, Action actionRunning, Action actionEnded, IGameComponent ownerGameComponent){
         this.AbilityName = name;
-        this.action = action;
+        this.ActionStarted = actionStarted;
+        this.ActionRunning = actionRunning;
+        this.ActionEnded = actionEnded;
         this.OwnerGameComponent = ownerGameComponent;
     }
-    public Ability(string name, Action action){
+    public Ability(string name, Action actionStarted){
         this.AbilityName = name;
-        this.action = action;
+        this.ActionStarted = actionStarted;
     }
-    public void Run(){
-        action();
+    public void StartAbility(){
+        ActionStarted();
+    }
+
+    public void RunAbility(){
+        ActionRunning();
+    }
+
+    public void EndAbility(){
+        ActionEnded();
     }
 }

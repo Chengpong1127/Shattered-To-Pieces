@@ -86,6 +86,13 @@ public class Connector : MonoBehaviour, IConnector
         SwitchTargetActive(b);
 
         if (!b) { currState = ConnectorState.INITIAL; }
+
+        LayerMask componentLayer = 6;
+        if(b){
+            Physics2D.IgnoreLayerCollision(componentLayer, componentLayer);
+        }else{
+            Physics2D.IgnoreLayerCollision(componentLayer, componentLayer, false);
+        }
     }
     public void SwitchSelecting(bool b) {
         if (currState != ConnectorState.SELECT && currState != ConnectorState.COMBINE) { return; }

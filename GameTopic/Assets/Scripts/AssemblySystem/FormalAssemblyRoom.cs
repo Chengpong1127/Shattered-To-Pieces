@@ -45,7 +45,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     private Device createSimpleDevice(){
         var device = new GameObject("Device").AddComponent<Device>();
         device.GameComponentFactory = GameComponentFactory;
-        var initComponent = GameComponentFactory.CreateGameComponentObject("Square");
+        var initComponent = GameComponentFactory.CreateGameComponentObject("ControlRoom");
         GameComponentsUnitManager.AddUnit(initComponent);
         device.RootGameComponent = initComponent;
         return device;
