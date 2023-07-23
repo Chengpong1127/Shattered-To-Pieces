@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IDragable{
+public interface IDraggable{
     public Transform DragableTransform { get; }
 
 }

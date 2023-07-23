@@ -37,7 +37,7 @@ public class AssemblySystemManager : MonoBehaviour
         DragableMover.OnDragEnd += handleComponentDraggedEnd;
 
     }
-    private void handleComponentDraggedStart(IDragable draggedComponent, Vector2 targetPosition)
+    private void handleComponentDraggedStart(IDraggable draggedComponent, Vector2 targetPosition)
     {
         Debug.Assert(draggedComponent != null, "draggedComponent is null");
         if(draggedComponent is not IGameComponent){
@@ -55,7 +55,7 @@ public class AssemblySystemManager : MonoBehaviour
     }
 
 
-    private void handleComponentDraggedEnd(IDragable draggedComponent, Vector2 targetPosition)
+    private void handleComponentDraggedEnd(IDraggable draggedComponent, Vector2 targetPosition)
     {
         Debug.Assert(draggedComponent != null, "draggedComponent is null");
         var component = draggedComponent as IGameComponent;

@@ -8,11 +8,11 @@ public class DragableMover: MonoBehaviour
 {
     public InputManager inputManager;
     public Camera mainCamera;
-    public event Action<IDragable, Vector2> OnDragStart;
-    public event Action<IDragable, Vector2> OnDragEnd;
+    public event Action<IDraggable, Vector2> OnDragStart;
+    public event Action<IDraggable, Vector2> OnDragEnd;
 
 
-    private IDragable draggedComponent = null;
+    private IDraggable draggedComponent = null;
     private bool isDragging = false;
     private void Start() {
         inputManager.menu.Enable();
@@ -63,12 +63,12 @@ public class DragableMover: MonoBehaviour
         draggedComponent = null;
     }
 
-    private IDragable getDragableUnderMouse(Vector2 mousePosition)
+    private IDraggable getDragableUnderMouse(Vector2 mousePosition)
     {
         var gameObject = getGameObjectUnderMouse(mousePosition);
         if (gameObject != null)
         {
-            return gameObject.GetComponentInParent<IDragable>();
+            return gameObject.GetComponentInParent<IDraggable>();
         }
         else{
             return null;

@@ -4,8 +4,6 @@ using UnityEngine;
 using System;
 public class GameComponentFactory : MonoBehaviour, IGameComponentFactory
 {
-    private PlayerController playerController;
-    private Dictionary<String, int> prefabCounts;
     public enum GameObjectType
     {
         Square,
