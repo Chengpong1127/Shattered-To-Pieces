@@ -89,5 +89,6 @@ public class GameComponent : MonoBehaviour, IGameComponent
         if (coreComponent == null){
             Debug.LogWarning("Core component not found at " + gameObject.name);
         }
+        DisconnectFromParent();
     }
 }
