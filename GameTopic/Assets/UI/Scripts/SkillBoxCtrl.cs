@@ -38,16 +38,30 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
         dragSkill.SetDropObjectTarget(this);
     }
 
-
+    /// <summary>
+    /// Check is the last skillCtrl have data or not.
+    /// It means the current entry is full.
+    /// </summary>
+    /// <returns></returns>
     public bool IsAssignedLastSkill() {
         return skillList[skillList.Count - 1].gameObject.activeSelf == true;
     }
+
+    /// <summary>
+    /// Set ability to certain skill box.
+    /// </summary>
+    /// <param name="ability"></param>
     public void JoinSkillBox(Ability ability) {
         setAbilityAction?.Invoke(boxID, ability);
         refreshAbilityAction?.Invoke(boxID);
         Debug.Log(gameObject.name + " get skill : " + ability.AbilityName);
     }
 
+    /// <summary>
+    /// Set gameobject's hierarchy under skillCtrl displayer and refresh ability display.
+    /// It'll make sure the sibling under skillCtrlDisplayer.
+    /// </summary>
+    /// <param name="obj"></param>
     public void ResetSkillCtrlHierarchy(GameObject obj) {
         obj.transform.SetParent(skillCtrlDisplayer.transform, false);
         for(int i = 0; i < skillList.Count; ++i) {
@@ -57,6 +71,10 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
         refreshAbilityAction?.Invoke(boxID);
     }
 
+    /// <summary>
+    /// Write abilitys into each skillCttrl's skillData and update them.
+    /// </summary>
+    /// <param name="skills"></param>
     public void SetSkillList(List<Ability> skills) {
         int loopId = 0;
 
@@ -70,16 +88,28 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
         }
     }
 
+    /// <summary>
+    /// Open or close the skill edit displayer, rebind text button and skill display image.
+    /// </summary>
+    /// <param name="b"></param>
     public void SetActiveEditDisplayer(bool b) {
         skillCtrlDisplayer.SetActive(b);
         bindKeyDisplay.gameObject.SetActive(b);
         firstSkillDisplayImg.gameObject.SetActive(!b && firstSkillDisplayImg.sprite != null);
     }
 
+    /// <summary>
+    /// Invoke function for rebind key button click.
+    /// </summary>
     public void OnClickRebindKey() {
         // rebindKeyAction?.Invoke(boxID); // should work when rebind function is implemented.
         Debug.Log("Rebind keys not yet implemented.");
     }
+
+    /// <summary>
+    /// Set binded key text to text UI.
+    /// </summary>
+    /// <param name="keyText"></param>
     public void SetBindKeyText(string keyText) {
         bindKeyDisplay.text = keyText;
     }

@@ -32,6 +32,9 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         skillData = null;
     }
 
+    /// <summary>
+    /// Update the UI to follow current skill data.
+    /// </summary>
     public void UpDateSkillDisplay() {
         if(skillData == null) {
             this.gameObject.SetActive(false);
@@ -41,6 +44,10 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         }
     }
 
+    /// <summary>
+    /// Set gameobject that this skillCtrl drop on.
+    /// </summary>
+    /// <param name="obj"></param>
     public void SetDropObjectTarget(SkillBoxCtrl obj) {
         dropObjTarget = obj;
     }

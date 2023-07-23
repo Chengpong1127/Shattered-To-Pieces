@@ -42,6 +42,11 @@ public class SkillDispatcher : MonoBehaviour
         isEditing = true;
     }
 
+    /// <summary>
+    /// An invoke function that set ability in a specified entry.
+    /// </summary>
+    /// <param name="boxId"></param>
+    /// <param name="ability"></param>
     public void SetAbilityAction(int boxId, Ability ability) {
         bool refreshNullAbility = skillBoxes[boxId].IsAssignedLastSkill();
         setAbilityAction?.Invoke(boxId, ability);
@@ -49,23 +54,47 @@ public class SkillDispatcher : MonoBehaviour
             RefreshNullAbilityAction(0);
         }
     }
+
+    /// <summary>
+    /// An invoke function that set ability in non assigned entry.
+    /// </summary>
+    /// <param name="boxId"></param>
+    /// <param name="ability"></param>
     public void SetNullAbilityAction(int boxId, Ability ability) {
         setNullAbilityAction?.Invoke(ability);
     }
+
+    /// <summary>
+    /// An invoke function that refresh the certain entry UI.
+    /// </summary>
+    /// <param name="boxId"></param>
     public void RefreshAbilityAction(int boxId) {
         refreshAbilityAction?.Invoke(boxId);
         skillBoxes[boxId].SetSkillList(abilityList);
     }
+
+    /// <summary>
+    /// An invoke function that refresh the non assigned entry UI.
+    /// </summary>
+    /// <param name="boxId"></param>
     public void RefreshNullAbilityAction(int boxId) {
         refreshNullAbilityAction?.Invoke();
         nonSetBox.SetSkillList(abilityList);
     }
+
+    /// <summary>
+    /// Update all entry UI.
+    /// </summary>
     public void RefreshAllBoxAbility() {
         skillBoxes.ForEach(box => {
             box.refreshAbilityAction(box.boxID);
         });
         nonSetBox.refreshAbilityAction(nonSetBox.boxID);
     }
+
+    /// <summary>
+    /// Open or close skill editing mode.
+    /// </summary>
     public void SwitchEditSkill() {
         isEditing = !isEditing;
 
@@ -79,10 +108,19 @@ public class SkillDispatcher : MonoBehaviour
         nonSetBox.gameObject.SetActive(isEditing);
     }
 
+    /// <summary>
+    /// An invoke function to execute rebind a entry key.
+    /// </summary>
+    /// <param name="boxId"></param>
     public void RebindKeyAction(int boxId) {
         rebindBoxId = boxId;
         rebindKeyAction?.Invoke(boxId);
     }
+
+    /// <summary>
+    /// Set text into certain entry UI for binding key.
+    /// </summary>
+    /// <param name="keyText"></param>
     public void SetRebindKeyText(string keyText) {
         if(rebindBoxId >= skillBoxes.Count) { return; }
         skillBoxes[rebindBoxId].SetBindKeyText(keyText);

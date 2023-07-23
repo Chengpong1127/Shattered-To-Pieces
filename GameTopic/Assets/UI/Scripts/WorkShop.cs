@@ -73,7 +73,6 @@ public class WorkShop : MonoBehaviour
 
     /// <summary>
     /// Invoke function for create a new component.
-    /// Depends on AssemblyRoom.
     /// </summary>
     /// <param name="gcd"></param>
     public void ElementClickAction(GameComponentData gcd) {
@@ -83,12 +82,16 @@ public class WorkShop : MonoBehaviour
 
     /// <summary>
     /// Change room mode between play and combine mode.
-    /// Depends on AssemblyRoom.
     /// </summary>
     public void SwitchRoomMode() {
         roomMode = roomMode == AssemblyRoomMode.PlayMode ? AssemblyRoomMode.ConnectionMode : AssemblyRoomMode.PlayMode;
         room?.SetRoomMode(roomMode);
     }
+
+    /// <summary>
+    /// Set all file name to the file list whilch display in load file menu.
+    /// </summary>
+    /// <param name="fileNameList"></param>
     public void SetStoreFileNames(List<string> fileNameList) {
         if(fileNameList == null) { return; }
         int i = 0;
@@ -97,12 +100,25 @@ public class WorkShop : MonoBehaviour
             fileCtrl.fileElements[i].SetFileName(fileNameList[i]);
         }
     }
+
+    /// <summary>
+    /// Refresh the specified entry abilitys to ability list in SkillDispatcher.
+    /// </summary>
+    /// <param name="boxId"></param>
     public void RefreshAbillity(int boxId) {
         shopDispatcher.abilityList = room.AbilityManager.AbilityInputEntries[boxId].Abilities;
     }
+
+    /// <summary>
+    /// Refresh the non assigned entry abilitys to ability list in SkillDispatcher.
+    /// </summary>
     public void RefreshNullAbillity() {
         shopDispatcher.abilityList = room.AbilityManager.GetAbilitiesOutOfEntry();
     }
+
+    /// <summary>
+    /// Refresh all entries' trigger key text to UI.
+    /// </summary>
     public void RefreshAllSkillBoxDisplayText() {
         string keyText;
         for(int i = 0; i < room.AbilityManager.AbilityInputEntryNumber; ++i) {
