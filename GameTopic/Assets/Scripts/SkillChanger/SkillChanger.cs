@@ -7,7 +7,7 @@ public class SkillChanger : MonoBehaviour
 {
     // Start is called before the first frame update
     private AssemblyRoom room; 
-    private AbilityInputManager abilityInputManager;
+    private AbilityManager abilityInputManager;
     public InputManager inputmanager;
     public Device device;
     public event Action<int> OnTriggeredButton;
@@ -39,7 +39,7 @@ public class SkillChanger : MonoBehaviour
                 if (a.InputPath == ctx.control.name)
                 {
                     OnTriggeredButton?.Invoke(int.Parse(ctx.control.name));
-                    a.RunAllAbilities();
+                    //a.RunAllAbilities();
                 }
                
             }
