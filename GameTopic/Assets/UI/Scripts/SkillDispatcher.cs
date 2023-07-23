@@ -8,6 +8,8 @@ public class SkillDispatcher : MonoBehaviour
     [SerializeField] SkillBoxCtrl nonSetBox;
     [SerializeField] List<SkillBoxCtrl> skillBoxes;
 
+    bool isEditing;
+
     public UnityAction<int, Ability> setAbilityAction { get; set; }
     public UnityAction<Ability> setNullAbilityAction { get; set; }
     public UnityAction<int> refreshAbilityAction { get; set; }
@@ -28,6 +30,8 @@ public class SkillDispatcher : MonoBehaviour
         });
         nonSetBox.setAbilityAction += SetNullAbilityAction;
         nonSetBox.refreshAbilityAction += RefreshNullAbilityAction;
+
+        isEditing = true;
     }
 
     public void SetNullAbilityAction(int boxId, Ability ability) {
@@ -46,5 +50,17 @@ public class SkillDispatcher : MonoBehaviour
             box.refreshAbilityAction(box.boxID);
         });
         nonSetBox.refreshAbilityAction(nonSetBox.boxID);
+    }
+    public void SwitchEditSkill() {
+        isEditing = !isEditing;
+
+        if (isEditing) {
+            RefreshAllBoxAbility();
+        }
+
+        skillBoxes.ForEach(box => {
+            box.SetActiveEditDisplayer(isEditing);
+        });
+        nonSetBox.gameObject.SetActive(isEditing);
     }
 }

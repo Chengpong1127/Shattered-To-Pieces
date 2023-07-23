@@ -61,5 +61,10 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
             skillList[loopId].UpDateSkillDisplay();
         }
     }
+
+    public void SetActiveEditDisplayer(bool b) {
+        skillCtrlDisplayer.SetActive(b);
+        firstSkillDisplayImg.gameObject.SetActive(!b && firstSkillDisplayImg.sprite != null);
+    }
 }
  
