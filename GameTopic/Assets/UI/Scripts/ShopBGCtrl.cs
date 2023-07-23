@@ -13,31 +13,15 @@ public class ShopBGCtrl : MonoBehaviour
     [SerializeField] List<Sprite> spriteList;
     [SerializeField] List<ShopElementCtrl> ComponentDisplayList;
 
-    List<GameComponentData>[] componentList;
+    List<GameComponentData>[] componentList { get; set; } = new List<GameComponentData>[Enum.GetValues(typeof(GameComponentType)).Length];
     int pageCount;
     int currentlementType;
 
 
     private void Awake() {
-        int typeCount = Enum.GetValues(typeof(GameComponentType)).Length;
-
-        componentList = new List<GameComponentData>[typeCount];
-        for(int i = 0; i < typeCount; ++i) {
-            componentList[i] = new List<GameComponentData>();
-        }
 
         pageCount = 0;
         currentlementType = 0;
-
-        // GameComponentData cd = ScriptableObject.CreateInstance<GameComponentData>(); // new GameComponentData();
-        // cd.DisplayName = "BaBa";
-        // cd.DisplayImage = spriteList[0];
-        // cd.Description = "this is a description for ComponentData test.";
-        // cd.Price = 5566;
-        // cd.Type = GameComponentType.Basic;
-        // cd.ResourcePath = string.Empty;
-        // 
-        // componentList[0].Add(cd);
 
         UpDateDisplayList();
     }
