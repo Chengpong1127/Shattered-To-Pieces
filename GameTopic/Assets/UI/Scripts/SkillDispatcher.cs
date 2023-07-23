@@ -8,7 +8,7 @@ public class SkillDispatcher : MonoBehaviour
     [SerializeField] SkillBoxCtrl nonSetBox;
     [SerializeField] List<SkillBoxCtrl> skillBoxes;
 
-    bool isDragging { get; set; }
+    // bool isDragging { get; set; }
 
     public bool isEditing { get; private set; }
 
@@ -38,7 +38,11 @@ public class SkillDispatcher : MonoBehaviour
     }
 
     public void SetAbilityAction(int boxId, Ability ability) {
+        bool refreshNullAbility = skillBoxes[boxId].IsAssignedLastSkill();
         setAbilityAction?.Invoke(boxId, ability);
+        if (refreshNullAbility) {
+            RefreshNullAbilityAction(0);
+        }
     }
     public void SetNullAbilityAction(int boxId, Ability ability) {
         setNullAbilityAction?.Invoke(ability);

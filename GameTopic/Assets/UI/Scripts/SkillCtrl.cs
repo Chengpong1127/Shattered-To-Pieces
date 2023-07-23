@@ -37,6 +37,7 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
             this.gameObject.SetActive(false);
         } else {
             this.gameObject.SetActive(true);
+            this.gameObject.name = skillData.AbilityName;
         }
     }
 
@@ -62,8 +63,8 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     public void OnEndDrag(PointerEventData eventData) {
         selfImage.raycastTarget = true;
 
-        if (dropObjTarget != null) { dropObjTarget.JoinSkillBox(this); }
-        else { NonSetBox?.JoinSkillBox(this); }
+        if (dropObjTarget != null) { dropObjTarget.JoinSkillBox(this.skillData); }
+        else { NonSetBox?.JoinSkillBox(this.skillData); }
 
         ownerBox.ResetSkillCtrlHierarchy(this.gameObject);
     }

@@ -35,10 +35,14 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
         dragSkill.SetDropObjectTarget(this);
     }
 
-    public void JoinSkillBox(SkillCtrl skill) {
-        setAbilityAction?.Invoke(boxID, skill.skillData);
+
+    public bool IsAssignedLastSkill() {
+        return skillList[skillList.Count - 1].gameObject.activeSelf == true;
+    }
+    public void JoinSkillBox(Ability ability) {
+        setAbilityAction?.Invoke(boxID, ability);
         refreshAbilityAction?.Invoke(boxID);
-        Debug.Log(gameObject.name + " get skill" + skill.skillData.AbilityName);
+        Debug.Log(gameObject.name + " get skill : " + ability.AbilityName);
     }
 
     public void ResetSkillCtrlHierarchy(GameObject obj) {
