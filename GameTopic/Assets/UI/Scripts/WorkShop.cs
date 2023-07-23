@@ -17,29 +17,32 @@ public class WorkShop : MonoBehaviour
     [SerializeField] Button exitBTN;
     [SerializeField] ShopBGCtrl shopPage;
     [SerializeField] StoreFileCtrl fileCtrl;
-
+    [SerializeField] SkillDispatcher shopDispatcher;
 
     private void Awake() {
-        // delete after implement IAssemblyRooms
-        // shopPage.SetShopElementClickAction(ElementClickAction);
-        // fileCtrl.SetRenameAction((string oldName, string newName) => {
-        //     Debug.Log("Rename " + oldName + " to " + newName);
-        // });
-        // fileCtrl.StoreAction += (string fileName) => {
-        //     Debug.Log("Get StoreFileName : " + fileName);
-        // };
-        // fileCtrl.LoadAction += (string fileName) => {
-        //     Debug.Log("Get LoadFileName : " + fileName);
-        // };
+        roomMode = AssemblyRoomMode.PlayMode;
+        shoppingBTN.onClick.AddListener(SwitchRoomMode);
     }
 
     private void Start() {
-        roomMode = AssemblyRoomMode.PlayMode;
-        shoppingBTN.onClick.AddListener(SwitchRoomMode);
-
-
         GameObject impRoom = GameObject.Find("RoomManager");
         SetAssimblyRoom(impRoom.GetComponent<IAssemblyRoom>());
+
+        room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_01"));
+        room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_02"));
+        room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_03"));
+        room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_04"));
+
+        shopDispatcher.setAbilityAction += room.AbilityManager.SetAbilityToEntry;
+        shopDispatcher.setNullAbilityAction += room.AbilityManager.SetAbilityOutOfEntry;
+        shopDispatcher.refreshAbilityAction += RefreshAbillity;
+        shopDispatcher.refreshNullAbilityAction += RefreshNullAbillity;
+        shopDispatcher.rebindKeyAction += room.StartChangeAbilityKey;
+
+        room.OnFinishChangeAbilityKey += shopDispatcher.SetRebindKeyText;
+
+        shopDispatcher.RefreshAllBoxAbility();
+        RefreshAllSkillBoxDisplayText();
     }
 
     /// <summary>
@@ -58,6 +61,9 @@ public class WorkShop : MonoBehaviour
         room = Iar;
 
         shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Basic), GameComponentType.Basic);
+        shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Attack), GameComponentType.Attack);
+        shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Functional), GameComponentType.Functional);
+        shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Movement), GameComponentType.Movement);
         shopPage.SetShopElementClickAction(ElementClickAction);
         fileCtrl.SetRenameAction(room.RenameDevice);
         fileCtrl.StoreAction += room.SaveCurrentDevice;
@@ -67,7 +73,6 @@ public class WorkShop : MonoBehaviour
 
     /// <summary>
     /// Invoke function for create a new component.
-    /// Depends on AssemblyRoom.
     /// </summary>
     /// <param name="gcd"></param>
     public void ElementClickAction(GameComponentData gcd) {
@@ -77,18 +82,49 @@ public class WorkShop : MonoBehaviour
 
     /// <summary>
     /// Change room mode between play and combine mode.
-    /// Depends on AssemblyRoom.
     /// </summary>
     public void SwitchRoomMode() {
         roomMode = roomMode == AssemblyRoomMode.PlayMode ? AssemblyRoomMode.ConnectionMode : AssemblyRoomMode.PlayMode;
         room?.SetRoomMode(roomMode);
     }
+
+    /// <summary>
+    /// Set all file name to the file list whilch display in load file menu.
+    /// </summary>
+    /// <param name="fileNameList"></param>
     public void SetStoreFileNames(List<string> fileNameList) {
         if(fileNameList == null) { return; }
         int i = 0;
         for(; i < fileCtrl.fileElements.Count; ++i){
             if(fileNameList.Count >= i) { break; }
             fileCtrl.fileElements[i].SetFileName(fileNameList[i]);
+        }
+    }
+
+    /// <summary>
+    /// Refresh the specified entry abilitys to ability list in SkillDispatcher.
+    /// </summary>
+    /// <param name="boxId"></param>
+    public void RefreshAbillity(int boxId) {
+        shopDispatcher.abilityList = room.AbilityManager.AbilityInputEntries[boxId].Abilities;
+    }
+
+    /// <summary>
+    /// Refresh the non assigned entry abilitys to ability list in SkillDispatcher.
+    /// </summary>
+    public void RefreshNullAbillity() {
+        shopDispatcher.abilityList = room.AbilityManager.GetAbilitiesOutOfEntry();
+    }
+
+    /// <summary>
+    /// Refresh all entries' trigger key text to UI.
+    /// </summary>
+    public void RefreshAllSkillBoxDisplayText() {
+        string keyText;
+        for(int i = 0; i < room.AbilityManager.AbilityInputEntryNumber; ++i) {
+            shopDispatcher.rebindBoxId = i;
+            keyText = room.AbilityManager.AbilityInputEntries[i].InputPath;
+            shopDispatcher.SetRebindKeyText(keyText == string.Empty ? "Non" : keyText);
         }
     }
 }

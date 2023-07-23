@@ -22,7 +22,8 @@ public class StoreFileCtrl : MonoBehaviour
         if (isStroe) {
             if (interactFileName == null || interactFileName == "") { Debug.Log("No file name enter."); interactFileName = "__" + btnId.ToString(); }
             fileElements[btnId].SetFileName(interactFileName);
-            StoreAction?.Invoke(interactFileName);
+            fileElements[btnId].renameBTN.onClick.Invoke();
+            StoreAction?.Invoke(interactFileName);  
         } else {
             if (interactFileName == null || interactFileName == "") { Debug.Log("No file name enter."); return; }
             LoadAction?.Invoke(interactFileName);
