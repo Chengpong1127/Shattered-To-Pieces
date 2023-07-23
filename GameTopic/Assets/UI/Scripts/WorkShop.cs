@@ -37,7 +37,12 @@ public class WorkShop : MonoBehaviour
         shopDispatcher.setNullAbilityAction += room.AbilityManager.SetAbilityOutOfEntry;
         shopDispatcher.refreshAbilityAction += RefreshAbillity;
         shopDispatcher.refreshNullAbilityAction += RefreshNullAbillity;
+        shopDispatcher.rebindKeyAction += room.StartChangeAbilityKey;
+
+        room.OnFinishChangeAbilityKey += shopDispatcher.SetRebindKeyText;
+
         shopDispatcher.RefreshAllBoxAbility();
+        RefreshAllSkillBoxDisplayText();
     }
 
     /// <summary>
@@ -97,5 +102,13 @@ public class WorkShop : MonoBehaviour
     }
     public void RefreshNullAbillity() {
         shopDispatcher.abilityList = room.AbilityManager.GetAbilitiesOutOfEntry();
+    }
+    public void RefreshAllSkillBoxDisplayText() {
+        string keyText;
+        for(int i = 0; i < room.AbilityManager.AbilityInputEntryNumber; ++i) {
+            shopDispatcher.rebindBoxId = i;
+            keyText = room.AbilityManager.AbilityInputEntries[i].InputPath;
+            shopDispatcher.SetRebindKeyText(keyText == string.Empty ? "Non" : keyText);
+        }
     }
 }

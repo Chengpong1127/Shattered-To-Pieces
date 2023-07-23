@@ -12,12 +12,16 @@ public class SkillDispatcher : MonoBehaviour
 
     public bool isEditing { get; private set; }
 
+    // reassign skill to other box
     public UnityAction<int, Ability> setAbilityAction { get; set; }
     public UnityAction<Ability> setNullAbilityAction { get; set; }
     public UnityAction<int> refreshAbilityAction { get; set; }
     public UnityAction refreshNullAbilityAction { get; set; }
     public List<Ability> abilityList { get; set; }
 
+    // rebind box key
+    public UnityAction<int> rebindKeyAction { get; set; }
+    public int rebindBoxId { get; set; }
 
     private void Awake() {
         abilityList = new List<Ability>();
@@ -30,6 +34,7 @@ public class SkillDispatcher : MonoBehaviour
         skillBoxes.ForEach(box => {
             box.setAbilityAction += SetAbilityAction;
             box.refreshAbilityAction += RefreshAbilityAction;
+            box.rebindKeyAction += RebindKeyAction;
         });
         nonSetBox.setAbilityAction += SetNullAbilityAction;
         nonSetBox.refreshAbilityAction += RefreshNullAbilityAction;
@@ -72,5 +77,14 @@ public class SkillDispatcher : MonoBehaviour
             box.SetActiveEditDisplayer(isEditing);
         });
         nonSetBox.gameObject.SetActive(isEditing);
+    }
+
+    public void RebindKeyAction(int boxId) {
+        rebindBoxId = boxId;
+        rebindKeyAction?.Invoke(boxId);
+    }
+    public void SetRebindKeyText(string keyText) {
+        if(rebindBoxId >= skillBoxes.Count) { return; }
+        skillBoxes[rebindBoxId].SetBindKeyText(keyText);
     }
 }

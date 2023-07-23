@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.Rendering;
@@ -12,10 +13,12 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
 {
     [SerializeField] Image firstSkillDisplayImg;
     [SerializeField] GameObject skillCtrlDisplayer;
+    [SerializeField] TMP_Text bindKeyDisplay;
     [SerializeField] List<SkillCtrl> skillList;
     public int boxID {  get; set; }
     public UnityAction<int, Ability> setAbilityAction { get; set; }
     public UnityAction<int> refreshAbilityAction { get; set; }
+    public UnityAction<int> rebindKeyAction { get; set; }
 
     private void Awake() {
         skillList.ForEach(skillCtrl => {
@@ -69,7 +72,16 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
 
     public void SetActiveEditDisplayer(bool b) {
         skillCtrlDisplayer.SetActive(b);
+        bindKeyDisplay.gameObject.SetActive(b);
         firstSkillDisplayImg.gameObject.SetActive(!b && firstSkillDisplayImg.sprite != null);
+    }
+
+    public void OnClickRebindKey() {
+        // rebindKeyAction?.Invoke(boxID); // should work when rebind function is implemented.
+        Debug.Log("Rebind keys not yet implemented.");
+    }
+    public void SetBindKeyText(string keyText) {
+        bindKeyDisplay.text = keyText;
     }
 }
  
