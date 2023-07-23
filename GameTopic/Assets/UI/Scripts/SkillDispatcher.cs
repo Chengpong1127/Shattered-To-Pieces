@@ -8,7 +8,9 @@ public class SkillDispatcher : MonoBehaviour
     [SerializeField] SkillBoxCtrl nonSetBox;
     [SerializeField] List<SkillBoxCtrl> skillBoxes;
 
-    bool isEditing;
+    bool isDragging { get; set; }
+
+    public bool isEditing { get; private set; }
 
     public UnityAction<int, Ability> setAbilityAction { get; set; }
     public UnityAction<Ability> setNullAbilityAction { get; set; }
