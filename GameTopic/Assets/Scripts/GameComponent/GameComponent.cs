@@ -13,7 +13,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public ICoreComponent CoreComponent => coreComponent;
     public bool IsInDevice => false;
     public Transform DragableTransform { get => transform; }
-    public int ComponentGUID { get; set; }
+    public string ComponentName { get; set; }
 
     public void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
     {
@@ -30,7 +30,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     public IInfo Dump(){
         var info = new GameComponentInfo();
-        info.componentGUID = ComponentGUID;
+        info.ComponentName = ComponentName;
         info.connectionInfo = connector.Dump() as ConnectionInfo;
         return info;
     }
@@ -38,7 +38,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
     {
         Debug.Assert(info is GameComponentInfo);
         var componentInfo = info as GameComponentInfo;
-        ComponentGUID = componentInfo.componentGUID;
+        ComponentName = componentInfo.ComponentName;
     }
 
     public (IGameComponent, ConnectionInfo) GetAvailableConnection(){

@@ -26,7 +26,6 @@ public class Connector : MonoBehaviour, IConnector
 
     InputManager inputManager;
     UnityEvent<bool> attachHandler = new UnityEvent<bool>();
-    Vector2 movePosition;
 
     [SerializeField] Rigidbody2D selfRigidbody;
     [SerializeField] Collider2D selfCollider;
@@ -49,10 +48,6 @@ public class Connector : MonoBehaviour, IConnector
         Debug.Assert(selfRigidbody);
         Debug.Assert(selfCollider);
         Debug.Assert(selfJoint);
-        inputManager = new InputManager();
-        inputManager.menu.Enable();
-        inputManager.menu.Drag.performed += Drag;
-        inputManager.menu.Drag.canceled += Drag;
         linkedTarget = null;
         selectedObjDist = float.PositiveInfinity;
 
@@ -71,25 +66,10 @@ public class Connector : MonoBehaviour, IConnector
         ChildConnectors = new List<IConnector>();
     }
 
-    public void Drag(InputAction.CallbackContext ctx)
-    {
-        //if (ctx.performed)
-        //{
-        //    SwitchSelecting(true);
-        //}
-        //else if (ctx.canceled)
-        //{
-        //    SwitchSelecting(false);
-        //}
-    }
+
     // use for demo
     private void Update() {
-        if (Input.GetKey(KeyCode.Z)) {
-            SwitchCombine(true);
-        }
-        if (Input.GetKey(KeyCode.X)) {
-            SwitchCombine(false);
-        }
+
     }
     public void SetConnectMode(bool draggingMode){
         SwitchCombine(draggingMode);
@@ -98,10 +78,6 @@ public class Connector : MonoBehaviour, IConnector
         SwitchSelecting(selectingMode);
     }
 
-    private void OnMouseUp()
-    {
-        SwitchSelecting(false);
-    }
     // State chang function
     void SwitchCombine(bool b) {
         if (!b) { SwitchSelecting(false); }
@@ -145,7 +121,8 @@ public class Connector : MonoBehaviour, IConnector
     void LinkToConnector(Connector connector, ConnectionInfo info) {
         if (connector == null ||
             !(connector.targetList.Count > info.linkedTargetID) ||
-            !connector.targetList[(int)info.linkedTargetID].LinkToTarget(this)
+            !connector.targetList[(int)info.linkedTargetID].LinkToTarget(this)||
+            connector.selfJoint.connectedBody == this.selfRigidbody
             ) { return; }
 
         this.transform.rotation = Quaternion.Euler(0, 0, info.connectorRotation);
@@ -153,11 +130,13 @@ public class Connector : MonoBehaviour, IConnector
         linkedTarget = connector.targetList[(int)info.linkedTargetID];
 
         linkedTarget.ownerConnector.attachHandler.AddListener(this.SwitchAttach);
+
         this.selfJoint.connectedBody = connector.selfRigidbody;
         this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
         this.selfJoint.enabled = true;
     }
     public void UnlinkToConnector() {
+        this.selfJoint.connectedBody = null;
         this.selfJoint.enabled = false;
 
         if (linkedTarget == null) { return; }

@@ -33,15 +33,14 @@ public class Tree
         }
     }
 
-    public TreeInfo Dump(){
-        var treeInfo = new TreeInfo();
+    public TreeInfo<T> Dump<T>() where T: class, IInfo{
+        var treeInfo = new TreeInfo<T>();
         var localID = 0;
         var tempDictionary = new Dictionary<ITreeNode, int>();
         treeInfo.rootID = localID;
         TraverseBFS((node) => {
-
-            var gameComponent = node;
-            treeInfo.NodeInfoMap.Add(localID, gameComponent.Dump());
+            var info = node.Dump() as T;
+            treeInfo.NodeInfoMap.Add(localID, info);
             tempDictionary.Add(node, localID);
             localID++;
         });
