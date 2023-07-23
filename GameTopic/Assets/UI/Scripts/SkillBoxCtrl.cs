@@ -37,7 +37,8 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
 
     public void JoinSkillBox(SkillCtrl skill) {
         setAbilityAction?.Invoke(boxID, skill.skillData);
-        Debug.Log(gameObject.name + " get skill");
+        refreshAbilityAction?.Invoke(boxID);
+        Debug.Log(gameObject.name + " get skill" + skill.skillData.AbilityName);
     }
 
     public void ResetSkillCtrlHierarchy(GameObject obj) {

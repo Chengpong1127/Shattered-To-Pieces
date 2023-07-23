@@ -61,9 +61,10 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData) {
         selfImage.raycastTarget = true;
-        ownerBox.ResetSkillCtrlHierarchy(this.gameObject);
 
         if (dropObjTarget != null) { dropObjTarget.JoinSkillBox(this); }
         else { NonSetBox?.JoinSkillBox(this); }
+
+        ownerBox.ResetSkillCtrlHierarchy(this.gameObject);
     }
 }

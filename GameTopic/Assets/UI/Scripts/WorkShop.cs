@@ -28,6 +28,11 @@ public class WorkShop : MonoBehaviour
         GameObject impRoom = GameObject.Find("RoomManager");
         SetAssimblyRoom(impRoom.GetComponent<IAssemblyRoom>());
 
+        room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_01"));
+        room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_02"));
+        room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_03"));
+        room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_04"));
+
         shopDispatcher.setAbilityAction += room.AbilityManager.SetAbilityToEntry;
         shopDispatcher.setNullAbilityAction += room.AbilityManager.SetAbilityOutOfEntry;
         shopDispatcher.refreshAbilityAction += RefreshAbillity;

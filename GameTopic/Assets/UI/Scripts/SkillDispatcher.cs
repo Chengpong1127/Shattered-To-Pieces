@@ -22,12 +22,13 @@ public class SkillDispatcher : MonoBehaviour
     private void Awake() {
         abilityList = new List<Ability>();
 
+        nonSetBox.boxID = 0;
         for (int i = 0; i < skillBoxes.Count; ++i) {
             skillBoxes[i].boxID = i;
         }
 
         skillBoxes.ForEach(box => {
-            box.setAbilityAction += setAbilityAction;
+            box.setAbilityAction += SetAbilityAction;
             box.refreshAbilityAction += RefreshAbilityAction;
         });
         nonSetBox.setAbilityAction += SetNullAbilityAction;
@@ -36,6 +37,9 @@ public class SkillDispatcher : MonoBehaviour
         isEditing = true;
     }
 
+    public void SetAbilityAction(int boxId, Ability ability) {
+        setAbilityAction?.Invoke(boxId, ability);
+    }
     public void SetNullAbilityAction(int boxId, Ability ability) {
         setNullAbilityAction?.Invoke(ability);
     }
