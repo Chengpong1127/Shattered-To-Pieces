@@ -27,21 +27,17 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
             Debug.Log("image not found.");
             gameObject.SetActive(false);
         }
-    }
 
-    private void Start() {
         NonSetBox = GameObject.Find("NonSetBox").GetComponent<SkillBoxCtrl>();
         skillData = null;
     }
 
-
     public void UpDateSkillDisplay() {
         if(skillData == null) {
             this.gameObject.SetActive(false);
+        } else {
+            this.gameObject.SetActive(true);
         }
-
-        // this.gameObject.name = skillData.AbilityName;
-        this.gameObject.SetActive(true);
     }
 
     public void SetDropObjectTarget(SkillBoxCtrl obj) {

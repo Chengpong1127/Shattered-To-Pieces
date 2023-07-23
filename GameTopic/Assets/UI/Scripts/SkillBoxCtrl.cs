@@ -14,12 +14,17 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
     [SerializeField] GameObject skillCtrlDisplayer;
     [SerializeField] List<SkillCtrl> skillList;
     public int boxID {  get; set; }
-    public UnityAction<int, Ability> SetAbilityAction { get; set; }
+    public UnityAction<int, Ability> setAbilityAction { get; set; }
+    public UnityAction<int> refreshAbilityAction { get; set; }
 
-    private void Start() {
+    private void Awake() {
         skillList.ForEach(skillCtrl => {
             skillCtrl.ownerBox = this;
         });
+    }
+
+    private void Start() {
+        // refreshAbilityAction?.Invoke(boxID);
     }
 
     public void OnDrop(PointerEventData eventData) {
@@ -31,12 +36,17 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
     }
 
     public void JoinSkillBox(SkillCtrl skill) {
-        SetAbilityAction?.Invoke(boxID, skill.skillData);
+        setAbilityAction?.Invoke(boxID, skill.skillData);
         Debug.Log(gameObject.name + " get skill");
     }
 
     public void ResetSkillCtrlHierarchy(GameObject obj) {
         obj.transform.SetParent(skillCtrlDisplayer.transform, false);
+        for(int i = 0; i < skillList.Count; ++i) {
+            skillList[i].gameObject.transform.SetSiblingIndex(i);
+        }
+
+        refreshAbilityAction?.Invoke(boxID);
     }
 
     public void SetSkillList(List<Ability> skills) {

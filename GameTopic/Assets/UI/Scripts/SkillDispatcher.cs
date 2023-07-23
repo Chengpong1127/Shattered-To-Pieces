@@ -9,32 +9,42 @@ public class SkillDispatcher : MonoBehaviour
     [SerializeField] List<SkillBoxCtrl> skillBoxes;
 
     public UnityAction<int, Ability> setAbilityAction { get; set; }
-    public UnityAction<Ability> nonAbilityAction { get; set; }
+    public UnityAction<Ability> setNullAbilityAction { get; set; }
+    public UnityAction<int> refreshAbilityAction { get; set; }
+    public UnityAction refreshNullAbilityAction { get; set; }
     public List<Ability> abilityList { get; set; }
 
-    private void Start() {
-        for(int i=0;i < skillBoxes.Count; ++i) {
+
+    private void Awake() {
+        abilityList = new List<Ability>();
+
+        for (int i = 0; i < skillBoxes.Count; ++i) {
             skillBoxes[i].boxID = i;
         }
 
-        abilityList = new List<Ability>();
-
-        SetAbilityAction(UpDateAbilityFunction);
-        nonSetBox.SetAbilityAction += UpDateNonAbilityFunction;
-    }
-
-    public void SetAbilityAction(UnityAction<int, Ability> action) {
         skillBoxes.ForEach(box => {
-            box.SetAbilityAction += action;
+            box.setAbilityAction += setAbilityAction;
+            box.refreshAbilityAction += RefreshAbilityAction;
         });
+        nonSetBox.setAbilityAction += SetNullAbilityAction;
+        nonSetBox.refreshAbilityAction += RefreshNullAbilityAction;
     }
 
-    public void UpDateAbilityFunction(int boxId, Ability ability) {
-        setAbilityAction?.Invoke(boxId, ability);
+    public void SetNullAbilityAction(int boxId, Ability ability) {
+        setNullAbilityAction?.Invoke(ability);
+    }
+    public void RefreshAbilityAction(int boxId) {
+        refreshAbilityAction?.Invoke(boxId);
         skillBoxes[boxId].SetSkillList(abilityList);
     }
-    public void UpDateNonAbilityFunction(int boxId,Ability ability) {
-        nonAbilityAction?.Invoke(ability);
+    public void RefreshNullAbilityAction(int boxId) {
+        refreshNullAbilityAction?.Invoke();
         nonSetBox.SetSkillList(abilityList);
+    }
+    public void RefreshAllBoxAbility() {
+        skillBoxes.ForEach(box => {
+            box.refreshAbilityAction(box.boxID);
+        });
+        nonSetBox.refreshAbilityAction(nonSetBox.boxID);
     }
 }

@@ -20,18 +20,19 @@ public class WorkShop : MonoBehaviour
     [SerializeField] SkillDispatcher shopDispatcher;
 
     private void Awake() {
+        roomMode = AssemblyRoomMode.PlayMode;
+        shoppingBTN.onClick.AddListener(SwitchRoomMode);
     }
 
     private void Start() {
-        roomMode = AssemblyRoomMode.PlayMode;
-        shoppingBTN.onClick.AddListener(SwitchRoomMode);
-
-
         GameObject impRoom = GameObject.Find("RoomManager");
         SetAssimblyRoom(impRoom.GetComponent<IAssemblyRoom>());
 
-        shopDispatcher.setAbilityAction += SetAbilityAction;
-        // shopDispatcher.nonAbilityAction += SetAbilityAction;
+        shopDispatcher.setAbilityAction += room.AbilityManager.SetAbilityToEntry;
+        shopDispatcher.setNullAbilityAction += room.AbilityManager.SetAbilityOutOfEntry;
+        shopDispatcher.refreshAbilityAction += RefreshAbillity;
+        shopDispatcher.refreshNullAbilityAction += RefreshNullAbillity;
+        shopDispatcher.RefreshAllBoxAbility();
     }
 
     /// <summary>
@@ -86,13 +87,10 @@ public class WorkShop : MonoBehaviour
             fileCtrl.fileElements[i].SetFileName(fileNameList[i]);
         }
     }
-
-    public void SetAbilityAction(int boxId, Ability ability) {
-        room.AbilityManager.SetAbilityToEntry(boxId, ability);
+    public void RefreshAbillity(int boxId) {
         shopDispatcher.abilityList = room.AbilityManager.AbilityInputEntries[boxId].Abilities;
     }
-    public void SetAbilityOutActtion(Ability ability) {
-        room.AbilityManager.SetAbilityOutOfEntry(ability);
+    public void RefreshNullAbillity() {
         shopDispatcher.abilityList = room.AbilityManager.GetAbilitiesOutOfEntry();
     }
 }
