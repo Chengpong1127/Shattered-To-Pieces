@@ -39,6 +39,9 @@ public class AbilityInputEntry{
         Abilities.RemoveAt(Abilities.Count - 1);
         return removedAbility;
     }
+    /// <summary>
+    /// Trigger all of the abilities in this entry.
+    /// </summary>
     public void TriggerAllAbilities(){
         foreach (var ability in Abilities)
         {
@@ -47,6 +50,9 @@ public class AbilityInputEntry{
             }
         }
     }
+    /// <summary>
+    /// Run all of the abilities in this entry. Call this function at each frame.
+    /// </summary>
     public void RunAllAbilitiesForEachFrame(){
         foreach (var ability in Abilities)
         {
@@ -55,6 +61,9 @@ public class AbilityInputEntry{
             }
         }
     }
+    /// <summary>
+    /// End all of the abilities in this entry.
+    /// </summary>
     public void EndAllAbilities(){
         foreach (var ability in Abilities)
         {
