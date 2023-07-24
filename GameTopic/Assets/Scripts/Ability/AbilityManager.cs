@@ -59,6 +59,7 @@ public class AbilityManager
     /// <param name="entryID"></param>
     /// <param name="ability"></param>
     public void SetAbilityToEntry(int entryID, Ability ability){
+        removeAbilityFromEntry(ability);
         Debug.Assert(entryID < AbilityInputEntries.Count, "index out of range");
         var removed = AbilityInputEntries[entryID].AddAbility(ability);
         if(!abilityInEntryStatus.ContainsKey(ability)){
@@ -76,11 +77,21 @@ public class AbilityManager
     /// </summary>
     /// <param name="ability"></param>
     public void SetAbilityOutOfEntry(Ability ability){
+        removeAbilityFromEntry(ability);
         if(!abilityInEntryStatus.ContainsKey(ability)){
             Debug.LogWarning("The ability is not in the device");
             abilityInEntryStatus.Add(ability, false);
         }
         abilityInEntryStatus[ability] = false;
+    }
+
+    private void removeAbilityFromEntry(Ability ability){
+        foreach (var entry in AbilityInputEntries)
+        {
+            if(entry.ContainsAbility(ability)){
+                entry.RemoveAbility(ability);
+            }
+        }
     }
 
     /// <summary>
