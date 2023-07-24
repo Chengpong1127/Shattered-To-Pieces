@@ -288,4 +288,9 @@ public class Connector : MonoBehaviour, IConnector
         this.ParentConnector = connectorPoint;
         connectorPoint.ChildConnectors.Add(this as IConnector);
     }
+
+    public void SetZRotation(float rotation)
+    {
+        throw new NotImplementedException();
+    }
 }

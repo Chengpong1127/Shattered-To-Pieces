@@ -18,5 +18,5 @@ public interface IConnector: IDumpable<IInfo>
     public IConnector GetParentConnector();
     public IList<IConnector> ChildConnectors { get; set; }
     public IConnector ParentConnector { get; set; }
-
+    public void SetZRotation(float rotation);
 }
