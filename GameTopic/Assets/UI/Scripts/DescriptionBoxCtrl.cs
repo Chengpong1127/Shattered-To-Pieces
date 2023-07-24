@@ -28,6 +28,9 @@ public class DescriptionBoxCtrl : MonoBehaviour
         UpDateDescription();
     }
 
+    /// <summary>
+    /// Update description UI to show the latest component data.
+    /// </summary>
     public void UpDateDescription() {
         if(componentImage == null || componentTMP == null) { return; }
 
@@ -42,6 +45,10 @@ public class DescriptionBoxCtrl : MonoBehaviour
         componentTMP.text = descriptionText;
     }
 
+    /// <summary>
+    /// Change description UI's background for different type of element.
+    /// </summary>
+    /// <param name="bgid"></param>
     public void SwitchBoxBG(int bgid) {
         if (bgid < 0 || bgid >= spriteList.Count || selfImage == null) { return; }
 

@@ -30,6 +30,10 @@ public class ShopElementCtrl : MonoBehaviour, IPointerEnterHandler, IPointerExit
         componentImgRectTransform = componentImg.rectTransform;
     }
 
+    /// <summary>
+    /// Set game component data to shop element.
+    /// </summary>
+    /// <param name="cd"></param>
     public void SetData(GameComponentData cd) {
         componentData = cd;
         UpDateElement();
@@ -45,6 +49,9 @@ public class ShopElementCtrl : MonoBehaviour, IPointerEnterHandler, IPointerExit
         selfButton.onClick.AddListener(InvokeOnClickAction);
     }
 
+    /// <summary>
+    /// Update UI to show the latest component data.
+    /// </summary>
     public void UpDateElement() {
         Vector2 newSpriteSize = componentData.DisplayImage.rect.size / componentImg.pixelsPerUnit;
         float sizeScale = maxSpriteSize.x / newSpriteSize.x;
