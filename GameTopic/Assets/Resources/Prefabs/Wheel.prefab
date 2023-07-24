@@ -55,5 +55,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wheel
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7840369267717829227, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
+--- !u!235 &1392452940046117149 stripped
+WheelJoint2D:
+  m_CorrespondingSourceObject: {fileID: 2695862299148288496, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
+  m_PrefabInstance: {fileID: 3907819253612390637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6548704943930997981 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7843846250203337776, guid: c4d4947ee68255e49bc93307a2f5d52b, type: 3}
+  m_PrefabInstance: {fileID: 3907819253612390637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4170695611611876499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6548704943930997981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2d425bf44353467a9d472232efc9a59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelJoint: {fileID: 1392452940046117149}

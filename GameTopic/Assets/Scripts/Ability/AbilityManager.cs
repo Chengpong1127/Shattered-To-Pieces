@@ -61,15 +61,15 @@ public class AbilityManager
     public void SetAbilityToEntry(int entryID, Ability ability){
         Debug.Assert(entryID < AbilityInputEntries.Count, "index out of range");
         var removed = AbilityInputEntries[entryID].AddAbility(ability);
-        if(!abilityInEntryStatus.ContainsKey(ability)){
-            Debug.LogWarning("The ability is not in the device");
-            abilityInEntryStatus.Add(ability, false);
-        }
+        //if(!abilityInEntryStatus.ContainsKey(ability)){
+        //    Debug.LogWarning("The ability is not in the device");
+        //    abilityInEntryStatus.Add(ability, false);
+        //}
 
-        abilityInEntryStatus[ability] = true;
-        if(removed != null){
-            abilityInEntryStatus[removed] = false;
-        }
+        //abilityInEntryStatus[ability] = true;
+        //if(removed != null){
+        //    abilityInEntryStatus[removed] = false;
+        //}
     }
     /// <summary>
     /// Remove the ability from the input entry;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.InputSystem.Utilities;
 public class SkillChanger : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -30,57 +31,27 @@ public class SkillChanger : MonoBehaviour
     {
         
     }
-    public void Click(InputAction.CallbackContext ctx)
+    void Click(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        string keyName=string.Empty;
+        foreach(var KeyControl in Keyboard.current.allKeys)
         {
-            foreach (AbilityInputEntry a in abilityInputManager.AbilityInputEntries)
+            keyName = KeyControl.displayName;
+            if (KeyControl.wasPressedThisFrame)
             {
-                if (a.InputPath == ctx.control.name)
+                foreach (AbilityInputEntry a in abilityInputManager.AbilityInputEntries)
                 {
-                    OnTriggeredButton?.Invoke(int.Parse(ctx.control.name));
-                    //a.RunAllAbilities();
+                    if (a.InputPath == keyName)
+                    {
+                        OnTriggeredButton?.Invoke(int.Parse(keyName));
+                        Debug.Log("key" + keyName + "run");
+                        a.RunAllAbilitiesForEachFrame();
+                    }
+
                 }
-               
             }
         }
     }
-    public void ChangeKey(InputAction.CallbackContext ctx)
-    {
-        if (!KeySelected)
-        {
 
-            foreach (AbilityInputEntry a in abilityInputManager.AbilityInputEntries)
-            {
-                if (a.InputPath == ctx.control.name)
-                {
-                    KeySelected = true;
-                    key = ctx.control.name;
-                }
-            }
-        }
-        else
-        {
-            if (ctx.control.name == key) { KeySelected = false; key = ""; return; }
-            Debug.Log(ctx.control.name);
-            foreach (AbilityInputEntry a in abilityInputManager.AbilityInputEntries)
-            {
-                if (a.InputPath == ctx.control.name)
-                {
-                    a.SetInputPath(key);
-                    OnTriggeredChangedKey?.Invoke(int.Parse(a.InputPath),a.InputPath,ctx.control.name);
-                }
-            }
-            foreach (AbilityInputEntry a in abilityInputManager.AbilityInputEntries)
-            {
-                if (a.InputPath == key)
-                {
-                    a.SetInputPath(ctx.control.name);
-                }
-            }
-
-            key = "";
-            KeySelected = false;
-        }
-    }
+    
 }
