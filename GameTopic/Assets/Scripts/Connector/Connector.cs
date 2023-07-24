@@ -30,8 +30,6 @@ public class Connector : MonoBehaviour, IConnector
     [SerializeField] Rigidbody2D selfRigidbody;
     [SerializeField] Collider2D selfCollider;
     [SerializeField] AnchoredJoint2D selfJoint;
-    [Tooltip("The anchor of the connection point to attach to targets, should be a transform. If null, use the center of the connector as the anchor.")]
-    [SerializeField] Transform ConnectionAnchor;
     [SerializeField] List<Target> targetList;
 
     Target linkedTarget = null;
