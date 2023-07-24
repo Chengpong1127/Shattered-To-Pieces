@@ -22,6 +22,14 @@ public class ShopElementCtrl : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     UnityAction<GameComponentData> onClickAction;
 
+    Vector2 maxSpriteSize { get; set; } = new Vector2(0,0);
+    RectTransform componentImgRectTransform;
+
+    private void Awake() {
+        maxSpriteSize = componentImg.rectTransform.sizeDelta;
+        componentImgRectTransform = componentImg.rectTransform;
+    }
+
     public void SetData(GameComponentData cd) {
         componentData = cd;
         UpDateElement();
@@ -38,6 +46,13 @@ public class ShopElementCtrl : MonoBehaviour, IPointerEnterHandler, IPointerExit
     }
 
     public void UpDateElement() {
+        Vector2 newSpriteSize = componentData.DisplayImage.rect.size / componentImg.pixelsPerUnit;
+        float sizeScale = maxSpriteSize.x / newSpriteSize.x;
+        if(maxSpriteSize.y < newSpriteSize.y * sizeScale) {
+            sizeScale = maxSpriteSize.y / newSpriteSize.y;
+        }
+
+        componentImgRectTransform.sizeDelta = newSpriteSize * sizeScale;
         componentImg.sprite = componentData.DisplayImage;
         priceCtrl.SetPrice(componentData.Price);
     }
