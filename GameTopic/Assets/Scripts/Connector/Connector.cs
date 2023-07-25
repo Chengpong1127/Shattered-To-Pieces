@@ -306,7 +306,17 @@ public class Connector : MonoBehaviour, IConnector
 
         Quaternion newRotation = Quaternion.Euler(currentRotation);
 
-        transform.rotation = newRotation;
+        GameComponent.DragableTransform.rotation = newRotation;
+    }
+
+    public void AddZRotation(float rotation){
+        Vector3 currentRotation = transform.rotation.eulerAngles;
+
+        currentRotation.z += rotation;
+
+        Quaternion newRotation = Quaternion.Euler(currentRotation);
+
+        GameComponent.DragableTransform.rotation = newRotation;
     }
 
 }

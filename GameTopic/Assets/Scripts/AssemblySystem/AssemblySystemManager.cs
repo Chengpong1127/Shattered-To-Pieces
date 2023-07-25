@@ -7,6 +7,7 @@ public class AssemblySystemManager : MonoBehaviour
 {
     private DragableMover DragableMover;
     public UnitManager GameComponentsUnitManager;
+    public readonly float ScrollSpeed = 0.5f;
 
     /// <summary>
     /// This event will be invoked when a game component is started to drag.
@@ -37,6 +38,8 @@ public class AssemblySystemManager : MonoBehaviour
         DragableMover.inputManager = new InputManager();
         DragableMover.OnDragStart += handleComponentDraggedStart;
         DragableMover.OnDragEnd += handleComponentDraggedEnd;
+
+        DragableMover.OnScrollWhenDragging += handleScrollWhenDragging;
 
     }
     private void handleComponentDraggedStart(IDraggable draggedComponent, Vector2 targetPosition)
@@ -77,6 +80,13 @@ public class AssemblySystemManager : MonoBehaviour
             }
         });
         OnGameComponentDraggedEnd?.Invoke(component);
+    }
+
+    private void handleScrollWhenDragging(IDraggable draggedComponent, Vector2 scrollValue){
+        Debug.Assert(draggedComponent != null, "draggedComponent is null");
+        var component = draggedComponent as IGameComponent;
+        Debug.Assert(component != null, "component is null");
+        component.Connector.AddZRotation(scrollValue.y * ScrollSpeed);
     }
 
 }

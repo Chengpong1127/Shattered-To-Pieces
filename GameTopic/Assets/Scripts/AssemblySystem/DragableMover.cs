@@ -11,6 +11,7 @@ public class DragableMover: MonoBehaviour
     public event Action<IDraggable, Vector2> OnDragStart;
     public event Action<IDraggable, Vector2> OnDragEnd;
 
+    public event Action<IDraggable ,Vector2> OnScrollWhenDragging;
 
     private IDraggable draggedComponent = null;
     private bool isDragging = false;
@@ -21,8 +22,10 @@ public class DragableMover: MonoBehaviour
     private void Update() {
         if (isDragging)
         {
+            Debug.Assert(draggedComponent != null, "draggedComponent is null");
             Vector2 mousePosition = Mouse.current.position.ReadValue();
             setDragablePosition(mousePosition);
+            OnScrollWhenDragging?.Invoke(draggedComponent ,Mouse.current.scroll.ReadValue());
         }
     }
     private void OnEnable() {
@@ -42,10 +45,11 @@ public class DragableMover: MonoBehaviour
     {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
         draggedComponent = getDragableUnderMouse(mousePosition);
-        isDragging = true;
+        
         var worldPoint = mainCamera.ScreenToWorldPoint(mousePosition);
         if (draggedComponent != null)
         {
+            isDragging = true;
             OnDragStart?.Invoke(draggedComponent, worldPoint);
         }
         
