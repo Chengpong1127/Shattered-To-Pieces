@@ -43,7 +43,6 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     public (IGameComponent, ConnectionInfo) GetAvailableConnection(){
         var (availableParent, targetID) = connector.GetAvailableConnector();
-        Debug.Log("Available parent: " + availableParent + " targetID: " + targetID);
         if (availableParent == null){
             return (null, ConnectionInfo.NoConnection());
         }
@@ -72,9 +71,9 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
         return children;
     }
-    public void SetAssemblyMode(bool assemblyMode){
+    public void SetDragging(bool dragging){
         Debug.Assert(connector != null);
-        connector.SetSelectingMode(assemblyMode);
+        connector.SetSelectingMode(dragging);
     }
     public void SetAvailableForConnection(bool available){
         Debug.Assert(connector != null);

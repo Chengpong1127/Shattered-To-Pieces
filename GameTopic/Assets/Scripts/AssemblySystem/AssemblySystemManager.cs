@@ -11,22 +11,10 @@ public class AssemblySystemManager : MonoBehaviour
     public void EnableAssemblyComponents(){
         DragableMover.enabled = true;
         Debug.Assert(GameComponentsUnitManager != null, "GameComponentsUnitManager is null");
-        GameComponentsUnitManager.ForEachUnit((unit) => {
-            var gameComponent = unit as IGameComponent;
-            if (gameComponent != null){
-                gameComponent.SetAssemblyMode(true);
-            }
-        });
     }
     public void DisableAssemblyComponents(){
         DragableMover.enabled = false;
         Debug.Assert(GameComponentsUnitManager != null, "GameComponentsUnitManager is null");
-        GameComponentsUnitManager.ForEachUnit((unit) => {
-            var gameComponent = unit as IGameComponent;
-            if (gameComponent != null){
-                gameComponent.SetAssemblyMode(false);
-            }
-        });
     }
 
     private void Awake() {
@@ -46,9 +34,10 @@ public class AssemblySystemManager : MonoBehaviour
         var component = draggedComponent as IGameComponent;
         Debug.Assert(component != null, "component is null");
         component.DisconnectFromParent();
+        component.SetDragging(true);
         GameComponentsUnitManager.ForEachUnit((unit) => {
             var gameComponent = unit as IGameComponent;
-            if (gameComponent != null){
+            if (gameComponent != null && gameComponent != component){
                 gameComponent.SetAvailableForConnection(true);
             }
         });
@@ -60,6 +49,7 @@ public class AssemblySystemManager : MonoBehaviour
         Debug.Assert(draggedComponent != null, "draggedComponent is null");
         var component = draggedComponent as IGameComponent;
         Debug.Assert(component != null, "component is null");
+        component.SetDragging(false);
         var (availableParent, connectorInfo) = component.GetAvailableConnection();
         if (availableParent != null){
             component.ConnectToParent(availableParent, connectorInfo);
