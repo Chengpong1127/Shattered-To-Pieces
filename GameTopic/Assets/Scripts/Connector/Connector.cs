@@ -141,7 +141,14 @@ public class Connector : MonoBehaviour, IConnector
         linkedTarget.ownerConnector.attachHandler.AddListener(this.SwitchAttach);
 
         this.selfJoint.connectedBody = connector.selfRigidbody;
-        this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
+        if (ConnectionAnchor != null)
+        {
+            this.selfJoint.connectedAnchor = (Vector2)ConnectionAnchor.localPosition;
+        }
+        else
+        {
+            this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
+        }
         this.selfJoint.enabled = true;
     }
     public void UnlinkToConnector() {
