@@ -293,6 +293,13 @@ public class Connector : MonoBehaviour, IConnector
 
     public void SetZRotation(float rotation)
     {
-        throw new NotImplementedException();
+        Vector3 currentRotation = transform.rotation.eulerAngles;
+
+        currentRotation.z = rotation;
+
+        Quaternion newRotation = Quaternion.Euler(currentRotation);
+
+        transform.rotation = newRotation;
     }
+
 }

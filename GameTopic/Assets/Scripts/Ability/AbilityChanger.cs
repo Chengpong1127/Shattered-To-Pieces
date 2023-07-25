@@ -3,24 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
-public class AbilityChanger : MonoBehaviour,IAbilityKeyChanger
+public class AbilityChanger:IAbilityKeyChanger
 {
     // Start is called before the first frame update
     private int abilityBID;
     private AssemblyRoom room;
-    private AbilityManager abilityManager;
     public InputManager inputmanager;
     public Device device;
     public event Action<string> OnFinishChangeAbility;
-
+    public AbilityManager abilityManager { get; set; }
     private bool KeySelected;
     private string key;
-    void Start()
+    public AbilityChanger()
     {
         abilityBID = -1;
-        room = GetComponent<AssemblyRoom>();
-        abilityManager = room.abilityInputManager;
-        device = FindObjectOfType<Device>();
         inputmanager = new InputManager();
         inputmanager.menu.Enable();
         inputmanager.menu.Click.performed += ChangeKey;
