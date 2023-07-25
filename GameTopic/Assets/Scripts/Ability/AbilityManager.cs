@@ -24,16 +24,24 @@ public class AbilityManager
         ReloadDeviceAbilities();
     }
     /// <summary>
-    /// Reload the abilities of the device to out of entries.
+    /// Reload the abilities of the device and put to out of entries.
     /// </summary>
     public void ReloadDeviceAbilities(){
         CreateAbilityInputEntries(AbilityInputEntryNumber);
+        abilityInEntryStatus.Clear();
+        UpdateDeviceAbilities();
+    }
+    /// <summary>
+    /// Reload the abilities of the device, will not change the abilities in the input entries.
+    /// </summary>
+    public void UpdateDeviceAbilities(){
         var abilityList = GetDeviceCurrentAbilityList();
 
-        abilityInEntryStatus.Clear();
         foreach (var ability in abilityList)
         {
-            abilityInEntryStatus.Add(ability, false);
+            if(!abilityInEntryStatus.ContainsKey(ability)){
+                abilityInEntryStatus.Add(ability, false);
+            }
         }
     }
     
@@ -61,15 +69,15 @@ public class AbilityManager
     public void SetAbilityToEntry(int entryID, Ability ability){
         Debug.Assert(entryID < AbilityInputEntries.Count, "index out of range");
         var removed = AbilityInputEntries[entryID].AddAbility(ability);
-        //if(!abilityInEntryStatus.ContainsKey(ability)){
-        //    Debug.LogWarning("The ability is not in the device");
-        //    abilityInEntryStatus.Add(ability, false);
-        //}
+        if(!abilityInEntryStatus.ContainsKey(ability)){
+           Debug.LogWarning("The ability is not in the device");
+           abilityInEntryStatus.Add(ability, false);
+        }
 
-        //abilityInEntryStatus[ability] = true;
-        //if(removed != null){
-        //    abilityInEntryStatus[removed] = false;
-        //}
+        abilityInEntryStatus[ability] = true;
+        if(removed != null){
+           abilityInEntryStatus[removed] = false;
+        }
     }
     /// <summary>
     /// Remove the ability from the input entry;

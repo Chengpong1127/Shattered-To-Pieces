@@ -52,4 +52,21 @@ public class Ability{
     public void EndAbility(){
         ActionEnded();
     }
+
+    public override bool Equals(object obj)
+    {
+        return obj is Ability ability 
+            && AbilityName == ability.AbilityName 
+            && OwnerGameComponent == ability.OwnerGameComponent;
+    }
+
+    public override int GetHashCode()
+    {
+        if (OwnerGameComponent == null){
+            return AbilityName.GetHashCode();
+        }else{
+            return AbilityName.GetHashCode() ^ OwnerGameComponent.GetHashCode();
+        }
+        
+    }
 }
