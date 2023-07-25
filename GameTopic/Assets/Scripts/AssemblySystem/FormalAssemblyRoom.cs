@@ -47,7 +47,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         };
     }
     private void Start() {
-        SetRoomMode(AssemblyRoomMode.ConnectionMode);
+        SetRoomMode(AssemblyRoomMode.PlayMode);
     }
 
     private Device createSimpleDevice(){
