@@ -11,10 +11,6 @@ public class AbilityInputEntry{
     public static readonly int AbilityNumber = 3;
     public List<Ability> Abilities = new List<Ability>();
     public AbilityInputEntry(){
-        for (int i = 0; i < AbilityNumber; i++)
-        {
-            Abilities.Add(null);
-        }
     }
     /// <summary>
     /// Set the input path of this entry
@@ -35,9 +31,12 @@ public class AbilityInputEntry{
     /// <returns> The removed ability.</returns>
     public Ability AddAbility(Ability ability){
         Abilities.Insert(0, ability);
-        Ability removedAbility = Abilities[Abilities.Count - 1];
-        Abilities.RemoveAt(Abilities.Count - 1);
-        return removedAbility;
+        if(Abilities.Count > AbilityNumber){
+            Ability removedAbility = Abilities[Abilities.Count - 1];
+            Abilities.RemoveAt(Abilities.Count - 1);
+            return removedAbility;
+        }
+        return null;
     }
     /// <summary>
     /// Trigger all of the abilities in this entry.

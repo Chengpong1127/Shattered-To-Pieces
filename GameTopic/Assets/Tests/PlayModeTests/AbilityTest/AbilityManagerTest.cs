@@ -78,15 +78,24 @@ public class AbilityManagerTest
     public void SetAbilityOutOfEntryTest(){
         var device = new TestDevice();
         var abilityManager = new AbilityManager(device);
-        var ability = new Ability("test");
-        var ability2 = new Ability("test2");
-        abilityManager.SetAbilityOutOfEntry(ability);
         var abilityListOutOfEntry = abilityManager.GetAbilitiesOutOfEntry();
-        Assert.AreEqual(abilityListOutOfEntry.Count, 5);
 
-        abilityManager.SetAbilityOutOfEntry(ability2);
-        abilityListOutOfEntry = abilityManager.GetAbilitiesOutOfEntry();
-        Assert.AreEqual(abilityListOutOfEntry.Count, 6);
+        abilityManager.SetAbilityToEntry(0, abilityListOutOfEntry[0]);
+        Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities[0], abilityListOutOfEntry[0]);
+
+        abilityManager.SetAbilityToEntry(0, abilityListOutOfEntry[1]);
+        Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities[0], abilityListOutOfEntry[1]);
+        Assert.AreEqual(abilityManager.GetAbilitiesOutOfEntry().Count, 2);
+
+        abilityManager.SetAbilityOutOfEntry(abilityListOutOfEntry[0]);
+        Assert.AreEqual(abilityManager.GetAbilitiesOutOfEntry().Count, 3);
+
+        abilityManager.SetAbilityOutOfEntry(abilityListOutOfEntry[1]);
+        Assert.AreEqual(abilityManager.GetAbilitiesOutOfEntry().Count, 4);
+
+        abilityManager.SetAbilityOutOfEntry(abilityListOutOfEntry[2]);
+        Assert.AreEqual(abilityManager.GetAbilitiesOutOfEntry().Count, 4);
+
     }
 
     [Test]
@@ -111,6 +120,46 @@ public class AbilityManagerTest
         Assert.AreEqual(abilityListOutOfEntry.Count, 4);
     }
 
+    [Test]
+    public void UpdateDeviceAbilitiesTest(){
+        var device = new TestDevice();
+        var abilityManager = new AbilityManager(device);
+        
+        var abilityListOutOfEntry = abilityManager.GetAbilitiesOutOfEntry();
+        Assert.AreEqual(abilityListOutOfEntry.Count, 4);
+        abilityManager.SetAbilityToEntry(0, abilityListOutOfEntry[0]);
+        abilityManager.SetAbilityToEntry(1, abilityListOutOfEntry[1]);
+
+        Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities[0], abilityListOutOfEntry[0]);
+        Assert.AreEqual(abilityManager.AbilityInputEntries[1].Abilities[0], abilityListOutOfEntry[1]);
+
+        abilityListOutOfEntry = abilityManager.GetAbilitiesOutOfEntry();
+        Assert.AreEqual(abilityListOutOfEntry.Count, 2);
+
+        abilityManager.UpdateDeviceAbilities();
+
+        abilityListOutOfEntry = abilityManager.GetAbilitiesOutOfEntry();
+        Assert.AreEqual(abilityListOutOfEntry.Count, 2);
+    }
+    [Test]
+    public void ReloadDeviceAbilitiesTest(){
+        var device = new TestDevice();
+        var abilityManager = new AbilityManager(device);
+        
+        var abilityListOutOfEntry = abilityManager.GetAbilitiesOutOfEntry();
+        Assert.AreEqual(abilityListOutOfEntry.Count, 4);
+        abilityManager.SetAbilityToEntry(0, abilityListOutOfEntry[0]);
+        abilityManager.SetAbilityToEntry(1, abilityListOutOfEntry[1]);
+        Assert.AreEqual(abilityManager.GetAbilitiesOutOfEntry().Count, 2);
+
+        abilityManager.ReloadDeviceAbilities();
+        Assert.AreEqual(abilityManager.GetAbilitiesOutOfEntry().Count, 4);
+        Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities.Count, 0);
+
+        abilityManager.ReloadDeviceAbilities();
+        Assert.AreEqual(abilityManager.GetAbilitiesOutOfEntry().Count, 4);
+    }
+
     class TestDevice : IDevice
     {
         public IGameComponent RootGameComponent { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
@@ -120,14 +169,20 @@ public class AbilityManagerTest
             throw new System.NotImplementedException();
         }
 
-        public List<Ability> getAbilityList()
-        {
-            List<Ability> abilityList = new List<Ability>();
+        List<Ability> abilityList = new List<Ability>();
+        public TestDevice(){
             abilityList.Add(new Ability("test"));
             abilityList.Add(new Ability("test2"));
             abilityList.Add(new Ability("test3"));
             abilityList.Add(new Ability("test4"));
+        }
+        public void AddAbility(Ability ability)
+        {
+            abilityList.Add(ability);
+        }
 
+        public List<Ability> getAbilityList()
+        {
             return abilityList;
         }
 
