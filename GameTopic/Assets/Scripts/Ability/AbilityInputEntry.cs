@@ -71,6 +71,12 @@ public class AbilityInputEntry{
             }
         }
     }
+    public void RemoveAbility(Ability ability){
+        Abilities.Remove(ability);
+    }
+    public bool ContainsAbility(Ability ability){
+        return Abilities.Contains(ability);
+    }
     public void Reset(){
         for(int i = 0; i < Abilities.Count; i++){
             Abilities[i] = null;

@@ -97,6 +97,23 @@ public class AbilityManagerTest
         Assert.AreEqual(abilityManager.GetAbilitiesOutOfEntry().Count, 4);
 
     }
+    [Test]
+    public void AbilityRemoveTest(){
+        var device = new TestDevice();
+        var abilityManager = new AbilityManager(device);
+        var outOfEntryAbility = abilityManager.GetAbilitiesOutOfEntry();
+        var ability = outOfEntryAbility[0];
+
+        Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities.Count, 0);
+        abilityManager.SetAbilityToEntry(0, ability);
+        Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities[0], ability);
+        abilityManager.SetAbilityToEntry(1, ability);
+        Assert.AreEqual(abilityManager.AbilityInputEntries[1].Abilities[0], ability);
+        Assert.AreEqual(abilityManager.AbilityInputEntries[0].Abilities.Count, 0);
+
+        abilityManager.SetAbilityOutOfEntry(ability);
+        Assert.AreEqual(abilityManager.AbilityInputEntries[1].Abilities.Count, 0);
+    }
 
     [Test]
     public void LoadDeviceTest(){
