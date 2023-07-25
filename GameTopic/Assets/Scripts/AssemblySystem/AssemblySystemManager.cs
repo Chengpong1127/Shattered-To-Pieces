@@ -8,6 +8,20 @@ public class AssemblySystemManager : MonoBehaviour
     private DragableMover DragableMover;
     public UnitManager GameComponentsUnitManager;
 
+    /// <summary>
+    /// This event will be invoked when a game component is started to drag.
+    /// </summary>
+    public event Action<IGameComponent> OnGameComponentDraggedStart;
+    /// <summary>
+    /// This event will be invoked after a game component is dragged and released.
+    /// </summary>
+    public event Action<IGameComponent> OnGameComponentDraggedEnd;
+    /// <summary>
+    /// This event will be invoked after a game component is connected to another game component.
+    /// </summary>
+    public event Action<IGameComponent> AfterGameComponentConnected;
+
+
     public void EnableAssemblyComponents(){
         DragableMover.enabled = true;
         Debug.Assert(GameComponentsUnitManager != null, "GameComponentsUnitManager is null");
@@ -41,6 +55,7 @@ public class AssemblySystemManager : MonoBehaviour
                 gameComponent.SetAvailableForConnection(true);
             }
         });
+        OnGameComponentDraggedStart?.Invoke(component);
     }
 
 
@@ -53,6 +68,7 @@ public class AssemblySystemManager : MonoBehaviour
         var (availableParent, connectorInfo) = component.GetAvailableConnection();
         if (availableParent != null){
             component.ConnectToParent(availableParent, connectorInfo);
+            AfterGameComponentConnected?.Invoke(component);
         }
         GameComponentsUnitManager.ForEachUnit((unit) => {
             var gameComponent = unit as IGameComponent;
@@ -60,6 +76,7 @@ public class AssemblySystemManager : MonoBehaviour
                 gameComponent.SetAvailableForConnection(false);
             }
         });
+        OnGameComponentDraggedEnd?.Invoke(component);
     }
 
 }

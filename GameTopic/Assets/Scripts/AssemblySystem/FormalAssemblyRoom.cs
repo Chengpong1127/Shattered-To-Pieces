@@ -12,7 +12,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// <summary>
     /// The device that the FormalAssemblyRoom is controlling.
     /// </summary>
-    public Device ControlledDevice;
+    public Device ControlledDevice { get; private set;}
     /// <summary>
     /// The factory for creating game components.
     /// </summary>
@@ -20,8 +20,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// <summary>
     /// The manager for assembly system.
     /// </summary>
-    private AssemblySystemManager assemblySystemManager;
-    public UnitManager GameComponentsUnitManager;
+    public AssemblySystemManager AssemblySystemManager { get; private set;}
+    public UnitManager GameComponentsUnitManager { get; private set;}
     /// <summary>
     /// The manager for device storage.
     /// </summary>
@@ -35,13 +35,16 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     private void Awake() {
         GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
-        assemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
+        AssemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
         GameComponentsUnitManager = new UnitManager();
-        assemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
+        AssemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
         deviceStorageManager = SaveLoadManager.Create("BaseDirectory","SavedDevice",SerializationMethodType.JsonDotNet);
 
         ControlledDevice = createSimpleDevice();
         AbilityManager = new AbilityManager(ControlledDevice);
+        AssemblySystemManager.AfterGameComponentConnected += (component) => {
+            AbilityManager.UpdateDeviceAbilities();
+        };
     }
     private void Start() {
         SetRoomMode(AssemblyRoomMode.ConnectionMode);
@@ -141,10 +144,10 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     {
         switch(mode){
             case AssemblyRoomMode.ConnectionMode:
-                assemblySystemManager.EnableAssemblyComponents();
+                AssemblySystemManager.EnableAssemblyComponents();
                 break;
             case AssemblyRoomMode.PlayMode:
-                assemblySystemManager.DisableAssemblyComponents();
+                AssemblySystemManager.DisableAssemblyComponents();
                 break;
         }
         OnSetRoomMode?.Invoke(mode);
