@@ -20,6 +20,8 @@ public class DescriptionBoxCtrl : MonoBehaviour
     private void Awake() {
         maxSpriteSize = componentImage.rectTransform.sizeDelta;
         componentImgRectTransform = componentImage.rectTransform;
+
+        gameObject.SetActive(false);
     }
 
     public void SetDescriptionData(string nText, Sprite nImg) {

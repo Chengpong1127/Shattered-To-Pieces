@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class WorkShop : MonoBehaviour
 {
-    AssemblyRoomMode roomMode;
+    AssemblyRoomMode roomMode = AssemblyRoomMode.PlayMode;
 
     [SerializeField] IAssemblyRoom room;
     [SerializeField] PriceCtrl userDisplayMoney;
@@ -20,7 +20,7 @@ public class WorkShop : MonoBehaviour
     [SerializeField] SkillDispatcher shopDispatcher;
 
     private void Awake() {
-        roomMode = AssemblyRoomMode.PlayMode;
+        // roomMode = AssemblyRoomMode.PlayMode;
         shoppingBTN.onClick.AddListener(SwitchRoomMode);
     }
 
@@ -39,8 +39,6 @@ public class WorkShop : MonoBehaviour
         shopDispatcher.refreshNullAbilityAction += RefreshNullAbillity;
         shopDispatcher.rebindKeyAction += room.StartChangeAbilityKey;
 
-        room.OnFinishChangeAbilityKey += shopDispatcher.SetRebindKeyText;
-
         shopDispatcher.RefreshAllBoxAbility();
         RefreshAllSkillBoxDisplayText();
     }
@@ -53,12 +51,20 @@ public class WorkShop : MonoBehaviour
         if(Iar == null) { Debug.Log("IAssemblyRoom is null."); return; }
 
         if(room != null) {
+            room.OnFinishChangeAbilityKey -= shopDispatcher.SetRebindKeyText;
+            room.AssemblySystemManager.OnGameComponentDraggedStart -= RefreshAllBoxAbilityAction;
+            room.AssemblySystemManager.AfterGameComponentConnected -= RefreshAllBoxAbilityAction;
+
             fileCtrl.RemoveRenameAction(room.RenameDevice);
             fileCtrl.StoreAction -= room.SaveCurrentDevice;
             fileCtrl.LoadAction -= room.LoadDevice;
         }
 
         room = Iar;
+
+        room.OnFinishChangeAbilityKey += shopDispatcher.SetRebindKeyText;
+        room.AssemblySystemManager.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
+        room.AssemblySystemManager.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
 
         shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Basic), GameComponentType.Basic);
         shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Attack), GameComponentType.Attack);
@@ -69,6 +75,8 @@ public class WorkShop : MonoBehaviour
         fileCtrl.StoreAction += room.SaveCurrentDevice;
         fileCtrl.LoadAction += room.LoadDevice;
         SetStoreFileNames(room.GetSavedDeviceList());
+
+        room.SetRoomMode(roomMode);
     }
 
     /// <summary>
@@ -84,7 +92,7 @@ public class WorkShop : MonoBehaviour
     /// Change room mode between play and combine mode.
     /// </summary>
     public void SwitchRoomMode() {
-        roomMode = roomMode == AssemblyRoomMode.PlayMode ? AssemblyRoomMode.ConnectionMode : AssemblyRoomMode.PlayMode;
+        roomMode = (roomMode == AssemblyRoomMode.PlayMode) ? AssemblyRoomMode.ConnectionMode : AssemblyRoomMode.PlayMode;
         room?.SetRoomMode(roomMode);
     }
 
@@ -126,5 +134,9 @@ public class WorkShop : MonoBehaviour
             keyText = room.AbilityManager.AbilityInputEntries[i].InputPath;
             shopDispatcher.SetRebindKeyText(keyText == string.Empty ? "Non" : keyText);
         }
+    }
+
+    public void RefreshAllBoxAbilityAction(IGameComponent igc) {
+        shopDispatcher.RefreshAllBoxAbility();
     }
 }
