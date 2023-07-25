@@ -13,7 +13,9 @@ public class StoreFileCtrl : MonoBehaviour
     public UnityAction<string> StoreAction { get; set; }
     public UnityAction<string> LoadAction { get; set; }
 
-
+    private void Awake() {
+        gameObject.SetActive(false);
+    }
     public void OnClickFileBTN(int btnId) {
         if(btnId < 0 || btnId >= fileElements.Count) return;
 
