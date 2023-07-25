@@ -35,6 +35,12 @@ public interface IAssemblyRoom
     /// <value></value>
     public AbilityManager AbilityManager { get; }
 
+    /// <summary>
+    /// The AssemblySystemManager of the assembly room.
+    /// </summary>
+    /// <value></value>
+    public AssemblySystemManager AssemblySystemManager { get; }
+
     #region Save and Load
 
     /// <summary>
