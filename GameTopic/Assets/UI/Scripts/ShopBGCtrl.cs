@@ -26,6 +26,10 @@ public class ShopBGCtrl : MonoBehaviour
         UpDateDisplayList();
     }
 
+    /// <summary>
+    /// Change shop background into different type of component's style.
+    /// </summary>
+    /// <param name="bgid"></param>
     public void SwitchShopBG(int bgid) {
         if(bgid < 0 || bgid >= spriteList.Count || selfImage == null || currentlementType == bgid) { return; }
 
@@ -35,7 +39,9 @@ public class ShopBGCtrl : MonoBehaviour
 
         UpDateDisplayList();
     }
-
+    /// <summary>
+    /// Update shop elements for different page, type of component.
+    /// </summary>
     public void UpDateDisplayList() {
         if(componentList[currentlementType] == null) { return; }
 
@@ -54,23 +60,37 @@ public class ShopBGCtrl : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Turn the shop to next page.
+    /// </summary>
     public void NextPage() {
         if((pageCount + 1) * ComponentDisplayList.Count >= componentList[currentlementType].Count) { return; }
         pageCount++;
         UpDateDisplayList();
     }
+    /// <summary>
+    /// Turn the shop to previous page.
+    /// </summary>
     public void PrevPage() {
         if(pageCount == 0) { return; }
         pageCount--;
         UpDateDisplayList();
     }
 
-
+    /// <summary>
+    /// Set the certaain type of componet list to shop.
+    /// </summary>
+    /// <param name="cdList"></param>
+    /// <param name="type"></param>
     public void SetElements(List<GameComponentData> cdList, GameComponentType type) {
         componentList[(int)type] = cdList;
         UpDateDisplayList();
     }
 
+    /// <summary>
+    /// A button invoke function for set shop into different component type page.
+    /// </summary>
+    /// <param name="ua"></param>
     public void SetShopElementClickAction(UnityAction<GameComponentData> ua) {
         ComponentDisplayList.ForEach(e => {
             e.SetClickAction(ua);
