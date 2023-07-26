@@ -45,6 +45,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         AssemblySystemManager.AfterGameComponentConnected += (component) => {
             AbilityManager.UpdateDeviceAbilities();
         };
+
+        abilityKeyChanger = new AbilityChanger(AbilityManager);
     }
     private void Start() {
         SetRoomMode(AssemblyRoomMode.PlayMode);

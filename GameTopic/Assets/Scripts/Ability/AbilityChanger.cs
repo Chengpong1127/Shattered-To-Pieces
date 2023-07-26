@@ -14,8 +14,9 @@ public class AbilityChanger:IAbilityKeyChanger
     public AbilityManager abilityManager { get; set; }
     private bool KeySelected;
     private string key;
-    public AbilityChanger()
+    public AbilityChanger(AbilityManager abilityManager)
     {
+        this.abilityManager = abilityManager;
         abilityBID = -1;
         inputmanager = new InputManager();
         inputmanager.menu.Enable();
