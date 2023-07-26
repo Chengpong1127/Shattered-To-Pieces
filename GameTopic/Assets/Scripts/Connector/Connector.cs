@@ -66,6 +66,8 @@ public class Connector : MonoBehaviour, IConnector
 
         GameComponent = GetComponentInParent<IGameComponent>();
         ChildConnectors = new List<IConnector>();
+
+        if (ConnectionAnchor != null) selfJoint.anchor = (Vector2)ConnectionAnchor.transform.localPosition;
     }
 
 
@@ -141,13 +143,15 @@ public class Connector : MonoBehaviour, IConnector
         linkedTarget.ownerConnector.attachHandler.AddListener(this.SwitchAttach);
 
         this.selfJoint.connectedBody = connector.selfRigidbody;
+
+        this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
         if (ConnectionAnchor != null)
         {
-            this.selfJoint.connectedAnchor = (Vector2)ConnectionAnchor.localPosition;
-        }
-        else
-        {
-            this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
+            Vector3 positionOffset = linkedTarget.targetPoint.transform.position - ConnectionAnchor.position;
+
+            // 將父物體移動到正確的位置，使得ConnectorAnchor和Target位置重疊
+            transform.parent.position += positionOffset;
+
         }
         this.selfJoint.enabled = true;
     }
