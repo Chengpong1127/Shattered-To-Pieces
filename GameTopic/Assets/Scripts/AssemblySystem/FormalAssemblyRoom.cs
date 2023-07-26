@@ -31,6 +31,25 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     private IAbilityKeyChanger abilityKeyChanger;
 
+    public List<GameComponentData> GameComponentDataList {
+        get{
+            var dataList = ResourceManager.LoadAllGameComponentData();
+            Debug.Assert(dataList != null);
+            return dataList;
+        }
+    }
+
+    public int GameComponentTotalCost {
+        get{
+            var cost = 0;
+            GameComponentsUnitManager.ForEachUnit((unit) => {
+                var component = unit as IGameComponent;
+                cost += GameComponentDataList.Where((data) => data.name == component.ComponentName).First().Price;
+            });
+            return cost;
+        }
+    }
+
     public event Action<string> OnFinishChangeAbilityKey;
 
     private void Awake() {
@@ -90,9 +109,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     public List<GameComponentData> GetGameComponentDataList(GameComponentType type)
     {
-        var dataList = ResourceManager.LoadAllGameComponentData();
-        Debug.Assert(dataList != null);
-        var filteredList = dataList.Where((data) => data.Type == type).ToList();
+        var filteredList = GameComponentDataList.Where((data) => data.Type == type).ToList();
 
         return filteredList;
     }
