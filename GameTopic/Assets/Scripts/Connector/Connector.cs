@@ -73,7 +73,6 @@ public class Connector : MonoBehaviour, IConnector
 
     // use for demo
     private void Update() {
-
     }
     public void SetConnectMode(bool draggingMode){
         SwitchCombine(draggingMode);
@@ -147,9 +146,8 @@ public class Connector : MonoBehaviour, IConnector
         this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
         if (ConnectionAnchor != null)
         {
+            Debug.Log(1);
             Vector3 positionOffset = linkedTarget.targetPoint.transform.position - ConnectionAnchor.position;
-
-            // 將父物體移動到正確的位置，使得ConnectorAnchor和Target位置重疊
             transform.parent.position += positionOffset;
 
         }

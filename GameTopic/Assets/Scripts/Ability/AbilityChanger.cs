@@ -10,7 +10,8 @@ public class AbilityChanger:IAbilityKeyChanger
     private AssemblyRoom room;
     public InputManager inputmanager;
     public Device device;
-    public event Action<string> OnFinishChangeAbility;
+    private string changeKey;
+    public event Action<string> OnFinishChangeAbilityKey;
     public AbilityManager abilityManager { get; set; }
     private bool KeySelected;
     private string key;
@@ -36,6 +37,7 @@ public class AbilityChanger:IAbilityKeyChanger
                 if (KeyControl.wasPressedThisFrame)
                 {
                     abilityManager.AbilityInputEntries[abilityBID].SetInputPath(keyName);
+                    changeKey = keyName;
                     EndChangeAbilityKey();
                 }
             }
@@ -55,10 +57,11 @@ public class AbilityChanger:IAbilityKeyChanger
 
     public void EndChangeAbilityKey()
     {
-        Debug.Log("abilityButton:" + abilityBID + "has changed input path");
-        OnFinishChangeAbility?.Invoke("abilityButton:" + abilityBID + "has changed input path");
+        Debug.Log("abilityButton:" + abilityBID + "has changed input path to "+changeKey);
+        OnFinishChangeAbilityKey?.Invoke(changeKey);
         abilityBID = -1;
         key = "";
         KeySelected = false;
+        changeKey = "";
     }
 }
