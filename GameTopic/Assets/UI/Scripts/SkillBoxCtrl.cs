@@ -102,8 +102,8 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
     /// Invoke function for rebind key button click.
     /// </summary>
     public void OnClickRebindKey() {
-        // rebindKeyAction?.Invoke(boxID); // should work when rebind function is implemented.
-        Debug.Log("Rebind keys not yet implemented.");
+        rebindKeyAction?.Invoke(boxID); // should work when rebind function is implemented.
+        // Debug.Log("Rebind keys not yet implemented.");
     }
 
     /// <summary>
