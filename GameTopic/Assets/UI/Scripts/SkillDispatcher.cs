@@ -122,6 +122,7 @@ public class SkillDispatcher : MonoBehaviour
     /// </summary>
     /// <param name="keyText"></param>
     public void SetRebindKeyText(string keyText) {
+        Debug.Log("call SetRebindKeyText");
         if(rebindBoxId >= skillBoxes.Count) { return; }
         skillBoxes[rebindBoxId].SetBindKeyText(keyText);
     }
