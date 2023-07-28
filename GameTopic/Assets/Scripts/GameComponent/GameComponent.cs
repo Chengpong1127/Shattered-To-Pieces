@@ -5,15 +5,40 @@ using System;
 
 public class GameComponent : MonoBehaviour, IGameComponent
 {
+    public Transform BodyTransform => bodyTransform;
+
+    public Rigidbody2D BodyRigidbody => bodyRigidbody;
+
+    public Collider2D BodyCollider => bodyCollider;
     public int UnitID { get; set; }
-    private IConnector connector;
-    private ICoreComponent coreComponent;
+    
 
     public IConnector Connector => connector;
     public ICoreComponent CoreComponent => coreComponent;
     public bool IsInDevice => false;
-    public Transform DragableTransform { get => transform; }
+    public Transform DragableTransform => bodyTransform;
     public string ComponentName { get; set; }
+
+    #region Inspector
+
+    [Header("References Setting")]
+    [Tooltip("The main transform of the body of the game component.")]
+    [SerializeField]
+    private Transform bodyTransform;
+    [Tooltip("The main rigidbody of the body of the game component.")]
+    [SerializeField]
+    private Rigidbody2D bodyRigidbody;
+    [Tooltip("The main collider of the body of the game component.")]
+    [SerializeField]
+    private Collider2D bodyCollider;
+    [Tooltip("The connector of the game component.")]
+    [SerializeField]
+    private IConnector connector;
+    [Tooltip("The core component of the game component.")]
+    [SerializeField]
+    private ICoreComponent coreComponent;
+
+    #endregion
 
     public void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
     {
@@ -74,6 +99,15 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public void SetDragging(bool dragging){
         Debug.Assert(connector != null);
         connector.SetSelectingMode(dragging);
+        BodyRigidbody.angularVelocity = 0;
+        switch(dragging){
+            case true:
+                bodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
+                break;
+            case false:
+                bodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
+                break;
+        }
     }
     public void SetAvailableForConnection(bool available){
         Debug.Assert(connector != null);
@@ -82,12 +116,35 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     private void Awake()
     {
-        connector = GetComponentInChildren<Connector>();
-        Debug.Assert(connector != null, "Connector not found at " + gameObject.name);
-        coreComponent = GetComponentInChildren<ICoreComponent>();
-        if (coreComponent == null){
-            Debug.LogWarning("Core component not found at " + gameObject.name);
+        if (bodyTransform == null)
+        {
+            bodyTransform = transform;
+            Debug.Assert(bodyTransform != null, "The body transform is not set.");
         }
+        if (bodyRigidbody == null)
+        {
+            bodyRigidbody = GetComponent<Rigidbody2D>();
+            Debug.Assert(bodyRigidbody != null, "The body rigidbody is not set.");
+        }
+        if (bodyCollider == null)
+        {
+            bodyCollider = GetComponentInChildren<Collider2D>();
+            Debug.Assert(bodyCollider != null, "The body collider is not set.");
+        }
+        if (connector == null)
+        {
+            connector = GetComponentInChildren<IConnector>();
+            Debug.Assert(connector != null, "The connector is not set.");
+        }
+        if (coreComponent == null)
+        {
+            coreComponent = GetComponentInChildren<ICoreComponent>();
+            if (coreComponent == null)
+            {
+                Debug.LogWarning("The core component is not set.");
+            }
+        }
+
         DisconnectFromParent();
     }
 }

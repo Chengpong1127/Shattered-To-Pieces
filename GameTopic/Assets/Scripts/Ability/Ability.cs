@@ -24,13 +24,19 @@ public class Ability{
     /// The game component that own this ability.
     /// </summary>
     /// <value></value>
-    public readonly IGameComponent OwnerGameComponent;
+    public readonly ICoreComponent OwnerGameComponent;
 
     public Ability(string name){
         this.AbilityName = name;
     }
 
-    public Ability(string name, Action actionStarted, Action actionRunning, Action actionEnded, IGameComponent ownerGameComponent){
+    public Ability(string name, Action actionStarted, ICoreComponent ownerGameComponent){
+        this.AbilityName = name;
+        this.ActionStarted = actionStarted;
+        this.OwnerGameComponent = ownerGameComponent;
+    }
+
+    public Ability(string name, Action actionStarted, Action actionRunning, Action actionEnded, ICoreComponent ownerGameComponent){
         this.AbilityName = name;
         this.ActionStarted = actionStarted;
         this.ActionRunning = actionRunning;

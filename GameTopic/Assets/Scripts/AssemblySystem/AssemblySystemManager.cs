@@ -7,7 +7,7 @@ public class AssemblySystemManager : MonoBehaviour
 {
     private DragableMover DragableMover;
     public UnitManager GameComponentsUnitManager;
-    public readonly float ScrollSpeed = 0.5f;
+    public readonly float SingleRotationAngle = 45f;
 
     /// <summary>
     /// This event will be invoked when a game component is started to drag.
@@ -22,7 +22,7 @@ public class AssemblySystemManager : MonoBehaviour
     /// </summary>
     public event Action<IGameComponent> AfterGameComponentConnected;
 
-
+    private float _scrollCounter = 0f;
     public void EnableAssemblyComponents(){
         DragableMover.enabled = true;
         Debug.Assert(GameComponentsUnitManager != null, "GameComponentsUnitManager is null");
@@ -41,6 +41,15 @@ public class AssemblySystemManager : MonoBehaviour
 
         DragableMover.OnScrollWhenDragging += handleScrollWhenDragging;
 
+    }
+    private void Update() {
+        if(_scrollCounter > 0f){
+            _scrollCounter -= Time.deltaTime;
+            
+            if (_scrollCounter <= 0f){
+                _scrollCounter = 0f;
+            }
+        }
     }
     private void handleComponentDraggedStart(IDraggable draggedComponent, Vector2 targetPosition)
     {
@@ -86,7 +95,12 @@ public class AssemblySystemManager : MonoBehaviour
         Debug.Assert(draggedComponent != null, "draggedComponent is null");
         var component = draggedComponent as IGameComponent;
         Debug.Assert(component != null, "component is null");
-        component.Connector.AddZRotation(scrollValue.y * ScrollSpeed);
+        if (scrollValue.y != 0 && _scrollCounter == 0f){
+            var rotateAngle = scrollValue.y > 0 ? SingleRotationAngle : -SingleRotationAngle;
+            component.Connector.AddZRotation(rotateAngle);
+            _scrollCounter = 0.4f;
+        }
+        
     }
 
 }

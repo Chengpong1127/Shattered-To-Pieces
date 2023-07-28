@@ -1,7 +1,13 @@
-
+using UnityEngine;
 // Description: Defines the basic interfaces for the game components.
 public interface IGameComponent: ITreeNode, IUnit, IDraggable
 {
+    public Transform BodyTransform { get; }
+
+    public Rigidbody2D BodyRigidbody { get; }
+
+    public Collider2D BodyCollider { get; }
+
     /// <summary>
     /// Whether the game component is in the device. // TODO
     /// </summary>
