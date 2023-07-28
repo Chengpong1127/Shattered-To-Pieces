@@ -37,6 +37,17 @@ public class AbilityManager
     public void UpdateDeviceAbilities(){
         var abilityList = GetDeviceCurrentAbilityList();
 
+        var removedList = new List<Ability>();
+        foreach (var ability in abilityInEntryStatus.Keys){
+            if(!abilityList.Contains(ability)){
+                removeAbilityFromEntry(ability);
+                removedList.Add(ability);
+            }
+        }
+        foreach (var ability in removedList){
+            abilityInEntryStatus.Remove(ability);
+        }
+
         foreach (var ability in abilityList)
         {
             if(!abilityInEntryStatus.ContainsKey(ability)){

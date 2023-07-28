@@ -121,7 +121,6 @@ public class Connector : MonoBehaviour, IConnector
         this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
         if (ConnectionAnchor != null)
         {
-            Debug.Log(1);
             Vector3 positionOffset = linkedTarget.targetPoint.transform.position - ConnectionAnchor.position;
             transform.parent.position += positionOffset;
 

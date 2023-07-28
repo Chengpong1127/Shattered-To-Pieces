@@ -61,6 +61,9 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
         ControlledDevice = createSimpleDevice();
         AbilityManager = new AbilityManager(ControlledDevice);
+        AssemblySystemManager.OnGameComponentDraggedStart += (component) => {
+            AbilityManager.UpdateDeviceAbilities();
+        };
         AssemblySystemManager.AfterGameComponentConnected += (component) => {
             AbilityManager.UpdateDeviceAbilities();
         };
