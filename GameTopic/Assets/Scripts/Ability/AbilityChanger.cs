@@ -10,7 +10,6 @@ public class AbilityChanger:IAbilityKeyChanger
     private AssemblyRoom room;
     public InputManager inputmanager;
     public Device device;
-    private string changeKey;
     public event Action<string> OnFinishChangeAbilityKey;
     public AbilityManager abilityManager { get; set; }
     private bool KeySelected;
@@ -23,6 +22,7 @@ public class AbilityChanger:IAbilityKeyChanger
         inputmanager.menu.Enable();
         inputmanager.menu.Click.performed += ChangeKey;
         //inputmanager.menu.Click.performed += Click;
+        OnFinishChangeAbilityKey += HandleAbilityKeyChanged;
         KeySelected = false;
     }
 
@@ -58,6 +58,9 @@ public class AbilityChanger:IAbilityKeyChanger
         abilityBID = -1;
         key = "";
         KeySelected = false;
-        changeKey = "";
+    }
+    public void HandleAbilityKeyChanged(string keyName)
+    {
+        Debug.Log(keyName);
     }
 }
