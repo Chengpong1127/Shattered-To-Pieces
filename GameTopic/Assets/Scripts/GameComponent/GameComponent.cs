@@ -102,15 +102,23 @@ public class GameComponent : MonoBehaviour, IGameComponent
         BodyRigidbody.angularVelocity = 0;
         switch(dragging){
             case true:
-                bodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
+                BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
+                BodyCollider.enabled = false;
                 break;
             case false:
-                bodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
+                BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
+                BodyCollider.enabled = true;
                 break;
         }
     }
     public void SetAvailableForConnection(bool available){
         Debug.Assert(connector != null);
+        switch(available){
+            case true:
+                break;
+            case false:
+                break;
+        }
         connector.SetConnectMode(available);
     }
 
@@ -146,5 +154,15 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
 
         DisconnectFromParent();
+    }
+
+    public void SetZRotation(float zRotation)
+    {
+        bodyTransform.rotation = Quaternion.Euler(0, 0, zRotation);
+    }
+
+    public void AddZRotation(float zRotation)
+    {
+        bodyTransform.rotation *= Quaternion.Euler(0, 0, zRotation);
     }
 }
