@@ -35,6 +35,7 @@ public class Connector : MonoBehaviour, IConnector
 
     private void Awake() {
         Debug.Assert(selfJoint);
+        selfJoint.autoConfigureConnectedAnchor = false;
         linkedTarget = null;
         selectedObjDist = float.PositiveInfinity;
 
