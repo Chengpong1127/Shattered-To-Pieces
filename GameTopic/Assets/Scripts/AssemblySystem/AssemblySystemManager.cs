@@ -97,7 +97,7 @@ public class AssemblySystemManager : MonoBehaviour
         Debug.Assert(component != null, "component is null");
         if (scrollValue.y != 0 && _scrollCounter == 0f){
             var rotateAngle = scrollValue.y > 0 ? SingleRotationAngle : -SingleRotationAngle;
-            component.Connector.AddZRotation(rotateAngle);
+            component.AddZRotation(rotateAngle);
             _scrollCounter = 0.4f;
         }
         

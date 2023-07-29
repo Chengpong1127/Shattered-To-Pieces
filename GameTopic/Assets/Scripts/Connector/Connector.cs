@@ -17,18 +17,15 @@ public enum ConnectorState {
 
 public class Connector : MonoBehaviour, IConnector
 {
-    public ConnectorState currState { get; set; } = ConnectorState.INITIAL;
 
     public IList<IConnector> ChildConnectors { get; set; }
 
     public IConnector ParentConnector { get; set; }
     public IGameComponent GameComponent { get; private set; }
-
-    InputManager inputManager;
+    public Rigidbody2D selfRigidbody => GameComponent.BodyRigidbody;
+    private Collider2D selfCollider => GameComponent.BodyCollider;
     UnityEvent<bool> attachHandler = new UnityEvent<bool>();
 
-    [SerializeField] Rigidbody2D selfRigidbody;
-    [SerializeField] Collider2D selfCollider;
     [SerializeField] AnchoredJoint2D selfJoint;
     [Tooltip("The anchor of the connection point to attach to targets, should be a transform. If null, use the center of the connector as the anchor.")]
     [SerializeField] Transform ConnectionAnchor;
@@ -47,8 +44,6 @@ public class Connector : MonoBehaviour, IConnector
 
 
     private void Awake() {
-        Debug.Assert(selfRigidbody);
-        Debug.Assert(selfCollider);
         Debug.Assert(selfJoint);
         linkedTarget = null;
         selectedObjDist = float.PositiveInfinity;
@@ -70,10 +65,6 @@ public class Connector : MonoBehaviour, IConnector
         if (ConnectionAnchor != null) selfJoint.anchor = (Vector2)ConnectionAnchor.transform.localPosition;
     }
 
-
-    // use for demo
-    private void Update() {
-    }
     public void SetConnectMode(bool draggingMode){
         SwitchCombine(draggingMode);
     }
@@ -84,42 +75,26 @@ public class Connector : MonoBehaviour, IConnector
     // State chang function
     void SwitchCombine(bool b) {
         if (!b) { SwitchSelecting(false); }
-        currState = ConnectorState.COMBINE;
-        selfRigidbody.freezeRotation = b;
+        //selfRigidbody.freezeRotation = b;
         SwitchTargetActive(b);
 
-        if (!b) { currState = ConnectorState.INITIAL; }
 
-        LayerMask componentLayer = 6;
-        if(b){
-            Physics2D.IgnoreLayerCollision(componentLayer, componentLayer);
-        }else{
-            Physics2D.IgnoreLayerCollision(componentLayer, componentLayer, false);
-        }
     }
     public void SwitchSelecting(bool b) {
-        if (currState != ConnectorState.SELECT && currState != ConnectorState.COMBINE) { return; }
-        currState = ConnectorState.SELECT;
 
         if (b) { this.UnlinkToConnector(); }
 
-        selfRigidbody.gravityScale = b ? 0 : 1;
-        selfCollider.isTrigger = b;
+        //selfRigidbody.gravityScale = b ? 0 : 1;
         SwitchTargetActive(!b);
         attachHandler.Invoke(b);
 
-        if (!b) { currState = ConnectorState.COMBINE; }
     }
     void SwitchAttach(bool b) {
-        if (currState != ConnectorState.ATTACH && currState != ConnectorState.COMBINE) { return; }
-        currState = ConnectorState.ATTACH;
 
         SwitchTargetActive(!b);
-        selfCollider.isTrigger = b;
-        selfRigidbody.gravityScale = b ? 0 : 1;
+        //selfRigidbody.gravityScale = b ? 0 : 1;
         attachHandler.Invoke(b);
 
-        if (!b) { currState = ConnectorState.COMBINE; }
     }
     void SwitchTargetActive(bool b) {
         targetList.ForEach(target => {
@@ -132,7 +107,7 @@ public class Connector : MonoBehaviour, IConnector
         if (connector == null ||
             !(connector.targetList.Count > info.linkedTargetID) ||
             !connector.targetList[(int)info.linkedTargetID].LinkToTarget(this)||
-            connector.selfJoint.connectedBody == this.selfRigidbody
+            connector.selfJoint.connectedBody == GameComponent.BodyRigidbody
             ) { return; }
 
         this.transform.rotation = Quaternion.Euler(0, 0, info.connectorRotation);
@@ -146,7 +121,6 @@ public class Connector : MonoBehaviour, IConnector
         this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
         if (ConnectionAnchor != null)
         {
-            Debug.Log(1);
             Vector3 positionOffset = linkedTarget.targetPoint.transform.position - ConnectionAnchor.position;
             transform.parent.position += positionOffset;
 
@@ -179,15 +153,6 @@ public class Connector : MonoBehaviour, IConnector
         });
 
         detectedTarget = selectedTargetObj?.GetComponent<Target>();
-    }
-
-
-
-
-
-    // connector cintrol
-    public void TrackPositionUpdate(Vector2 pos) {
-        selfRigidbody.MovePosition(pos);
     }
     
 
@@ -249,13 +214,6 @@ public class Connector : MonoBehaviour, IConnector
         res.connectorRotation = this.gameObject.transform.rotation.eulerAngles.z;
         return res;
     }
-    public void Load(IInfo info)
-    {
-        Debug.Assert(info is ConnectionInfo);
-        var res = info as ConnectionInfo;
-        
-        
-    }
 
     public void Disconnect()
     {
@@ -299,26 +257,4 @@ public class Connector : MonoBehaviour, IConnector
         this.ParentConnector = connectorPoint;
         connectorPoint.ChildConnectors.Add(this as IConnector);
     }
-
-    public void SetZRotation(float rotation)
-    {
-        Vector3 currentRotation = transform.rotation.eulerAngles;
-
-        currentRotation.z = rotation;
-
-        Quaternion newRotation = Quaternion.Euler(currentRotation);
-
-        GameComponent.DragableTransform.rotation = newRotation;
-    }
-
-    public void AddZRotation(float rotation){
-        Vector3 currentRotation = transform.rotation.eulerAngles;
-
-        currentRotation.z += rotation;
-
-        Quaternion newRotation = Quaternion.Euler(currentRotation);
-
-        GameComponent.DragableTransform.rotation = newRotation;
-    }
-
 }

@@ -10,7 +10,6 @@ public class AbilityChanger:IAbilityKeyChanger
     private AssemblyRoom room;
     public InputManager inputmanager;
     public Device device;
-    private string changeKey;
     public event Action<string> OnFinishChangeAbilityKey;
     public AbilityManager abilityManager { get; set; }
     private bool KeySelected;
@@ -23,6 +22,7 @@ public class AbilityChanger:IAbilityKeyChanger
         inputmanager.menu.Enable();
         inputmanager.menu.Click.performed += ChangeKey;
         //inputmanager.menu.Click.performed += Click;
+        OnFinishChangeAbilityKey += HandleAbilityKeyChanged;
         KeySelected = false;
     }
 
@@ -37,12 +37,11 @@ public class AbilityChanger:IAbilityKeyChanger
                 if (KeyControl.wasPressedThisFrame)
                 {
                     abilityManager.AbilityInputEntries[abilityBID].SetInputPath(keyName);
-                    changeKey = keyName;
+                    OnFinishChangeAbilityKey?.Invoke(keyName);
+                    Debug.Log("abilityButton:" + abilityBID + "has changed input path to " + keyName);
                     EndChangeAbilityKey();
                 }
-            }
-            
-
+            }          
         }
     }
 
@@ -50,18 +49,18 @@ public class AbilityChanger:IAbilityKeyChanger
     {
         key = abilityManager.AbilityInputEntries[abilityButtonID].InputPath;
         KeySelected = true;
-
         abilityBID = abilityButtonID;
         Debug.Log("KeyID: " + abilityButtonID + " is selected");
     }
 
     public void EndChangeAbilityKey()
     {
-        Debug.Log("abilityButton:" + abilityBID + "has changed input path to "+changeKey);
-        OnFinishChangeAbilityKey?.Invoke(changeKey);
         abilityBID = -1;
         key = "";
         KeySelected = false;
-        changeKey = "";
+    }
+    public void HandleAbilityKeyChanged(string keyName)
+    {
+        Debug.Log(keyName);
     }
 }
