@@ -49,6 +49,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925b8dc778d2c4110a0268a144e67dc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyTransform: {fileID: 5584664317331441971}
+  bodyRigidbody: {fileID: 5402115233645595697}
+  bodyCollider: {fileID: 6118062715801404506}
 --- !u!50 &5402115233645595697
 Rigidbody2D:
   serializedVersion: 4
@@ -98,7 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1311407351214941710}
   m_Layer: 0
-  m_Name: AnchorPoint
+  m_Name: ConnectionAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -163,8 +166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d1af8e55226334a88c765539831e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selfRigidbody: {fileID: 5402115233645595697}
-  selfCollider: {fileID: 6118062715801404506}
   selfJoint: {fileID: 7699920035761864943}
   ConnectionAnchor: {fileID: 1311407351214941710}
   targetList: []
