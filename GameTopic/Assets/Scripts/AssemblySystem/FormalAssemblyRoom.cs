@@ -69,6 +69,9 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         };
 
         abilityKeyChanger = new AbilityChanger(AbilityManager);
+        abilityKeyChanger.OnFinishChangeAbilityKey += (key) => {
+            OnFinishChangeAbilityKey?.Invoke(key);
+        };
     }
     private void Start() {
         SetRoomMode(AssemblyRoomMode.PlayMode);

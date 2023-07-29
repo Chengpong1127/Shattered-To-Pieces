@@ -59,8 +59,4 @@ public class AbilityChanger:IAbilityKeyChanger
         key = "";
         KeySelected = false;
     }
-    public void HandleAbilityKeyChanged(string keyName)
-    {
-        Debug.Log(keyName);
-    }
 }
