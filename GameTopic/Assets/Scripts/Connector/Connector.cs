@@ -4,16 +4,6 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.GraphicsBuffer;
-using UnityEngine.InputSystem;
-
-public enum ConnectorState {
-    INITIAL,
-    COMBINE,
-    SELECT,
-    ATTACH
-}
 
 public class Connector : MonoBehaviour, IConnector
 {
