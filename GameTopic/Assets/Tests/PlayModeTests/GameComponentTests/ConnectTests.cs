@@ -26,24 +26,22 @@ public class ConnectTests
 
 
     [Test]
-    [TestCase(0, 0, 0f)]
-    [TestCase(0, 1, 0f)]
-    [TestCase(0, 2, 0f)]
-    [TestCase(0, 3, 0f)]
-    [TestCase(0, 0, 90f)]
-    public void SingleConnectionTest(int componentGUID, int targetID, float connectorRotation)
+    [TestCase(0, 0)]
+    [TestCase(0, 1)]
+    [TestCase(0, 2)]
+    [TestCase(0, 3)]
+    [TestCase(0, 0)]
+    public void SingleConnectionTest(int componentGUID, int targetID)
     {
         var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
         var c1 = componentFactory.CreateGameComponentObject(0);
         var c2 = componentFactory.CreateGameComponentObject(0);
         var connectionInfo = new ConnectionInfo{
             linkedTargetID = targetID,
-            connectorRotation = connectorRotation
         };
         c1.ConnectToParent(c2, connectionInfo);
         var info = c1.Dump() as GameComponentInfo;
         Assert.AreEqual(targetID, info.connectionInfo.linkedTargetID);
-        Assert.AreEqual(connectorRotation, info.connectionInfo.connectorRotation);
 
         c1.DisconnectFromParent();
         info = c1.Dump() as GameComponentInfo;
@@ -59,7 +57,6 @@ public class ConnectTests
         var c3 = componentFactory.CreateGameComponentObject(0);
         var connectionInfo = new ConnectionInfo{
             linkedTargetID = 0,
-            connectorRotation = 0f
         };
         c1.ConnectToParent(c2, connectionInfo);
         c2.ConnectToParent(c3, connectionInfo);
@@ -80,7 +77,6 @@ public class ConnectTests
         var c4 = componentFactory.CreateGameComponentObject(0);
         var connectionInfo = new ConnectionInfo{
             linkedTargetID = 0,
-            connectorRotation = 0f
         };
         c1.ConnectToParent(c2, connectionInfo);
         c2.ConnectToParent(c3, connectionInfo);

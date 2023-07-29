@@ -66,10 +66,10 @@ public class WorkShop : MonoBehaviour
         room.AssemblySystemManager.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
         room.AssemblySystemManager.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
 
-        shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Basic), GameComponentType.Basic);
-        shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Attack), GameComponentType.Attack);
-        shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Functional), GameComponentType.Functional);
-        shopPage.SetElements(room.GetGameComponentDataList(GameComponentType.Movement), GameComponentType.Movement);
+        shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Basic), GameComponentType.Basic);
+        shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Attack), GameComponentType.Attack);
+        shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Functional), GameComponentType.Functional);
+        shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Movement), GameComponentType.Movement);
         shopPage.SetShopElementClickAction(ElementClickAction);
         fileCtrl.SetRenameAction(room.RenameDevice);
         fileCtrl.StoreAction += room.SaveCurrentDevice;

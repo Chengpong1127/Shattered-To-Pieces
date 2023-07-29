@@ -99,11 +99,34 @@ public class FormalAssemblyTest
     [Test]
     public void GetGameComponentDataListTest(){
         var roomManager = new GameObject().AddComponent<FormalAssemblyRoom>();
-        var dataList = roomManager.GetGameComponentDataList(GameComponentType.Basic);
+        var dataList = roomManager.GetGameComponentDataListByTypeForShop(GameComponentType.Basic);
         Assert.True(dataList.Count > 0);
         Debug.Log(dataList[0].DisplayName);
     }
 
+    [Test]
+    public void PlayerRemainedMoneyTest(){
+        var roomManager = new GameObject().AddComponent<FormalAssemblyRoom>();
+        Assert.True(roomManager.GetPlayerRemainedMoney() == 1000);
+
+        var device = roomManager.ControlledDevice;
+
+        var test_data = ScriptableObject.CreateInstance<GameComponentData>();
+        test_data.DisplayName = "Square";
+        test_data.ResourcePath = "Square";
+        test_data.Price = 100;
+        roomManager.GameComponentDataList.Add(test_data);
+        var connection_info = new ConnectionInfo{
+            linkedTargetID = 0
+        };
+        var new_component = roomManager.CreateNewGameComponent(test_data, new Vector2(0, 0));
+        new_component.ConnectToParent(device.RootGameComponent, connection_info);
+
+        Assert.True(roomManager.GetDeviceTotalCost() == 100);
+        Assert.True(roomManager.GetPlayerRemainedMoney() == 900);
+
+    }
+    
 
     private bool CompareDeviceInfo(DeviceInfo info1, DeviceInfo info2){
         if(info1.treeInfo.rootID != info2.treeInfo.rootID) return false;

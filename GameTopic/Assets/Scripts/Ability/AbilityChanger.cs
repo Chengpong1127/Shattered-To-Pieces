@@ -22,7 +22,7 @@ public class AbilityChanger:IAbilityKeyChanger
         inputmanager.menu.Enable();
         inputmanager.menu.Click.performed += ChangeKey;
         //inputmanager.menu.Click.performed += Click;
-        OnFinishChangeAbilityKey += HandleAbilityKeyChanged;
+        //OnFinishChangeAbilityKey += HandleAbilityKeyChanged;
         KeySelected = false;
     }
 

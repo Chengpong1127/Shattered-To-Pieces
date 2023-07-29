@@ -58,7 +58,6 @@ public class ConnectorTest
 
         ConnectionInfo info = new ConnectionInfo();
         info.linkedTargetID = 1;
-        info.connectorRotation = 0f;
 
 
         Assert.AreEqual(c.Dump(), ConnectionInfo.NoConnection());
@@ -84,7 +83,6 @@ public class ConnectorTest
         c.AssignTargetList(tl);
         ConnectionInfo info = new ConnectionInfo();
         info.linkedTargetID = 1;
-        info.connectorRotation = 0.5f;
 
         //c2.ConnectToComponent(c, info);
 

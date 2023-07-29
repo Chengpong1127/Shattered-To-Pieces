@@ -7,57 +7,68 @@ using System;
 
 public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 {
+
+    #region Events
+    /// <summary>
+    /// Event for when the room mode is changed.
+    /// </summary>
     public event Action<AssemblyRoomMode> OnSetRoomMode;
+
+    public event Action<string> OnFinishChangeAbilityKey;
+
+    #endregion
+    
+    #region Properties
+
+    public int PlayerInitMoney { get; set; } = 1000;
 
     /// <summary>
     /// The device that the FormalAssemblyRoom is controlling.
     /// </summary>
     public Device ControlledDevice { get; private set;}
-    /// <summary>
-    /// The factory for creating game components.
-    /// </summary>
-    private IGameComponentFactory GameComponentFactory;
+
+    public int GetPlayerRemainedMoney() {
+        return PlayerInitMoney - GetDeviceTotalCost();
+    }
+
     /// <summary>
     /// The manager for assembly system.
     /// </summary>
     public AssemblySystemManager AssemblySystemManager { get; private set;}
+    /// <summary>
+    /// The manager for recording game component units.
+    /// </summary>
+    /// <value></value>
     public UnitManager GameComponentsUnitManager { get; private set;}
+
     /// <summary>
     /// The manager for device storage.
     /// </summary>
-    private SaveLoadManager deviceStorageManager;
+    
 
     public AbilityManager AbilityManager { get; private set;}
 
+    /// <summary>
+    /// The factory for creating game components.
+    /// </summary>
+    private IGameComponentFactory GameComponentFactory;
+
+    private SaveLoadManager deviceStorageManager;
+
     private IAbilityKeyChanger abilityKeyChanger;
 
-    public List<GameComponentData> GameComponentDataList {
-        get{
-            var dataList = ResourceManager.LoadAllGameComponentData();
-            Debug.Assert(dataList != null);
-            return dataList;
-        }
-    }
+    public List<GameComponentData> GameComponentDataList;
 
-    public int GameComponentTotalCost {
-        get{
-            var cost = 0;
-            GameComponentsUnitManager.ForEachUnit((unit) => {
-                var component = unit as IGameComponent;
-                cost += GameComponentDataList.Where((data) => data.name == component.ComponentName).First().Price;
-            });
-            return cost;
-        }
-    }
+    
 
-    public event Action<string> OnFinishChangeAbilityKey;
+    #endregion
 
     private void Awake() {
         GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
         AssemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
         GameComponentsUnitManager = new UnitManager();
         AssemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
-        deviceStorageManager = SaveLoadManager.Create("BaseDirectory","SavedDevice",SerializationMethodType.JsonDotNet);
+        deviceStorageManager = SaveLoadManager.Create("BaseDirectory", "SavedDevice", SerializationMethodType.JsonDotNet);
 
         ControlledDevice = createSimpleDevice();
         AbilityManager = new AbilityManager(ControlledDevice);
@@ -72,6 +83,11 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         abilityKeyChanger.OnFinishChangeAbilityKey += (key) => {
             OnFinishChangeAbilityKey?.Invoke(key);
         };
+
+        GameComponentDataList = getGameComponentDataListFromResources();
+        Debug.Assert(GameComponentDataList != null);
+
+        Debug.Assert(PlayerInitMoney >= 0);
     }
     private void Start() {
         SetRoomMode(AssemblyRoomMode.PlayMode);
@@ -84,6 +100,28 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         GameComponentsUnitManager.AddUnit(initComponent);
         device.RootGameComponent = initComponent;
         return device;
+    }
+
+    private List<GameComponentData> getGameComponentDataListFromResources() {
+        var dataList = ResourceManager.LoadAllGameComponentData();
+        Debug.Assert(dataList != null);
+        return dataList;
+    
+    }
+
+    /// <summary>
+    /// Get the total cost of all game components from the device root.
+    /// </summary>
+    /// <returns></returns>
+    public int GetDeviceTotalCost() {
+        var cost = 0;
+        ControlledDevice.ForEachGameComponent((component) => {
+            var data = GameComponentDataList.Where((data) => data.ResourcePath == component.ComponentName);
+            Debug.Assert(data.Count() == 1, "GameComponentDataList should have data for data name: " + component.ComponentName + " but it doesn't.");
+            cost += data.First().Price;
+        });
+        return cost;
+    
     }
 
     private void clearAllGameComponents()
@@ -105,18 +143,18 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         return ControlledDevice;
     }
 
-    public void CreateNewGameComponent(GameComponentData componentData, Vector2 position)
+    public IGameComponent CreateNewGameComponent(GameComponentData componentData, Vector2 position)
     {
         var path = componentData.ResourcePath;
         var newComponent = GameComponentFactory.CreateGameComponentObject(path);
         GameComponentsUnitManager.AddUnit(newComponent);
         newComponent.DragableTransform.position = position;
+        return newComponent;
     }
 
-    public List<GameComponentData> GetGameComponentDataList(GameComponentType type)
+    public List<GameComponentData> GetGameComponentDataListByTypeForShop(GameComponentType type)
     {
-        var filteredList = GameComponentDataList.Where((data) => data.Type == type).ToList();
-
+        var filteredList = GameComponentDataList.Where((data) => data.Type == type && data.DisplayAtShop == true).ToList();
         return filteredList;
     }
 

@@ -16,7 +16,7 @@ public interface IAssemblyRoom
     /// </summary>
     /// <param name="componentID"></param>
     /// <param name="position"></param>
-    public void CreateNewGameComponent(GameComponentData componentData, Vector2 position);
+    public IGameComponent CreateNewGameComponent(GameComponentData componentData, Vector2 position);
 
     /// <summary>
     /// Set the assembly room to the specified mode. There are two modes: AssemblyMode and PlayMode.
@@ -28,7 +28,7 @@ public interface IAssemblyRoom
     /// </summary>
     /// <param name="type">Type specified.</param>
     /// <returns></returns>
-    public List<GameComponentData> GetGameComponentDataList(GameComponentType type);
+    public List<GameComponentData> GetGameComponentDataListByTypeForShop(GameComponentType type);
     /// <summary>
     /// Get the AbilityManager of the device.
     /// </summary>
@@ -40,6 +40,27 @@ public interface IAssemblyRoom
     /// </summary>
     /// <value></value>
     public AssemblySystemManager AssemblySystemManager { get; }
+
+    #region Money
+
+    /// <summary>
+    /// The init money of the player.
+    /// </summary>
+    /// <value></value>
+    public int PlayerInitMoney { get; set; }
+
+    /// <summary>
+    /// The remaining money of the player from the init money.
+    /// </summary>
+    /// <value></value>
+    public int GetPlayerRemainedMoney();
+    /// <summary>
+    /// Get the total cost of the device.
+    /// </summary>
+    /// <value></value>
+    public int GetDeviceTotalCost();
+
+    #endregion
 
     #region Save and Load
 
