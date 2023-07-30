@@ -53,6 +53,7 @@ public class WorkShop : MonoBehaviour
         if(room != null) {
             room.OnFinishChangeAbilityKey -= shopDispatcher.SetRebindKeyText;
             room.AssemblySystemManager.OnGameComponentDraggedStart -= RefreshAllBoxAbilityAction;
+            room.AssemblySystemManager.OnGameComponentDraggedEnd -= RefreshAllBoxAbilityAction;
             room.AssemblySystemManager.AfterGameComponentConnected -= RefreshAllBoxAbilityAction;
 
             fileCtrl.RemoveRenameAction(room.RenameDevice);
@@ -64,6 +65,7 @@ public class WorkShop : MonoBehaviour
 
         room.OnFinishChangeAbilityKey += shopDispatcher.SetRebindKeyText;
         room.AssemblySystemManager.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
+        room.AssemblySystemManager.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
         room.AssemblySystemManager.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
 
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Basic), GameComponentType.Basic);
@@ -76,6 +78,7 @@ public class WorkShop : MonoBehaviour
         fileCtrl.LoadAction += room.LoadDevice;
         SetStoreFileNames(room.GetSavedDeviceList());
 
+        UpdateUserCostRemain(room.GetPlayerRemainedMoney());
         room.SetRoomMode(roomMode);
     }
 
@@ -86,6 +89,7 @@ public class WorkShop : MonoBehaviour
     public void ElementClickAction(GameComponentData gcd) {
         Debug.Log("Create : " + gcd.DisplayName);
         room?.CreateNewGameComponent(gcd, Vector2.zero);// IDK position value.
+        UpdateUserCostRemain(room.GetPlayerRemainedMoney());
     }
 
     /// <summary>
@@ -138,5 +142,9 @@ public class WorkShop : MonoBehaviour
 
     public void RefreshAllBoxAbilityAction(IGameComponent igc) {
         shopDispatcher.RefreshAllBoxAbility();
+    }
+
+    public void UpdateUserCostRemain(int money) {
+        userDisplayMoney.SetPrice(money);
     }
 }
