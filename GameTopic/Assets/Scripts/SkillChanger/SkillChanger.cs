@@ -45,7 +45,7 @@ public class SkillChanger : MonoBehaviour
                     {
                         OnTriggeredButton?.Invoke(int.Parse(keyName));
                         Debug.Log("key" + keyName + "run");
-                        a.TriggerAllAbilities();
+                        a.StartAllAbilities();
                     }
 
                 }
