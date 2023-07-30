@@ -39,4 +39,8 @@ public class GameComponentData : ScriptableObject
     /// The path of the game component's prefab. Which can be used to instantiate the game component.
     /// </summary>
     public string ResourcePath;
+    /// <summary>
+    /// Determines whether this game component can be displayed at the shop.
+    /// </summary>
+    public bool DisplayAtShop = true;
 }

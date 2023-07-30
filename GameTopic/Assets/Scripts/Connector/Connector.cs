@@ -101,7 +101,6 @@ public class Connector : MonoBehaviour, IConnector
             connector.selfJoint.connectedBody == GameComponent.BodyRigidbody
             ) { return; }
 
-        this.transform.rotation = Quaternion.Euler(0, 0, info.connectorRotation);
 
         linkedTarget = connector.targetList[(int)info.linkedTargetID];
 
@@ -202,7 +201,6 @@ public class Connector : MonoBehaviour, IConnector
         }
         var res = new ConnectionInfo();
         res.linkedTargetID = linkedTarget.targetID;
-        res.connectorRotation = this.gameObject.transform.rotation.eulerAngles.z;
         return res;
     }
 

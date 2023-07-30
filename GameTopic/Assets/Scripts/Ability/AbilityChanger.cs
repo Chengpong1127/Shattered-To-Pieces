@@ -21,8 +21,6 @@ public class AbilityChanger:IAbilityKeyChanger
         inputmanager = new InputManager();
         inputmanager.menu.Enable();
         inputmanager.menu.Click.performed += ChangeKey;
-        //inputmanager.menu.Click.performed += Click;
-        OnFinishChangeAbilityKey += HandleAbilityKeyChanged;
         KeySelected = false;
     }
 
