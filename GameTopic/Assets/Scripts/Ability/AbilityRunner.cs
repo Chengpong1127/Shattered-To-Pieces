@@ -11,11 +11,28 @@ public class AbilityRunner: MonoBehaviour{
         AbilityManager.AbilityInputEntries[entryIndex].StartAllAbilities();
         RunningAbilitySet.Add(entryIndex);
     }
+    public void StartAbility(string entryKey){
+        for (int i = 0; i < AbilityManager.AbilityInputEntries.Count; i++)
+        {
+            if(AbilityManager.AbilityInputEntries[i].InputPath == entryKey){
+                StartAbility(i);
+            }
+        }
+    }
 
     public void EndAbiliey(int entryIndex){
         Debug.Assert(RunningAbilitySet.Contains(entryIndex), "The ability is not running");
         AbilityManager.AbilityInputEntries[entryIndex].EndAllAbilities();
         RunningAbilitySet.Remove(entryIndex);
+    }
+
+    public void EndAbility(string entryKey){
+        for (int i = 0; i < AbilityManager.AbilityInputEntries.Count; i++)
+        {
+            if(AbilityManager.AbilityInputEntries[i].InputPath == entryKey){
+                EndAbiliey(i);
+            }
+        }
     }
 
     private void Update() {
