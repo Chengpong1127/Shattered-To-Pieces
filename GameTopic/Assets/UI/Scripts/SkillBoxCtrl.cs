@@ -54,7 +54,7 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
     public void JoinSkillBox(Ability ability) {
         setAbilityAction?.Invoke(boxID, ability);
         refreshAbilityAction?.Invoke(boxID);
-        Debug.Log(gameObject.name + " get skill : " + ability.AbilityName);
+        // Debug.Log(gameObject.name + " get skill : " + ability.AbilityName);
     }
 
     /// <summary>

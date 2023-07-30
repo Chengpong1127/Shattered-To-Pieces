@@ -78,6 +78,7 @@ public class WorkShop : MonoBehaviour
         fileCtrl.LoadAction += room.LoadDevice;
         SetStoreFileNames(room.GetSavedDeviceList());
 
+        UpdateUserCostRemain(room.GetPlayerRemainedMoney());
         room.SetRoomMode(roomMode);
     }
 
@@ -88,6 +89,7 @@ public class WorkShop : MonoBehaviour
     public void ElementClickAction(GameComponentData gcd) {
         Debug.Log("Create : " + gcd.DisplayName);
         room?.CreateNewGameComponent(gcd, Vector2.zero);// IDK position value.
+        UpdateUserCostRemain(room.GetPlayerRemainedMoney());
     }
 
     /// <summary>
