@@ -7,9 +7,7 @@ public class AbilityChanger:IAbilityKeyChanger
 {
     // Start is called before the first frame update
     private int abilityBID;
-    private AssemblyRoom room;
     public InputManager inputmanager;
-    public Device device;
     public event Action<string> OnFinishChangeAbilityKey;
     public AbilityManager abilityManager { get; set; }
     private bool KeySelected;
