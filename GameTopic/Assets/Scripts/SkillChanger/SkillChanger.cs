@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.Utilities;
 public class SkillChanger : MonoBehaviour
 {
     // Start is called before the first frame update
-    private AssemblyRoom room; 
+    private FormalAssemblyRoom room; 
     private AbilityManager abilityInputManager;
     public InputManager inputmanager;
     public Device device;
@@ -17,8 +17,8 @@ public class SkillChanger : MonoBehaviour
     private string key; 
     void Start()
     {
-        room= GetComponent<AssemblyRoom>();
-        abilityInputManager = room.abilityInputManager;
+        room= GetComponent<FormalAssemblyRoom>();
+        abilityInputManager = room.AbilityManager;
         device = FindObjectOfType<Device>();
         inputmanager = new InputManager();
         inputmanager.menu.Enable();
@@ -44,8 +44,8 @@ public class SkillChanger : MonoBehaviour
                     if (a.InputPath == keyName)
                     {
                         OnTriggeredButton?.Invoke(int.Parse(keyName));
-                        Debug.Log("key" + keyName + "run");
-                        a.RunAllAbilitiesForEachFrame();
+                        Debug.Log(a.Abilities[0].AbilityName);
+                        a.StartAllAbilities();
                     }
 
                 }

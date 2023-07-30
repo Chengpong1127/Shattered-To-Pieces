@@ -33,6 +33,7 @@ Transform:
   m_Children:
   - {fileID: 5791962482151988443}
   - {fileID: 774050827715761256}
+  - {fileID: 3642082873348052104}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -48,6 +49,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925b8dc778d2c4110a0268a144e67dc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyTransform: {fileID: 83278328107055668}
+  bodyRigidbody: {fileID: 8325037317396394130}
+  bodyCollider: {fileID: 8307455547210596111}
 --- !u!50 &8325037317396394130
 Rigidbody2D:
   serializedVersion: 4
@@ -82,11 +86,42 @@ FixedJoint2D:
   m_ConnectedRigidBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_DampingRatio: 0
   m_Frequency: 0
+--- !u!1 &5937563413345160993
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3642082873348052104}
+  m_Layer: 0
+  m_Name: ConnectionAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3642082873348052104
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5937563413345160993}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.26, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 83278328107055668}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6052418660917034757
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,8 +168,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d1af8e55226334a88c765539831e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selfRigidbody: {fileID: 8325037317396394130}
-  selfCollider: {fileID: 8307455547210596111}
   selfJoint: {fileID: 5291971742530749005}
   ConnectionAnchor: {fileID: 0}
   targetList:

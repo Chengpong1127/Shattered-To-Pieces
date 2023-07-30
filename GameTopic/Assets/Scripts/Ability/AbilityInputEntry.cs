@@ -41,7 +41,7 @@ public class AbilityInputEntry{
     /// <summary>
     /// Trigger all of the abilities in this entry.
     /// </summary>
-    public void TriggerAllAbilities(){
+    public void StartAllAbilities(){
         foreach (var ability in Abilities)
         {
             if(ability != null){

@@ -46,9 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d1af8e55226334a88c765539831e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selfRigidbody: {fileID: 2980435649703600411}
-  selfCollider: {fileID: 7676240777278520257}
   selfJoint: {fileID: 6512100955249166513}
+  ConnectionAnchor: {fileID: 0}
   targetList:
   - {fileID: 1316357019969997787}
   - {fileID: 8638992006395071731}
@@ -100,6 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925b8dc778d2c4110a0268a144e67dc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyTransform: {fileID: 3271157491183235334}
+  bodyRigidbody: {fileID: 2980435649703600411}
+  bodyCollider: {fileID: 7676240777278520257}
 --- !u!50 &2980435649703600411
 Rigidbody2D:
   serializedVersion: 4
@@ -134,7 +136,7 @@ FixedJoint2D:
   m_ConnectedRigidBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_DampingRatio: 0
