@@ -60,7 +60,6 @@ public class Bat : MonoBehaviour, ICoreComponent
         else if(SkillTriggered)
         {
             float currentRotation = transform.eulerAngles.z;
-            Debug.Log(currentRotation);
             if (Mathf.Abs(currentRotation) > 2f)
             {
                 float remainingRotation = targetRotation - currentRotation;
