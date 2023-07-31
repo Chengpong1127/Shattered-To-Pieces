@@ -77,7 +77,7 @@ public class WorkShop : MonoBehaviour
         // fileCtrl.StoreAction += room.SaveCurrentDevice;
         // fileCtrl.LoadAction += room.LoadDevice;
         fileCtrl.LoadAction += room.LoadDevice;
-        SetStoreFileNames(room.GetSavedDeviceList());
+        // SetStoreFileNames(room.GetSavedDeviceList());
 
         UpdateUserCostRemain(null);
         room.SetRoomMode(roomMode);
