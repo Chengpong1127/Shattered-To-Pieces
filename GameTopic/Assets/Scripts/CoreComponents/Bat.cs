@@ -5,45 +5,72 @@ using UnityEngine;
 public class Bat : MonoBehaviour, ICoreComponent
 {
     public Dictionary<string, Ability> AllAbilities { get; private set; } = new Dictionary<string, Ability>();
+    public Transform connectAnchor;
     private bool isRotating;
-    private float targetRotation;
-    private float rotationSpeed = 90f;
+    private bool SkillTriggered = false;
+    private float targetRotation=0f;
+    private float rotationSpeed = 500f;
     private Rigidbody2D rb;
     private float originalRotation;
+    private bool clockwise;
     private void Start() {
         rb=GetComponentInParent<Rigidbody2D>();
         isRotating = false;
-        AllAbilities.Add("Swing", new Ability("Swing", Swing, this));
+        AllAbilities.Add("SwingRight", new Ability("SwingRight", SwingRight, this));
+        AllAbilities.Add("SwingLeft", new Ability("SwingLeft", SwingLeft, this));
         originalRotation = rb.rotation;
     }
 
-    private void Swing(){
+    private void SwingRight(){
         if (!isRotating)
         {
             isRotating = true;
-            originalRotation = rb.rotation;
-            targetRotation = rb.rotation - 90f; 
+            clockwise =false;
+            targetRotation = 270f;
+            SkillTriggered=true;
+        }
+    }
+    private void SwingLeft()
+    {
+        if (!isRotating)
+        {
+            isRotating = true;
+            clockwise = true;
+            targetRotation = 90f;
+            SkillTriggered = true;
         }
     }
     private void Update()
     {
-        if (isRotating)
+        if (isRotating&&SkillTriggered)
         {
-  
-            float step = rotationSpeed * Time.deltaTime;
-            float currentRotation = Mathf.MoveTowards(rb.rotation, targetRotation, step);
-            rb.MoveRotation(currentRotation);
-
-            if (Mathf.Approximately(rb.rotation, targetRotation))
+            float step = (clockwise ? 1f : -1f)*rotationSpeed * Time.deltaTime;
+            float currentRotation = transform.eulerAngles.z;
+            float target = targetRotation - currentRotation;
+            if (Mathf.Abs(target) > 2f)
             {
+                transform.RotateAround(connectAnchor.position, Vector3.forward, step);
+            }
+            else
+            {
+                targetRotation = 0f;
                 isRotating = false;
             }
         }
-        else
+        else if(SkillTriggered)
         {
-            float step = rotationSpeed * Time.deltaTime;
-            float currentRotation = Mathf.MoveTowards(rb.rotation, originalRotation, step);
-            rb.MoveRotation(currentRotation);
+            float currentRotation = transform.eulerAngles.z;
+            if (Mathf.Abs(currentRotation) > 2f)
+            {
+                float remainingRotation = targetRotation - currentRotation;
+                float step = (clockwise ? -1f : 1f) * Mathf.Min(Mathf.Abs(remainingRotation), rotationSpeed * Time.deltaTime);
+                transform.RotateAround(connectAnchor.position, Vector3.forward, step);
+            }
+            else
+            {
+                SkillTriggered = false;
+            }
+            
         }
     }
 }

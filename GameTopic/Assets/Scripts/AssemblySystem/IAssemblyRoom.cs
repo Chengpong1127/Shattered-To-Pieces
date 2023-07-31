@@ -29,11 +29,7 @@ public interface IAssemblyRoom
     /// <param name="type">Type specified.</param>
     /// <returns></returns>
     public List<GameComponentData> GetGameComponentDataListByTypeForShop(GameComponentType type);
-    /// <summary>
-    /// Get the AbilityManager of the device.
-    /// </summary>
-    /// <value></value>
-    public AbilityManager AbilityManager { get; }
+    
 
     /// <summary>
     /// The AssemblySystemManager of the assembly room.
@@ -101,7 +97,19 @@ public interface IAssemblyRoom
 
     #endregion
 
-    #region Ability key change
+    #region Ability
+
+    /// <summary>
+    /// Get the AbilityManager of the device.
+    /// </summary>
+    /// <value></value>
+    public AbilityManager AbilityManager { get; }
+    
+    /// <summary>
+    /// The AbilityRunner of the device.
+    /// </summary>
+    /// <value></value>
+    public AbilityRunner AbilityRunner { get; }
 
     /// <summary>
     /// Start to listen to player's input to change the ability button.

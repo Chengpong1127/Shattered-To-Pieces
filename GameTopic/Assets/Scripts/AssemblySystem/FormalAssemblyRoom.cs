@@ -59,7 +59,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     public List<GameComponentData> GameComponentDataList;
 
-    
+    public AbilityRunner AbilityRunner { get; private set; }
 
     #endregion
 
@@ -88,6 +88,9 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         Debug.Assert(GameComponentDataList != null);
 
         Debug.Assert(PlayerInitMoney >= 0);
+
+        AbilityRunner = gameObject.AddComponent<AbilityRunner>();
+        AbilityRunner.AbilityManager = AbilityManager;
     }
     private void Start() {
         SetRoomMode(AssemblyRoomMode.PlayMode);
@@ -225,4 +228,9 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     {
         abilityKeyChanger.EndChangeAbilityKey();
     }
+}
+
+public enum AssemblyRoomMode{
+    ConnectionMode,
+    PlayMode
 }

@@ -7,9 +7,7 @@ public class AbilityChanger:IAbilityKeyChanger
 {
     // Start is called before the first frame update
     private int abilityBID;
-    private AssemblyRoom room;
     public InputManager inputmanager;
-    public Device device;
     public event Action<string> OnFinishChangeAbilityKey;
     public AbilityManager abilityManager { get; set; }
     private bool KeySelected;
@@ -34,10 +32,18 @@ public class AbilityChanger:IAbilityKeyChanger
                 keyName = KeyControl.displayName;
                 if (KeyControl.wasPressedThisFrame)
                 {
-                    abilityManager.AbilityInputEntries[abilityBID].SetInputPath(keyName);
-                    OnFinishChangeAbilityKey?.Invoke(keyName);
-                    Debug.Log("abilityButton:" + abilityBID + "has changed input path to " + keyName);
-                    EndChangeAbilityKey();
+                    if (keyName.Length <= 1 && keyName[0] >= 'A' && keyName[0] <= 'Z')
+                    {
+                        abilityManager.AbilityInputEntries[abilityBID].SetInputPath(keyName);
+                        OnFinishChangeAbilityKey?.Invoke(keyName);
+                        Debug.Log("abilityButton:" + abilityBID + "has changed input path to " + keyName);
+                        EndChangeAbilityKey();
+                    }
+                    else
+                    {
+                        Debug.Log("Skill can only be binded on A~Z");
+                    }
+                   
                 }
             }          
         }
