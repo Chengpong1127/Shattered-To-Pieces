@@ -41,10 +41,6 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// <value></value>
     public UnitManager GameComponentsUnitManager { get; private set;}
 
-    /// <summary>
-    /// The manager for device storage.
-    /// </summary>
-    
 
     public AbilityManager AbilityManager { get; private set;}
 
@@ -53,6 +49,9 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// </summary>
     private IGameComponentFactory GameComponentFactory;
 
+    /// <summary>
+    /// The manager for device storage.
+    /// </summary>
     private SaveLoadManager deviceStorageManager;
 
     private IAbilityKeyChanger abilityKeyChanger;
@@ -60,6 +59,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     public List<GameComponentData> GameComponentDataList;
 
     public AbilityRunner AbilityRunner { get; private set; }
+
+    public int CurrentLoadedDeviceID { get; private set; } = 0;
 
     #endregion
 
@@ -172,20 +173,24 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         }
         return deviceList;
     }
+    
+    #region Save and Load Implementation
+
+    public void SaveCurrentDevice(){
+        SaveCurrentDevice(CurrentLoadedDeviceID.ToString());
+    }
+    public void LoadDevice(int DeviceID){
+        CurrentLoadedDeviceID = DeviceID;
+        LoadDevice(DeviceID.ToString());
+    }
+
+
 
     public void LoadDevice(string DeviceName)
     {
         var filename = DeviceName + ".json";
         var deviceInfo = deviceStorageManager.Load<DeviceInfo>(filename);
         loadNewDevice(deviceInfo);
-    }
-
-    public void LoadDevice(string DeviceName, Vector2 position)
-    {
-        var filename = DeviceName + ".json";
-        var deviceInfo = deviceStorageManager.Load<DeviceInfo>(filename);
-        loadNewDevice(deviceInfo);
-        ControlledDevice.RootGameComponent.DragableTransform.position = position;
     }
 
     public void RenameDevice(string DeviceName, string NewDeviceName)
@@ -205,6 +210,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         var filename = DeviceName + ".json";
         deviceStorageManager.Save(deviceInfo, filename);
     }
+    #endregion
 
     public void SetRoomMode(AssemblyRoomMode mode)
     {

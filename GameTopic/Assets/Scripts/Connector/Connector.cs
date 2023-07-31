@@ -186,7 +186,7 @@ public class Connector : MonoBehaviour, IConnector
         {
             resIC = detectedTarget.ownerConnector;
             resTid = detectedTarget.targetID;
-            if (resIC == this)
+            if (resIC.Equals(this))
             {
                 resIC = null;
                 resTid = -1;

@@ -59,6 +59,10 @@ public interface IAssemblyRoom
     #endregion
 
     #region Save and Load
+    /// <summary>
+    /// Save the current device to the device list. Save by the loaded id.
+    /// </summary>
+    public void SaveCurrentDevice();
 
     /// <summary>
     /// Save the current device to the device list.
@@ -69,17 +73,16 @@ public interface IAssemblyRoom
     /// <summary>
     /// Load the device from the device list.
     /// </summary>
+    /// <param name="DeviceID"></param>
+    public void LoadDevice(int DeviceID);
+
+    /// <summary>
+    /// Load the device from the device list.
+    /// </summary>
     /// <param name="DeviceName">The name of the device to be loaded.</param>
     /// <returns> The loaded device.</returns>
     public void LoadDevice(string DeviceName);
 
-    /// <summary>
-    /// Load the device from the device list and set the position of the device.
-    /// </summary>
-    /// <param name="DeviceName"> The name of the device to be loaded.</param>
-    /// <param name="position"> The spawning position of the device.</param>
-    /// <returns> The loaded device.</returns>
-    public void LoadDevice(string DeviceName, Vector2 position);
 
     /// <summary>
     /// Rename the device in the device list.
