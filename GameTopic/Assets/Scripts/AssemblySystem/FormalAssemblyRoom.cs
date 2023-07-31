@@ -71,7 +71,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         AssemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
         deviceStorageManager = SaveLoadManager.Create("BaseDirectory", "SavedDevice", SerializationMethodType.JsonDotNet);
 
-        ControlledDevice = createSimpleDevice();
+        ControlledDevice = createDevice();
         AbilityManager = new AbilityManager(ControlledDevice);
         AssemblySystemManager.OnGameComponentDraggedStart += (component) => {
             AbilityManager.UpdateDeviceAbilities();
@@ -92,17 +92,17 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
         AbilityRunner = gameObject.AddComponent<AbilityRunner>();
         AbilityRunner.AbilityManager = AbilityManager;
+
+        LoadDevice(CurrentLoadedDeviceID);
     }
     private void Start() {
+        
         SetRoomMode(AssemblyRoomMode.PlayMode);
     }
 
-    private Device createSimpleDevice(){
+    private Device createDevice(){
         var device = new GameObject("Device").AddComponent<Device>();
         device.GameComponentFactory = GameComponentFactory;
-        var initComponent = GameComponentFactory.CreateGameComponentObject("ControlRoom");
-        GameComponentsUnitManager.AddUnit(initComponent);
-        device.RootGameComponent = initComponent;
         return device;
     }
 
@@ -132,13 +132,17 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     {
         GameComponentsUnitManager.ForEachUnit((unit) => {
             var component = unit as IGameComponent;
-            Destroy(component.DragableTransform.gameObject);
+            Destroy(component.BodyTransform.gameObject);
         });
         GameComponentsUnitManager.Clear();
     }
 
     private IDevice loadNewDevice(DeviceInfo deviceInfo)
     {
+        if(deviceInfo == null)
+        {
+            deviceInfo = ResourceManager.LoadDefaultDeviceInfo();
+        }
         clearAllGameComponents();
         ControlledDevice.Load(deviceInfo);
         ControlledDevice.ForEachGameComponent((component) => {
