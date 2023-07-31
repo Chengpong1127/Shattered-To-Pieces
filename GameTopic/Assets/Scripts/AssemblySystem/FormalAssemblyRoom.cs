@@ -229,3 +229,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         abilityKeyChanger.EndChangeAbilityKey();
     }
 }
+
+public enum AssemblyRoomMode{
+    ConnectionMode,
+    PlayMode
+}
