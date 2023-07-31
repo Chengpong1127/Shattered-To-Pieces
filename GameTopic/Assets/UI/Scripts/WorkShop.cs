@@ -28,11 +28,6 @@ public class WorkShop : MonoBehaviour
         GameObject impRoom = GameObject.Find("RoomManager");
         SetAssimblyRoom(impRoom.GetComponent<IAssemblyRoom>());
 
-        // room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_01"));
-        // room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_02"));
-        // room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_03"));
-        // room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_04"));
-
         shopDispatcher.setAbilityAction += room.AbilityManager.SetAbilityToEntry;
         shopDispatcher.setNullAbilityAction += room.AbilityManager.SetAbilityOutOfEntry;
         shopDispatcher.refreshAbilityAction += RefreshAbillity;
@@ -58,8 +53,9 @@ public class WorkShop : MonoBehaviour
             room.AssemblySystemManager.OnGameComponentDraggedStart -= UpdateUserCostRemain;
             room.AssemblySystemManager.AfterGameComponentConnected -= UpdateUserCostRemain;
 
-            fileCtrl.RemoveRenameAction(room.RenameDevice);
-            fileCtrl.StoreAction -= room.SaveCurrentDevice;
+            // fileCtrl.RemoveRenameAction(room.RenameDevice);
+            // fileCtrl.StoreAction -= room.SaveCurrentDevice;
+            // fileCtrl.LoadAction -= room.LoadDevice;
             fileCtrl.LoadAction -= room.LoadDevice;
         }
 
@@ -77,8 +73,9 @@ public class WorkShop : MonoBehaviour
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Functional), GameComponentType.Functional);
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Movement), GameComponentType.Movement);
         shopPage.SetShopElementClickAction(ElementClickAction);
-        fileCtrl.SetRenameAction(room.RenameDevice);
-        fileCtrl.StoreAction += room.SaveCurrentDevice;
+        // fileCtrl.SetRenameAction(room.RenameDevice);
+        // fileCtrl.StoreAction += room.SaveCurrentDevice;
+        // fileCtrl.LoadAction += room.LoadDevice;
         fileCtrl.LoadAction += room.LoadDevice;
         SetStoreFileNames(room.GetSavedDeviceList());
 
