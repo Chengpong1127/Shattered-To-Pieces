@@ -115,18 +115,14 @@ public interface IAssemblyRoom
     public AbilityRunner AbilityRunner { get; }
 
     /// <summary>
+    /// The AbilityKeyChanger of the device.
+    /// </summary>
+    /// <value> The AbilityKeyChanger of the device.</value>
+    public IAbilityKeyChanger AbilityKeyChanger { get; }
+    /// <summary>
     /// Start to listen to player's input to change the ability button.
     /// </summary>
     /// <param name="abilityButtonID"></param>
-    public void StartChangeAbilityKey(int abilityButtonID);
-    /// <summary>
-    /// Stop listening to player's input to change the ability button.
-    /// </summary>
-    public void EndChangeAbilityKey();
-    /// <summary>
-    /// Event that will be triggered when the ability button is changed.
-    /// </summary>
-    public event Action<string> OnFinishChangeAbilityKey;
 
     #endregion
 }

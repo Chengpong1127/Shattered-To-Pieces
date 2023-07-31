@@ -37,7 +37,7 @@ public class WorkShop : MonoBehaviour
         shopDispatcher.setNullAbilityAction += room.AbilityManager.SetAbilityOutOfEntry;
         shopDispatcher.refreshAbilityAction += RefreshAbillity;
         shopDispatcher.refreshNullAbilityAction += RefreshNullAbillity;
-        shopDispatcher.rebindKeyAction += room.StartChangeAbilityKey;
+        shopDispatcher.rebindKeyAction += room.AbilityKeyChanger.StartChangeAbilityKey;
 
         shopDispatcher.RefreshAllBoxAbility();
         RefreshAllSkillBoxDisplayText();
@@ -51,7 +51,7 @@ public class WorkShop : MonoBehaviour
         if(Iar == null) { Debug.Log("IAssemblyRoom is null."); return; }
 
         if(room != null) {
-            room.OnFinishChangeAbilityKey -= shopDispatcher.SetRebindKeyText;
+            room.AbilityKeyChanger.OnFinishChangeAbilityKey -= shopDispatcher.SetRebindKeyText;
             room.AssemblySystemManager.OnGameComponentDraggedStart -= RefreshAllBoxAbilityAction;
             room.AssemblySystemManager.OnGameComponentDraggedEnd -= RefreshAllBoxAbilityAction;
             room.AssemblySystemManager.AfterGameComponentConnected -= RefreshAllBoxAbilityAction;
@@ -65,7 +65,7 @@ public class WorkShop : MonoBehaviour
 
         room = Iar;
 
-        room.OnFinishChangeAbilityKey += shopDispatcher.SetRebindKeyText;
+        room.AbilityKeyChanger.OnFinishChangeAbilityKey += shopDispatcher.SetRebindKeyText;
         room.AssemblySystemManager.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
         room.AssemblySystemManager.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
         room.AssemblySystemManager.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
