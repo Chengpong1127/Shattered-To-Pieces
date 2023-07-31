@@ -25,7 +25,7 @@ public class SkillAffectBase : ScriptableObject
 public class SkillAffectPool {
     Queue<SkillAffectBase> queue {  get; set; } = new Queue<SkillAffectBase>();
 
-    SkillAffectPool() {
+    public SkillAffectPool() {
         
     }
 }
