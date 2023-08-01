@@ -10,14 +10,14 @@ public class ResourceManagerTest
     [TestCase("Square")]
     public void LoadPrefabTest(string filename)
     {
-        var prefab = ResourceManager.LoadPrefab(filename);
+        var prefab = ResourceManager.Instance.LoadPrefab(filename);
         Assert.True(prefab != null);
     }
 
     [Test]
     public void LoadAllGameComponentDataTest()
     {
-        var dataList = ResourceManager.LoadAllGameComponentData();
+        var dataList = ResourceManager.Instance.LoadAllGameComponentData();
         var allfiles = Resources.LoadAll("GameComponentData");
         Assert.AreEqual(dataList.Count, allfiles.Length);
 

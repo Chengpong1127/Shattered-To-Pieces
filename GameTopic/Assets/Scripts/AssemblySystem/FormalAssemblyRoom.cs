@@ -102,7 +102,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     }
 
     private List<GameComponentData> getGameComponentDataListFromResources() {
-        var dataList = ResourceManager.LoadAllGameComponentData();
+        var dataList = ResourceManager.Instance.LoadAllGameComponentData();
         Debug.Assert(dataList != null);
         return dataList;
     
@@ -136,7 +136,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     {
         if(deviceInfo == null)
         {
-            deviceInfo = ResourceManager.LoadDefaultDeviceInfo();
+            deviceInfo = ResourceManager.Instance.LoadDefaultDeviceInfo();
         }
         clearAllGameComponents();
         ControlledDevice.Load(deviceInfo);
@@ -160,59 +160,25 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         var filteredList = GameComponentDataList.Where((data) => data.Type == type && data.DisplayAtShop == true).ToList();
         return filteredList;
     }
-
-    public List<string> GetSavedDeviceList()
-    {
-        var files = deviceStorageManager.GetFiles();
-        var deviceList = new List<string>();
-        foreach(var file in files)
-        {
-            if(file.EndsWith(".json"))
-            deviceList.Add(file);
-        }
-        return deviceList;
-    }
     
     #region Save and Load Implementation
 
     public void SaveCurrentDevice(){
-        SaveCurrentDevice(CurrentLoadedDeviceID.ToString());
+        var info = ControlledDevice.Dump();
+        var deviceInfo = info as DeviceInfo;
+        Debug.Assert(deviceInfo != null);
+        ResourceManager.Instance.SaveLocalDeviceInfo(deviceInfo, CurrentLoadedDeviceID.ToString());
     }
     public void LoadDevice(int DeviceID){
         CurrentLoadedDeviceID = DeviceID;
-        LoadDevice(DeviceID.ToString());
+        var deviceInfo = ResourceManager.Instance.LoadLocalDeviceInfo(DeviceID.ToString());
+        loadNewDevice(deviceInfo);
     }
+    #endregion
 
     public int GetPlayerRemainedMoney() {
         return PlayerInitMoney - GetDeviceTotalCost();
     }
-
-    public void LoadDevice(string DeviceName)
-    {
-        var filename = DeviceName + ".json";
-        var deviceInfo = deviceStorageManager.Load<DeviceInfo>(filename);
-        loadNewDevice(deviceInfo);
-    }
-
-    public void RenameDevice(string DeviceName, string NewDeviceName)
-    {
-        var filename = DeviceName + ".json";
-        var newFilename = NewDeviceName + ".json";
-        var deviceInfo = deviceStorageManager.Load<DeviceInfo>(filename);
-        deviceStorageManager.Save(deviceInfo, newFilename);
-        deviceStorageManager.DeleteSave(filename);
-    }
-
-    public void SaveCurrentDevice(string DeviceName)
-    {
-        var info = ControlledDevice.Dump();
-        var deviceInfo = info as DeviceInfo;
-        Debug.Assert(deviceInfo != null);
-        var filename = DeviceName + ".json";
-        deviceStorageManager.Save(deviceInfo, filename);
-    }
-    #endregion
-
     public void SetRoomMode(AssemblyRoomMode mode)
     {
         switch(mode){

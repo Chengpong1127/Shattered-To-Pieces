@@ -65,37 +65,10 @@ public interface IAssemblyRoom
     public void SaveCurrentDevice();
 
     /// <summary>
-    /// Save the current device to the device list.
-    /// </summary>
-    /// <param name="DeviceName">The name of the saved device.</param>
-    public void SaveCurrentDevice(string DeviceName);
-
-    /// <summary>
     /// Load the device from the device list.
     /// </summary>
     /// <param name="DeviceID"></param>
     public void LoadDevice(int DeviceID);
-
-    /// <summary>
-    /// Load the device from the device list.
-    /// </summary>
-    /// <param name="DeviceName">The name of the device to be loaded.</param>
-    /// <returns> The loaded device.</returns>
-    public void LoadDevice(string DeviceName);
-
-
-    /// <summary>
-    /// Rename the device in the device list.
-    /// </summary>
-    /// <param name="DeviceName"> The name of the device to be renamed.</param>
-    /// <param name="NewDeviceName"> The new name of the device.</param>
-    public void RenameDevice(string DeviceName, string NewDeviceName);
-
-    /// <summary>
-    /// Get the list of the saved and available devices.
-    /// </summary>
-    /// <returns> The list of the saved and available devices.</returns>
-    public List<string> GetSavedDeviceList();
 
 
     #endregion

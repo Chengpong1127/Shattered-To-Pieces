@@ -19,62 +19,11 @@ public class FormalAssemblyTest
     public void SaveLoadTest(){
         var roomManager = new GameObject().AddComponent<FormalAssemblyRoom>();
         var deviceInfo = roomManager.ControlledDevice.Dump() as DeviceInfo;
-        roomManager.SaveCurrentDevice("test");
-        roomManager.LoadDevice("test");
+        roomManager.SaveCurrentDevice();
+        roomManager.LoadDevice(100);
         Assert.True(roomManager.ControlledDevice != null);
         var deviceInfo2 = roomManager.ControlledDevice.Dump() as DeviceInfo;
         Assert.True(CompareDeviceInfo(deviceInfo, deviceInfo2));
-
-        roomManager.LoadDevice("test");
-        Assert.True(roomManager.ControlledDevice != null);
-        deviceInfo2 = roomManager.ControlledDevice.Dump() as DeviceInfo;
-        Assert.True(CompareDeviceInfo(deviceInfo, deviceInfo2));
-
-        roomManager.LoadDevice("test");
-        Assert.True(roomManager.ControlledDevice != null);
-        deviceInfo2 = roomManager.ControlledDevice.Dump() as DeviceInfo;
-        Assert.True(CompareDeviceInfo(deviceInfo, deviceInfo2));
-
-        roomManager.LoadDevice("test");
-        Assert.True(roomManager.ControlledDevice != null);
-        deviceInfo2 = roomManager.ControlledDevice.Dump() as DeviceInfo;
-        Assert.True(CompareDeviceInfo(deviceInfo, deviceInfo2));
-    }
-    [Test]
-    public void RenameDeviceTest(){
-        var roomManager = new GameObject().AddComponent<FormalAssemblyRoom>();
-        var deviceInfo = roomManager.ControlledDevice.Dump() as DeviceInfo;
-        roomManager.SaveCurrentDevice("test");
-        roomManager.LoadDevice("test");
-        Assert.True(roomManager.ControlledDevice != null);
-        var deviceInfo2 = roomManager.ControlledDevice.Dump() as DeviceInfo;
-        Assert.True(deviceInfo.treeInfo.rootID == deviceInfo2.treeInfo.rootID);
-        roomManager.RenameDevice("test", "test2");
-        roomManager.LoadDevice("test2");
-        var deviceInfo3 = roomManager.ControlledDevice.Dump() as DeviceInfo;
-        Assert.True(CompareDeviceInfo(deviceInfo, deviceInfo3));
-
-        roomManager.RenameDevice("test2", "test3");
-        roomManager.LoadDevice("test3");
-        deviceInfo3 = roomManager.ControlledDevice.Dump() as DeviceInfo;
-        Assert.True(CompareDeviceInfo(deviceInfo, deviceInfo3));
-
-    }
-
-    [Test]
-    public void GetSavedDeviceListTest(){
-        var roomManager = new GameObject().AddComponent<FormalAssemblyRoom>();
-        var deviceInfo = roomManager.ControlledDevice.Dump() as DeviceInfo;
-        roomManager.SaveCurrentDevice("test");
-        roomManager.SaveCurrentDevice("test2");
-        roomManager.SaveCurrentDevice("test3");
-        var deviceList = roomManager.GetSavedDeviceList();
-        foreach(var device in deviceList){
-            Debug.Log(device);
-        }
-        Assert.True(deviceList.Contains("test.json"));
-        Assert.True(deviceList.Contains("test2.json"));
-        Assert.True(deviceList.Contains("test3.json"));
     }
 
     [Test]

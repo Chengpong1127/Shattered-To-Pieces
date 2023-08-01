@@ -17,7 +17,7 @@ public class GameComponentFactory : MonoBehaviour, IGameComponentFactory
     }
     public IGameComponent CreateGameComponentObject(string gameComponentName)
     {
-        GameObject prefab = ResourceManager.LoadPrefab(gameComponentName);
+        GameObject prefab = ResourceManager.Instance.LoadPrefab(gameComponentName);
         if (prefab != null)
         {
             var obj = Instantiate(prefab);
