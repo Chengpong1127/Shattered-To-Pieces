@@ -15,9 +15,9 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     public IConnector Connector => connector;
     public ICoreComponent CoreComponent => coreComponent;
-    public bool IsInDevice => false;
     public Transform DragableTransform => bodyTransform;
     public string ComponentName { get; set; }
+    private float zRotation = 0;
 
     #region Inspector
 
@@ -46,17 +46,20 @@ public class GameComponent : MonoBehaviour, IGameComponent
         Debug.Assert(connector != null);
         Debug.Assert(parentComponent.Connector != null);
         connector.ConnectToComponent(parentComponent.Connector, info);
+        
     }
 
     public void DisconnectFromParent()
     {
         connector.Disconnect();
+        
     }
 
     public IInfo Dump(){
         var info = new GameComponentInfo();
         info.ComponentName = ComponentName;
-        info.connectionInfo = connector.Dump() as ConnectionInfo;
+        info.ConnectionInfo = connector.Dump() as ConnectionInfo;
+        info.ConnectionZRotation = zRotation;
         return info;
     }
     public void Load(IInfo info)
@@ -64,6 +67,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
         Debug.Assert(info is GameComponentInfo);
         var componentInfo = info as GameComponentInfo;
         ComponentName = componentInfo.ComponentName;
+        zRotation = componentInfo.ConnectionZRotation;
     }
 
     public (IGameComponent, ConnectionInfo) GetAvailableConnection(){
@@ -155,14 +159,19 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
         DisconnectFromParent();
     }
-
-    public void SetZRotation(float zRotation)
+    public void SetZRotation()
     {
+        SetZRotation(zRotation);
+    }
+    public void SetZRotation(float newZRotation)
+    {
+        zRotation = newZRotation;
         bodyTransform.rotation = Quaternion.Euler(0, 0, zRotation);
     }
 
-    public void AddZRotation(float zRotation)
+    public void AddZRotation(float newzRotation)
     {
-        bodyTransform.rotation *= Quaternion.Euler(0, 0, zRotation);
+        zRotation += newzRotation;
+        SetZRotation(zRotation);
     }
 }

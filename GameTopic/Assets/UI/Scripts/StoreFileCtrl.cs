@@ -8,10 +8,12 @@ public class StoreFileCtrl : MonoBehaviour
     [SerializeField] public List<FileElementCtrl> fileElements;
 
     bool isStroe;
-    string interactFileName;
+    // string interactFileName;
+    int interactFileId { get; set; } = 0;
 
-    public UnityAction<string> StoreAction { get; set; }
-    public UnityAction<string> LoadAction { get; set; }
+    // public UnityAction<string> StoreAction { get; set; }
+    // public UnityAction<string> LoadAction { get; set; }
+    public UnityAction<int> LoadAction { get; set; }
 
     private void Awake() {
         gameObject.SetActive(false);
@@ -19,17 +21,22 @@ public class StoreFileCtrl : MonoBehaviour
     public void OnClickFileBTN(int btnId) {
         if(btnId < 0 || btnId >= fileElements.Count) return;
 
-        interactFileName = fileElements[btnId].fileName;
+        // interactFileName = fileElements[btnId].fileName;
 
-        if (isStroe) {
-            if (interactFileName == null || interactFileName == "") { Debug.Log("No file name enter."); interactFileName = "__" + btnId.ToString(); }
-            fileElements[btnId].SetFileName(interactFileName);
-            fileElements[btnId].renameBTN.onClick.Invoke();
-            StoreAction?.Invoke(interactFileName);  
-        } else {
-            if (interactFileName == null || interactFileName == "") { Debug.Log("No file name enter."); return; }
-            LoadAction?.Invoke(interactFileName);
-        }
+        // if (isStroe) {
+        //     if (interactFileName == null || interactFileName == "") { Debug.Log("No file name enter."); interactFileName = "__" + btnId.ToString(); }
+        //     fileElements[btnId].SetFileName(interactFileName);
+        //     fileElements[btnId].renameBTN.onClick.Invoke();
+        //     StoreAction?.Invoke(interactFileName);  
+        // } else {
+        //     if (interactFileName == null || interactFileName == "") { Debug.Log("No file name enter."); return; }
+        //     LoadAction?.Invoke(interactFileName);
+        // }
+
+
+        // only load button will call this function.
+        interactFileId = btnId;
+        LoadAction?.Invoke(interactFileId);
     }
 
     public void SwitchActiveAndMode(bool b) {

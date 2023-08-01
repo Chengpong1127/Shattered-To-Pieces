@@ -9,61 +9,68 @@ public class Bat : MonoBehaviour, ICoreComponent
     private bool isRotating;
     private bool SkillTriggered = false;
     private float targetRotation=0f;
+    private float oringnalRotation;
     private float rotationSpeed = 500f;
     private Rigidbody2D rb;
-    private float originalRotation;
     private bool clockwise;
     private void Start() {
         rb=GetComponentInParent<Rigidbody2D>();
         isRotating = false;
         AllAbilities.Add("SwingRight", new Ability("SwingRight", SwingRight, this));
         AllAbilities.Add("SwingLeft", new Ability("SwingLeft", SwingLeft, this));
-        originalRotation = rb.rotation;
     }
 
     private void SwingRight(){
-        if (!isRotating)
+        if (!isRotating&&!SkillTriggered)
         {
             isRotating = true;
             clockwise =false;
-            targetRotation = 270f;
+            targetRotation = transform.rotation.eulerAngles.z-90f;
+            oringnalRotation = transform.rotation.eulerAngles.z;
             SkillTriggered=true;
         }
     }
     private void SwingLeft()
     {
-        if (!isRotating)
+        if (!isRotating&&!SkillTriggered)
         {
             isRotating = true;
             clockwise = true;
-            targetRotation = 90f;
+            targetRotation = transform.rotation.eulerAngles.z + 90f;
+            oringnalRotation = transform.rotation.eulerAngles.z;
             SkillTriggered = true;
         }
     }
     private void Update()
     {
+
         if (isRotating&&SkillTriggered)
         {
-            float step = (clockwise ? 1f : -1f)*rotationSpeed * Time.deltaTime;
-            float currentRotation = transform.eulerAngles.z;
+
+            float currentRotation = transform.rotation.eulerAngles.z;
             float target = targetRotation - currentRotation;
+            if (target < -360f) target += 360f;
+            if (target > 360f) target -= 360f;
             if (Mathf.Abs(target) > 2f)
             {
+                float step = (clockwise ? 1f : -1f) * Mathf.Min(Mathf.Abs(target), rotationSpeed * Time.deltaTime);
                 transform.RotateAround(connectAnchor.position, Vector3.forward, step);
             }
             else
             {
-                targetRotation = 0f;
+                targetRotation = oringnalRotation;
                 isRotating = false;
             }
         }
         else if(SkillTriggered)
         {
-            float currentRotation = transform.eulerAngles.z;
-            if (Mathf.Abs(currentRotation) > 2f)
+            float currentRotation = transform.rotation.eulerAngles.z;
+            float target = targetRotation - currentRotation;
+            if (target < -360f) target += 360f;
+            if (target > 360f) target -= 360f;
+            if (Mathf.Abs(target) > 2f)
             {
-                float remainingRotation = targetRotation - currentRotation;
-                float step = (clockwise ? -1f : 1f) * Mathf.Min(Mathf.Abs(remainingRotation), rotationSpeed * Time.deltaTime);
+                float step = (clockwise ? -1f : 1f) * Mathf.Min(Mathf.Abs(target), rotationSpeed * Time.deltaTime);
                 transform.RotateAround(connectAnchor.position, Vector3.forward, step);
             }
             else

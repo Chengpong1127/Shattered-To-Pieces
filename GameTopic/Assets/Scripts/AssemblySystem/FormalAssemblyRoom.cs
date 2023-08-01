@@ -14,8 +14,6 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// </summary>
     public event Action<AssemblyRoomMode> OnSetRoomMode;
 
-    public event Action<string> OnFinishChangeAbilityKey;
-
     #endregion
     
     #region Properties
@@ -27,9 +25,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// </summary>
     public Device ControlledDevice { get; private set;}
 
-    public int GetPlayerRemainedMoney() {
-        return PlayerInitMoney - GetDeviceTotalCost();
-    }
+
 
     /// <summary>
     /// The manager for assembly system.
@@ -41,10 +37,6 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// <value></value>
     public UnitManager GameComponentsUnitManager { get; private set;}
 
-    /// <summary>
-    /// The manager for device storage.
-    /// </summary>
-    
 
     public AbilityManager AbilityManager { get; private set;}
 
@@ -53,13 +45,18 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// </summary>
     private IGameComponentFactory GameComponentFactory;
 
+    /// <summary>
+    /// The manager for device storage.
+    /// </summary>
     private SaveLoadManager deviceStorageManager;
 
-    private IAbilityKeyChanger abilityKeyChanger;
+    public IAbilityKeyChanger AbilityKeyChanger { get; private set; }
 
-    public List<GameComponentData> GameComponentDataList;
+    public List<GameComponentData> GameComponentDataList { get; private set; }
 
     public AbilityRunner AbilityRunner { get; private set; }
+
+    public int CurrentLoadedDeviceID { get; private set; } = 0;
 
     #endregion
 
@@ -70,19 +67,18 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         AssemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
         deviceStorageManager = SaveLoadManager.Create("BaseDirectory", "SavedDevice", SerializationMethodType.JsonDotNet);
 
-        ControlledDevice = createSimpleDevice();
+        ControlledDevice = createDevice();
         AbilityManager = new AbilityManager(ControlledDevice);
         AssemblySystemManager.OnGameComponentDraggedStart += (component) => {
             AbilityManager.UpdateDeviceAbilities();
+            SaveCurrentDevice();
         };
         AssemblySystemManager.AfterGameComponentConnected += (component) => {
             AbilityManager.UpdateDeviceAbilities();
+            SaveCurrentDevice();
         };
 
-        abilityKeyChanger = new AbilityChanger(AbilityManager);
-        abilityKeyChanger.OnFinishChangeAbilityKey += (key) => {
-            OnFinishChangeAbilityKey?.Invoke(key);
-        };
+        AbilityKeyChanger = new AbilityChanger(AbilityManager);
 
         GameComponentDataList = getGameComponentDataListFromResources();
         Debug.Assert(GameComponentDataList != null);
@@ -91,17 +87,17 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
         AbilityRunner = gameObject.AddComponent<AbilityRunner>();
         AbilityRunner.AbilityManager = AbilityManager;
+
+        LoadDevice(CurrentLoadedDeviceID);
     }
     private void Start() {
+        
         SetRoomMode(AssemblyRoomMode.PlayMode);
     }
 
-    private Device createSimpleDevice(){
+    private Device createDevice(){
         var device = new GameObject("Device").AddComponent<Device>();
         device.GameComponentFactory = GameComponentFactory;
-        var initComponent = GameComponentFactory.CreateGameComponentObject("ControlRoom");
-        GameComponentsUnitManager.AddUnit(initComponent);
-        device.RootGameComponent = initComponent;
         return device;
     }
 
@@ -131,13 +127,17 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     {
         GameComponentsUnitManager.ForEachUnit((unit) => {
             var component = unit as IGameComponent;
-            Destroy(component.DragableTransform.gameObject);
+            Destroy(component.BodyTransform.gameObject);
         });
         GameComponentsUnitManager.Clear();
     }
 
     private IDevice loadNewDevice(DeviceInfo deviceInfo)
     {
+        if(deviceInfo == null)
+        {
+            deviceInfo = ResourceManager.LoadDefaultDeviceInfo();
+        }
         clearAllGameComponents();
         ControlledDevice.Load(deviceInfo);
         ControlledDevice.ForEachGameComponent((component) => {
@@ -172,20 +172,26 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         }
         return deviceList;
     }
+    
+    #region Save and Load Implementation
+
+    public void SaveCurrentDevice(){
+        SaveCurrentDevice(CurrentLoadedDeviceID.ToString());
+    }
+    public void LoadDevice(int DeviceID){
+        CurrentLoadedDeviceID = DeviceID;
+        LoadDevice(DeviceID.ToString());
+    }
+
+    public int GetPlayerRemainedMoney() {
+        return PlayerInitMoney - GetDeviceTotalCost();
+    }
 
     public void LoadDevice(string DeviceName)
     {
         var filename = DeviceName + ".json";
         var deviceInfo = deviceStorageManager.Load<DeviceInfo>(filename);
         loadNewDevice(deviceInfo);
-    }
-
-    public void LoadDevice(string DeviceName, Vector2 position)
-    {
-        var filename = DeviceName + ".json";
-        var deviceInfo = deviceStorageManager.Load<DeviceInfo>(filename);
-        loadNewDevice(deviceInfo);
-        ControlledDevice.RootGameComponent.DragableTransform.position = position;
     }
 
     public void RenameDevice(string DeviceName, string NewDeviceName)
@@ -205,6 +211,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         var filename = DeviceName + ".json";
         deviceStorageManager.Save(deviceInfo, filename);
     }
+    #endregion
 
     public void SetRoomMode(AssemblyRoomMode mode)
     {
@@ -217,16 +224,6 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
                 break;
         }
         OnSetRoomMode?.Invoke(mode);
-    }
-
-    public void StartChangeAbilityKey(int abilityButtonID)
-    {
-        abilityKeyChanger.StartChangeAbilityKey(abilityButtonID);
-    }
-
-    public void EndChangeAbilityKey()
-    {
-        abilityKeyChanger.EndChangeAbilityKey();
     }
 }
 

@@ -28,16 +28,11 @@ public class WorkShop : MonoBehaviour
         GameObject impRoom = GameObject.Find("RoomManager");
         SetAssimblyRoom(impRoom.GetComponent<IAssemblyRoom>());
 
-        // room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_01"));
-        // room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_02"));
-        // room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_03"));
-        // room.AbilityManager.SetAbilityOutOfEntry(new Ability("skill_04"));
-
         shopDispatcher.setAbilityAction += room.AbilityManager.SetAbilityToEntry;
         shopDispatcher.setNullAbilityAction += room.AbilityManager.SetAbilityOutOfEntry;
         shopDispatcher.refreshAbilityAction += RefreshAbillity;
         shopDispatcher.refreshNullAbilityAction += RefreshNullAbillity;
-        shopDispatcher.rebindKeyAction += room.StartChangeAbilityKey;
+        shopDispatcher.rebindKeyAction += room.AbilityKeyChanger.StartChangeAbilityKey;
 
         shopDispatcher.RefreshAllBoxAbility();
         RefreshAllSkillBoxDisplayText();
@@ -51,34 +46,40 @@ public class WorkShop : MonoBehaviour
         if(Iar == null) { Debug.Log("IAssemblyRoom is null."); return; }
 
         if(room != null) {
-            room.OnFinishChangeAbilityKey -= shopDispatcher.SetRebindKeyText;
+            room.AbilityKeyChanger.OnFinishChangeAbilityKey -= shopDispatcher.SetRebindKeyText;
             room.AssemblySystemManager.OnGameComponentDraggedStart -= RefreshAllBoxAbilityAction;
             room.AssemblySystemManager.OnGameComponentDraggedEnd -= RefreshAllBoxAbilityAction;
             room.AssemblySystemManager.AfterGameComponentConnected -= RefreshAllBoxAbilityAction;
+            room.AssemblySystemManager.OnGameComponentDraggedStart -= UpdateUserCostRemain;
+            room.AssemblySystemManager.AfterGameComponentConnected -= UpdateUserCostRemain;
 
-            fileCtrl.RemoveRenameAction(room.RenameDevice);
-            fileCtrl.StoreAction -= room.SaveCurrentDevice;
+            // fileCtrl.RemoveRenameAction(room.RenameDevice);
+            // fileCtrl.StoreAction -= room.SaveCurrentDevice;
+            // fileCtrl.LoadAction -= room.LoadDevice;
             fileCtrl.LoadAction -= room.LoadDevice;
         }
 
         room = Iar;
 
-        room.OnFinishChangeAbilityKey += shopDispatcher.SetRebindKeyText;
+        room.AbilityKeyChanger.OnFinishChangeAbilityKey += shopDispatcher.SetRebindKeyText;
         room.AssemblySystemManager.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
         room.AssemblySystemManager.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
         room.AssemblySystemManager.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
+        room.AssemblySystemManager.OnGameComponentDraggedStart += UpdateUserCostRemain;
+        room.AssemblySystemManager.AfterGameComponentConnected += UpdateUserCostRemain;
 
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Basic), GameComponentType.Basic);
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Attack), GameComponentType.Attack);
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Functional), GameComponentType.Functional);
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Movement), GameComponentType.Movement);
         shopPage.SetShopElementClickAction(ElementClickAction);
-        fileCtrl.SetRenameAction(room.RenameDevice);
-        fileCtrl.StoreAction += room.SaveCurrentDevice;
+        // fileCtrl.SetRenameAction(room.RenameDevice);
+        // fileCtrl.StoreAction += room.SaveCurrentDevice;
+        // fileCtrl.LoadAction += room.LoadDevice;
         fileCtrl.LoadAction += room.LoadDevice;
-        SetStoreFileNames(room.GetSavedDeviceList());
+        // SetStoreFileNames(room.GetSavedDeviceList());
 
-        UpdateUserCostRemain(room.GetPlayerRemainedMoney());
+        UpdateUserCostRemain(null);
         room.SetRoomMode(roomMode);
     }
 
@@ -89,7 +90,6 @@ public class WorkShop : MonoBehaviour
     public void ElementClickAction(GameComponentData gcd) {
         Debug.Log("Create : " + gcd.DisplayName);
         room?.CreateNewGameComponent(gcd, Vector2.zero);// IDK position value.
-        UpdateUserCostRemain(room.GetPlayerRemainedMoney());
     }
 
     /// <summary>
@@ -144,7 +144,7 @@ public class WorkShop : MonoBehaviour
         shopDispatcher.RefreshAllBoxAbility();
     }
 
-    public void UpdateUserCostRemain(int money) {
-        userDisplayMoney.SetPrice(money);
+    public void UpdateUserCostRemain(IGameComponent igc) {
+        userDisplayMoney.SetPrice(room.GetPlayerRemainedMoney());
     }
 }
