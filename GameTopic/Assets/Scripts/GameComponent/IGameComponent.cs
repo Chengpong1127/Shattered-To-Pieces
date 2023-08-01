@@ -12,11 +12,6 @@ public interface IGameComponent: ITreeNode, IUnit, IDraggable
     /// Whether the game component is in the device. // TODO
     /// </summary>
     /// <value></value>
-    public bool IsInDevice { get; }
-    /// <summary>
-    /// The display name of the game component. Which is unique in different game components.
-    /// </summary>
-    /// <value></value>
     public string ComponentName { get; set; }
     /// <summary>
     /// The Connector of the game component.
@@ -47,6 +42,7 @@ public interface IGameComponent: ITreeNode, IUnit, IDraggable
     public void SetAvailableForConnection(bool draggingMode);
 
     public void SetZRotation(float zRotation);
+    public void SetZRotation();
     public void AddZRotation(float zRotation);
 }
 

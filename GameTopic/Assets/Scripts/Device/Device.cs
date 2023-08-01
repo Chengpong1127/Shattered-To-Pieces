@@ -29,9 +29,17 @@ public class Device: MonoBehaviour, IDevice
             component.Load(componentInfo);
         }
 
+        foreach (var (key, value) in deviceInfo.treeInfo.NodeInfoMap){
+            var component = tempDictionary[key];
+            Debug.Log(component.ComponentName);
+            component.SetZRotation();
+        }
+
         RootGameComponent = tempDictionary[deviceInfo.treeInfo.rootID];
 
         connectAllComponents(tempDictionary, deviceInfo.treeInfo.NodeInfoMap, deviceInfo.treeInfo.EdgeInfoList);
+
+        
     }
 
     private Dictionary<int, IGameComponent> createAllComponents(Dictionary<int, GameComponentInfo> nodes){
@@ -51,7 +59,7 @@ public class Device: MonoBehaviour, IDevice
             var toComponent = nodes[to];
             var toInfo = infos[to] as GameComponentInfo;
             
-            toComponent.ConnectToParent(fromComponent, toInfo.connectionInfo);
+            toComponent.ConnectToParent(fromComponent, toInfo.ConnectionInfo);
         }
     }
 

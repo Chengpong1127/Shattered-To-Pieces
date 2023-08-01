@@ -112,7 +112,7 @@ public class Connector : MonoBehaviour, IConnector
         if (ConnectionAnchor != null)
         {
             Vector3 positionOffset = linkedTarget.targetPoint.transform.position - ConnectionAnchor.position;
-            transform.parent.position += positionOffset;
+            GameComponent.BodyTransform.position += positionOffset;
 
         }
         this.selfJoint.enabled = true;

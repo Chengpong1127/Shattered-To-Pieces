@@ -16,7 +16,7 @@ public class TempSaver : MonoBehaviour
         info.treeInfo.EdgeInfoList = new List<(int, int)>();
         info.treeInfo.NodeInfoMap.Add(0, new GameComponentInfo{
             ComponentName = "Square",
-            connectionInfo = ConnectionInfo.NoConnection()
+            ConnectionInfo = ConnectionInfo.NoConnection()
         });
         return info;
     }

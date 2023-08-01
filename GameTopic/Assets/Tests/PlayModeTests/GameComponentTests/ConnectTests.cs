@@ -17,7 +17,7 @@ public class ConnectTests
         var info = c.Dump() as GameComponentInfo;
         Assert.AreEqual(componentName, info.ComponentName);
         Assert.AreNotEqual(c.Connector, null);
-        Assert.AreEqual(info.connectionInfo, ConnectionInfo.NoConnection());
+        Assert.AreEqual(info.ConnectionInfo, ConnectionInfo.NoConnection());
         Assert.AreEqual(c.GetParent(), null);
         Assert.AreEqual(c.GetChildren().Count, 0);
         Assert.True(c.Connector != null);
@@ -41,12 +41,12 @@ public class ConnectTests
         };
         c1.ConnectToParent(c2, connectionInfo);
         var info = c1.Dump() as GameComponentInfo;
-        Assert.AreEqual(targetID, info.connectionInfo.linkedTargetID);
+        Assert.AreEqual(targetID, info.ConnectionInfo.linkedTargetID);
 
         c1.DisconnectFromParent();
         info = c1.Dump() as GameComponentInfo;
 
-        Assert.AreEqual(info.connectionInfo, ConnectionInfo.NoConnection());
+        Assert.AreEqual(info.ConnectionInfo, ConnectionInfo.NoConnection());
         
     }
     [Test]
