@@ -15,8 +15,8 @@ public class AbilityRunnerTest
 
         abilityRunner.StartAbility(0);
         abilityRunner.StartAbility(1);
-        abilityRunner.EndAbiliey(0);
-        abilityRunner.EndAbiliey(1);
+        abilityRunner.EndAbility(0);
+        abilityRunner.EndAbility(1);
 
     }
 

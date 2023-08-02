@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class AbilityManager
+public class AbilityManager: IStorable
 {
     public List<AbilityInputEntry> AbilityInputEntries { get; private set; } = new List<AbilityInputEntry>();
     /// <summary>
@@ -82,13 +82,13 @@ public class AbilityManager
         Debug.Assert(entryID < AbilityInputEntries.Count, "index out of range");
         var removed = AbilityInputEntries[entryID].AddAbility(ability);
         if(!abilityInEntryStatus.ContainsKey(ability)){
-           Debug.LogWarning("The ability is not in the device");
-           abilityInEntryStatus.Add(ability, false);
+            Debug.LogWarning("The ability is not in the device");
+            abilityInEntryStatus.Add(ability, false);
         }
 
         abilityInEntryStatus[ability] = true;
         if(removed != null){
-           abilityInEntryStatus[removed] = false;
+            abilityInEntryStatus[removed] = false;
         }
     }
     /// <summary>
@@ -127,4 +127,13 @@ public class AbilityManager
         }
     }
 
+    public IInfo Dump()
+    {
+        return Device.Dump();
+    }
+
+    public void Load(IInfo info)
+    {
+        CreateAbilityInputEntries(AbilityInputEntryNumber);
+    }
 }

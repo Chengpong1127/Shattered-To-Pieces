@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+/// <summary>
+/// Device of the game. Must assign GameComponentFactory after Initialize.
+/// </summary>
 public class Device: MonoBehaviour, IDevice
 {
     public IGameComponentFactory GameComponentFactory;
     public IGameComponent RootGameComponent { set; get; }
+    public AbilityManager AbilityManager { set; get; }
 
+    private void Awake() {
+        AbilityManager = new AbilityManager(this);
+    }
     public IInfo Dump()
     {
         Debug.Assert(RootGameComponent != null, "RootGameComponent is null");

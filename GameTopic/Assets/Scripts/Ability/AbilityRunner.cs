@@ -20,7 +20,7 @@ public class AbilityRunner: MonoBehaviour{
         }
     }
 
-    public void EndAbiliey(int entryIndex){
+    public void EndAbility(int entryIndex){
         Debug.Assert(RunningAbilitySet.Contains(entryIndex), "The ability is not running");
         AbilityManager.AbilityInputEntries[entryIndex].EndAllAbilities();
         RunningAbilitySet.Remove(entryIndex);
@@ -30,7 +30,7 @@ public class AbilityRunner: MonoBehaviour{
         for (int i = 0; i < AbilityManager.AbilityInputEntries.Count; i++)
         {
             if(AbilityManager.AbilityInputEntries[i].InputPath == entryKey){
-                EndAbiliey(i);
+                EndAbility(i);
             }
         }
     }
