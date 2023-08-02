@@ -31,6 +31,7 @@ public class Bat : MonoBehaviour, ICoreComponent
             targetRotation = transform.rotation.eulerAngles.z - 90f;
             if (targetRotation < 0f) targetRotation += 360f;
             oringnalRotation = transform.rotation.eulerAngles.z;
+            if (oringnalRotation < 0f) oringnalRotation += 360f;
             SkillTriggered = true;
             StartCoroutine(RotateCoroutine());
         }
@@ -45,6 +46,7 @@ public class Bat : MonoBehaviour, ICoreComponent
             targetRotation = transform.rotation.eulerAngles.z + 90f;
             if (targetRotation > 360f) targetRotation -= 360f;
             oringnalRotation = transform.rotation.eulerAngles.z;
+            if (oringnalRotation < 0f) oringnalRotation += 360f;
             SkillTriggered = true;
             StartCoroutine(RotateCoroutine());
         }
