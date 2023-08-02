@@ -10,32 +10,32 @@ public enum SkillAffectType {
 }
 
 [CreateAssetMenu(fileName = "SkillAffectBase", menuName = "AffectedObject/SkillAffectBase")]
-public class SkillAffectBase : ScriptableObject
-{
-    static public SkillAffectPool Pool { get; set; } = new SkillAffectPool();
+public class SkillAffectBase : ScriptableObject, ISkillAffect {
+    // static public SkillAffectPool Pool { get; set; } = new SkillAffectPool();
 
-    public AffectedObjectBase owner { get; set; } = null;
-    public AffectedObjectBase affectedObject { get; set; } = null;
+    public IAffectedObject owner { get; set; } = null;
+    public IAffectedObject affectedObject { get; set; } = null;
     public SkillAffectType type { get; set; } = SkillAffectType.SystemCtrl;
     public bool IsDebuff { get; set; } = false;
     public bool Interruptible { get; set; } = true;
     public bool execute { get;set; } = false;
 
+    public void Invoke() { }
 }
 
-public class SkillAffectPool {
-    Queue<SkillAffectBase> queue {  get; set; } = new Queue<SkillAffectBase>();
+public class SkillAffectPool<T> where T : new() {
+    Queue<T> queue {  get; set; } = new Queue<T>();
     int defaultPoolSize { get; set; } = 20;
     public SkillAffectPool() {
         for(int i = 0; i < defaultPoolSize; ++i) {
-            queue.Enqueue(new SkillAffectBase());
+            queue.Enqueue(new T());
         }
     }
 
-    public SkillAffectBase GetElement() {
-        return queue.Count > 0 ? queue.Dequeue() : new SkillAffectBase();
+    public T GetElement() {
+        return queue.Count > 0 ? queue.Dequeue() : new T();
     }
-    public void StoreElement(SkillAffectBase poolObj) {
+    public void StoreElement(T poolObj) {
         queue.Enqueue(poolObj);
     }
 }

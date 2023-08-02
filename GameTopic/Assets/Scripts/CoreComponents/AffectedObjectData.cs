@@ -6,8 +6,10 @@ using UnityEngine;
 public class AffectedObjectData : ScriptableObject
 {
     public float health { get; set; } = 50.0f;
-    public float defence { get; set; } = 0.0f;
-    public bool IsHealthAffected { get; set; } = true;
-    public bool IsDefenceAffected { get; set; } = true;
+    public float defense { get; set; } = 0.0f;
+    public bool IsHealthBuffAffected { get; set; } = true;
+    public bool IsHealthDeBuffAffected { get; set; } = true;
+    public bool IsDefenceBuffAffected { get; set; } = true;
+    public bool IsDefenceDeBuffAffected { get; set; } = true;
     public bool IsBreak { get; set; } = false;
 }
