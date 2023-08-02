@@ -76,6 +76,19 @@ public class GameComponent : MonoBehaviour, IGameComponent
             return (null, ConnectionInfo.NoConnection());
         }
         Debug.Assert(availableParent.GameComponent != null);
+
+        // check availableParent cannot be one of the children of this component
+        var tempTree = new Tree(this);
+        var result = false;
+        tempTree.TraverseBFS((node) => {
+            if (node == availableParent.GameComponent){
+                result = true;
+            }
+        });
+        if (result){
+            return (null, ConnectionInfo.NoConnection());
+        }
+
         var newInfo = new ConnectionInfo{
             linkedTargetID = targetID,
         };
