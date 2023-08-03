@@ -5,10 +5,13 @@ using UnityEngine;
 public class Rotator : MonoBehaviour, ICoreComponent, IAffectObjectOwner {
     public Dictionary<string, Ability> AllAbilities { get; private set; } = new Dictionary<string, Ability>();
     public IAffectedObject affectedObject { get { return affectedObjectInstance; } }
-    [field: SerializeField] public AffectedObjectBase affectedObjectInstance { get; set; }
-    [field: SerializeField] RotatorAffect affect { get; set; }
+    public AffectedObjectBase affectedObjectInstance { get; set; }
+    RotatorAffect affect { get; set; }
 
     private void Awake() {
+        affect = ScriptableObject.CreateInstance<RotatorAffect>();
+        affectedObjectInstance = ScriptableObject.CreateInstance<AffectedObjectBase>();
+
         affectedObject.collider = GetComponentInParent<Collider2D>();
         affectedObject.rigidbody = GetComponentInParent<Rigidbody2D>();
         affectedObject.joint = GetComponentInParent<AnchoredJoint2D>();
