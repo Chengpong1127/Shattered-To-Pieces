@@ -9,18 +9,18 @@ public enum SkillAffectType {
     Other
 }
 
-[CreateAssetMenu(fileName = "SkillAffectBase", menuName = "AffectedObject/SkillAffectBase")]
+[CreateAssetMenu(fileName = "SkillAffectBase", menuName = "SkillAffect/SkillAffectBase")]
 public class SkillAffectBase : ScriptableObject, ISkillAffect {
-    // static public SkillAffectPool Pool { get; set; } = new SkillAffectPool();
 
     public IAffectedObject owner { get; set; } = null;
-    public IAffectedObject affectedObject { get; set; } = null;
+    public List<IAffectedObject> affectedObjectList { get; set; } = new List<IAffectedObject>();
     public SkillAffectType type { get; set; } = SkillAffectType.SystemCtrl;
-    public bool IsDebuff { get; set; } = false;
-    public bool Interruptible { get; set; } = true;
+    [field:SerializeField] public bool IsDebuff { get; set; } = false;
+    [field: SerializeField] public bool Interruptible { get; set; } = true;
+    public bool interrupt { get; set; } = false;
     public bool execute { get;set; } = false;
 
-    public void Invoke() { }
+    virtual public void Invoke() { }
 }
 
 public class SkillAffectPool<T> where T : new() {

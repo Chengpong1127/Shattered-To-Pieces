@@ -17,24 +17,24 @@ public interface IAffectedObject {
     /// </summary>
     /// <param name="damage">The original damage number.</param>
     /// <returns>Actural damage number.</returns>
-    public float Damege(float damage);
+    abstract public float Damege(float damage);
     /// <summary>
     /// Heal the IAffectedObject.
     /// </summary>
     /// <param name="heal">The original healing number.</param>
     /// <returns>Actural healing number.</returns>
-    public float Heal(float heal);
+    abstract public float Heal(float heal);
     /// <summary>
     /// Take damage to IAffectedObject's defense.
     /// </summary>
     /// <param name="damage">The original damage number.</param>
     /// <returns>Actural damage number.</returns>
-    public float BreakDefense(float damage);
+    abstract public float BreakDefense(float damage);
     /// <summary>
     /// Heal IAffectedObject's defense.
     /// </summary>
     /// <param name="damage">The original defense number.</param>
     /// <returns>Actural defense number.</returns>
-    public float AddDefense(float damage);
+    abstract public float AddDefense(float damage);
 }
 

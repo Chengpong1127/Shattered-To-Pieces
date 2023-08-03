@@ -9,7 +9,7 @@ public interface ISkillAffect {
     /// <summary>
     /// A IAffectedObject which will be affect.
     /// </summary>
-    public IAffectedObject affectedObject { get; set; }
+    public List<IAffectedObject> affectedObjectList { get; set; }
     /// <summary>
     /// Type of skill affect.
     /// </summary>
@@ -22,6 +22,10 @@ public interface ISkillAffect {
     /// Is skill affect's inovke function can be interrupt.
     /// </summary>
     public bool Interruptible { get; set; }
+    /// <summary>
+    /// Interrupt Invoke function.
+    /// </summary>
+    public bool interrupt { get; set; }
     /// <summary>
     /// Is Invoke function should invoke.
     /// </summary>
