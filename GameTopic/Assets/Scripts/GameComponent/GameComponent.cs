@@ -168,10 +168,13 @@ public class GameComponent : MonoBehaviour, IGameComponent
             {
                 Debug.LogWarning("The core component is not set.");
             }
+            else{
+                coreComponent.OwnerGameComponent = this;
+            }
         }
 
         DisconnectFromParent();
-        coreComponent.OwnerGameComponent = this;
+        
     }
     public void SetZRotation()
     {

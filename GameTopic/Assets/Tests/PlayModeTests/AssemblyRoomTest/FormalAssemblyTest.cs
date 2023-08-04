@@ -20,7 +20,7 @@ public class FormalAssemblyTest
         var roomManager = new GameObject().AddComponent<FormalAssemblyRoom>();
         var deviceInfo = roomManager.ControlledDevice.Dump() as DeviceInfo;
         roomManager.SaveCurrentDevice();
-        roomManager.LoadDevice(100);
+        roomManager.LoadDevice(roomManager.CurrentLoadedDeviceID);
         Assert.True(roomManager.ControlledDevice != null);
         var deviceInfo2 = roomManager.ControlledDevice.Dump() as DeviceInfo;
         Assert.True(CompareDeviceInfo(deviceInfo, deviceInfo2));
@@ -31,10 +31,11 @@ public class FormalAssemblyTest
         var roomManager = new GameObject().AddComponent<FormalAssemblyRoom>();
         var deviceInfo = roomManager.ControlledDevice.Dump() as DeviceInfo;
         GameComponentData data = ScriptableObject.CreateInstance<GameComponentData>();
+        data.DisplayName = "Square";
         data.ResourcePath = "Square";
 
         roomManager.CreateNewGameComponent(data, new Vector2(0, 0));
-        Assert.AreEqual(roomManager.GameComponentsUnitManager.UnitMap.Count, 2);
+        Assert.AreEqual(roomManager.GameComponentsUnitManager.UnitMap.Count, deviceInfo.treeInfo.NodeInfoMap.Count + 1);
         
     }
 
@@ -56,23 +57,21 @@ public class FormalAssemblyTest
     [Test]
     public void PlayerRemainedMoneyTest(){
         var roomManager = new GameObject().AddComponent<FormalAssemblyRoom>();
-        Assert.True(roomManager.GetPlayerRemainedMoney() == 1000);
+        var testMoney = 100;
+        var currentMoney = roomManager.GetPlayerRemainedMoney();
 
         var device = roomManager.ControlledDevice;
 
         var test_data = ScriptableObject.CreateInstance<GameComponentData>();
-        test_data.DisplayName = "Square";
         test_data.ResourcePath = "Square";
-        test_data.Price = 100;
+        test_data.Price = testMoney;
         roomManager.GameComponentDataList.Add(test_data);
         var connection_info = new ConnectionInfo{
             linkedTargetID = 0
         };
         var new_component = roomManager.CreateNewGameComponent(test_data, new Vector2(0, 0));
         new_component.ConnectToParent(device.RootGameComponent, connection_info);
-
-        Assert.True(roomManager.GetDeviceTotalCost() == 100);
-        Assert.True(roomManager.GetPlayerRemainedMoney() == 900);
+        Assert.True(roomManager.GetPlayerRemainedMoney() == currentMoney - testMoney);
 
     }
     
@@ -87,6 +86,8 @@ public class FormalAssemblyTest
         foreach(var edge in info1.treeInfo.EdgeInfoList){
             if(!info2.treeInfo.EdgeInfoList.Contains(edge)) return false;
         }
+
         return true;
+
     }
 }

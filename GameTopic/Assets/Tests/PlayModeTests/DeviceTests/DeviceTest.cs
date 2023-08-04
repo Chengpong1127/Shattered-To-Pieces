@@ -4,18 +4,17 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class Connection
+public class DeviceTest
 {
     [Test]
-    public void CreateDeviceTest(){
+    public void CreateDefaultDeviceTest(){
         var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
         var device = new GameObject().AddComponent<Device>();
         device.GameComponentFactory = componentFactory;
-        var c1 = componentFactory.CreateGameComponentObject(0);
-
-        device.RootGameComponent = c1;
-        var info = device.Dump() as DeviceInfo;
-        Assert.True(info != null);
+        device.Load(ResourceManager.Instance.LoadDefaultDeviceInfo());
         
+        Assert.True(device.RootGameComponent is not null);
+        Assert.True(device.AbilityManager is not null);
+
     }
 }

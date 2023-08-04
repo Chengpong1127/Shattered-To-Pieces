@@ -26,16 +26,13 @@ public class ConnectTests
 
 
     [Test]
-    [TestCase(0, 0)]
-    [TestCase(0, 1)]
-    [TestCase(0, 2)]
-    [TestCase(0, 3)]
-    [TestCase(0, 0)]
-    public void SingleConnectionTest(int componentGUID, int targetID)
+    [TestCase("ControlRoom", 0)]
+    [TestCase("ControlRoom", 1)]
+    public void SingleConnectionTest(string componentName, int targetID)
     {
         var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
-        var c1 = componentFactory.CreateGameComponentObject(0);
-        var c2 = componentFactory.CreateGameComponentObject(0);
+        var c1 = componentFactory.CreateGameComponentObject(componentName);
+        var c2 = componentFactory.CreateGameComponentObject(componentName);
         var connectionInfo = new ConnectionInfo{
             linkedTargetID = targetID,
         };
@@ -52,9 +49,9 @@ public class ConnectTests
     [Test]
     public void GetParentTest(){
         var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
-        var c1 = componentFactory.CreateGameComponentObject(0);
-        var c2 = componentFactory.CreateGameComponentObject(0);
-        var c3 = componentFactory.CreateGameComponentObject(0);
+        var c1 = componentFactory.CreateGameComponentObject("Square");
+        var c2 = componentFactory.CreateGameComponentObject("Square");
+        var c3 = componentFactory.CreateGameComponentObject("Square");
         var connectionInfo = new ConnectionInfo{
             linkedTargetID = 0,
         };
@@ -71,10 +68,10 @@ public class ConnectTests
         [Test]
     public void GetChildrenTest(){
         var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
-        var c1 = componentFactory.CreateGameComponentObject(0);
-        var c2 = componentFactory.CreateGameComponentObject(0);
-        var c3 = componentFactory.CreateGameComponentObject(0);
-        var c4 = componentFactory.CreateGameComponentObject(0);
+        var c1 = componentFactory.CreateGameComponentObject("Square");
+        var c2 = componentFactory.CreateGameComponentObject("Square");
+        var c3 = componentFactory.CreateGameComponentObject("Square");
+        var c4 = componentFactory.CreateGameComponentObject("Square");
         var connectionInfo = new ConnectionInfo{
             linkedTargetID = 0,
         };
