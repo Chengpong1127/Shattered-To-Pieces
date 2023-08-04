@@ -8,7 +8,6 @@ public class SkillTrigger : MonoBehaviour
 {
     // Start is called before the first frame update
     private AbilityRunner runner;
-    private AbilityManager abilityInputManager;
     public InputManager inputmanager;
     void Start()
     {
@@ -16,16 +15,27 @@ public class SkillTrigger : MonoBehaviour
         inputmanager = new InputManager();
         inputmanager.menu.Enable();
         inputmanager.menu.Click.performed += Click;
+        inputmanager.menu.Click.canceled += EndClick;
     }
     void Click(InputAction.CallbackContext ctx)
     {
-        string keyName=string.Empty;
-        foreach(var KeyControl in Keyboard.current.allKeys)
+        foreach (var KeyControl in Keyboard.current.allKeys)
         {
-            keyName = KeyControl.displayName;
+            string keyName = KeyControl.displayName;
             if (KeyControl.wasPressedThisFrame)
             {
                 runner.StartAbility(keyName);
+            }
+        }
+    }
+    void EndClick(InputAction.CallbackContext ctx)
+    {
+        foreach (var KeyControl in Keyboard.current.allKeys)
+        {
+            string keyName = KeyControl.displayName;
+            if (KeyControl.wasReleasedThisFrame)
+            {
+                runner.EndAbility(keyName);
             }
         }
     }

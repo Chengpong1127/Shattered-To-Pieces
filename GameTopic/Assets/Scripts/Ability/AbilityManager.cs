@@ -35,32 +35,35 @@ public class AbilityManager
         }
 
         Device = device;
-        AbilityInputEntryNumber = info.EntryPaths.Count();
-        CreateAbilityInputEntries(AbilityInputEntryNumber);
-        abilityInEntryStatus.Clear();
-        for (int i = 0; i < AbilityInputEntryNumber; i++)
-        {
-            SetPath(i, info.EntryPaths[i]);
-        }
-        var deviceAbilityList = GetDeviceCurrentAbilityList();
-        foreach (var ability in deviceAbilityList)
-        {
-            abilityInEntryStatus.Add(ability, false);
-        }
-        foreach (var (componentID, abilityName) in info.OutOfEntryAbilities)
-        {
-            var ability = getAbility(componentID, abilityName);
-            abilityInEntryStatus[ability] = true;
-        }
-
-        for (int i = 0; i < AbilityInputEntryNumber; i++)
-        {
-            foreach (var (componentID, abilityName) in info.EntryAbilities[i])
+        if (info != null){
+            AbilityInputEntryNumber = info.EntryPaths.Count();
+            CreateAbilityInputEntries(AbilityInputEntryNumber);
+            abilityInEntryStatus.Clear();
+            for (int i = 0; i < AbilityInputEntryNumber; i++)
+            {
+                SetPath(i, info.EntryPaths[i]);
+            }
+            var deviceAbilityList = GetDeviceCurrentAbilityList();
+            foreach (var ability in deviceAbilityList)
+            {
+                abilityInEntryStatus.Add(ability, false);
+            }
+            foreach (var (componentID, abilityName) in info.OutOfEntryAbilities)
             {
                 var ability = getAbility(componentID, abilityName);
-                SetAbilityToEntry(i, ability);
+                abilityInEntryStatus[ability] = true;
+            }
+
+            for (int i = 0; i < AbilityInputEntryNumber; i++)
+            {
+                foreach (var (componentID, abilityName) in info.EntryAbilities[i])
+                {
+                    var ability = getAbility(componentID, abilityName);
+                    SetAbilityToEntry(i, ability);
+                }
             }
         }
+        
 
     }
     /// <summary>
