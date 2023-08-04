@@ -171,6 +171,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
 
         DisconnectFromParent();
+        coreComponent.OwnerGameComponent = this;
     }
     public void SetZRotation()
     {

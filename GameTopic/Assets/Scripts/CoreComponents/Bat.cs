@@ -13,13 +13,16 @@ public class Bat : MonoBehaviour, ICoreComponent
     private float rotationSpeed = 500f;
     private Rigidbody2D rb;
     private bool clockwise;
-
+    public IGameComponent OwnerGameComponent { get; set; }
+    private void Awake() {
+        AllAbilities.Add("SwingRight", new Ability("SwingRight", SwingRight, this));
+        AllAbilities.Add("SwingLeft", new Ability("SwingLeft", SwingLeft, this));
+    }
     private void Start()
     {
         rb = GetComponentInParent<Rigidbody2D>();
         isRotating = false;
-        AllAbilities.Add("SwingRight", new Ability("SwingRight", SwingRight, this));
-        AllAbilities.Add("SwingLeft", new Ability("SwingLeft", SwingLeft, this));
+        
     }
 
     private void SwingRight()

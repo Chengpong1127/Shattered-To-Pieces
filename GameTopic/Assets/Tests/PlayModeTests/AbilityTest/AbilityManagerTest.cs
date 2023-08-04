@@ -72,6 +72,10 @@ public class AbilityManagerTest
         var path = "test";
         abilityManager.SetPath(0, path);
         Assert.AreEqual(abilityManager.AbilityInputEntries[0].InputPath, path);
+
+        path = "test2";
+        abilityManager.SetPath(0, path);
+        Assert.AreEqual(abilityManager.AbilityInputEntries[0].InputPath, path);
     }
 
     [Test]

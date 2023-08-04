@@ -33,7 +33,7 @@ public class Tree
         }
     }
 
-    public TreeInfo<T> Dump<T>() where T: class, IInfo{
+    public (TreeInfo<T>, Dictionary<ITreeNode, int>) Dump<T>() where T: class, IInfo{
         var treeInfo = new TreeInfo<T>();
         var localID = 0;
         var tempDictionary = new Dictionary<ITreeNode, int>();
@@ -55,7 +55,7 @@ public class Tree
             treeInfo.EdgeInfoList.Add((parentID, nodeID));
         }
 
-        return treeInfo;
+        return (treeInfo, tempDictionary);
 
     }
     

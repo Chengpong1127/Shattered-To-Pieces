@@ -10,7 +10,7 @@ public class Device: MonoBehaviour, IDevice
 {
     public IGameComponentFactory GameComponentFactory;
     public IGameComponent RootGameComponent { set; get; }
-    public AbilityManager AbilityManager { set; get; }
+    public AbilityManager AbilityManager { get; private set; }
 
     private void Awake() {
         AbilityManager = new AbilityManager(this);
@@ -20,7 +20,14 @@ public class Device: MonoBehaviour, IDevice
         Debug.Assert(RootGameComponent != null, "RootGameComponent is null");
         var tree = new Tree(RootGameComponent);
         var deviceInfo = new DeviceInfo();
-        deviceInfo.treeInfo = tree.Dump<GameComponentInfo>();
+        var (info, nodeMapping) = tree.Dump<GameComponentInfo>();
+        deviceInfo.treeInfo = info;
+        var gameComponentIDMapping = new Dictionary<IGameComponent, int>();
+        foreach (var (key, value) in nodeMapping){
+            Debug.Assert(key is IGameComponent);
+            gameComponentIDMapping.Add(key as IGameComponent, value);
+        }
+        deviceInfo.abilityManagerInfo = new AbilityManagerInfo(AbilityManager, gameComponentIDMapping);
         return deviceInfo;
     }
 
@@ -29,7 +36,7 @@ public class Device: MonoBehaviour, IDevice
         Debug.Assert(info is DeviceInfo);
         var deviceInfo = info as DeviceInfo;
 
-        var tempDictionary = createAllComponents(deviceInfo.treeInfo.NodeInfoMap);
+        var tempDictionary = CreateAllComponents(deviceInfo.treeInfo.NodeInfoMap);
         foreach (var (key, value) in deviceInfo.treeInfo.NodeInfoMap){
             var componentInfo = value as GameComponentInfo;
             var component = tempDictionary[key];
@@ -44,12 +51,12 @@ public class Device: MonoBehaviour, IDevice
 
         RootGameComponent = tempDictionary[deviceInfo.treeInfo.rootID];
 
-        connectAllComponents(tempDictionary, deviceInfo.treeInfo.NodeInfoMap, deviceInfo.treeInfo.EdgeInfoList);
+        ConnectAllComponents(tempDictionary, deviceInfo.treeInfo.NodeInfoMap, deviceInfo.treeInfo.EdgeInfoList);
 
-        
+        AbilityManager = new AbilityManager(this, deviceInfo.abilityManagerInfo, tempDictionary);
     }
 
-    private Dictionary<int, IGameComponent> createAllComponents(Dictionary<int, GameComponentInfo> nodes){
+    private Dictionary<int, IGameComponent> CreateAllComponents(Dictionary<int, GameComponentInfo> nodes){
         Debug.Assert(GameComponentFactory != null, "GameComponentFactory is null");
         var tempDictionary = new Dictionary<int, IGameComponent>();
         foreach (var (key, value) in nodes){
@@ -60,7 +67,7 @@ public class Device: MonoBehaviour, IDevice
         return tempDictionary;
     }
 
-    private void connectAllComponents(Dictionary<int, IGameComponent> nodes, Dictionary<int, GameComponentInfo> infos, List<(int, int)> edges){
+    private void ConnectAllComponents(Dictionary<int, IGameComponent> nodes, Dictionary<int, GameComponentInfo> infos, List<(int, int)> edges){
         foreach (var (from, to) in edges){
             var fromComponent = nodes[from];
             var toComponent = nodes[to];

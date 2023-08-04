@@ -14,6 +14,9 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// </summary>
     public event Action<AssemblyRoomMode> OnSetRoomMode;
 
+    public event Action OnLoadedDevice;
+    public event Action OnSavedDevice;
+
     #endregion
     
     #region Properties
@@ -38,17 +41,12 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     public UnitManager GameComponentsUnitManager { get; private set;}
 
 
-    public AbilityManager AbilityManager { get; private set;}
+    public AbilityManager AbilityManager => ControlledDevice.AbilityManager;
 
     /// <summary>
     /// The factory for creating game components.
     /// </summary>
     private IGameComponentFactory GameComponentFactory;
-
-    /// <summary>
-    /// The manager for device storage.
-    /// </summary>
-    private SaveLoadManager deviceStorageManager;
 
     public IAbilityKeyChanger AbilityKeyChanger { get; private set; }
 
@@ -65,10 +63,12 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         AssemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
         GameComponentsUnitManager = new UnitManager();
         AssemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
-        deviceStorageManager = SaveLoadManager.Create("BaseDirectory", "SavedDevice", SerializationMethodType.JsonDotNet);
 
         ControlledDevice = createDevice();
-        AbilityManager = new AbilityManager(ControlledDevice);
+        LoadDevice(CurrentLoadedDeviceID);
+
+
+        AbilityKeyChanger = new AbilityKeyChanger(AbilityManager);
         AssemblySystemManager.OnGameComponentDraggedStart += (component) => {
             AbilityManager.UpdateDeviceAbilities();
             SaveCurrentDevice();
@@ -78,7 +78,11 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
             SaveCurrentDevice();
         };
 
-        AbilityKeyChanger = new AbilityChanger(AbilityManager);
+        AbilityKeyChanger.OnFinishChangeAbilityKey += _ => {
+            AbilityManager.UpdateDeviceAbilities();
+            Debug.Log("Ability key changed");
+            SaveCurrentDevice();
+        };
 
         GameComponentDataList = getGameComponentDataListFromResources();
         Debug.Assert(GameComponentDataList != null);
@@ -88,7 +92,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         AbilityRunner = gameObject.AddComponent<AbilityRunner>();
         AbilityRunner.AbilityManager = AbilityManager;
 
-        LoadDevice(CurrentLoadedDeviceID);
+        
     }
     private void Start() {
         
@@ -132,17 +136,15 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         GameComponentsUnitManager.Clear();
     }
 
-    private IDevice loadNewDevice(DeviceInfo deviceInfo)
+    private IDevice LoadNewDevice(DeviceInfo deviceInfo)
     {
-        if(deviceInfo == null)
-        {
-            deviceInfo = ResourceManager.Instance.LoadDefaultDeviceInfo();
-        }
+        deviceInfo ??= ResourceManager.Instance.LoadDefaultDeviceInfo();
         clearAllGameComponents();
         ControlledDevice.Load(deviceInfo);
         ControlledDevice.ForEachGameComponent((component) => {
             GameComponentsUnitManager.AddUnit(component);
         });
+        OnLoadedDevice?.Invoke();
         return ControlledDevice;
     }
 
@@ -168,11 +170,12 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         var deviceInfo = info as DeviceInfo;
         Debug.Assert(deviceInfo != null);
         ResourceManager.Instance.SaveLocalDeviceInfo(deviceInfo, CurrentLoadedDeviceID.ToString());
+        OnSavedDevice?.Invoke();
     }
     public void LoadDevice(int DeviceID){
         CurrentLoadedDeviceID = DeviceID;
         var deviceInfo = ResourceManager.Instance.LoadLocalDeviceInfo(DeviceID.ToString());
-        loadNewDevice(deviceInfo);
+        LoadNewDevice(deviceInfo);
     }
     #endregion
 

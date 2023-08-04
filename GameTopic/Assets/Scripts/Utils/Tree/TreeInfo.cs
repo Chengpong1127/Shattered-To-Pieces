@@ -3,8 +3,8 @@ using System.Linq;
 
 public class TreeInfo<T>: IInfo where T: IInfo{
     public int rootID;
-    public Dictionary<int, T> NodeInfoMap = new Dictionary<int, T>();
-    public List<(int, int)> EdgeInfoList = new List<(int, int)>();
+    public Dictionary<int, T> NodeInfoMap = new();
+    public List<(int, int)> EdgeInfoList = new();
 
     public override bool Equals(object obj)
     {
@@ -16,10 +16,6 @@ public class TreeInfo<T>: IInfo where T: IInfo{
 
     public override int GetHashCode()
     {
-        int hashCode = 1861411795;
-        hashCode = hashCode * -1521134295 + rootID.GetHashCode();
-        hashCode = hashCode * -1521134295 + NodeInfoMap.GetHashCode();
-        hashCode = hashCode * -1521134295 + EdgeInfoList.GetHashCode();
-        return hashCode;
+        return System.HashCode.Combine(rootID, NodeInfoMap, EdgeInfoList);
     }
 }

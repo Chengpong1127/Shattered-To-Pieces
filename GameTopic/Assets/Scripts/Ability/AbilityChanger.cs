@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
-public class AbilityChanger:IAbilityKeyChanger
+public class AbilityKeyChanger:IAbilityKeyChanger
 {
     // Start is called before the first frame update
     private int abilityBID;
@@ -12,7 +12,7 @@ public class AbilityChanger:IAbilityKeyChanger
     public AbilityManager abilityManager { get; set; }
     private bool KeySelected;
     private string key;
-    public AbilityChanger(AbilityManager abilityManager)
+    public AbilityKeyChanger(AbilityManager abilityManager)
     {
         this.abilityManager = abilityManager;
         abilityBID = -1;
@@ -34,7 +34,7 @@ public class AbilityChanger:IAbilityKeyChanger
                 {
                     if (keyName.Length <= 1 && keyName[0] >= 'A' && keyName[0] <= 'Z')
                     {
-                        abilityManager.AbilityInputEntries[abilityBID].SetInputPath(keyName);
+                        abilityManager.SetPath(abilityBID, keyName);
                         OnFinishChangeAbilityKey?.Invoke(keyName);
                         Debug.Log("abilityButton:" + abilityBID + "has changed input path to " + keyName);
                         EndChangeAbilityKey();

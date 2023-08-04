@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ public class AbilityInputEntry{
     /// <value></value>
     public string InputPath { get; private set; } = "";
     public static readonly int AbilityNumber = 3;
-    public List<Ability> Abilities = new List<Ability>();
+    public List<Ability> Abilities = new();
     public AbilityInputEntry(){
     }
     /// <summary>
@@ -32,7 +31,7 @@ public class AbilityInputEntry{
     public Ability AddAbility(Ability ability){
         Abilities.Insert(0, ability);
         if(Abilities.Count > AbilityNumber){
-            Ability removedAbility = Abilities[Abilities.Count - 1];
+            Ability removedAbility = Abilities[^1];
             Abilities.RemoveAt(Abilities.Count - 1);
             return removedAbility;
         }
@@ -44,9 +43,7 @@ public class AbilityInputEntry{
     public void StartAllAbilities(){
         foreach (var ability in Abilities)
         {
-            if(ability != null){
-                ability.StartAbility();
-            }
+            ability?.StartAbility();
         }
     }
     /// <summary>
@@ -55,9 +52,7 @@ public class AbilityInputEntry{
     public void RunAllAbilitiesForEachFrame(){
         foreach (var ability in Abilities)
         {
-            if(ability != null){
-                ability.RunAbility();
-            }
+            ability?.RunAbility();
         }
     }
     /// <summary>

@@ -70,6 +70,15 @@ public interface IAssemblyRoom
     /// <param name="DeviceID"></param>
     public void LoadDevice(int DeviceID);
 
+    /// <summary>
+    /// The event that will be triggered after loading a device.
+    /// </summary>
+    public event Action OnLoadedDevice;
+    /// <summary>
+    /// The event that will be triggered after saving a device.
+    /// </summary>
+    public event Action OnSavedDevice;
+
 
     #endregion
 

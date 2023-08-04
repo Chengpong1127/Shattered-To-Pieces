@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class AbilityManager: IStorable
+public class AbilityManager
 {
     public List<AbilityInputEntry> AbilityInputEntries { get; private set; } = new List<AbilityInputEntry>();
     /// <summary>
@@ -13,7 +13,7 @@ public class AbilityManager: IStorable
     public IDevice Device { get; set; }
 
     public readonly int AbilityInputEntryNumber;
-    private Dictionary<Ability, bool> abilityInEntryStatus = new Dictionary<Ability, bool>();
+    private readonly Dictionary<Ability, bool> abilityInEntryStatus = new();
 
     public AbilityManager(IDevice device, int abilityInputEntryNumber = 10){
         Debug.Assert(abilityInputEntryNumber > 0, "The number of ability input entry should be greater than 0");
@@ -22,6 +22,46 @@ public class AbilityManager: IStorable
         AbilityInputEntryNumber = abilityInputEntryNumber;
 
         ReloadDeviceAbilities();
+    }
+
+    public AbilityManager(IDevice device, AbilityManagerInfo info, Dictionary<int, IGameComponent> componentMap){
+        Ability getAbility(int componentID, string abilityName){
+            var component = componentMap[componentID];
+            Debug.Assert(component != null, "The component should not be null");
+            var ability = component.CoreComponent.AllAbilities[abilityName];
+            
+            Debug.Assert(ability != null, "The ability should not be null");
+            return ability;
+        }
+
+        Device = device;
+        AbilityInputEntryNumber = info.EntryPaths.Count();
+        CreateAbilityInputEntries(AbilityInputEntryNumber);
+        abilityInEntryStatus.Clear();
+        for (int i = 0; i < AbilityInputEntryNumber; i++)
+        {
+            SetPath(i, info.EntryPaths[i]);
+        }
+        var deviceAbilityList = GetDeviceCurrentAbilityList();
+        foreach (var ability in deviceAbilityList)
+        {
+            abilityInEntryStatus.Add(ability, false);
+        }
+        foreach (var (componentID, abilityName) in info.OutOfEntryAbilities)
+        {
+            var ability = getAbility(componentID, abilityName);
+            abilityInEntryStatus[ability] = true;
+        }
+
+        for (int i = 0; i < AbilityInputEntryNumber; i++)
+        {
+            foreach (var (componentID, abilityName) in info.EntryAbilities[i])
+            {
+                var ability = getAbility(componentID, abilityName);
+                SetAbilityToEntry(i, ability);
+            }
+        }
+
     }
     /// <summary>
     /// Reload the abilities of the device and put to out of entries.
@@ -40,7 +80,7 @@ public class AbilityManager: IStorable
         var removedList = new List<Ability>();
         foreach (var ability in abilityInEntryStatus.Keys){
             if(!abilityList.Contains(ability)){
-                removeAbilityFromEntry(ability);
+                RemoveAbilityFromEntry(ability);
                 removedList.Add(ability);
             }
         }
@@ -78,7 +118,7 @@ public class AbilityManager: IStorable
     /// <param name="entryID"></param>
     /// <param name="ability"></param>
     public void SetAbilityToEntry(int entryID, Ability ability){
-        removeAbilityFromEntry(ability);
+        RemoveAbilityFromEntry(ability);
         Debug.Assert(entryID < AbilityInputEntries.Count, "index out of range");
         var removed = AbilityInputEntries[entryID].AddAbility(ability);
         if(!abilityInEntryStatus.ContainsKey(ability)){
@@ -96,7 +136,7 @@ public class AbilityManager: IStorable
     /// </summary>
     /// <param name="ability"></param>
     public void SetAbilityOutOfEntry(Ability ability){
-        removeAbilityFromEntry(ability);
+        RemoveAbilityFromEntry(ability);
         if(!abilityInEntryStatus.ContainsKey(ability)){
             Debug.LogWarning("The ability is not in the device");
             abilityInEntryStatus.Add(ability, false);
@@ -118,22 +158,12 @@ public class AbilityManager: IStorable
         return Device.getAbilityList();
     }
 
-    private void removeAbilityFromEntry(Ability ability){
+    private void RemoveAbilityFromEntry(Ability ability){
         foreach (var entry in AbilityInputEntries)
         {
             if(entry.ContainsAbility(ability)){
                 entry.RemoveAbility(ability);
             }
         }
-    }
-
-    public IInfo Dump()
-    {
-        return Device.Dump();
-    }
-
-    public void Load(IInfo info)
-    {
-        CreateAbilityInputEntries(AbilityInputEntryNumber);
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class Wheels : MonoBehaviour, ICoreComponent
 {
     public Dictionary<string, Ability> AllAbilities { get; private set; }
+    public IGameComponent OwnerGameComponent { get; set; }
     public WheelJoint2D wheelJoint;
     private const float MoveForce = 100f;
 

@@ -1,1 +1,1 @@
-{"treeInfo":{"rootID":0,"NodeInfoMap":{"0":{"ComponentName":"ControlRoom","connectionInfo":{"linkedTargetID":-1,"IsConnected":false}}},"EdgeInfoList":[]}}
+{"treeInfo":{"rootID":0,"NodeInfoMap":{"0":{"ComponentName":"ControlRoom","ConnectionInfo":{"linkedTargetID":-1,"IsConnected":false},"ConnectionZRotation":0.0}},"EdgeInfoList":[]},"abilityManagerInfo":{"EntryPaths":["","","","","","","","","",""],"EntryAbilities":[[],[],[],[],[],[],[],[],[],[]],"OutOfEntryAbilities":[]}}

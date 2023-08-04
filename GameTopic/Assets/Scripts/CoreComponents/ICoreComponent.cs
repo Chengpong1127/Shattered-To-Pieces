@@ -5,5 +5,7 @@ public interface ICoreComponent
     /// Get all of the ability list from this core component.
     /// </summary>
     /// <value> The ability list. Ability name: Ability</value>
-    Dictionary<string, Ability> AllAbilities { get; }
+    public Dictionary<string, Ability> AllAbilities { get; }
+
+    public IGameComponent OwnerGameComponent { get; set; }
 }
