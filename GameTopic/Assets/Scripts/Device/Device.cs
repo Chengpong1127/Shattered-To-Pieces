@@ -43,9 +43,8 @@ public class Device: MonoBehaviour, IDevice
             component.Load(componentInfo);
         }
 
-        foreach (var (key, value) in deviceInfo.treeInfo.NodeInfoMap){
+        foreach (var (key, _) in deviceInfo.treeInfo.NodeInfoMap){
             var component = tempDictionary[key];
-            Debug.Log(component.ComponentName);
             component.SetZRotation();
         }
 

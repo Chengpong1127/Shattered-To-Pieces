@@ -12,7 +12,7 @@ public class AbilityManager
     /// <value></value>
     public IDevice Device { get; set; }
 
-    public readonly int AbilityInputEntryNumber;
+    public readonly int AbilityInputEntryNumber = 10;
     private readonly Dictionary<Ability, bool> abilityInEntryStatus = new();
 
     public AbilityManager(IDevice device, int abilityInputEntryNumber = 10){
@@ -62,6 +62,9 @@ public class AbilityManager
                     SetAbilityToEntry(i, ability);
                 }
             }
+        }
+        else{
+            ReloadDeviceAbilities();
         }
         
 
