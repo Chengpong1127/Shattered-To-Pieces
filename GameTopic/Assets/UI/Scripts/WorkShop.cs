@@ -118,6 +118,7 @@ public class WorkShop : MonoBehaviour
     /// </summary>
     /// <param name="boxId"></param>
     public void RefreshAbillity(int boxId) {
+        if(room == null || room.AbilityManager == null || room.AbilityManager.AbilityInputEntries.Count <= boxId) { shopDispatcher.abilityList = null; return; }
         shopDispatcher.abilityList = room.AbilityManager.AbilityInputEntries[boxId].Abilities;
     }
 

@@ -77,6 +77,12 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
     /// <param name="skills"></param>
     public void SetSkillList(List<Ability> skills) {
         int loopId = 0;
+        if(skills == null) {
+            for (; loopId < skillList.Count; loopId++) {
+                skillList[loopId].skillData = null;
+                skillList[loopId].UpDateSkillDisplay();
+            }
+        }
 
         for(; loopId < skillList.Count && loopId < skills.Count;loopId++) {
             skillList[loopId].skillData = skills[loopId];

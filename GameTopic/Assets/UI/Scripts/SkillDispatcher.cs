@@ -24,7 +24,7 @@ public class SkillDispatcher : MonoBehaviour
     public int rebindBoxId { get; set; }
 
     private void Awake() {
-        abilityList = new List<Ability>();
+        // abilityList = new List<Ability>();
 
         nonSetBox.boxID = 0;
         for (int i = 0; i < skillBoxes.Count; ++i) {
