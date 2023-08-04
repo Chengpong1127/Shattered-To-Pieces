@@ -12,7 +12,7 @@ public class Device: MonoBehaviour, IDevice
     public IGameComponent RootGameComponent { set; get; }
     public AbilityManager AbilityManager { get; private set; }
 
-    private void Awake() {
+    protected void Awake() {
         AbilityManager = new AbilityManager(this);
     }
     public IInfo Dump()

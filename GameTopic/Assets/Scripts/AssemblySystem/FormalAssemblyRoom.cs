@@ -58,13 +58,13 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     #endregion
 
-    private void Awake() {
+    protected void Awake() {
         GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
         AssemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
         GameComponentsUnitManager = new UnitManager();
         AssemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
 
-        ControlledDevice = createDevice();
+        ControlledDevice = CreateDevice();
         LoadDevice(CurrentLoadedDeviceID);
 
 
@@ -84,7 +84,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
             SaveCurrentDevice();
         };
 
-        GameComponentDataList = getGameComponentDataListFromResources();
+        GameComponentDataList = GetGameComponentDataListFromResources();
         Debug.Assert(GameComponentDataList != null);
 
         Debug.Assert(PlayerInitMoney >= 0);
@@ -94,18 +94,18 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
         
     }
-    private void Start() {
+    protected void Start() {
         
         SetRoomMode(AssemblyRoomMode.PlayMode);
     }
 
-    private Device createDevice(){
+    private Device CreateDevice(){
         var device = new GameObject("Device").AddComponent<Device>();
         device.GameComponentFactory = GameComponentFactory;
         return device;
     }
 
-    private List<GameComponentData> getGameComponentDataListFromResources() {
+    private List<GameComponentData> GetGameComponentDataListFromResources() {
         var dataList = ResourceManager.Instance.LoadAllGameComponentData();
         Debug.Assert(dataList != null);
         return dataList;
@@ -127,7 +127,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     
     }
 
-    private void clearAllGameComponents()
+    private void ClearAllGameComponents()
     {
         GameComponentsUnitManager.ForEachUnit((unit) => {
             var component = unit as IGameComponent;
@@ -139,7 +139,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     private IDevice LoadNewDevice(DeviceInfo deviceInfo)
     {
         deviceInfo ??= ResourceManager.Instance.LoadDefaultDeviceInfo();
-        clearAllGameComponents();
+        ClearAllGameComponents();
         ControlledDevice.Load(deviceInfo);
         ControlledDevice.ForEachGameComponent((component) => {
             GameComponentsUnitManager.AddUnit(component);
