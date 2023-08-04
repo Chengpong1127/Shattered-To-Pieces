@@ -46,12 +46,12 @@ public class AbilityManager
             var deviceAbilityList = GetDeviceCurrentAbilityList();
             foreach (var ability in deviceAbilityList)
             {
-                abilityInEntryStatus.Add(ability, false);
+                abilityInEntryStatus.Add(ability, true);
             }
             foreach (var (componentID, abilityName) in info.OutOfEntryAbilities)
             {
                 var ability = getAbility(componentID, abilityName);
-                abilityInEntryStatus[ability] = true;
+                abilityInEntryStatus[ability] = false;
             }
 
             for (int i = 0; i < AbilityInputEntryNumber; i++)
