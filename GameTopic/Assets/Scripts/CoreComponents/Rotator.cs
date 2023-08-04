@@ -7,6 +7,7 @@ public class Rotator : MonoBehaviour, ICoreComponent, IAffectObjectOwner {
     public IAffectedObject affectedObject { get { return affectedObjectInstance; } }
     public AffectedObjectBase affectedObjectInstance { get; set; }
     RotatorAffect affect { get; set; }
+    [field: SerializeField] Transform connectionAnchor { get;set; }
 
     private void Awake() {
         affect = ScriptableObject.CreateInstance<RotatorAffect>();
@@ -19,6 +20,7 @@ public class Rotator : MonoBehaviour, ICoreComponent, IAffectObjectOwner {
 
         affect.owner = affectedObject;
         affect.affectedObjectList.Add(affectedObject);
+        affect.rotateAnchor = connectionAnchor;
 
         AllAbilities.Add("RotatorRotate", new Ability("RotatorRotate", AbiliityStart, AbilityRunning, AbiliityEnd, this));
     }
