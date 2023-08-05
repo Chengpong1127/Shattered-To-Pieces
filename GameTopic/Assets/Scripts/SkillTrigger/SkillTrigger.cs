@@ -14,7 +14,7 @@ public class SkillTrigger : MonoBehaviour
         runner= GetComponent<FormalAssemblyRoom>().AbilityRunner;
         inputmanager = new InputManager();
         inputmanager.menu.Enable();
-        inputmanager.menu.Click.performed += Click;
+        inputmanager.menu.Click.started += Click;
         inputmanager.menu.Click.canceled += EndClick;
     }
     void Click(InputAction.CallbackContext ctx)
@@ -22,10 +22,7 @@ public class SkillTrigger : MonoBehaviour
         foreach (var KeyControl in Keyboard.current.allKeys)
         {
             string keyName = KeyControl.displayName;
-            if (KeyControl.wasPressedThisFrame)
-            {
-                runner.StartAbility(keyName);
-            }
+            runner.StartAbility(keyName);
         }
     }
     void EndClick(InputAction.CallbackContext ctx)
@@ -33,10 +30,7 @@ public class SkillTrigger : MonoBehaviour
         foreach (var KeyControl in Keyboard.current.allKeys)
         {
             string keyName = KeyControl.displayName;
-            if (KeyControl.wasReleasedThisFrame)
-            {
-                runner.EndAbility(keyName);
-            }
+            runner.EndAbility(keyName);
         }
     }
 
