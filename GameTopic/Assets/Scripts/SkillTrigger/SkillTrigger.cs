@@ -22,7 +22,10 @@ public class SkillTrigger : MonoBehaviour
         foreach (var KeyControl in Keyboard.current.allKeys)
         {
             string keyName = KeyControl.displayName;
-            runner.StartAbility(keyName);
+            if (KeyControl.wasPressedThisFrame)
+            {
+                runner.StartAbility(keyName);
+            }
         }
     }
     void EndClick(InputAction.CallbackContext ctx)
@@ -30,7 +33,10 @@ public class SkillTrigger : MonoBehaviour
         foreach (var KeyControl in Keyboard.current.allKeys)
         {
             string keyName = KeyControl.displayName;
-            runner.EndAbility(keyName);
+            if (KeyControl.wasReleasedThisFrame)
+            {
+                runner.EndAbility(keyName);
+            }
         }
     }
 
