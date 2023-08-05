@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bat : MonoBehaviour, ICoreComponent, IAffectObjectOwner
 {
     public Dictionary<string, Ability> AllAbilities { get; private set; } = new Dictionary<string, Ability>();
+    public IGameComponent OwnerGameComponent { get; set; }
     public IAffectedObject affectedObject { get { return affectedObjectInstance; } }
     public AffectedObjectBase affectedObjectInstance { get; set; }
     public Transform connectAnchor;

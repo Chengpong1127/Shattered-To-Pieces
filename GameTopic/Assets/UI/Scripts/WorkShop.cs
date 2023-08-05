@@ -20,6 +20,7 @@ public class WorkShop : MonoBehaviour
     [SerializeField] SkillDispatcher shopDispatcher;
 
     private void Awake() {
+        // Debug.Log(Application.persistentDataPath);
         // roomMode = AssemblyRoomMode.PlayMode;
         shoppingBTN.onClick.AddListener(SwitchRoomMode);
     }
@@ -53,6 +54,8 @@ public class WorkShop : MonoBehaviour
             room.AssemblySystemManager.OnGameComponentDraggedStart -= UpdateUserCostRemain;
             room.AssemblySystemManager.AfterGameComponentConnected -= UpdateUserCostRemain;
 
+            room.OnLoadedDevice -= shopDispatcher.RefreshAllBoxAbility;
+
             // fileCtrl.RemoveRenameAction(room.RenameDevice);
             // fileCtrl.StoreAction -= room.SaveCurrentDevice;
             // fileCtrl.LoadAction -= room.LoadDevice;
@@ -67,6 +70,8 @@ public class WorkShop : MonoBehaviour
         room.AssemblySystemManager.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
         room.AssemblySystemManager.OnGameComponentDraggedStart += UpdateUserCostRemain;
         room.AssemblySystemManager.AfterGameComponentConnected += UpdateUserCostRemain;
+
+        room.OnLoadedDevice += shopDispatcher.RefreshAllBoxAbility;
 
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Basic), GameComponentType.Basic);
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Attack), GameComponentType.Attack);
