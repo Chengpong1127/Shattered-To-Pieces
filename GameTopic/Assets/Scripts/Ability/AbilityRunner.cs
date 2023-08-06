@@ -55,6 +55,22 @@ public class AbilityRunner: MonoBehaviour{
         }
     }
 
+    private void OnDestroy() {
+        foreach (var entryIndex in RunningAbilitySet){
+            AbilityManager.AbilityInputEntries[entryIndex].EndAllAbilities();
+        }
 
+        if (AbilityActions != null)
+        {
+            for (int i = 0; i < AbilityActions.Length; i++)
+            {
+                var abilityNumber = i;
+                AbilityActions[abilityNumber].RemoveAllBindingOverrides();
+                AbilityActions[abilityNumber].started -= ctx => StartAbility(abilityNumber);
+                AbilityActions[abilityNumber].canceled -= ctx => EndAbility(abilityNumber);
+            }
+        }
+
+    }
 
 }

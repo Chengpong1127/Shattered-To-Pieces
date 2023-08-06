@@ -17,7 +17,14 @@ public class AbilityRebinder : IAbilityRebinder
         Debug.Assert(actions != null, "actions is null");
         _abilityManager = abilityManager;
         Actions = actions;
-
+        Debug.Assert(Actions.Length == abilityManager.AbilityInputEntryNumber, "The length of actions should be the same as the length of abilityInputEntries");
+        for (int i = 0; i < Actions.Length; i++)
+        {
+            Actions[i].RemoveAllBindingOverrides();
+            if(abilityManager.AbilityInputEntries[i].InputPath != ""){
+                Actions[i].AddBinding(abilityManager.AbilityInputEntries[i].InputPath);
+            }
+        }
     }
     public void CancelRebinding()
     {

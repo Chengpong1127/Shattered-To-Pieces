@@ -145,19 +145,20 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         deviceInfo ??= ResourceManager.Instance.LoadDefaultDeviceInfo();
         ClearAllGameComponents();
         ControlledDevice.Load(deviceInfo);
-        ControlledDevice.ForEachGameComponent((component) => {
-            GameComponentsUnitManager.AddUnit(component);
-        });
+        ControlledDevice.ForEachGameComponent(GameComponentsUnitManager.AddUnit);
+        ControlledDevice.AbilityManager.OnSetAbilityToEntry += _ => SaveCurrentDevice();
+        ControlledDevice.AbilityManager.OnSetAbilityOutOfEntry += _ => SaveCurrentDevice();
+
         
         AbilityRebinder = new AbilityRebinder(ControlledDevice.AbilityManager, GetAbilityInputActions());
         AbilityRebinder.OnFinishRebinding += _ => SaveCurrentDevice();
-
-        AbilityRunner = gameObject.AddComponent<AbilityRunner>();
+        if (AbilityRunner == null) {
+            AbilityRunner = gameObject.AddComponent<AbilityRunner>();
+        }
         AbilityRunner.AbilityManager = ControlledDevice.AbilityManager;
         AbilityRunner.AbilityActions = GetAbilityInputActions();
 
-        ControlledDevice.AbilityManager.OnSetAbilityToEntry += _ => SaveCurrentDevice();
-        ControlledDevice.AbilityManager.OnSetAbilityOutOfEntry += _ => SaveCurrentDevice();
+        
 
         OnLoadedDevice?.Invoke();
         return ControlledDevice;
