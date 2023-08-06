@@ -148,6 +148,7 @@ public class WorkShop : MonoBehaviour
         }
     }
     public void RefreshSkillBoxDisplayText(int boxid, string keyText) {
+        Debug.Log("Call Set key text.");
         shopDispatcher.rebindBoxId = boxid;
         shopDispatcher.SetRebindKeyText(keyText == string.Empty ? "Non" : keyText);
     }
