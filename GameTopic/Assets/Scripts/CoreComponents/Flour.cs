@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Floor : MonoBehaviour, ICoreComponent, IAffectObjectOwner {
+public class Flour : MonoBehaviour, ICoreComponent, IAffectObjectOwner {
     public Dictionary<string, Ability> AllAbilities { get; private set; } = new Dictionary<string, Ability>();
     public IGameComponent OwnerGameComponent { get; set; }
     public IAffectedObject affectedObject { get { return affectedObjectInstance; } }
@@ -32,6 +32,6 @@ public class Floor : MonoBehaviour, ICoreComponent, IAffectObjectOwner {
         affect.Invoke();
     }
     public void AbiliityEnd() {
-        affect.SetToDefault();
+        // affect.SetToDefault();
     }
 }

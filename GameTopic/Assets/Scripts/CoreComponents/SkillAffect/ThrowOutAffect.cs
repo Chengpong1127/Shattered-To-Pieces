@@ -6,7 +6,10 @@ public class ThrowOutAffect : SkillAffectBase {
     List<Vector3> startPosition { get;set; } = new List<Vector3>();
     List<Quaternion> startRotation { get; set; } = new List<Quaternion>();
 
-    [field: SerializeField] float throwPower { get; set; } = 3f;
+    [field: SerializeField] float throwPower { get; set; } = 100f;
+
+    List<Collider2D> resultList { get; set; }
+    ContactFilter2D filter { get;set; }
 
     public ThrowOutAffect() {
         this.type = SkillAffectType.Other;
@@ -15,7 +18,11 @@ public class ThrowOutAffect : SkillAffectBase {
     // override public void Invoke() {
     //     int loopIndex = 0;
     //     while (loopIndex < affectedObjectList.Count) {
-    //         loopIndex++;    
+    //         affectedObjectList[loopIndex].collider.OverlapCollider(filter,resultList);
+    //         
+    // 
+    // 
+    //         loopIndex++;
     //     }
     // }
 
@@ -27,17 +34,23 @@ public class ThrowOutAffect : SkillAffectBase {
         while(loopIndex < affectedObjectList.Count) {
             if (! (affectedObjectList[loopIndex].IsRigidbodyAffected &&
                 affectedObjectList[loopIndex].IsTransformAffected &&
-                affectedObjectList[loopIndex].IsColliderAffected)) { affectedObjectList.RemoveAt(loopIndex); continue; }
+                affectedObjectList[loopIndex].IsColliderAffected &&
+                affectedObjectList[loopIndex].IsJointAffected)) { affectedObjectList.RemoveAt(loopIndex); continue; }
 
             startPosition.Add(affectedObjectList[loopIndex].transform.position);
             startRotation.Add(affectedObjectList[loopIndex].transform.rotation);
 
+            affectedObjectList[loopIndex].joint.enabled = false;
             affectedObjectList[loopIndex].rigidbody.AddForce(affectedObjectList[loopIndex].transform.right * throwPower,ForceMode2D.Force);
 
             loopIndex++;
         }
     }
     public void SetToDefault() {
-
+        execute = false;
+        int loopIndex = 0;
+        while (loopIndex < affectedObjectList.Count) {
+            affectedObjectList[loopIndex++].joint.enabled = true;
+        }
     }
 }
