@@ -191,4 +191,13 @@ public class GameComponent : MonoBehaviour, IGameComponent
         zRotation += newzRotation;
         SetZRotation(zRotation);
     }
+
+    public ITreeNode GetRoot()
+    {
+        var parent = GetParent();
+        if (parent == null){
+            return this;
+        }
+        return parent.GetRoot();
+    }
 }
