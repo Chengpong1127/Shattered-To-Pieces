@@ -1,11 +1,25 @@
 using UnityEngine;
 using System.Collections.Generic;
-
+using UnityEngine.InputSystem;
 
 public class AbilityRunner: MonoBehaviour{
     public AbilityManager AbilityManager { get; set; }
-    private HashSet<int> RunningAbilitySet = new HashSet<int>();
-
+    private readonly HashSet<int> RunningAbilitySet = new();
+    public InputAction[] AbilityActions { get; set; }
+    private void Start() {
+        Debug.Assert(AbilityManager != null, "The ability manager should be set before Start()");
+        if (AbilityActions != null)
+        {
+            for (int i = 0; i < AbilityActions.Length; i++)
+            {
+                var abilityNumber = i;
+                AbilityActions[abilityNumber].AddBinding(AbilityManager.AbilityInputEntries[abilityNumber].InputPath);
+                AbilityActions[abilityNumber].started += ctx => StartAbility(abilityNumber);
+                AbilityActions[abilityNumber].canceled += ctx => EndAbility(abilityNumber);
+            }
+        }
+        
+    }
     public void StartAbility(int entryIndex){
         Debug.Assert(AbilityManager != null, "The ability manager should not be null");
         AbilityManager.AbilityInputEntries[entryIndex].StartAllAbilities();

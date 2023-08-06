@@ -4,6 +4,7 @@ using UnityEngine;
 using Gameframe.SaveLoad;
 using System.Linq;
 using System;
+using UnityEngine.InputSystem;
 
 public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 {
@@ -48,13 +49,15 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// </summary>
     private IGameComponentFactory GameComponentFactory;
 
-    public IAbilityRebinder AbilityKeyChanger { get; private set; }
+    public IAbilityRebinder AbilityRebinder { get; private set; }
 
     public List<GameComponentData> GameComponentDataList { get; private set; }
 
     public AbilityRunner AbilityRunner { get; private set; }
 
     public int CurrentLoadedDeviceID { get; private set; } = 0;
+
+    private InputManager _inputManager;
 
     #endregion
 
@@ -64,11 +67,15 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         GameComponentsUnitManager = new UnitManager();
         AssemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
 
+        _inputManager = new InputManager();
+
         ControlledDevice = CreateDevice();
         LoadDevice(CurrentLoadedDeviceID);
 
 
-        AbilityKeyChanger = new AbilityKeyChanger(AbilityManager);
+
+
+        AbilityRebinder = new AbilityRebinder(AbilityManager, GetAbilityInputActions());
         AssemblySystemManager.OnGameComponentDraggedStart += (component) => {
             AbilityManager.UpdateDeviceAbilities();
             SaveCurrentDevice();
@@ -78,38 +85,45 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
             SaveCurrentDevice();
         };
 
-        AbilityKeyChanger.OnFinishRebinding += _ => {
+        AbilityRebinder.OnFinishRebinding += _ => {
             AbilityManager.UpdateDeviceAbilities();
             Debug.Log("Ability key changed");
             SaveCurrentDevice();
         };
 
-        GameComponentDataList = GetGameComponentDataListFromResources();
+        GameComponentDataList = ResourceManager.Instance.LoadAllGameComponentData();
         Debug.Assert(GameComponentDataList != null);
 
         Debug.Assert(PlayerInitMoney >= 0);
 
         AbilityRunner = gameObject.AddComponent<AbilityRunner>();
         AbilityRunner.AbilityManager = AbilityManager;
+        AbilityRunner.AbilityActions = GetAbilityInputActions();
 
-        
+        AssemblySystemManager.SetDraggableMoverDragInputAction(_inputManager.AssemblyRoom.Drag);
+
+        _inputManager.Enable();
     }
     protected void Start() {
         
         SetRoomMode(AssemblyRoomMode.PlayMode);
     }
 
+
+    private InputAction[] GetAbilityInputActions(){
+        var abilityInputActions = new InputAction[AbilityManager.AbilityInputEntryNumber];
+        foreach(var action in _inputManager){
+            if (action.name.StartsWith("Ability")){
+                var abilityID = int.Parse(action.name[7..]);
+                abilityInputActions[abilityID] = action;
+            }
+        }
+        return abilityInputActions;
+    }
     private Device CreateDevice(){
         var device = new GameObject("Device").AddComponent<Device>();
         device.GameComponentFactory = GameComponentFactory;
         return device;
-    }
-
-    private List<GameComponentData> GetGameComponentDataListFromResources() {
-        var dataList = ResourceManager.Instance.LoadAllGameComponentData();
-        Debug.Assert(dataList != null);
-        return dataList;
-    
     }
 
     /// <summary>

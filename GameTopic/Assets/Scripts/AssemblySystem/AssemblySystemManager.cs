@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 using System;
 
@@ -35,12 +34,13 @@ public class AssemblySystemManager : MonoBehaviour
     private void Awake() {
         DraggableMover = gameObject.AddComponent<DraggableMover>();
         DraggableMover.enabled = false;
-        DraggableMover.DragAction = new InputManager().AssemblyRoom.Drag;
         DraggableMover.OnDragStart += HandleComponentDraggedStart;
         DraggableMover.OnDragEnd += HandleComponentDraggedEnd;
-
         DraggableMover.OnScrollWhenDragging += HandleScrollWhenDragging;
 
+    }
+    public void SetDraggableMoverDragInputAction(InputAction inputAction){
+        DraggableMover.DragAction = inputAction;
     }
     private void Update() {
         if(_scrollCounter > 0f){
