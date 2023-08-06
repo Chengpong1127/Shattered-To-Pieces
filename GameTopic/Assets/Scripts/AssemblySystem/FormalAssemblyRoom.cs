@@ -76,14 +76,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
         ControlledDevice = CreateDevice();
         LoadDevice(CurrentLoadedDeviceID);
-        AssemblySystemManager.OnGameComponentDraggedStart += (component) => {
-            ControlledDevice.AbilityManager.UpdateDeviceAbilities();
-            SaveCurrentDevice();
-        };
-        AssemblySystemManager.AfterGameComponentConnected += (component) => {
-            ControlledDevice.AbilityManager.UpdateDeviceAbilities();
-            SaveCurrentDevice();
-        };
+        
 
         GameComponentDataList = ResourceManager.Instance.LoadAllGameComponentData();
         Debug.Assert(GameComponentDataList != null);
@@ -99,7 +92,10 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         SetRoomMode(AssemblyRoomMode.PlayMode);
     }
 
-
+    private void UpdateSave(){
+        ControlledDevice.AbilityManager.UpdateDeviceAbilities();
+        SaveCurrentDevice();
+    }
     private InputAction[] GetAbilityInputActions(){
         var abilityInputActions = new InputAction[ControlledDevice.AbilityManager.AbilityInputEntryNumber];
         foreach(var action in _inputManager){
@@ -142,6 +138,10 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     private IDevice LoadNewDevice(DeviceInfo deviceInfo)
     {
+
+        AssemblySystemManager.OnGameComponentDraggedStart -= _ => UpdateSave();
+        AssemblySystemManager.AfterGameComponentConnected -= _ => UpdateSave();
+
         deviceInfo ??= ResourceManager.Instance.LoadDefaultDeviceInfo();
         ClearAllGameComponents();
         ControlledDevice.Load(deviceInfo);
@@ -158,7 +158,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         AbilityRunner.AbilityManager = ControlledDevice.AbilityManager;
         AbilityRunner.AbilityActions = GetAbilityInputActions();
 
-        
+        AssemblySystemManager.OnGameComponentDraggedStart += _ => UpdateSave();
+        AssemblySystemManager.AfterGameComponentConnected += _ => UpdateSave();
 
         OnLoadedDevice?.Invoke();
         return ControlledDevice;
