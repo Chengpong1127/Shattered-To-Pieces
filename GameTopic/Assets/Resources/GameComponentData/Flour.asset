@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7edbe836890bd452e9486843fcac7c64, type: 3}
-  m_Name: Rotator
+  m_Name: Flour
   m_EditorClassIdentifier: 
-  DisplayName: Rotator
-  DisplayImage: {fileID: 21300000, guid: 8548780538c4849229116881c49d0080, type: 3}
-  Description: "\u65CB\u8F49\u81EA\u5DF1\u4EE5\u53CA\u9023\u63A5\u5728\u4ED6\u8EAB\u4E0A\u7684\u5143\u4EF6"
-  Price: 30
-  Type: 0
-  ResourcePath: Rotator
+  DisplayName: Flour
+  DisplayImage: {fileID: 21300000, guid: ecad5c38397af48d094f4df77e32664b, type: 3}
+  Description: "\u5C07\u9EB5\u7C89\u4E1F\u51FA\u4E26\u88FD\u9020\u51FA\u7159\u9727\u963B\u7919\u8996\u7DDA"
+  Price: 20
+  Type: 3
+  ResourcePath: Flour
   DisplayAtShop: 1
