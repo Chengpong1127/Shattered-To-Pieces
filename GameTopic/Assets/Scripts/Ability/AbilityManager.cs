@@ -2,9 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class AbilityManager
 {
+    /// <summary>
+    /// Triggered after the ability is set to an entry.
+    /// </summary>
+    public event Action<Ability> OnSetAbilityToEntry;
+    /// <summary>
+    /// Triggered after the ability is set to out of an entry.
+    /// </summary>
+    public event Action<Ability> OnSetAbilityOutOfEntry;
+
+
     public List<AbilityInputEntry> AbilityInputEntries { get; private set; } = new List<AbilityInputEntry>();
     /// <summary>
     /// The device that this input manager is recording.
@@ -136,6 +147,7 @@ public class AbilityManager
         if(removed != null){
             abilityInEntryStatus[removed] = false;
         }
+        OnSetAbilityToEntry?.Invoke(ability);
     }
     /// <summary>
     /// Remove the ability from the input entry;
@@ -148,6 +160,7 @@ public class AbilityManager
             abilityInEntryStatus.Add(ability, false);
         }
         abilityInEntryStatus[ability] = false;
+        OnSetAbilityOutOfEntry?.Invoke(ability);
     }
 
     /// <summary>

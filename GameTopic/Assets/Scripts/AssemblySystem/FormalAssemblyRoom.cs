@@ -14,8 +14,13 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// Event for when the room mode is changed.
     /// </summary>
     public event Action<AssemblyRoomMode> OnSetRoomMode;
-
+    /// <summary>
+    /// Triggered after the device is loaded.
+    /// </summary>
     public event Action OnLoadedDevice;
+    /// <summary>
+    /// Triggered after the device is saved.
+    /// </summary> <summary>
     public event Action OnSavedDevice;
 
     #endregion
@@ -71,22 +76,12 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
         ControlledDevice = CreateDevice();
         LoadDevice(CurrentLoadedDeviceID);
-
-
-
-
-        AbilityRebinder = new AbilityRebinder(AbilityManager, GetAbilityInputActions());
         AssemblySystemManager.OnGameComponentDraggedStart += (component) => {
-            AbilityManager.UpdateDeviceAbilities();
+            ControlledDevice.AbilityManager.UpdateDeviceAbilities();
             SaveCurrentDevice();
         };
         AssemblySystemManager.AfterGameComponentConnected += (component) => {
-            AbilityManager.UpdateDeviceAbilities();
-            SaveCurrentDevice();
-        };
-
-        AbilityRebinder.OnFinishRebinding += _ => {
-            AbilityManager.UpdateDeviceAbilities();
+            ControlledDevice.AbilityManager.UpdateDeviceAbilities();
             SaveCurrentDevice();
         };
 
@@ -94,10 +89,6 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         Debug.Assert(GameComponentDataList != null);
 
         Debug.Assert(PlayerInitMoney >= 0);
-
-        AbilityRunner = gameObject.AddComponent<AbilityRunner>();
-        AbilityRunner.AbilityManager = AbilityManager;
-        AbilityRunner.AbilityActions = GetAbilityInputActions();
 
         AssemblySystemManager.SetDraggableMoverDragInputAction(_inputManager.AssemblyRoom.Drag);
 
@@ -110,7 +101,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
 
     private InputAction[] GetAbilityInputActions(){
-        var abilityInputActions = new InputAction[AbilityManager.AbilityInputEntryNumber];
+        var abilityInputActions = new InputAction[ControlledDevice.AbilityManager.AbilityInputEntryNumber];
         foreach(var action in _inputManager){
             if (action.name.StartsWith("Ability")){
                 var abilityID = int.Parse(action.name[7..]);
@@ -157,6 +148,17 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         ControlledDevice.ForEachGameComponent((component) => {
             GameComponentsUnitManager.AddUnit(component);
         });
+        
+        AbilityRebinder = new AbilityRebinder(ControlledDevice.AbilityManager, GetAbilityInputActions());
+        AbilityRebinder.OnFinishRebinding += _ => SaveCurrentDevice();
+
+        AbilityRunner = gameObject.AddComponent<AbilityRunner>();
+        AbilityRunner.AbilityManager = ControlledDevice.AbilityManager;
+        AbilityRunner.AbilityActions = GetAbilityInputActions();
+
+        ControlledDevice.AbilityManager.OnSetAbilityToEntry += _ => SaveCurrentDevice();
+        ControlledDevice.AbilityManager.OnSetAbilityOutOfEntry += _ => SaveCurrentDevice();
+
         OnLoadedDevice?.Invoke();
         return ControlledDevice;
     }
