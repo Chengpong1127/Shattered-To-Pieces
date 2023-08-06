@@ -87,7 +87,6 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
         AbilityRebinder.OnFinishRebinding += _ => {
             AbilityManager.UpdateDeviceAbilities();
-            Debug.Log("Ability key changed");
             SaveCurrentDevice();
         };
 

@@ -10,7 +10,7 @@ public class AbilityRebinder : IAbilityRebinder
     public event Action<string> OnFinishRebinding;
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
     private readonly AbilityManager _abilityManager;
-
+    private bool actionEnabled;
     public AbilityRebinder(AbilityManager abilityManager, InputAction[] actions)
     {
         Debug.Assert(abilityManager != null, "abilityManager is null");
@@ -25,13 +25,19 @@ public class AbilityRebinder : IAbilityRebinder
         {
             rebindingOperation.Cancel();
             rebindingOperation.Dispose();
+            if (actionEnabled) rebindingOperation.action.Enable(); 
             rebindingOperation = null;
         }
     }
 
     public void StartRebinding(int abilityButtonID)
     {
+        if (rebindingOperation != null){
+            CancelRebinding();
+        }
         var action = Actions[abilityButtonID];
+        actionEnabled = action.enabled;
+        action.Disable();
         rebindingOperation = action.PerformInteractiveRebinding()
             .WithControlsExcluding("Mouse")
             .OnComplete(operation => RebindingComplete(abilityButtonID,operation))
@@ -42,6 +48,7 @@ public class AbilityRebinder : IAbilityRebinder
         _abilityManager.SetPath(abilityID, operation.action.bindings[0].effectivePath);
         OnFinishRebinding?.Invoke(operation.action.bindings[0].effectivePath);
         rebindingOperation.Dispose();
+        if (actionEnabled) rebindingOperation.action.Enable();
         rebindingOperation = null;
     }
 }
