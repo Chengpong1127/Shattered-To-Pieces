@@ -70,11 +70,11 @@ public class AbilityManagerTest
         var device = new TestDevice();
         var abilityManager = new AbilityManager(device);
         var path = "test";
-        abilityManager.SetPath(0, path);
+        abilityManager.SetBinding(0, path);
         Assert.AreEqual(abilityManager.AbilityInputEntries[0].InputPath, path);
 
         path = "test2";
-        abilityManager.SetPath(0, path);
+        abilityManager.SetBinding(0, path);
         Assert.AreEqual(abilityManager.AbilityInputEntries[0].InputPath, path);
     }
 

@@ -34,7 +34,7 @@ public class AbilityKeyChanger:IAbilityRebinder
                 {
                     if (keyName.Length <= 1 && keyName[0] >= 'A' && keyName[0] <= 'Z')
                     {
-                        abilityManager.SetPath(abilityBID, keyName);
+                        abilityManager.SetBinding(abilityBID, keyName);
                         OnFinishRebinding?.Invoke(keyName);
                         Debug.Log("abilityButton:" + abilityBID + "has changed input path to " + keyName);
                         CancelRebinding();

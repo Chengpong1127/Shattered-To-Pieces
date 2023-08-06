@@ -14,6 +14,10 @@ public class AbilityManager
     /// Triggered after the ability is set to out of an entry.
     /// </summary>
     public event Action<Ability> OnSetAbilityOutOfEntry;
+    /// <summary>
+    /// Triggered after setting binding
+    /// </summary>
+    public event Action<int, string> OnSetBinding;
 
 
     public List<AbilityInputEntry> AbilityInputEntries { get; private set; } = new List<AbilityInputEntry>();
@@ -52,10 +56,9 @@ public class AbilityManager
             abilityInEntryStatus.Clear();
             for (int i = 0; i < AbilityInputEntryNumber; i++)
             {
-                SetPath(i, info.EntryPaths[i]);
+                SetBinding(i, info.EntryPaths[i]);
             }
-            var deviceAbilityList = GetDeviceCurrentAbilityList();
-            foreach (var ability in deviceAbilityList)
+            foreach (var ability in GetDeviceCurrentAbilityList())
             {
                 abilityInEntryStatus.Add(ability, true);
             }
@@ -125,9 +128,10 @@ public class AbilityManager
     /// </summary>
     /// <param name="entryID"> The index of the input entry.</param>
     /// <param name="path"> The key path of the input entry.</param>
-    public void SetPath(int entryID, string path){
+    public void SetBinding(int entryID, string path){
         Debug.Assert(entryID < AbilityInputEntries.Count, "index out of range");
         AbilityInputEntries[entryID].SetInputPath(path);
+        OnSetBinding?.Invoke(entryID, path);
     }
     /// <summary>
     /// Assign an ability to the input entry.
