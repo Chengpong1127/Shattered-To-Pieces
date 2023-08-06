@@ -48,7 +48,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// </summary>
     private IGameComponentFactory GameComponentFactory;
 
-    public IAbilityKeyChanger AbilityKeyChanger { get; private set; }
+    public IAbilityRebinder AbilityKeyChanger { get; private set; }
 
     public List<GameComponentData> GameComponentDataList { get; private set; }
 
@@ -78,7 +78,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
             SaveCurrentDevice();
         };
 
-        AbilityKeyChanger.OnFinishChangeAbilityKey += _ => {
+        AbilityKeyChanger.OnFinishRebinding += _ => {
             AbilityManager.UpdateDeviceAbilities();
             Debug.Log("Ability key changed");
             SaveCurrentDevice();

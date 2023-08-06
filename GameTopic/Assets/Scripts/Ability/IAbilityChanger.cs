@@ -1,7 +1,7 @@
 using System;
-public interface IAbilityKeyChanger
+public interface IAbilityRebinder
 {
-    public void StartChangeAbilityKey(int abilityButtonID);
-    public void EndChangeAbilityKey();
-    public event Action<string> OnFinishChangeAbilityKey;
+    public void StartRebinding(int abilityButtonID);
+    public void CancelRebinding();
+    public event Action<string> OnFinishRebinding;
 }

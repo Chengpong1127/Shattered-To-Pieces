@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
-public class AbilityKeyChanger:IAbilityKeyChanger
+public class AbilityKeyChanger:IAbilityRebinder
 {
     // Start is called before the first frame update
     private int abilityBID;
     public InputManager inputmanager;
-    public event Action<string> OnFinishChangeAbilityKey;
+    public event Action<string> OnFinishRebinding;
     public AbilityManager abilityManager { get; set; }
     private bool KeySelected;
     private string key;
@@ -35,9 +35,9 @@ public class AbilityKeyChanger:IAbilityKeyChanger
                     if (keyName.Length <= 1 && keyName[0] >= 'A' && keyName[0] <= 'Z')
                     {
                         abilityManager.SetPath(abilityBID, keyName);
-                        OnFinishChangeAbilityKey?.Invoke(keyName);
+                        OnFinishRebinding?.Invoke(keyName);
                         Debug.Log("abilityButton:" + abilityBID + "has changed input path to " + keyName);
-                        EndChangeAbilityKey();
+                        CancelRebinding();
                     }
                     else
                     {
@@ -49,7 +49,7 @@ public class AbilityKeyChanger:IAbilityKeyChanger
         }
     }
 
-    public void StartChangeAbilityKey(int abilityButtonID)
+    public void StartRebinding(int abilityButtonID)
     {
         key = abilityManager.AbilityInputEntries[abilityButtonID].InputPath;
         KeySelected = true;
@@ -57,7 +57,7 @@ public class AbilityKeyChanger:IAbilityKeyChanger
         Debug.Log("KeyID: " + abilityButtonID + " is selected");
     }
 
-    public void EndChangeAbilityKey()
+    public void CancelRebinding()
     {
         abilityBID = -1;
         key = "";
