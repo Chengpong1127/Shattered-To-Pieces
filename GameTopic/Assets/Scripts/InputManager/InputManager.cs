@@ -24,7 +24,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
     ""name"": ""InputManager"",
     ""maps"": [
         {
-            ""name"": ""menu"",
+            ""name"": ""AssemblyRoom"",
             ""id"": ""12770697-a6a7-41a0-9ea7-56be72fce1b0"",
             ""actions"": [
                 {
@@ -86,10 +86,10 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // menu
-        m_menu = asset.FindActionMap("menu", throwIfNotFound: true);
-        m_menu_Drag = m_menu.FindAction("Drag", throwIfNotFound: true);
-        m_menu_Click = m_menu.FindAction("Click", throwIfNotFound: true);
+        // AssemblyRoom
+        m_AssemblyRoom = asset.FindActionMap("AssemblyRoom", throwIfNotFound: true);
+        m_AssemblyRoom_Drag = m_AssemblyRoom.FindAction("Drag", throwIfNotFound: true);
+        m_AssemblyRoom_Click = m_AssemblyRoom.FindAction("Click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -148,26 +148,26 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // menu
-    private readonly InputActionMap m_menu;
-    private List<IMenuActions> m_MenuActionsCallbackInterfaces = new List<IMenuActions>();
-    private readonly InputAction m_menu_Drag;
-    private readonly InputAction m_menu_Click;
-    public struct MenuActions
+    // AssemblyRoom
+    private readonly InputActionMap m_AssemblyRoom;
+    private List<IAssemblyRoomActions> m_AssemblyRoomActionsCallbackInterfaces = new List<IAssemblyRoomActions>();
+    private readonly InputAction m_AssemblyRoom_Drag;
+    private readonly InputAction m_AssemblyRoom_Click;
+    public struct AssemblyRoomActions
     {
         private @InputManager m_Wrapper;
-        public MenuActions(@InputManager wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Drag => m_Wrapper.m_menu_Drag;
-        public InputAction @Click => m_Wrapper.m_menu_Click;
-        public InputActionMap Get() { return m_Wrapper.m_menu; }
+        public AssemblyRoomActions(@InputManager wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Drag => m_Wrapper.m_AssemblyRoom_Drag;
+        public InputAction @Click => m_Wrapper.m_AssemblyRoom_Click;
+        public InputActionMap Get() { return m_Wrapper.m_AssemblyRoom; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(MenuActions set) { return set.Get(); }
-        public void AddCallbacks(IMenuActions instance)
+        public static implicit operator InputActionMap(AssemblyRoomActions set) { return set.Get(); }
+        public void AddCallbacks(IAssemblyRoomActions instance)
         {
-            if (instance == null || m_Wrapper.m_MenuActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_MenuActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_AssemblyRoomActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_AssemblyRoomActionsCallbackInterfaces.Add(instance);
             @Drag.started += instance.OnDrag;
             @Drag.performed += instance.OnDrag;
             @Drag.canceled += instance.OnDrag;
@@ -176,7 +176,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
             @Click.canceled += instance.OnClick;
         }
 
-        private void UnregisterCallbacks(IMenuActions instance)
+        private void UnregisterCallbacks(IAssemblyRoomActions instance)
         {
             @Drag.started -= instance.OnDrag;
             @Drag.performed -= instance.OnDrag;
@@ -186,21 +186,21 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
             @Click.canceled -= instance.OnClick;
         }
 
-        public void RemoveCallbacks(IMenuActions instance)
+        public void RemoveCallbacks(IAssemblyRoomActions instance)
         {
-            if (m_Wrapper.m_MenuActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_AssemblyRoomActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IMenuActions instance)
+        public void SetCallbacks(IAssemblyRoomActions instance)
         {
-            foreach (var item in m_Wrapper.m_MenuActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_AssemblyRoomActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_MenuActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_AssemblyRoomActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public MenuActions @menu => new MenuActions(this);
+    public AssemblyRoomActions @AssemblyRoom => new AssemblyRoomActions(this);
     private int m_MouseSchemeIndex = -1;
     public InputControlScheme MouseScheme
     {
@@ -210,7 +210,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_MouseSchemeIndex];
         }
     }
-    public interface IMenuActions
+    public interface IAssemblyRoomActions
     {
         void OnDrag(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);

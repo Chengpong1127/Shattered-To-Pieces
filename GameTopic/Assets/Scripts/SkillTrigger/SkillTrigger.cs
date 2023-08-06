@@ -13,9 +13,9 @@ public class SkillTrigger : MonoBehaviour
     {
         runner= GetComponent<FormalAssemblyRoom>().AbilityRunner;
         inputmanager = new InputManager();
-        inputmanager.menu.Enable();
-        inputmanager.menu.Click.started += Click;
-        inputmanager.menu.Click.canceled += EndClick;
+        inputmanager.AssemblyRoom.Enable();
+        inputmanager.AssemblyRoom.Click.started += Click;
+        inputmanager.AssemblyRoom.Click.canceled += EndClick;
     }
     void Click(InputAction.CallbackContext ctx)
     {

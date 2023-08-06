@@ -4,47 +4,44 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 
-public class DragableMover: MonoBehaviour
+public class DraggableMover: MonoBehaviour
 {
-    public InputManager inputManager;
+    public InputAction DragAction { get; set; }
     public Camera mainCamera;
     public event Action<IDraggable, Vector2> OnDragStart;
     public event Action<IDraggable, Vector2> OnDragEnd;
-
     public event Action<IDraggable ,Vector2> OnScrollWhenDragging;
 
     private IDraggable draggedComponent = null;
     private bool isDragging = false;
-    private void Start() {
-        inputManager.menu.Enable();
+    private void Awake() {
         mainCamera = Camera.main;
+    }
+    private void Start() {
+        Debug.Assert(DragAction != null, "DragAction is null");
+        DragAction.started += DragStarted;
+        DragAction.canceled += DragCanceled;
     }
     private void Update() {
         if (isDragging)
         {
             Debug.Assert(draggedComponent != null, "draggedComponent is null");
             Vector2 mousePosition = Mouse.current.position.ReadValue();
-            setDragablePosition(mousePosition);
+            SetDraggablePosition(mousePosition);
             OnScrollWhenDragging?.Invoke(draggedComponent ,Mouse.current.scroll.ReadValue());
         }
     }
     private void OnEnable() {
-        if (inputManager != null){
-            inputManager.menu.Drag.started += DragStarted;
-            inputManager.menu.Drag.canceled += DragCanceled;
-        }
+        DragAction?.Enable();
         
     }
     private void OnDisable() {
-        if (inputManager != null){
-            inputManager.menu.Drag.started -= DragStarted;
-            inputManager.menu.Drag.canceled -= DragCanceled;
-        }
+        DragAction?.Disable();
     }
     private void DragStarted(InputAction.CallbackContext ctx)
     {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
-        draggedComponent = getDragableUnderMouse(mousePosition);
+        draggedComponent = GetDraggableUnderMouse(mousePosition);
         
         var worldPoint = mainCamera.ScreenToWorldPoint(mousePosition);
         if (draggedComponent != null)
@@ -67,9 +64,9 @@ public class DragableMover: MonoBehaviour
         draggedComponent = null;
     }
 
-    private IDraggable getDragableUnderMouse(Vector2 mousePosition)
+    private IDraggable GetDraggableUnderMouse(Vector2 mousePosition)
     {
-        var gameObject = getGameObjectUnderMouse(mousePosition);
+        var gameObject = GetGameObjectUnderMouse(mousePosition);
         if (gameObject != null)
         {
             return gameObject.GetComponentInParent<IDraggable>();
@@ -80,7 +77,7 @@ public class DragableMover: MonoBehaviour
     }
 
 
-    private GameObject getGameObjectUnderMouse(Vector2 mousePosition)
+    private GameObject GetGameObjectUnderMouse(Vector2 mousePosition)
     {
         Vector3 worldPoint = mainCamera.ScreenToWorldPoint(mousePosition);
 
@@ -96,7 +93,7 @@ public class DragableMover: MonoBehaviour
         }
     }
 
-    private void setDragablePosition(Vector2 mousePosition)
+    private void SetDraggablePosition(Vector2 mousePosition)
     {
         var newPosition = mainCamera.ScreenToWorldPoint(mousePosition);
         newPosition.z = 0;

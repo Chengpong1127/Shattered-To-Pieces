@@ -17,8 +17,8 @@ public class AbilityKeyChanger:IAbilityKeyChanger
         this.abilityManager = abilityManager;
         abilityBID = -1;
         inputmanager = new InputManager();
-        inputmanager.menu.Enable();
-        inputmanager.menu.Click.performed += ChangeKey;
+        inputmanager.AssemblyRoom.Enable();
+        inputmanager.AssemblyRoom.Click.performed += ChangeKey;
         KeySelected = false;
     }
 

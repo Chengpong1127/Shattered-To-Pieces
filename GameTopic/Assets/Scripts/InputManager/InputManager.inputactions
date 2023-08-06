@@ -2,7 +2,7 @@
     "name": "InputManager",
     "maps": [
         {
-            "name": "menu",
+            "name": "AssemblyRoom",
             "id": "12770697-a6a7-41a0-9ea7-56be72fce1b0",
             "actions": [
                 {
