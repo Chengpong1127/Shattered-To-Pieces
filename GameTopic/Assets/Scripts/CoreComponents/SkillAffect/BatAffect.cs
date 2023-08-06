@@ -30,7 +30,6 @@ public class BatAffect : SkillAffectBase
             targetRotation %= 360f;
             oringnalRotation = transform.rotation.eulerAngles.z;
             if (oringnalRotation < 0f) oringnalRotation += 360f;
-            Debug.Log(oringnalRotation + " " + targetRotation);
             SkillTriggered = true;
         }
     }
