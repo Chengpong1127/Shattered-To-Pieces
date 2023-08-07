@@ -77,6 +77,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         ControlledDevice = CreateDevice();
         LoadDevice(CurrentLoadedDeviceID);
         
+        AssemblySystemManager.OnGameComponentDraggedStart += _ => UpdateSave();
+        AssemblySystemManager.AfterGameComponentConnected += _ => UpdateSave();
 
         GameComponentDataList = ResourceManager.Instance.LoadAllGameComponentData();
         Debug.Assert(GameComponentDataList != null);
@@ -139,8 +141,6 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     private IDevice LoadNewDevice(DeviceInfo deviceInfo)
     {
 
-        AssemblySystemManager.OnGameComponentDraggedStart -= _ => UpdateSave();
-        AssemblySystemManager.AfterGameComponentConnected -= _ => UpdateSave();
 
         deviceInfo ??= ResourceManager.Instance.LoadDefaultDeviceInfo();
         ClearAllGameComponents();
@@ -158,8 +158,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         AbilityRunner.AbilityManager = ControlledDevice.AbilityManager;
         AbilityRunner.AbilityActions = GetAbilityInputActions();
 
-        AssemblySystemManager.OnGameComponentDraggedStart += _ => UpdateSave();
-        AssemblySystemManager.AfterGameComponentConnected += _ => UpdateSave();
+        
 
         OnLoadedDevice?.Invoke();
         return ControlledDevice;

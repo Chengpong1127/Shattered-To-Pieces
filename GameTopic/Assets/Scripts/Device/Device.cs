@@ -51,7 +51,7 @@ public class Device: MonoBehaviour, IDevice
         RootGameComponent = tempDictionary[deviceInfo.treeInfo.rootID];
 
         ConnectAllComponents(tempDictionary, deviceInfo.treeInfo.NodeInfoMap, deviceInfo.treeInfo.EdgeInfoList);
-        AbilityManager = new AbilityManager(this, deviceInfo.abilityManagerInfo, tempDictionary);
+        AbilityManager.Load(this, deviceInfo.abilityManagerInfo, tempDictionary);
     }
 
     private Dictionary<int, IGameComponent> CreateAllComponents(Dictionary<int, GameComponentInfo> nodes){
