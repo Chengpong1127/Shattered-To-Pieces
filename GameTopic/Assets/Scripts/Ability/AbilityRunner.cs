@@ -1,27 +1,36 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
 public class AbilityRunner: MonoBehaviour{
-    public AbilityManager AbilityManager { get; set; }
+    public AbilityManager AbilityManager { get; private set; }
     private readonly HashSet<int> RunningAbilitySet = new();
-    public InputAction[] AbilityActions { get; set; }
-    private void Start() {
-        Debug.Assert(AbilityManager != null, "The ability manager should be set before Start()");
-        if (AbilityActions != null)
-        {
-            for (int i = 0; i < AbilityActions.Length; i++)
-            {
-                var abilityNumber = i;
-                AbilityActions[abilityNumber].AddBinding(AbilityManager.AbilityInputEntries[abilityNumber].InputPath);
-                AbilityActions[abilityNumber].started += ctx => StartAbility(abilityNumber);
-                AbilityActions[abilityNumber].canceled += ctx => EndAbility(abilityNumber);
-            }
+
+    public static AbilityRunner CreateInstance(GameObject where, AbilityManager abilityManager){
+        if (where == null){
+            throw new ArgumentNullException(nameof(where));
         }
-        
+        var abilityRunner = where.AddComponent<AbilityRunner>();
+        abilityRunner.AbilityManager = abilityManager ?? throw new System.ArgumentNullException(nameof(abilityManager));
+        return abilityRunner;
+    }
+    public void BindInputActionsToRunner(InputAction[] abilityActions){
+        if (abilityActions == null){
+            throw new ArgumentNullException(nameof(abilityActions));
+        }
+        if (abilityActions.Length != AbilityManager.AbilityInputEntryNumber){
+            throw new ArgumentException("The length of abilityActions should be the same as the length of abilityInputEntries");
+        }
+        for (int i = 0; i < abilityActions.Length; i++)
+        {
+            var abilityNumber = i;
+            abilityActions[abilityNumber].AddBinding(AbilityManager.AbilityInputEntries[abilityNumber].InputPath);
+            abilityActions[abilityNumber].started += ctx => StartAbility(abilityNumber);
+            abilityActions[abilityNumber].canceled += ctx => EndAbility(abilityNumber);
+        }
     }
     public void StartAbility(int entryIndex){
-        Debug.Assert(AbilityManager != null, "The ability manager should not be null");
         AbilityManager.AbilityInputEntries[entryIndex].StartAllAbilities();
         RunningAbilitySet.Add(entryIndex);
     }
@@ -35,7 +44,9 @@ public class AbilityRunner: MonoBehaviour{
     }
 
     public void EndAbility(int entryIndex){
-        Debug.Assert(RunningAbilitySet.Contains(entryIndex), "The ability is not running");
+        if (!RunningAbilitySet.Contains(entryIndex)){
+            throw new ArgumentException("The ability is not running");
+        }
         AbilityManager.AbilityInputEntries[entryIndex].EndAllAbilities();
         RunningAbilitySet.Remove(entryIndex);
     }
@@ -53,24 +64,6 @@ public class AbilityRunner: MonoBehaviour{
         foreach (var entryIndex in RunningAbilitySet){
             AbilityManager.AbilityInputEntries[entryIndex].RunAllAbilitiesForEachFrame();
         }
-    }
-
-    private void OnDestroy() {
-        foreach (var entryIndex in RunningAbilitySet){
-            AbilityManager.AbilityInputEntries[entryIndex].EndAllAbilities();
-        }
-
-        if (AbilityActions != null)
-        {
-            for (int i = 0; i < AbilityActions.Length; i++)
-            {
-                var abilityNumber = i;
-                AbilityActions[abilityNumber].RemoveAllBindingOverrides();
-                AbilityActions[abilityNumber].started -= ctx => StartAbility(abilityNumber);
-                AbilityActions[abilityNumber].canceled -= ctx => EndAbility(abilityNumber);
-            }
-        }
-
     }
 
 }

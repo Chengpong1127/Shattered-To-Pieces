@@ -13,16 +13,18 @@ public class AbilityRebinder : IAbilityRebinder
     private bool actionEnabled;
     public AbilityRebinder(AbilityManager abilityManager, InputAction[] actions)
     {
-        Debug.Assert(abilityManager != null, "abilityManager is null");
-        Debug.Assert(actions != null, "actions is null");
-        _abilityManager = abilityManager;
-        Actions = actions;
-        Debug.Assert(Actions.Length == abilityManager.AbilityInputEntryNumber, "The length of actions should be the same as the length of abilityInputEntries");
+        _abilityManager = abilityManager ?? throw new ArgumentNullException(nameof(abilityManager));
+        Actions = actions ?? throw new ArgumentNullException(nameof(actions));
+        if (Actions.Length != _abilityManager.AbilityInputEntryNumber)
+        {
+            throw new ArgumentException("The length of abilityActions should be the same as the length of abilityInputEntries");
+        }
         for (int i = 0; i < Actions.Length; i++)
         {
-            Actions[i].RemoveAllBindingOverrides();
             if(abilityManager.AbilityInputEntries[i].InputPath != ""){
-                Actions[i].AddBinding(abilityManager.AbilityInputEntries[i].InputPath);
+                Actions[i].ApplyBindingOverride(abilityManager.AbilityInputEntries[i].InputPath);
+            }else{
+                Actions[i].RemoveAllBindingOverrides();
             }
         }
     }

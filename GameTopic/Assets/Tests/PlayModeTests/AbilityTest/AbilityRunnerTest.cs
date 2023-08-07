@@ -11,9 +11,8 @@ public class AbilityRunnerTest
     public void ConstructAbilityRunnerTest()
     {
         testNumber = 0;
-        var abilityRunner = new GameObject().AddComponent<AbilityRunner>();
+        var abilityRunner = AbilityRunner.CreateInstance(new GameObject(), GetTestAbilityManager());
         Assert.True(abilityRunner != null);
-        abilityRunner.AbilityManager = GetTestAbilityManager();
 
         abilityRunner.StartAbility(0);
         Assert.AreEqual(testNumber, 1);
@@ -28,9 +27,7 @@ public class AbilityRunnerTest
     public IEnumerator AbilityRunnerTestRunning()
     {
         testNumber = 0;
-        var abilityRunner = new GameObject().AddComponent<AbilityRunner>();
-        Assert.True(abilityRunner != null);
-        abilityRunner.AbilityManager = GetTestAbilityManager();
+        var abilityRunner = AbilityRunner.CreateInstance(new GameObject(), GetTestAbilityManager());
 
         abilityRunner.StartAbility(2);
         Assert.AreEqual(testNumber, 3);

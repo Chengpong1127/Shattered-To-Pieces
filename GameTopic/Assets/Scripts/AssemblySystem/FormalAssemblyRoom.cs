@@ -79,13 +79,17 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         
         AssemblySystemManager.OnGameComponentDraggedStart += _ => UpdateSave();
         AssemblySystemManager.AfterGameComponentConnected += _ => UpdateSave();
+        AssemblySystemManager.SetDraggableMoverDragInputAction(_inputManager.AssemblyRoom.Drag);
 
         GameComponentDataList = ResourceManager.Instance.LoadAllGameComponentData();
         Debug.Assert(GameComponentDataList != null);
 
         Debug.Assert(PlayerInitMoney >= 0);
 
-        AssemblySystemManager.SetDraggableMoverDragInputAction(_inputManager.AssemblyRoom.Drag);
+        
+
+        AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager);
+        AbilityRunner.BindInputActionsToRunner(GetAbilityInputActions());
 
         _inputManager.Enable();
     }
@@ -146,19 +150,11 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         ClearAllGameComponents();
         ControlledDevice.Load(deviceInfo);
         ControlledDevice.ForEachGameComponent(GameComponentsUnitManager.AddUnit);
-        ControlledDevice.AbilityManager.OnSetAbilityToEntry += _ => SaveCurrentDevice();
-        ControlledDevice.AbilityManager.OnSetAbilityOutOfEntry += _ => SaveCurrentDevice();
+
 
         
         AbilityRebinder = new AbilityRebinder(ControlledDevice.AbilityManager, GetAbilityInputActions());
         AbilityRebinder.OnFinishRebinding += _ => SaveCurrentDevice();
-        if (AbilityRunner == null) {
-            AbilityRunner = gameObject.AddComponent<AbilityRunner>();
-        }
-        AbilityRunner.AbilityManager = ControlledDevice.AbilityManager;
-        AbilityRunner.AbilityActions = GetAbilityInputActions();
-
-        
 
         OnLoadedDevice?.Invoke();
         return ControlledDevice;
