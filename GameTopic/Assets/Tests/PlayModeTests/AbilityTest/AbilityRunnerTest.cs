@@ -44,7 +44,7 @@ public class AbilityRunnerTest
 
     public AbilityManager GetTestAbilityManager(){
         
-        var abilityManager = new AbilityManager(new Device(), 3);
+        var abilityManager = new AbilityManager(new Device(null), 3);
         var ability1 = new Ability("test1", ()=>{this.testNumber = 1;});
         var ability2 = new Ability("test2", ()=>{this.testNumber = 2;});
 

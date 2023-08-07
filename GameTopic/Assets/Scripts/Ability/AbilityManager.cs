@@ -183,7 +183,7 @@ public class AbilityManager
             .ToList();
     }
     private List<Ability> GetDeviceCurrentAbilityList(){
-        return Device.getAbilityList();
+        return Device.GetAbilityList();
     }
 
     private void RemoveAbilityFromEntry(Ability ability){

@@ -6,13 +6,13 @@ using System;
 /// <summary>
 /// Device of the game. Must assign GameComponentFactory after Initialize.
 /// </summary>
-public class Device: MonoBehaviour, IDevice
+public class Device: IDevice
 {
-    public IGameComponentFactory GameComponentFactory;
-    public IGameComponent RootGameComponent { set; get; }
+    public IGameComponentFactory GameComponentFactory { get; private set; }
+    public IGameComponent RootGameComponent { get; private set; }
     public AbilityManager AbilityManager { get; private set; }
-
-    protected void Awake() {
+    public Device(IGameComponentFactory gameComponentFactory){
+        GameComponentFactory = gameComponentFactory;
         AbilityManager = new AbilityManager(this);
     }
     public IInfo Dump()
@@ -33,12 +33,17 @@ public class Device: MonoBehaviour, IDevice
 
     public void Load(IInfo info)
     {
-        Debug.Assert(info is DeviceInfo);
+        if (info is not DeviceInfo){
+            throw new ArgumentException("The info should be DeviceInfo");
+        }
+        if (GameComponentFactory == null){
+            throw new NullReferenceException("Device cannot load without GameComponentFactory");
+        }
         var deviceInfo = info as DeviceInfo;
 
         var tempDictionary = CreateAllComponents(deviceInfo.treeInfo.NodeInfoMap);
         foreach (var (key, value) in deviceInfo.treeInfo.NodeInfoMap){
-            var componentInfo = value as GameComponentInfo;
+            var componentInfo = value;
             var component = tempDictionary[key];
             component.Load(componentInfo);
         }
@@ -69,13 +74,13 @@ public class Device: MonoBehaviour, IDevice
         foreach (var (from, to) in edges){
             var fromComponent = nodes[from];
             var toComponent = nodes[to];
-            var toInfo = infos[to] as GameComponentInfo;
+            var toInfo = infos[to];
             
             toComponent.ConnectToParent(fromComponent, toInfo.ConnectionInfo);
         }
     }
 
-    public List<Ability> getAbilityList(){
+    public List<Ability> GetAbilityList(){
         var abilityList = new List<Ability>();
         if (RootGameComponent == null)
             return abilityList;

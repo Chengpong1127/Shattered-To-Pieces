@@ -74,7 +74,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
         _inputManager = new InputManager();
 
-        ControlledDevice = CreateDevice();
+        ControlledDevice = new Device(GameComponentFactory);
         LoadDevice(CurrentLoadedDeviceID);
         
         AssemblySystemManager.OnGameComponentDraggedStart += _ => UpdateSave();
@@ -111,11 +111,6 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
             }
         }
         return abilityInputActions;
-    }
-    private Device CreateDevice(){
-        var device = new GameObject("Device").AddComponent<Device>();
-        device.GameComponentFactory = GameComponentFactory;
-        return device;
     }
 
     /// <summary>

@@ -11,7 +11,7 @@ public class AbilityManagerTest
     [TestCase(10)]
     public void CreateAbilityManagerTest(int entryCount)
     {
-        var device = new GameObject().AddComponent<Device>();
+        var device = new TestDevice();
         var abilityManager = new AbilityManager(device, entryCount);
         Assert.AreEqual(abilityManager.AbilityInputEntries.Count, entryCount);
     }
@@ -202,7 +202,7 @@ public class AbilityManagerTest
             abilityList.Add(ability);
         }
 
-        public List<Ability> getAbilityList()
+        public List<Ability> GetAbilityList()
         {
             return abilityList;
         }
