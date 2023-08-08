@@ -33,7 +33,20 @@ public abstract class BaseCoreComponent : MonoBehaviour, ICoreComponent
     public bool HasTheSameRootWith(ICoreComponent other){
         return OwnerGameComponent.GetRoot() == other.OwnerGameComponent.GetRoot();
     }
-    protected void Start() {
+    protected ICoreComponent[] GetOverlapCircleCoreComponentsAll(float radius, Vector2 fromPosition){
+        var colliders = Physics2D.OverlapCircleAll(fromPosition, radius);
+        var coreComponents = new List<ICoreComponent>();
+        foreach(var collider in colliders){
+            var gameComponent = collider.GetComponentInParent<IGameComponent>();
+            var coreComponent = gameComponent?.CoreComponent;
+            if(coreComponent is BaseCoreComponent && coreComponent != null && !coreComponent.Equals(this)){
+                coreComponents.Add(coreComponent);
+            }
+        }
+        return coreComponents.ToArray();
+    }
+
+    protected virtual void Start() {
         Debug.Assert(OwnerGameComponent != null, "OwnerGameComponent is null");
     }
 }
