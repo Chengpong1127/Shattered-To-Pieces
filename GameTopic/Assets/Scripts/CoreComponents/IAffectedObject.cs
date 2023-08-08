@@ -6,6 +6,7 @@ public interface IAffectedObject {
     public Collider2D collider { get; set; }
     public Transform transform { get; set; }
     public AnchoredJoint2D joint { get; set; }
+    public BaseCoreComponent coreComponent { get; set; }
     public bool IsRigidbodyAffected { get; set; }
     public bool IsColliderAffected { get; set; }
     public bool IsTransformAffected { get; set; }

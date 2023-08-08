@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flour : MonoBehaviour, ICoreComponent, IAffectObjectOwner {
-    public Dictionary<string, Ability> AllAbilities { get; private set; } = new Dictionary<string, Ability>();
-    public IGameComponent OwnerGameComponent { get; set; }
+public class Flour : BaseCoreComponent, IAffectObjectOwner {
     public IAffectedObject affectedObject { get { return affectedObjectInstance; } }
     public AffectedObjectBase affectedObjectInstance { get; set; }
 
@@ -18,6 +16,7 @@ public class Flour : MonoBehaviour, ICoreComponent, IAffectObjectOwner {
         affectedObject.rigidbody = GetComponentInParent<Rigidbody2D>();
         affectedObject.joint = GetComponentInParent<AnchoredJoint2D>();
         affectedObject.transform = gameObject.transform;
+        affectedObject.coreComponent = this;
 
         affect.owner = affectedObject;
         affect.affectedObjectList.Add(affectedObject);
@@ -27,9 +26,10 @@ public class Flour : MonoBehaviour, ICoreComponent, IAffectObjectOwner {
 
     public void AbiliityStart() {
         affect.InvokeStart();
+        StartCoroutine(affect.FrameRunner());
     }
     public void AbilityRunning() {
-        affect.Invoke();
+        // affect.Invoke();
     }
     public void AbiliityEnd() {
         // affect.SetToDefault();

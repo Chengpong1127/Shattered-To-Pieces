@@ -8,23 +8,29 @@ public class ThrowOutAffect : SkillAffectBase {
 
     [field: SerializeField] float throwPower { get; set; } = 100f;
 
-    List<Collider2D> resultList { get; set; }
-    ContactFilter2D filter { get;set; }
+    List<Collider2D> resultList { get; set; } = new List<Collider2D> ();
+    ContactFilter2D filter { get;set; } = new ContactFilter2D ();
 
     public ThrowOutAffect() {
         this.type = SkillAffectType.Other;
     }
 
-    // override public void Invoke() {
-    //     int loopIndex = 0;
-    //     while (loopIndex < affectedObjectList.Count) {
-    //         affectedObjectList[loopIndex].collider.OverlapCollider(filter,resultList);
-    //         
-    // 
-    // 
-    //         loopIndex++;
-    //     }
-    // }
+    override public void Invoke() {
+        int loopIndex = 0;
+        while (loopIndex < affectedObjectList.Count) {
+            affectedObjectList[loopIndex].collider.OverlapCollider(filter,resultList);
+            resultList.ForEach(collider => {
+               //  Debug.Log(collider.name + "  " + collider.transform.parent.name);
+                BaseCoreComponent hitedCore = collider.GetComponent<BaseCoreComponent>();
+                if(!(hitedCore != null && hitedCore.HasTheSameRootWith(owner.coreComponent))) {
+                    OnHitObject();
+                    SetToDefault();
+                }
+            });
+
+            loopIndex++;
+        }
+    }
 
     public void InvokeStart() {
         if (execute) { return; }
@@ -46,11 +52,22 @@ public class ThrowOutAffect : SkillAffectBase {
             loopIndex++;
         }
     }
+    public void OnHitObject() {
+        Debug.Log("Boooo.");
+    }
     public void SetToDefault() {
         execute = false;
         int loopIndex = 0;
         while (loopIndex < affectedObjectList.Count) {
             affectedObjectList[loopIndex++].joint.enabled = true;
+        }
+    }
+
+    public IEnumerator FrameRunner() {
+        while (execute)
+        {
+            Invoke();
+            yield return new WaitForFixedUpdate();
         }
     }
 }
