@@ -1,6 +1,7 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
 using System;
+using System.Threading.Tasks;
 
 public class AssemblySystemManager : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class AssemblySystemManager : MonoBehaviour
     public UnitManager GameComponentsUnitManager { get; private set; }
     public float SingleRotationAngle { get; private set; }
 
-        private float _scrollCounter = 0f;
+    private bool _scrollAvailable = true;
 
     /// <summary>
     /// This event will be invoked when a game component is started to drag.
@@ -44,15 +45,6 @@ public class AssemblySystemManager : MonoBehaviour
         DraggableMover.OnDragEnd += HandleComponentDraggedEnd;
         DraggableMover.OnScrollWhenDragging += HandleScrollWhenDragging;
 
-    }
-    protected void Update() {
-        if(_scrollCounter > 0f){
-            _scrollCounter -= Time.deltaTime;
-            
-            if (_scrollCounter <= 0f){
-                _scrollCounter = 0f;
-            }
-        }
     }
     private void HandleComponentDraggedStart(IDraggable draggedComponent, Vector2 targetPosition)
     {
@@ -98,12 +90,23 @@ public class AssemblySystemManager : MonoBehaviour
         Debug.Assert(draggedComponent != null, "draggedComponent is null");
         var component = draggedComponent as IGameComponent;
         Debug.Assert(component != null, "component is null");
-        if (scrollValue.y != 0 && _scrollCounter == 0f){
+        if (scrollValue.y != 0 && _scrollAvailable){
             var rotateAngle = scrollValue.y > 0 ? SingleRotationAngle : -SingleRotationAngle;
             component.AddZRotation(rotateAngle);
-            _scrollCounter = 0.4f;
+            WaitScrollCooldown();
         }
         
+    }
+    private async void WaitScrollCooldown(){
+        _scrollAvailable = false;
+        await Task.Delay(300);
+        _scrollAvailable = true;
+    }
+
+    protected void OnDestroy() {
+        DraggableMover.OnDragStart -= HandleComponentDraggedStart;
+        DraggableMover.OnDragEnd -= HandleComponentDraggedEnd;
+        DraggableMover.OnScrollWhenDragging -= HandleScrollWhenDragging;
     }
 
 }
