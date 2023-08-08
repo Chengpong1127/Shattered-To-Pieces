@@ -57,6 +57,7 @@ public class ThrowOutAffect : SkillAffectBase {
     }
     public void SetToDefault() {
         execute = false;
+        interrupt = false;
         int loopIndex = 0;
         while (loopIndex < affectedObjectList.Count) {
             affectedObjectList[loopIndex++].joint.enabled = true;
@@ -64,7 +65,7 @@ public class ThrowOutAffect : SkillAffectBase {
     }
 
     public IEnumerator FrameRunner() {
-        while (execute)
+        while (execute && !interrupt)
         {
             Invoke();
             yield return new WaitForFixedUpdate();

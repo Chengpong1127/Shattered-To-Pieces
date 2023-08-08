@@ -20,16 +20,16 @@ public class RotatorAffect : SkillAffectBase {
 
 
     override public void Invoke() {
-        if((!execute && interrupt) || !transform) { SetToDefault(); return; }
+        if((!execute || interrupt) || !transform) { SetToDefault(); return; }
 
         if(isPostive) {
             // transform.Rotate(0, 0, rotateAngle * rotateSpeedMultiplier * Time.fixedDeltaTime, Space.Self);
             transform.RotateAround(rotateAnchor.position, Vector3.forward, rotateSpeedMultiplier * Time.fixedDeltaTime);
-            isPostive = transform.localRotation.eulerAngles.z + 90 > startAngle && transform.localRotation.eulerAngles.z + 90 < endingAngle;
+            isPostive = (transform.localRotation.eulerAngles.z + 90) % 360 > startAngle && (transform.localRotation.eulerAngles.z + 90) % 360 < endingAngle;
         } else {
             // transform.Rotate(0, 0, -rotateAngle * rotateSpeedMultiplier * Time.fixedDeltaTime, Space.Self);
             transform.RotateAround(rotateAnchor.position, Vector3.forward, -rotateSpeedMultiplier * Time.fixedDeltaTime);
-            isPostive = ! (transform.localRotation.eulerAngles.z + 90 > startAngle && transform.localRotation.eulerAngles.z + 90 < endingAngle);
+            isPostive = ! ((transform.localRotation.eulerAngles.z + 90) % 360 > startAngle && (transform.localRotation.eulerAngles.z + 90) % 360 < endingAngle);
         }
     }
 
@@ -38,7 +38,7 @@ public class RotatorAffect : SkillAffectBase {
         interrupt = false;
         transform = affectedObjectList.Count == 1 && affectedObjectList[0].IsTransformAffected ? affectedObjectList[0].transform : null;
         execute = transform && rotateAnchor;
-        startAngle = transform.localRotation.eulerAngles.z + 90;
+        startAngle = (transform.localRotation.eulerAngles.z + 90) % 360;
         endingAngle = (startAngle + rotateAngle) % 360;
         startPosition = transform.localPosition;
     }
