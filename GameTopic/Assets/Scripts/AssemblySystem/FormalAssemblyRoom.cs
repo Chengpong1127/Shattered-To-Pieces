@@ -52,7 +52,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// <summary>
     /// The factory for creating game components.
     /// </summary>
-    private IGameComponentFactory GameComponentFactory;
+    private IGameComponentFactory _gameComponentFactory;
 
     public IAbilityRebinder AbilityRebinder { get; private set; }
 
@@ -67,26 +67,17 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     #endregion
 
     protected void Awake() {
-        GameComponentFactory = gameObject.AddComponent<GameComponentFactory>();
-        AssemblySystemManager = gameObject.AddComponent<AssemblySystemManager>();
+        _gameComponentFactory = GameComponentFactory.CreateInstance(gameObject);
         GameComponentsUnitManager = new UnitManager();
-        AssemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
-
         _inputManager = new InputManager();
-
-        ControlledDevice = new Device(GameComponentFactory);
+        ControlledDevice = new Device(_gameComponentFactory);
         LoadDevice(CurrentLoadedDeviceID);
-        
+
+        AssemblySystemManager = AssemblySystemManager.CreateInstance(gameObject, GameComponentsUnitManager, _inputManager.AssemblyRoom.Drag, 45f);
         AssemblySystemManager.OnGameComponentDraggedStart += _ => UpdateSave();
         AssemblySystemManager.AfterGameComponentConnected += _ => UpdateSave();
-        AssemblySystemManager.SetDraggableMoverDragInputAction(_inputManager.AssemblyRoom.Drag);
 
         GameComponentDataList = ResourceManager.Instance.LoadAllGameComponentData();
-        Debug.Assert(GameComponentDataList != null);
-
-        Debug.Assert(PlayerInitMoney >= 0);
-
-        
 
         AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager);
         AbilityRunner.BindInputActionsToRunner(GetAbilityInputActions());
@@ -158,7 +149,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     public IGameComponent CreateNewGameComponent(GameComponentData componentData, Vector2 position)
     {
         var path = componentData.ResourcePath;
-        var newComponent = GameComponentFactory.CreateGameComponentObject(path);
+        var newComponent = _gameComponentFactory.CreateGameComponentObject(path);
         GameComponentsUnitManager.AddUnit(newComponent);
         newComponent.DragableTransform.position = position;
         return newComponent;

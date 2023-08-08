@@ -4,6 +4,11 @@ using UnityEngine;
 using System;
 public class GameComponentFactory : MonoBehaviour, IGameComponentFactory
 {
+    public static GameComponentFactory CreateInstance(GameObject where)
+    {
+        var instance = where.AddComponent<GameComponentFactory>();
+        return instance;
+    }
     public IGameComponent CreateGameComponentObject(string gameComponentName)
     {
         GameObject prefab = ResourceManager.Instance.LoadPrefab(gameComponentName);

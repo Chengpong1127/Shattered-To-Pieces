@@ -5,8 +5,10 @@ using System;
 public class AssemblySystemManager : MonoBehaviour
 {
     private DraggableMover DraggableMover;
-    public UnitManager GameComponentsUnitManager;
-    public readonly float SingleRotationAngle = 45f;
+    public UnitManager GameComponentsUnitManager { get; private set; }
+    public float SingleRotationAngle { get; private set; }
+
+        private float _scrollCounter = 0f;
 
     /// <summary>
     /// This event will be invoked when a game component is started to drag.
@@ -21,14 +23,20 @@ public class AssemblySystemManager : MonoBehaviour
     /// </summary>
     public event Action<IGameComponent> AfterGameComponentConnected;
 
-    private float _scrollCounter = 0f;
+    public static AssemblySystemManager CreateInstance(GameObject where, UnitManager unitManager, InputAction dragAction, float SingleRotationAngle = 45f){
+        var instance = where.AddComponent<AssemblySystemManager>();
+        instance.DraggableMover = DraggableMover.CreateInstance(where, dragAction, Camera.main);
+        instance.GameComponentsUnitManager = unitManager ?? throw new ArgumentNullException(nameof(unitManager));
+        instance.SingleRotationAngle = SingleRotationAngle > 0 && SingleRotationAngle < 360 ? SingleRotationAngle : throw new ArgumentException(nameof(SingleRotationAngle));
+
+        return instance;
+    }
+
     public void EnableAssemblyComponents(){
         DraggableMover.enabled = true;
-        Debug.Assert(GameComponentsUnitManager != null, "GameComponentsUnitManager is null");
     }
     public void DisableAssemblyComponents(){
         DraggableMover.enabled = false;
-        Debug.Assert(GameComponentsUnitManager != null, "GameComponentsUnitManager is null");
     }
 
     private void Awake() {
@@ -38,9 +46,6 @@ public class AssemblySystemManager : MonoBehaviour
         DraggableMover.OnDragEnd += HandleComponentDraggedEnd;
         DraggableMover.OnScrollWhenDragging += HandleScrollWhenDragging;
 
-    }
-    public void SetDraggableMoverDragInputAction(InputAction inputAction){
-        DraggableMover.DragAction = inputAction;
     }
     private void Update() {
         if(_scrollCounter > 0f){

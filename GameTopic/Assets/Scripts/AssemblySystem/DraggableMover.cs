@@ -6,23 +6,29 @@ using System;
 
 public class DraggableMover: MonoBehaviour
 {
-    public InputAction DragAction { get; set; }
-    public Camera mainCamera;
+    public InputAction DragAction { get; private set; }
+    public Camera MainCamera { get; private set; }
     public event Action<IDraggable, Vector2> OnDragStart;
     public event Action<IDraggable, Vector2> OnDragEnd;
     public event Action<IDraggable ,Vector2> OnScrollWhenDragging;
 
     private IDraggable draggedComponent = null;
     private bool isDragging = false;
-    private void Awake() {
-        mainCamera = Camera.main;
+    public static DraggableMover CreateInstance(GameObject where, InputAction dragAction, Camera mainCamera){
+        var instance = where.AddComponent<DraggableMover>();
+        instance.DragAction = dragAction ?? throw new ArgumentNullException(nameof(dragAction));
+        instance.MainCamera = mainCamera;
+        if (mainCamera == null)
+        {
+            Debug.LogWarning("Main camera is null");
+        }
+        return instance;
     }
-    private void Start() {
-        Debug.Assert(DragAction != null, "DragAction is null");
+    protected void Start() {
         DragAction.started += DragStarted;
         DragAction.canceled += DragCanceled;
     }
-    private void Update() {
+    protected void Update() {
         if (isDragging)
         {
             Debug.Assert(draggedComponent != null, "draggedComponent is null");
@@ -31,11 +37,11 @@ public class DraggableMover: MonoBehaviour
             OnScrollWhenDragging?.Invoke(draggedComponent ,Mouse.current.scroll.ReadValue());
         }
     }
-    private void OnEnable() {
+    protected void OnEnable() {
         DragAction?.Enable();
         
     }
-    private void OnDisable() {
+    protected void OnDisable() {
         DragAction?.Disable();
     }
     private void DragStarted(InputAction.CallbackContext ctx)
@@ -43,7 +49,7 @@ public class DraggableMover: MonoBehaviour
         Vector2 mousePosition = Mouse.current.position.ReadValue();
         draggedComponent = GetDraggableUnderMouse(mousePosition);
         
-        var worldPoint = mainCamera.ScreenToWorldPoint(mousePosition);
+        var worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
         if (draggedComponent != null)
         {
             isDragging = true;
@@ -59,7 +65,7 @@ public class DraggableMover: MonoBehaviour
             return;
         }
         var mousePosition = Mouse.current.position.ReadValue();
-        var targetPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+        var targetPosition = MainCamera.ScreenToWorldPoint(mousePosition);
         OnDragEnd?.Invoke(draggedComponent, targetPosition);
         draggedComponent = null;
     }
@@ -79,7 +85,7 @@ public class DraggableMover: MonoBehaviour
 
     private GameObject GetGameObjectUnderMouse(Vector2 mousePosition)
     {
-        Vector3 worldPoint = mainCamera.ScreenToWorldPoint(mousePosition);
+        Vector3 worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
 
         RaycastHit2D hit;
         hit = Physics2D.Raycast(worldPoint, Vector2.zero);
@@ -95,7 +101,7 @@ public class DraggableMover: MonoBehaviour
 
     private void SetDraggablePosition(Vector2 mousePosition)
     {
-        var newPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+        var newPosition = MainCamera.ScreenToWorldPoint(mousePosition);
         newPosition.z = 0;
         if (draggedComponent != null)
         {
