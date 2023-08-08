@@ -40,17 +40,45 @@ public class HealthController<T>{
     /// </summary>
     public event Action OnHealedFull;
 
-
+    /// <summary>
+    /// The max health of the health controller.
+    /// </summary>
     public T MaxHealth { get; private set; }
+    /// <summary>
+    /// The min health of the health controller. Default is 0.
+    /// </summary>
     public T MinHealth { get; private set; } = (dynamic)0;
+    /// <summary>
+    /// The current health of the health controller.
+    /// </summary>
     public T CurrentHealth { get; private set; }
     public bool IsDead => CurrentHealth.Equals(MinHealth);
+
+    /// <summary>
+    /// Set the current health of the health controller. If the current health is less than min health or greater than max health, an ArgumentException will be thrown.
+    /// </summary>
+    /// <param name="currentHealth"> The current health to set. </param>
+    public void SetCurrentHealth(T currentHealth) {
+        if((dynamic)currentHealth < MinHealth || (dynamic)currentHealth > MaxHealth) {
+            throw new ArgumentException("Current health cannot be less than min health or greater than max health.");
+        }
+        CurrentHealth = currentHealth;
+    }
+    /// <summary>
+    /// Reset the current health of the health controller to max health.
+    /// </summary>
+    public void ResetToMaxHealth() {
+        CurrentHealth = MaxHealth;
+    }
 
     /// <summary>
     /// Take damage to the health controller. If the health controller is dead, OnDied will be invoked.
     /// </summary>
     /// <param name="damage"> The damage to take. </param>
     public void TakeDamage(T damage) {
+        if(damage < (dynamic)0) {
+            throw new ArgumentException("Damage cannot be negative.");
+        }
         CurrentHealth = (dynamic)CurrentHealth - damage;
         OnTakenDamage?.Invoke(damage);
         if((dynamic)CurrentHealth <= MinHealth) {
@@ -63,6 +91,9 @@ public class HealthController<T>{
     /// </summary>
     /// <param name="heal"></param>
     public void TakeHeal(T heal) {
+        if(heal < (dynamic)0) {
+            throw new ArgumentException("Heal cannot be negative.");
+        }
         CurrentHealth = (dynamic)CurrentHealth + heal;
         OnTakenHeal?.Invoke(heal);
         if((dynamic)CurrentHealth >= MaxHealth) {

@@ -39,15 +39,13 @@ public class AssemblySystemManager : MonoBehaviour
         DraggableMover.enabled = false;
     }
 
-    private void Awake() {
-        DraggableMover = gameObject.AddComponent<DraggableMover>();
-        DraggableMover.enabled = false;
+    protected void Start() {
         DraggableMover.OnDragStart += HandleComponentDraggedStart;
         DraggableMover.OnDragEnd += HandleComponentDraggedEnd;
         DraggableMover.OnScrollWhenDragging += HandleScrollWhenDragging;
 
     }
-    private void Update() {
+    protected void Update() {
         if(_scrollCounter > 0f){
             _scrollCounter -= Time.deltaTime;
             
