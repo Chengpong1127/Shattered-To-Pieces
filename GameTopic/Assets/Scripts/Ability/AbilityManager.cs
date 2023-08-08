@@ -2,17 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class AbilityManager
 {
-    public List<AbilityInputEntry> AbilityInputEntries { get; private set; } = new List<AbilityInputEntry>();
+    /// <summary>
+    /// Triggered after the ability is set to an entry.
+    /// </summary>
+    public event Action<Ability> OnSetAbilityToEntry;
+    /// <summary>
+    /// Triggered after the ability is set to out of an entry.
+    /// </summary>
+    public event Action<Ability> OnSetAbilityOutOfEntry;
+    /// <summary>
+    /// Triggered after setting binding
+    /// </summary>
+    public event Action<int, string> OnSetBinding;
+
+
+    public List<AbilityInputEntry> AbilityInputEntries { get; private set; } = new();
     /// <summary>
     /// The device that this input manager is recording.
     /// </summary>
     /// <value></value>
     public IDevice Device { get; set; }
 
-    public readonly int AbilityInputEntryNumber = 10;
+    public int AbilityInputEntryNumber = 10;
     private readonly Dictionary<Ability, bool> abilityInEntryStatus = new();
 
     public AbilityManager(IDevice device, int abilityInputEntryNumber = 10){
@@ -25,6 +40,13 @@ public class AbilityManager
     }
 
     public AbilityManager(IDevice device, AbilityManagerInfo info, Dictionary<int, IGameComponent> componentMap){
+        Load(device, info, componentMap);
+    }
+    public void Load(IDevice device, AbilityManagerInfo info, Dictionary<int, IGameComponent> componentMap){
+        Debug.Assert(device != null, "The device should not be null");
+        Debug.Assert(info != null, "The info should not be null");
+        Debug.Assert(componentMap != null, "The component map should not be null");
+
         Ability getAbility(int componentID, string abilityName){
             var component = componentMap[componentID];
             Debug.Assert(component != null, "The component should not be null");
@@ -41,10 +63,9 @@ public class AbilityManager
             abilityInEntryStatus.Clear();
             for (int i = 0; i < AbilityInputEntryNumber; i++)
             {
-                SetPath(i, info.EntryPaths[i]);
+                SetBinding(i, info.EntryPaths[i]);
             }
-            var deviceAbilityList = GetDeviceCurrentAbilityList();
-            foreach (var ability in deviceAbilityList)
+            foreach (var ability in GetDeviceCurrentAbilityList())
             {
                 abilityInEntryStatus.Add(ability, true);
             }
@@ -66,8 +87,6 @@ public class AbilityManager
         else{
             ReloadDeviceAbilities();
         }
-        
-
     }
     /// <summary>
     /// Reload the abilities of the device and put to out of entries.
@@ -114,9 +133,10 @@ public class AbilityManager
     /// </summary>
     /// <param name="entryID"> The index of the input entry.</param>
     /// <param name="path"> The key path of the input entry.</param>
-    public void SetPath(int entryID, string path){
+    public void SetBinding(int entryID, string path){
         Debug.Assert(entryID < AbilityInputEntries.Count, "index out of range");
         AbilityInputEntries[entryID].SetInputPath(path);
+        OnSetBinding?.Invoke(entryID, path);
     }
     /// <summary>
     /// Assign an ability to the input entry.
@@ -136,6 +156,7 @@ public class AbilityManager
         if(removed != null){
             abilityInEntryStatus[removed] = false;
         }
+        OnSetAbilityToEntry?.Invoke(ability);
     }
     /// <summary>
     /// Remove the ability from the input entry;
@@ -148,6 +169,7 @@ public class AbilityManager
             abilityInEntryStatus.Add(ability, false);
         }
         abilityInEntryStatus[ability] = false;
+        OnSetAbilityOutOfEntry?.Invoke(ability);
     }
 
     /// <summary>
@@ -161,7 +183,7 @@ public class AbilityManager
             .ToList();
     }
     private List<Ability> GetDeviceCurrentAbilityList(){
-        return Device.getAbilityList();
+        return Device.GetAbilityList();
     }
 
     private void RemoveAbilityFromEntry(Ability ability){

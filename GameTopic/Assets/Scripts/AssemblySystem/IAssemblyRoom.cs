@@ -100,7 +100,7 @@ public interface IAssemblyRoom
     /// The AbilityKeyChanger of the device.
     /// </summary>
     /// <value> The AbilityKeyChanger of the device.</value>
-    public IAbilityKeyChanger AbilityKeyChanger { get; }
+    public IAbilityRebinder AbilityRebinder { get; }
     /// <summary>
     /// Start to listen to player's input to change the ability button.
     /// </summary>

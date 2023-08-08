@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 using System;
 
 public class AssemblySystemManager : MonoBehaviour
 {
-    private DragableMover DragableMover;
+    private DraggableMover DraggableMover;
     public UnitManager GameComponentsUnitManager;
     public readonly float SingleRotationAngle = 45f;
 
@@ -24,23 +23,24 @@ public class AssemblySystemManager : MonoBehaviour
 
     private float _scrollCounter = 0f;
     public void EnableAssemblyComponents(){
-        DragableMover.enabled = true;
+        DraggableMover.enabled = true;
         Debug.Assert(GameComponentsUnitManager != null, "GameComponentsUnitManager is null");
     }
     public void DisableAssemblyComponents(){
-        DragableMover.enabled = false;
+        DraggableMover.enabled = false;
         Debug.Assert(GameComponentsUnitManager != null, "GameComponentsUnitManager is null");
     }
 
     private void Awake() {
-        DragableMover = gameObject.AddComponent<DragableMover>();
-        DragableMover.enabled = false;
-        DragableMover.inputManager = new InputManager();
-        DragableMover.OnDragStart += handleComponentDraggedStart;
-        DragableMover.OnDragEnd += handleComponentDraggedEnd;
+        DraggableMover = gameObject.AddComponent<DraggableMover>();
+        DraggableMover.enabled = false;
+        DraggableMover.OnDragStart += HandleComponentDraggedStart;
+        DraggableMover.OnDragEnd += HandleComponentDraggedEnd;
+        DraggableMover.OnScrollWhenDragging += HandleScrollWhenDragging;
 
-        DragableMover.OnScrollWhenDragging += handleScrollWhenDragging;
-
+    }
+    public void SetDraggableMoverDragInputAction(InputAction inputAction){
+        DraggableMover.DragAction = inputAction;
     }
     private void Update() {
         if(_scrollCounter > 0f){
@@ -51,7 +51,7 @@ public class AssemblySystemManager : MonoBehaviour
             }
         }
     }
-    private void handleComponentDraggedStart(IDraggable draggedComponent, Vector2 targetPosition)
+    private void HandleComponentDraggedStart(IDraggable draggedComponent, Vector2 targetPosition)
     {
         Debug.Assert(draggedComponent != null, "draggedComponent is null");
         if(draggedComponent is not IGameComponent){
@@ -62,8 +62,8 @@ public class AssemblySystemManager : MonoBehaviour
         component.DisconnectFromParent();
         component.SetDragging(true);
         GameComponentsUnitManager.ForEachUnit((unit) => {
-            var gameComponent = unit as IGameComponent;
-            if (gameComponent != null && gameComponent != component){
+            if (unit is IGameComponent gameComponent && gameComponent != component)
+            {
                 gameComponent.SetAvailableForConnection(true);
             }
         });
@@ -71,7 +71,7 @@ public class AssemblySystemManager : MonoBehaviour
     }
 
 
-    private void handleComponentDraggedEnd(IDraggable draggedComponent, Vector2 targetPosition)
+    private void HandleComponentDraggedEnd(IDraggable draggedComponent, Vector2 targetPosition)
     {
         Debug.Assert(draggedComponent != null, "draggedComponent is null");
         var component = draggedComponent as IGameComponent;
@@ -83,15 +83,15 @@ public class AssemblySystemManager : MonoBehaviour
             AfterGameComponentConnected?.Invoke(component);
         }
         GameComponentsUnitManager.ForEachUnit((unit) => {
-            var gameComponent = unit as IGameComponent;
-            if (gameComponent != null){
+            if (unit is IGameComponent gameComponent)
+            {
                 gameComponent.SetAvailableForConnection(false);
             }
         });
         OnGameComponentDraggedEnd?.Invoke(component);
     }
 
-    private void handleScrollWhenDragging(IDraggable draggedComponent, Vector2 scrollValue){
+    private void HandleScrollWhenDragging(IDraggable draggedComponent, Vector2 scrollValue){
         Debug.Assert(draggedComponent != null, "draggedComponent is null");
         var component = draggedComponent as IGameComponent;
         Debug.Assert(component != null, "component is null");

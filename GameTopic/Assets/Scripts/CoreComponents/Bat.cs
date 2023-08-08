@@ -10,6 +10,13 @@ public class Bat : MonoBehaviour, ICoreComponent, IAffectObjectOwner
     public AffectedObjectBase affectedObjectInstance { get; set; }
     public Transform connectAnchor;
     BatAffect affect { get; set; }
+
+    private void Awake() {
+        AllAbilities = new Dictionary<string, Ability>{
+            {"SwingRight", new Ability("SwingRight", SwingRight, this)},
+            {"SwingLeft", new Ability("SwingLeft", SwingLeft, this)}
+        };
+    }
     private void Start()
     {
         affect = ScriptableObject.CreateInstance<BatAffect>();
@@ -21,8 +28,6 @@ public class Bat : MonoBehaviour, ICoreComponent, IAffectObjectOwner
         affect.owner = affectedObject;
         affect.affectedObjectList.Add(affectedObject);
         affect.connectAnchor = connectAnchor;
-        AllAbilities.Add("SwingRight", new Ability("SwingRight", SwingRight, this));
-        AllAbilities.Add("SwingLeft", new Ability("SwingLeft", SwingLeft, this));
     }
 
     public void SwingRight()

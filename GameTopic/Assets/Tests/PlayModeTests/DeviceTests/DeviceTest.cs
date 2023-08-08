@@ -9,8 +9,7 @@ public class DeviceTest
     [Test]
     public void CreateDefaultDeviceTest(){
         var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
-        var device = new GameObject().AddComponent<Device>();
-        device.GameComponentFactory = componentFactory;
+        var device = new Device(componentFactory);
         device.Load(ResourceManager.Instance.LoadDefaultDeviceInfo());
         
         Assert.True(device.RootGameComponent is not null);

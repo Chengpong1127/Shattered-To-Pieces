@@ -113,5 +113,42 @@ public class ConnectTests
         Assert.AreEqual(c3.GetParent(), c2);
         Assert.AreEqual(c4.GetParent(), c2);
     }
+    [Test]
+    public void GetRootTest(){
+        var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
+        var c1 = componentFactory.CreateGameComponentObject("Square");
+        var c2 = componentFactory.CreateGameComponentObject("Square");
+        var c3 = componentFactory.CreateGameComponentObject("Square");
+        var c4 = componentFactory.CreateGameComponentObject("Square");
+        var connectionInfo = new ConnectionInfo{
+            linkedTargetID = 0,
+        };
+        c1.ConnectToParent(c2, connectionInfo);
+        c2.ConnectToParent(c3, connectionInfo);
+        Assert.True(c1.GetRoot() == c3);
+        Assert.True(c2.GetRoot() == c3);
+        Assert.True(c3.GetRoot() == c3);
+        Assert.True(c4.GetRoot() == c4);
+        c1.DisconnectFromParent();
+        Assert.True(c1.GetRoot() == c1);
+        Assert.True(c2.GetRoot() == c3);
+        Assert.True(c3.GetRoot() == c3);
+        Assert.True(c4.GetRoot() == c4);
+        c2.DisconnectFromParent();
+        Assert.True(c1.GetRoot() == c1);
+        Assert.True(c2.GetRoot() == c2);
+        Assert.True(c3.GetRoot() == c3);
+        Assert.True(c4.GetRoot() == c4);
+        c3.DisconnectFromParent();
+        Assert.True(c1.GetRoot() == c1);
+        Assert.True(c2.GetRoot() == c2);
+        Assert.True(c3.GetRoot() == c3);
+        Assert.True(c4.GetRoot() == c4);
+        c4.DisconnectFromParent();
+        Assert.True(c1.GetRoot() == c1);
+        Assert.True(c2.GetRoot() == c2);
+        Assert.True(c3.GetRoot() == c3);
+        Assert.True(c4.GetRoot() == c4);
+    }
 
 }

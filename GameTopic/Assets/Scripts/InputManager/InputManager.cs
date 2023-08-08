@@ -24,7 +24,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
     ""name"": ""InputManager"",
     ""maps"": [
         {
-            ""name"": ""menu"",
+            ""name"": ""AssemblyRoom"",
             ""id"": ""12770697-a6a7-41a0-9ea7-56be72fce1b0"",
             ""actions"": [
                 {
@@ -40,6 +40,96 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""name"": ""Click"",
                     ""type"": ""Button"",
                     ""id"": ""6f6605d8-2440-41c4-b44c-f8060244fed7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability0"",
+                    ""type"": ""Button"",
+                    ""id"": ""64a58d2c-c7c9-47a2-afe2-95473d48959d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability1"",
+                    ""type"": ""Button"",
+                    ""id"": ""a2cc1b06-6fa3-4849-8acb-915aeada7fcd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability2"",
+                    ""type"": ""Button"",
+                    ""id"": ""d70491f6-9cfb-4bf4-8a42-10a92d33df97"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability3"",
+                    ""type"": ""Button"",
+                    ""id"": ""65e9d03f-bb70-44f7-9617-03c0220f9ac5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability4"",
+                    ""type"": ""Button"",
+                    ""id"": ""c6b32a7e-af6d-4f15-916a-20e61320f0a9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability5"",
+                    ""type"": ""Button"",
+                    ""id"": ""483d497d-c141-4090-80f5-83cca174d105"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability6"",
+                    ""type"": ""Button"",
+                    ""id"": ""0747b16b-9777-4bec-9609-9c97b2f1f879"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability7"",
+                    ""type"": ""Button"",
+                    ""id"": ""c7836ae6-265d-49f0-b066-f96201819511"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability8"",
+                    ""type"": ""Button"",
+                    ""id"": ""2aa33c9a-bcf9-42e4-b6cf-5d13847e0931"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability9"",
+                    ""type"": ""Button"",
+                    ""id"": ""480e8674-8da7-4a51-9b73-987b862e1dff"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -68,6 +158,116 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b05bc90a-002c-4431-85db-d513328fd3e4"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c6ba5534-5421-4f50-916e-9dca0a44268b"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7fa18d4e-65cd-4353-8ab4-13cad8351c48"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fffd06a5-5b6e-44eb-8b82-510ddf78e79c"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""28cdd6de-8bad-4662-afc1-e5f1cc3cdeb1"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1b960db7-4e76-4f14-9a9b-b67fcb32af38"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability6"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""17e2a5dc-e3bf-43e1-a97b-fbd63e5cae68"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability7"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37bb4ea9-b053-4707-9a61-4e5388174279"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability8"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f558fa69-bb92-4466-b80b-caf24a48d2ad"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability9"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2bbd99a9-58aa-4d75-9cdd-5031f1a89a03"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability0"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -86,10 +286,20 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // menu
-        m_menu = asset.FindActionMap("menu", throwIfNotFound: true);
-        m_menu_Drag = m_menu.FindAction("Drag", throwIfNotFound: true);
-        m_menu_Click = m_menu.FindAction("Click", throwIfNotFound: true);
+        // AssemblyRoom
+        m_AssemblyRoom = asset.FindActionMap("AssemblyRoom", throwIfNotFound: true);
+        m_AssemblyRoom_Drag = m_AssemblyRoom.FindAction("Drag", throwIfNotFound: true);
+        m_AssemblyRoom_Click = m_AssemblyRoom.FindAction("Click", throwIfNotFound: true);
+        m_AssemblyRoom_Ability0 = m_AssemblyRoom.FindAction("Ability0", throwIfNotFound: true);
+        m_AssemblyRoom_Ability1 = m_AssemblyRoom.FindAction("Ability1", throwIfNotFound: true);
+        m_AssemblyRoom_Ability2 = m_AssemblyRoom.FindAction("Ability2", throwIfNotFound: true);
+        m_AssemblyRoom_Ability3 = m_AssemblyRoom.FindAction("Ability3", throwIfNotFound: true);
+        m_AssemblyRoom_Ability4 = m_AssemblyRoom.FindAction("Ability4", throwIfNotFound: true);
+        m_AssemblyRoom_Ability5 = m_AssemblyRoom.FindAction("Ability5", throwIfNotFound: true);
+        m_AssemblyRoom_Ability6 = m_AssemblyRoom.FindAction("Ability6", throwIfNotFound: true);
+        m_AssemblyRoom_Ability7 = m_AssemblyRoom.FindAction("Ability7", throwIfNotFound: true);
+        m_AssemblyRoom_Ability8 = m_AssemblyRoom.FindAction("Ability8", throwIfNotFound: true);
+        m_AssemblyRoom_Ability9 = m_AssemblyRoom.FindAction("Ability9", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -148,35 +358,85 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // menu
-    private readonly InputActionMap m_menu;
-    private List<IMenuActions> m_MenuActionsCallbackInterfaces = new List<IMenuActions>();
-    private readonly InputAction m_menu_Drag;
-    private readonly InputAction m_menu_Click;
-    public struct MenuActions
+    // AssemblyRoom
+    private readonly InputActionMap m_AssemblyRoom;
+    private List<IAssemblyRoomActions> m_AssemblyRoomActionsCallbackInterfaces = new List<IAssemblyRoomActions>();
+    private readonly InputAction m_AssemblyRoom_Drag;
+    private readonly InputAction m_AssemblyRoom_Click;
+    private readonly InputAction m_AssemblyRoom_Ability0;
+    private readonly InputAction m_AssemblyRoom_Ability1;
+    private readonly InputAction m_AssemblyRoom_Ability2;
+    private readonly InputAction m_AssemblyRoom_Ability3;
+    private readonly InputAction m_AssemblyRoom_Ability4;
+    private readonly InputAction m_AssemblyRoom_Ability5;
+    private readonly InputAction m_AssemblyRoom_Ability6;
+    private readonly InputAction m_AssemblyRoom_Ability7;
+    private readonly InputAction m_AssemblyRoom_Ability8;
+    private readonly InputAction m_AssemblyRoom_Ability9;
+    public struct AssemblyRoomActions
     {
         private @InputManager m_Wrapper;
-        public MenuActions(@InputManager wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Drag => m_Wrapper.m_menu_Drag;
-        public InputAction @Click => m_Wrapper.m_menu_Click;
-        public InputActionMap Get() { return m_Wrapper.m_menu; }
+        public AssemblyRoomActions(@InputManager wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Drag => m_Wrapper.m_AssemblyRoom_Drag;
+        public InputAction @Click => m_Wrapper.m_AssemblyRoom_Click;
+        public InputAction @Ability0 => m_Wrapper.m_AssemblyRoom_Ability0;
+        public InputAction @Ability1 => m_Wrapper.m_AssemblyRoom_Ability1;
+        public InputAction @Ability2 => m_Wrapper.m_AssemblyRoom_Ability2;
+        public InputAction @Ability3 => m_Wrapper.m_AssemblyRoom_Ability3;
+        public InputAction @Ability4 => m_Wrapper.m_AssemblyRoom_Ability4;
+        public InputAction @Ability5 => m_Wrapper.m_AssemblyRoom_Ability5;
+        public InputAction @Ability6 => m_Wrapper.m_AssemblyRoom_Ability6;
+        public InputAction @Ability7 => m_Wrapper.m_AssemblyRoom_Ability7;
+        public InputAction @Ability8 => m_Wrapper.m_AssemblyRoom_Ability8;
+        public InputAction @Ability9 => m_Wrapper.m_AssemblyRoom_Ability9;
+        public InputActionMap Get() { return m_Wrapper.m_AssemblyRoom; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(MenuActions set) { return set.Get(); }
-        public void AddCallbacks(IMenuActions instance)
+        public static implicit operator InputActionMap(AssemblyRoomActions set) { return set.Get(); }
+        public void AddCallbacks(IAssemblyRoomActions instance)
         {
-            if (instance == null || m_Wrapper.m_MenuActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_MenuActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_AssemblyRoomActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_AssemblyRoomActionsCallbackInterfaces.Add(instance);
             @Drag.started += instance.OnDrag;
             @Drag.performed += instance.OnDrag;
             @Drag.canceled += instance.OnDrag;
             @Click.started += instance.OnClick;
             @Click.performed += instance.OnClick;
             @Click.canceled += instance.OnClick;
+            @Ability0.started += instance.OnAbility0;
+            @Ability0.performed += instance.OnAbility0;
+            @Ability0.canceled += instance.OnAbility0;
+            @Ability1.started += instance.OnAbility1;
+            @Ability1.performed += instance.OnAbility1;
+            @Ability1.canceled += instance.OnAbility1;
+            @Ability2.started += instance.OnAbility2;
+            @Ability2.performed += instance.OnAbility2;
+            @Ability2.canceled += instance.OnAbility2;
+            @Ability3.started += instance.OnAbility3;
+            @Ability3.performed += instance.OnAbility3;
+            @Ability3.canceled += instance.OnAbility3;
+            @Ability4.started += instance.OnAbility4;
+            @Ability4.performed += instance.OnAbility4;
+            @Ability4.canceled += instance.OnAbility4;
+            @Ability5.started += instance.OnAbility5;
+            @Ability5.performed += instance.OnAbility5;
+            @Ability5.canceled += instance.OnAbility5;
+            @Ability6.started += instance.OnAbility6;
+            @Ability6.performed += instance.OnAbility6;
+            @Ability6.canceled += instance.OnAbility6;
+            @Ability7.started += instance.OnAbility7;
+            @Ability7.performed += instance.OnAbility7;
+            @Ability7.canceled += instance.OnAbility7;
+            @Ability8.started += instance.OnAbility8;
+            @Ability8.performed += instance.OnAbility8;
+            @Ability8.canceled += instance.OnAbility8;
+            @Ability9.started += instance.OnAbility9;
+            @Ability9.performed += instance.OnAbility9;
+            @Ability9.canceled += instance.OnAbility9;
         }
 
-        private void UnregisterCallbacks(IMenuActions instance)
+        private void UnregisterCallbacks(IAssemblyRoomActions instance)
         {
             @Drag.started -= instance.OnDrag;
             @Drag.performed -= instance.OnDrag;
@@ -184,23 +444,53 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
             @Click.started -= instance.OnClick;
             @Click.performed -= instance.OnClick;
             @Click.canceled -= instance.OnClick;
+            @Ability0.started -= instance.OnAbility0;
+            @Ability0.performed -= instance.OnAbility0;
+            @Ability0.canceled -= instance.OnAbility0;
+            @Ability1.started -= instance.OnAbility1;
+            @Ability1.performed -= instance.OnAbility1;
+            @Ability1.canceled -= instance.OnAbility1;
+            @Ability2.started -= instance.OnAbility2;
+            @Ability2.performed -= instance.OnAbility2;
+            @Ability2.canceled -= instance.OnAbility2;
+            @Ability3.started -= instance.OnAbility3;
+            @Ability3.performed -= instance.OnAbility3;
+            @Ability3.canceled -= instance.OnAbility3;
+            @Ability4.started -= instance.OnAbility4;
+            @Ability4.performed -= instance.OnAbility4;
+            @Ability4.canceled -= instance.OnAbility4;
+            @Ability5.started -= instance.OnAbility5;
+            @Ability5.performed -= instance.OnAbility5;
+            @Ability5.canceled -= instance.OnAbility5;
+            @Ability6.started -= instance.OnAbility6;
+            @Ability6.performed -= instance.OnAbility6;
+            @Ability6.canceled -= instance.OnAbility6;
+            @Ability7.started -= instance.OnAbility7;
+            @Ability7.performed -= instance.OnAbility7;
+            @Ability7.canceled -= instance.OnAbility7;
+            @Ability8.started -= instance.OnAbility8;
+            @Ability8.performed -= instance.OnAbility8;
+            @Ability8.canceled -= instance.OnAbility8;
+            @Ability9.started -= instance.OnAbility9;
+            @Ability9.performed -= instance.OnAbility9;
+            @Ability9.canceled -= instance.OnAbility9;
         }
 
-        public void RemoveCallbacks(IMenuActions instance)
+        public void RemoveCallbacks(IAssemblyRoomActions instance)
         {
-            if (m_Wrapper.m_MenuActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_AssemblyRoomActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IMenuActions instance)
+        public void SetCallbacks(IAssemblyRoomActions instance)
         {
-            foreach (var item in m_Wrapper.m_MenuActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_AssemblyRoomActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_MenuActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_AssemblyRoomActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public MenuActions @menu => new MenuActions(this);
+    public AssemblyRoomActions @AssemblyRoom => new AssemblyRoomActions(this);
     private int m_MouseSchemeIndex = -1;
     public InputControlScheme MouseScheme
     {
@@ -210,9 +500,19 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_MouseSchemeIndex];
         }
     }
-    public interface IMenuActions
+    public interface IAssemblyRoomActions
     {
         void OnDrag(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
+        void OnAbility0(InputAction.CallbackContext context);
+        void OnAbility1(InputAction.CallbackContext context);
+        void OnAbility2(InputAction.CallbackContext context);
+        void OnAbility3(InputAction.CallbackContext context);
+        void OnAbility4(InputAction.CallbackContext context);
+        void OnAbility5(InputAction.CallbackContext context);
+        void OnAbility6(InputAction.CallbackContext context);
+        void OnAbility7(InputAction.CallbackContext context);
+        void OnAbility8(InputAction.CallbackContext context);
+        void OnAbility9(InputAction.CallbackContext context);
     }
 }

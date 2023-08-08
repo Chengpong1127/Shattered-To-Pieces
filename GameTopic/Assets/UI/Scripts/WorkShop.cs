@@ -33,7 +33,7 @@ public class WorkShop : MonoBehaviour
         shopDispatcher.setNullAbilityAction += room.AbilityManager.SetAbilityOutOfEntry;
         shopDispatcher.refreshAbilityAction += RefreshAbillity;
         shopDispatcher.refreshNullAbilityAction += RefreshNullAbillity;
-        shopDispatcher.rebindKeyAction += room.AbilityKeyChanger.StartChangeAbilityKey;
+        shopDispatcher.rebindKeyAction += room.AbilityRebinder.StartRebinding;
 
         shopDispatcher.RefreshAllBoxAbility();
         RefreshAllSkillBoxDisplayText();
@@ -47,7 +47,7 @@ public class WorkShop : MonoBehaviour
         if(Iar == null) { Debug.Log("IAssemblyRoom is null."); return; }
 
         if(room != null) {
-            room.AbilityKeyChanger.OnFinishChangeAbilityKey -= shopDispatcher.SetRebindKeyText;
+            room.AbilityRebinder.OnFinishRebinding -= shopDispatcher.SetRebindKeyText;
             room.AssemblySystemManager.OnGameComponentDraggedStart -= RefreshAllBoxAbilityAction;
             room.AssemblySystemManager.OnGameComponentDraggedEnd -= RefreshAllBoxAbilityAction;
             room.AssemblySystemManager.AfterGameComponentConnected -= RefreshAllBoxAbilityAction;
@@ -55,6 +55,7 @@ public class WorkShop : MonoBehaviour
             room.AssemblySystemManager.AfterGameComponentConnected -= UpdateUserCostRemain;
 
             room.OnLoadedDevice -= shopDispatcher.RefreshAllBoxAbility;
+            room.AbilityManager.OnSetBinding += RefreshSkillBoxDisplayText;
 
             // fileCtrl.RemoveRenameAction(room.RenameDevice);
             // fileCtrl.StoreAction -= room.SaveCurrentDevice;
@@ -64,7 +65,7 @@ public class WorkShop : MonoBehaviour
 
         room = Iar;
 
-        room.AbilityKeyChanger.OnFinishChangeAbilityKey += shopDispatcher.SetRebindKeyText;
+        room.AbilityRebinder.OnFinishRebinding += shopDispatcher.SetRebindKeyText;
         room.AssemblySystemManager.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
         room.AssemblySystemManager.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
         room.AssemblySystemManager.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
@@ -72,6 +73,7 @@ public class WorkShop : MonoBehaviour
         room.AssemblySystemManager.AfterGameComponentConnected += UpdateUserCostRemain;
 
         room.OnLoadedDevice += shopDispatcher.RefreshAllBoxAbility;
+        room.AbilityManager.OnSetBinding += RefreshSkillBoxDisplayText;
 
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Basic), GameComponentType.Basic);
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Attack), GameComponentType.Attack);
@@ -144,6 +146,11 @@ public class WorkShop : MonoBehaviour
             keyText = room.AbilityManager.AbilityInputEntries[i].InputPath;
             shopDispatcher.SetRebindKeyText(keyText == string.Empty ? "Non" : keyText);
         }
+    }
+    public void RefreshSkillBoxDisplayText(int boxid, string keyText) {
+        Debug.Log("Call Set key text.");
+        shopDispatcher.rebindBoxId = boxid;
+        shopDispatcher.SetRebindKeyText(keyText == string.Empty ? "Non" : keyText);
     }
 
     public void RefreshAllBoxAbilityAction(IGameComponent igc) {

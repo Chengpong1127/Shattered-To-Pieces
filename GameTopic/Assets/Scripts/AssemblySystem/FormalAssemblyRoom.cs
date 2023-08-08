@@ -4,6 +4,7 @@ using UnityEngine;
 using Gameframe.SaveLoad;
 using System.Linq;
 using System;
+using UnityEngine.InputSystem;
 
 public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 {
@@ -13,8 +14,13 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// Event for when the room mode is changed.
     /// </summary>
     public event Action<AssemblyRoomMode> OnSetRoomMode;
-
+    /// <summary>
+    /// Triggered after the device is loaded.
+    /// </summary>
     public event Action OnLoadedDevice;
+    /// <summary>
+    /// Triggered after the device is saved.
+    /// </summary> <summary>
     public event Action OnSavedDevice;
 
     #endregion
@@ -48,13 +54,15 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// </summary>
     private IGameComponentFactory GameComponentFactory;
 
-    public IAbilityKeyChanger AbilityKeyChanger { get; private set; }
+    public IAbilityRebinder AbilityRebinder { get; private set; }
 
     public List<GameComponentData> GameComponentDataList { get; private set; }
 
     public AbilityRunner AbilityRunner { get; private set; }
 
     public int CurrentLoadedDeviceID { get; private set; } = 0;
+
+    private InputManager _inputManager;
 
     #endregion
 
@@ -64,52 +72,45 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         GameComponentsUnitManager = new UnitManager();
         AssemblySystemManager.GameComponentsUnitManager = GameComponentsUnitManager;
 
-        ControlledDevice = CreateDevice();
+        _inputManager = new InputManager();
+
+        ControlledDevice = new Device(GameComponentFactory);
         LoadDevice(CurrentLoadedDeviceID);
+        
+        AssemblySystemManager.OnGameComponentDraggedStart += _ => UpdateSave();
+        AssemblySystemManager.AfterGameComponentConnected += _ => UpdateSave();
+        AssemblySystemManager.SetDraggableMoverDragInputAction(_inputManager.AssemblyRoom.Drag);
 
-
-        AbilityKeyChanger = new AbilityKeyChanger(AbilityManager);
-        AssemblySystemManager.OnGameComponentDraggedStart += (component) => {
-            AbilityManager.UpdateDeviceAbilities();
-            SaveCurrentDevice();
-        };
-        AssemblySystemManager.AfterGameComponentConnected += (component) => {
-            AbilityManager.UpdateDeviceAbilities();
-            SaveCurrentDevice();
-        };
-
-        AbilityKeyChanger.OnFinishChangeAbilityKey += _ => {
-            AbilityManager.UpdateDeviceAbilities();
-            Debug.Log("Ability key changed");
-            SaveCurrentDevice();
-        };
-
-        GameComponentDataList = GetGameComponentDataListFromResources();
+        GameComponentDataList = ResourceManager.Instance.LoadAllGameComponentData();
         Debug.Assert(GameComponentDataList != null);
 
         Debug.Assert(PlayerInitMoney >= 0);
 
-        AbilityRunner = gameObject.AddComponent<AbilityRunner>();
-        AbilityRunner.AbilityManager = AbilityManager;
-
         
+
+        AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager);
+        AbilityRunner.BindInputActionsToRunner(GetAbilityInputActions());
+
+        _inputManager.Enable();
     }
     protected void Start() {
         
         SetRoomMode(AssemblyRoomMode.PlayMode);
     }
 
-    private Device CreateDevice(){
-        var device = new GameObject("Device").AddComponent<Device>();
-        device.GameComponentFactory = GameComponentFactory;
-        return device;
+    private void UpdateSave(){
+        ControlledDevice.AbilityManager.UpdateDeviceAbilities();
+        SaveCurrentDevice();
     }
-
-    private List<GameComponentData> GetGameComponentDataListFromResources() {
-        var dataList = ResourceManager.Instance.LoadAllGameComponentData();
-        Debug.Assert(dataList != null);
-        return dataList;
-    
+    private InputAction[] GetAbilityInputActions(){
+        var abilityInputActions = new InputAction[ControlledDevice.AbilityManager.AbilityInputEntryNumber];
+        foreach(var action in _inputManager){
+            if (action.name.StartsWith("Ability")){
+                var abilityID = int.Parse(action.name[7..]);
+                abilityInputActions[abilityID] = action;
+            }
+        }
+        return abilityInputActions;
     }
 
     /// <summary>
@@ -138,12 +139,18 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     private IDevice LoadNewDevice(DeviceInfo deviceInfo)
     {
+
+
         deviceInfo ??= ResourceManager.Instance.LoadDefaultDeviceInfo();
         ClearAllGameComponents();
         ControlledDevice.Load(deviceInfo);
-        ControlledDevice.ForEachGameComponent((component) => {
-            GameComponentsUnitManager.AddUnit(component);
-        });
+        ControlledDevice.ForEachGameComponent(GameComponentsUnitManager.AddUnit);
+
+
+        
+        AbilityRebinder = new AbilityRebinder(ControlledDevice.AbilityManager, GetAbilityInputActions());
+        AbilityRebinder.OnFinishRebinding += _ => SaveCurrentDevice();
+
         OnLoadedDevice?.Invoke();
         return ControlledDevice;
     }
