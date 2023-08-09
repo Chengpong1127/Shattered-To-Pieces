@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Wheels : MonoBehaviour, ICoreComponent,IAffectObjectOwner
+public class Wheels : BaseCoreComponent, IAffectObjectOwner
 {
-    public Dictionary<string, Ability> AllAbilities { get; private set; }
-    public IGameComponent OwnerGameComponent { get; set; }
 
     public WheelJoint2D wheelJoint;
 

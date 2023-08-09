@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rotator : MonoBehaviour, ICoreComponent, IAffectObjectOwner {
-    public Dictionary<string, Ability> AllAbilities { get; private set; } = new Dictionary<string, Ability>();
-    public IGameComponent OwnerGameComponent { get; set; }
+public class Rotator : BaseCoreComponent, IAffectObjectOwner {
     public IAffectedObject affectedObject { get { return affectedObjectInstance; } }
     public AffectedObjectBase affectedObjectInstance { get; set; }
     RotatorAffect affect { get; set; }
