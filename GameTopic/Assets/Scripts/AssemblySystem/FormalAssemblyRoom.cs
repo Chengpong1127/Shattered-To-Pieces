@@ -150,6 +150,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     {
         var path = componentData.ResourcePath;
         var newComponent = _gameComponentFactory.CreateGameComponentObject(path);
+        if (newComponent != null)
+            Debug.Log(newComponent);
         GameComponentsUnitManager.AddUnit(newComponent);
         newComponent.DragableTransform.position = position;
         return newComponent;
