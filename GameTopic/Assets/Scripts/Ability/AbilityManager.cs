@@ -137,6 +137,7 @@ public class AbilityManager
         Debug.Assert(entryID < AbilityInputEntries.Count, "index out of range");
         AbilityInputEntries[entryID].SetInputPath(path);
         OnSetBinding?.Invoke(entryID, path);
+        this.TriggerEvent(EventName.AbilityManagerEvents.OnSetBinding, entryID, path);
     }
     /// <summary>
     /// Assign an ability to the input entry.
@@ -157,6 +158,7 @@ public class AbilityManager
             abilityInEntryStatus[removed] = false;
         }
         OnSetAbilityToEntry?.Invoke(ability);
+        this.TriggerEvent(EventName.AbilityManagerEvents.OnSetAbilityToEntry, ability);
     }
     /// <summary>
     /// Remove the ability from the input entry;
@@ -170,6 +172,7 @@ public class AbilityManager
         }
         abilityInEntryStatus[ability] = false;
         OnSetAbilityOutOfEntry?.Invoke(ability);
+        this.TriggerEvent(EventName.AbilityManagerEvents.OnSetAbilityOutOfEntry, ability);
     }
 
     /// <summary>

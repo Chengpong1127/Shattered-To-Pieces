@@ -143,6 +143,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         AbilityRebinder.OnFinishRebinding += _ => SaveCurrentDevice();
 
         OnLoadedDevice?.Invoke();
+        this.TriggerEvent(EventName.AssemblyRoomEvents.OnLoadedDevice);
         return ControlledDevice;
     }
 
@@ -171,6 +172,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         Debug.Assert(deviceInfo != null);
         ResourceManager.Instance.SaveLocalDeviceInfo(deviceInfo, CurrentLoadedDeviceID.ToString());
         OnSavedDevice?.Invoke();
+        this.TriggerEvent(EventName.AssemblyRoomEvents.OnSavedDevice);
     }
     public void LoadDevice(int DeviceID){
         CurrentLoadedDeviceID = DeviceID;
@@ -193,6 +195,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
                 break;
         }
         OnSetRoomMode?.Invoke(mode);
+        this.TriggerEvent(EventName.AssemblyRoomEvents.OnSetRoomMode, mode);
     }
 }
 
