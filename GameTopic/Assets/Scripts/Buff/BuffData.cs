@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum BuffType {
+    None,
     Attack,
     TakeDamage,
     Cure,
@@ -27,5 +28,5 @@ public class BuffData {
     public bool Layerable { get; set; }
     public int Layer { get; set; }
     public int LayerLimit { get; set; }
-    public List<BuffType> RepelBuff { get;set; }
+    public List<BuffType> RepelBuff { get;set; } = new List<BuffType>();
 }

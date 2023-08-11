@@ -6,9 +6,21 @@ public class BuffFactory : Singleton<BuffFactory> {
     Queue<BuffData> _datas = new Queue<BuffData>();
 
     public BuffData RequireBuffData() {
-        return _datas.Count > 0 ? _datas.Dequeue() : new BuffData();
+        if(_datas.Count == 0) { ReleaseBuffData(new BuffData()); }
+        return _datas.Dequeue();
     }
     public void ReleaseBuffData(BuffData obj) {
+        obj.Name = string.Empty;
+        obj.Type = BuffType.None;
+        obj.Status = BuffExecutionStatus.Waitting;
+        obj.Creater = BuffAffectedObject.Instance;
+        obj.Target = null;
+        obj.HaveCreater = false;
+        obj.Layerable = false;
+        obj.Layer = 0;
+        obj.LayerLimit = 0;
+        obj.RepelBuff.Clear();
+
         _datas.Enqueue(obj);
     }
 }

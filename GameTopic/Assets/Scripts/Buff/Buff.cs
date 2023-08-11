@@ -28,6 +28,12 @@ public class Buff {
 
 public class TakeDamage : Buff {
     public float damage;
+
+    public TakeDamage() {
+        data.Name = "TakeDamage";
+        data.Type = BuffType.TakeDamage;
+    }
+
     public override void Execute() {
         IDamageable affected = data.Target as IDamageable;
         if(affected != null) {
@@ -42,6 +48,11 @@ public class TakeDamage : Buff {
 public class Attack : Buff {
     BuffAffectedObject AttackTarget { get; set; } = null;
     float AttackValue { get; set; } = 0f;
+
+    public Attack() {
+        data.Type = BuffType.Attack;
+        data.Name = "Attack";
+    }
 
     public override void Init() {
         if (AttackTarget == null) { Finish(); }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffAffectedObject {
+public class BuffAffectedObject : Singleton<BuffAffectedObject> {
     public BuffManager BuffManager { get;set; } = new BuffManager();
 }
 
