@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class BuffAffectedObject : Singleton<BuffAffectedObject> {
     public BuffManager BuffManager { get;set; } = new BuffManager();
 }
 
+#region exampleInheritance
 
 public class ExampleObject : BuffAffectedObject, IAttackable, IDamageable {
     public float GetAttackValue() {
@@ -46,3 +48,5 @@ public interface IDamageable {
     }
     public void GetDamage(float damage);
 }
+
+#endregion

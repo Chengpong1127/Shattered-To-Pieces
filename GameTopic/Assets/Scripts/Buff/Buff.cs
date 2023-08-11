@@ -45,6 +45,10 @@ public class TakeDamage : Buff {
     }
 }
 
+
+
+#region exampleBuff
+
 public class Attack : Buff {
     BuffAffectedObject AttackTarget { get; set; } = null;
     float AttackValue { get; set; } = 0f;
@@ -76,3 +80,5 @@ public class Attack : Buff {
         Finish();
     }
 }
+
+#endregion
