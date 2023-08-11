@@ -2,5 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffFactory {
+public class BuffFactory : Singleton<BuffFactory> {
+
 }

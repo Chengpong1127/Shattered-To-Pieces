@@ -42,4 +42,8 @@ public static class EventName{
         /// </summary>
         public const string OnSetBinding = nameof(AbilityManagerEvents) + nameof(OnSetBinding);
     }
+
+    public static class BuffAffectedObjectEvents {
+        public static string OnEventTrigger(BuffAffectedObject obj, string eventName) { return obj.GetHashCode() + eventName; }
+    }
 }
