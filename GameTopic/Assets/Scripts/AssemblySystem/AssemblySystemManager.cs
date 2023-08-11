@@ -41,10 +41,9 @@ public class AssemblySystemManager : MonoBehaviour
     }
 
     protected void Start() {
-        DraggableMover.OnDragStart += HandleComponentDraggedStart;
-        DraggableMover.OnDragEnd += HandleComponentDraggedEnd;
-        DraggableMover.OnScrollWhenDragging += HandleScrollWhenDragging;
-
+        this.StartListening(EventName.DraggableMoverEvents.OnDragStart, new Action<IDraggable, Vector2>(HandleComponentDraggedStart));
+        this.StartListening(EventName.DraggableMoverEvents.OnDragEnd, new Action<IDraggable, Vector2>(HandleComponentDraggedEnd));
+        this.StartListening(EventName.DraggableMoverEvents.OnScrollWhenDragging, new Action<IDraggable, Vector2>(HandleScrollWhenDragging));
     }
     private void HandleComponentDraggedStart(IDraggable draggedComponent, Vector2 targetPosition)
     {
@@ -63,6 +62,7 @@ public class AssemblySystemManager : MonoBehaviour
             }
         });
         OnGameComponentDraggedStart?.Invoke(component);
+        this.TriggerEvent(EventName.AssemblySystemManagerEvents.OnGameComponentDraggedStart, component);
     }
 
 
@@ -76,6 +76,7 @@ public class AssemblySystemManager : MonoBehaviour
         if (availableParent != null){
             component.ConnectToParent(availableParent, connectorInfo);
             AfterGameComponentConnected?.Invoke(component);
+            this.TriggerEvent(EventName.AssemblySystemManagerEvents.AfterGameComponentConnected, component);
         }
         GameComponentsUnitManager.ForEachUnit((unit) => {
             if (unit is IGameComponent gameComponent)
@@ -84,6 +85,7 @@ public class AssemblySystemManager : MonoBehaviour
             }
         });
         OnGameComponentDraggedEnd?.Invoke(component);
+        this.TriggerEvent(EventName.AssemblySystemManagerEvents.OnGameComponentDraggedEnd, component);
     }
 
     private void HandleScrollWhenDragging(IDraggable draggedComponent, Vector2 scrollValue){
@@ -104,9 +106,9 @@ public class AssemblySystemManager : MonoBehaviour
     }
 
     protected void OnDestroy() {
-        DraggableMover.OnDragStart -= HandleComponentDraggedStart;
-        DraggableMover.OnDragEnd -= HandleComponentDraggedEnd;
-        DraggableMover.OnScrollWhenDragging -= HandleScrollWhenDragging;
+        this.StopListening(EventName.DraggableMoverEvents.OnDragStart, new Action<IDraggable, Vector2>(HandleComponentDraggedStart));
+        this.StopListening(EventName.DraggableMoverEvents.OnDragEnd, new Action<IDraggable, Vector2>(HandleComponentDraggedEnd));
+        this.StopListening(EventName.DraggableMoverEvents.OnScrollWhenDragging, new Action<IDraggable, Vector2>(HandleScrollWhenDragging));
     }
 
 }

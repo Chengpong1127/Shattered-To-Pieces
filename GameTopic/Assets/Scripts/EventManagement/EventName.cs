@@ -42,4 +42,39 @@ public static class EventName{
         /// </summary>
         public const string OnSetBinding = nameof(AbilityManagerEvents) + nameof(OnSetBinding);
     }
+
+    public static class DraggableMoverEvents{
+        /// <summary>
+        /// Triggered after the draggable is dragged. 
+        /// Handler Type: Action<IDraggable, Vector2>
+        /// </summary>
+        public const string OnDragStart = nameof(DraggableMoverEvents) + nameof(OnDragStart);
+        /// <summary>
+        /// Triggered after the draggable is dragged. 
+        /// Handler Type: Action<IDraggable, Vector2>
+        /// </summary>
+        public const string OnDragEnd = nameof(DraggableMoverEvents) + nameof(OnDragEnd);
+        /// <summary>
+        /// Triggered after the draggable is dragged. 
+        /// Handler Type: Action<IDraggable, Vector2>
+        /// </summary>
+        public const string OnScrollWhenDragging = nameof(DraggableMoverEvents) + nameof(OnScrollWhenDragging);
+    }
+    public static class AssemblySystemManagerEvents{
+        /// <summary>
+        /// Triggered after the game component is dragged. 
+        /// Handler Type: Action<IGameComponent>
+        /// </summary>
+        public const string OnGameComponentDraggedStart = nameof(AssemblySystemManagerEvents) + nameof(OnGameComponentDraggedStart);
+        /// <summary>
+        /// Triggered after the game component is dragged. 
+        /// Handler Type: Action<IGameComponent>
+        /// </summary>
+        public const string OnGameComponentDraggedEnd = nameof(AssemblySystemManagerEvents) + nameof(OnGameComponentDraggedEnd);
+        /// <summary>
+        /// Triggered after the game component is connected. 
+        /// Handler Type: Action<IGameComponent>
+        /// </summary>
+        public const string AfterGameComponentConnected = nameof(AssemblySystemManagerEvents) + nameof(AfterGameComponentConnected);
+    }
 }
