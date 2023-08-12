@@ -15,9 +15,3 @@ public abstract class Entity: BaseEntity{
         return type.IsSubclassOf(typeof(IStatus)) && _statuses.ContainsKey(type) ? _statuses[type] : null;
     }
 }
-
-public interface IStatus {
-    Type Type { get; }
-}
-
-
