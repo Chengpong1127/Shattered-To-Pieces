@@ -37,8 +37,8 @@ public class EventManager: Singleton<EventManager>{
         if (_eventDictionary.TryGetValue(eventName, out var thisEvent)) {
             try{
                 thisEvent.DynamicInvoke(args);
-            }catch(Exception){
-                throw new ArgumentException($"Event {eventName} has a listener of type {thisEvent.GetType()} and cannot be invoked with args of type {args.GetType()}.");
+            }catch(Exception e){
+                throw new ArgumentException($"Event {eventName} has a listener of type {thisEvent.GetType()} and cannot be invoked with args of type {args.GetType()}. Message: " + e);
             }
             
         }

@@ -141,6 +141,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         
         AbilityRebinder = new AbilityRebinder(ControlledDevice.AbilityManager, GetAbilityInputActions());
         AbilityRebinder.OnFinishRebinding += _ => SaveCurrentDevice();
+        AbilityManager.OnSetAbilityOutOfEntry += _ => SaveCurrentDevice();
+        AbilityManager.OnSetAbilityToEntry += _ => SaveCurrentDevice();
 
         OnLoadedDevice?.Invoke();
         this.TriggerEvent(EventName.AssemblyRoomEvents.OnLoadedDevice);
