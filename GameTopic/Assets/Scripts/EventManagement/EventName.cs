@@ -53,6 +53,7 @@ public static class EventName
 
 	public static class BuffEvents {
 		public static string AddBuff = nameof(BuffEvents) + nameof(AddBuff);
+		public static string RemoveBuff = nameof(BuffEvents) + nameof(RemoveBuff);
 	}
 
 	public static class DraggableMoverEvents

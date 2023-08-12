@@ -10,6 +10,9 @@ public abstract class Buff {
         data = BuffFactory.Instance.RequireBuffData();
         data.Type = typeof(Buff);
     }
+    ~Buff() {
+        BuffFactory.Instance.ReleaseBuffData(data);
+    }
     public virtual void Init() {
         data.Status = BuffExecutionStatus.Running;
         Execute();
@@ -23,26 +26,33 @@ public abstract class Buff {
         // data.Status = BuffExecutionStatus.Finish;
     }
     public virtual void Finish() {
-        data.Target.BuffManager.RemoveBuff(this);
-        BuffFactory.Instance.ReleaseBuffData(data);
+        this.TriggerEvent(EventName.BuffEvents.RemoveBuff, this);
     }
 }
 
 #region exampleBuff
 
 public class TakeDamage : Buff {
-    public float damage;
+    AttackStatus Attacker = null;
+    HealthStatus Affected = null;
 
     public TakeDamage() {
         data.Name = "TakeDamage";
         data.Type = typeof(TakeDamage);
     }
 
+    public override void Init() {
+        Attacker = data.Creator.GetStatus(typeof(AttackStatus)) as AttackStatus;
+        Affected = data.Target.GetStatus(typeof(HealthStatus)) as HealthStatus;
+
+        if(Attacker == null || Affected == null) { Finish(); }
+
+        data.Status = BuffExecutionStatus.Running;
+        Execute();
+    }
+
     public override void Execute() {
-        IDamageable affected = data.Target as IDamageable;
-        if(affected != null) {
-            affected.GetDamage(damage);
-        }
+        Affected.TakeDamage(Attacker.Value);
 
         data.Status = BuffExecutionStatus.Finish;
         Finish();
@@ -50,32 +60,25 @@ public class TakeDamage : Buff {
 }
 
 public class Attack : Buff {
-    Entity AttackTarget { get; set; } = null;
-    float AttackValue { get; set; } = 0f;
-    TakeDamage damageBuff = new TakeDamage(); // if buff won't leave on target, you can reuse them directly.
-
+    Entity AttackTarget = null;
+    AttackStatus Attacker = null;
     public Attack() {
         data.Name = "Attack";
         data.Type = typeof(Attack);
     }
 
     public override void Init() {
-        if (AttackTarget == null) { Finish(); }
+        SingleTarget t = data.Target.GetStatus(typeof(SingleTarget)) as SingleTarget;
+        Attacker = data.Target.GetStatus(typeof(AttackStatus)) as AttackStatus;
+        if (Attacker == null || !t.TargetStack.TryPop(out AttackTarget)) { Finish(); } // <- make sure attacker can attack and have a attack target.
+
         data.Status = BuffExecutionStatus.Running;
         Execute();
     }
 
     public override void Execute() {
-        IAttackable attacker = data.Target as IAttackable;
-
-        if(attacker != null && AttackTarget is IDamageable) {
-            
-            damageBuff.data.Creator = data.Target;
-            damageBuff.data.Target = AttackTarget;
-            damageBuff.damage = attacker.GetAttackValue();
-
-            AttackTarget.BuffManager.AddBuff(damageBuff);
-        }
+        Attacker.Caculate();// <- update attacker attack value.
+        this.TriggerEvent(EventName.BuffEvents.AddBuff, typeof(TakeDamage), data.Target, AttackTarget);
 
         data.Status = BuffExecutionStatus.Finish;
         Finish();

@@ -8,9 +8,21 @@ public interface IStatus {
 }
 
 
-public class Health : HealthController<float>, IStatus {
-    public Type Type { get; } = typeof(Health);
+public class HealthStatus : HealthController<float>, IStatus {
+    public Type Type { get; } = typeof(HealthStatus);
 
-    public Health() : base(0) { }
-    public Health(float max, float current, float min) : base(max, current, min) { }
+    public HealthStatus() : base(0) { }
+    public HealthStatus(float max, float current, float min) : base(max, current, min) { }
+}
+
+public class SingleTarget : IStatus {
+    public Type Type { get; } = typeof(SingleTarget);
+    public Stack<Entity> TargetStack { get; set; } = new Stack<Entity>();
+}
+
+public class AttackStatus : IStatus {
+    public Type Type { get; } = typeof(AttackStatus);
+    public float Value { get; set; } = 50f;
+
+    public void Caculate() { Value = 5566; }
 }
