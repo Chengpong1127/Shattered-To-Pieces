@@ -7,6 +7,12 @@ public class BuffManager {
 
     public void AddBuff(Buff buff) {
         bool addBuff = true;
+
+        if(buff.data.Status != BuffExecutionStatus.Waitting) {
+            Debug.LogError("buff not in Waiting status.");
+            return;
+        }
+
         buff.data.RepelBuff.ForEach(type => {
             if (Buffs.ContainsKey(type) &&
                 Buffs[buff.data.Type] != null &&

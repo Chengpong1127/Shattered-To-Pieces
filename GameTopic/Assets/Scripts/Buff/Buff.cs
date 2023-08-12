@@ -26,6 +26,8 @@ public class Buff {
     }
 }
 
+#region exampleBuff
+
 public class TakeDamage : Buff {
     public float damage;
 
@@ -45,13 +47,10 @@ public class TakeDamage : Buff {
     }
 }
 
-
-
-#region exampleBuff
-
 public class Attack : Buff {
     BuffAffectedObject AttackTarget { get; set; } = null;
     float AttackValue { get; set; } = 0f;
+    TakeDamage damageBuff = new TakeDamage(); // if buff won't leave on target, you can reuse them directly.
 
     public Attack() {
         data.Type = BuffType.Attack;
@@ -68,7 +67,7 @@ public class Attack : Buff {
         IAttackable attacker = data.Target as IAttackable;
 
         if(attacker != null && AttackTarget is IDamageable) {
-            TakeDamage damageBuff = new TakeDamage();
+            
             damageBuff.data.Creater = data.Target;
             damageBuff.data.Target = AttackTarget;
             damageBuff.damage = attacker.GetAttackValue();
