@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BuffManager {
-    Dictionary<BuffType, Dictionary<BuffAffectedObject, Buff>> Buffs { get; set; } = new Dictionary<BuffType, Dictionary<BuffAffectedObject, Buff>>();
+    Dictionary<BuffType, Dictionary<Entity, Buff>> Buffs { get; set; } = new Dictionary<BuffType, Dictionary<Entity, Buff>>();
 
     public void AddBuff(Buff buff) {
         bool addBuff = true;
@@ -21,7 +21,7 @@ public class BuffManager {
             }
         });
         if (!addBuff) { return; }
-        if(Buffs[buff.data.Type] == null) { Buffs[buff.data.Type] = new Dictionary<BuffAffectedObject, Buff>(); }
+        if(Buffs[buff.data.Type] == null) { Buffs[buff.data.Type] = new Dictionary<Entity, Buff>(); }
 
         if (Buffs[buff.data.Type].ContainsKey(buff.data.Creater) && Buffs[buff.data.Type][buff.data.Creater].data.Layerable) {
             Buffs[buff.data.Type][buff.data.Creater].Update();
@@ -36,5 +36,12 @@ public class BuffManager {
             Buffs[buff.data.Type] != null) {
             Buffs[buff.data.Type].Remove(buff.data.Creater);
         }
+    }
+    public Buff GetBuff(BuffType type, Entity entity) {
+        if(entity == null) { return null; }
+        return Buffs.ContainsKey(type) && Buffs[type].ContainsKey(entity) ? Buffs[type][entity] : null;
+    }
+    public bool ExistBuff(BuffType type) {
+        return Buffs.ContainsKey(type) && Buffs[type].Count > 0;
     }
 }

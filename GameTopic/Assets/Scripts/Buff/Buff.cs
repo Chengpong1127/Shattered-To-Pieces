@@ -48,7 +48,7 @@ public class TakeDamage : Buff {
 }
 
 public class Attack : Buff {
-    BuffAffectedObject AttackTarget { get; set; } = null;
+    Entity AttackTarget { get; set; } = null;
     float AttackValue { get; set; } = 0f;
     TakeDamage damageBuff = new TakeDamage(); // if buff won't leave on target, you can reuse them directly.
 

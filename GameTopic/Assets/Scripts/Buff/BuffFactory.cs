@@ -13,7 +13,7 @@ public class BuffFactory : Singleton<BuffFactory> {
         obj.Name = string.Empty;
         obj.Type = BuffType.None;
         obj.Status = BuffExecutionStatus.Waitting;
-        obj.Creater = BuffAffectedObject.Instance;
+        obj.Creater = null; // BuffAffectedObject.Instance;
         obj.Target = null;
         obj.HaveCreater = false;
         obj.Layerable = false;

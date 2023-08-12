@@ -22,8 +22,8 @@ public class BuffData {
     public string Name { get;set; }
     public BuffType Type { get; set; }
     public BuffExecutionStatus Status { get; set; }
-    public BuffAffectedObject Creater { get; set; }
-    public BuffAffectedObject Target { get; set; }
+    public Entity Creater { get; set; }
+    public Entity Target { get; set; }
     public bool HaveCreater { get; set; }
     public bool Layerable { get; set; }
     public int Layer { get; set; }
