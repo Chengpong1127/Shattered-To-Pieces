@@ -1,9 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BuffManager {
     Dictionary<BuffType, Dictionary<Entity, Buff>> Buffs { get; set; } = new Dictionary<BuffType, Dictionary<Entity, Buff>>();
+
+    public IEnumerable<Buff> buffs {
+        get {
+            foreach (var (type,typedBuffs) in Buffs) {
+                foreach (var (creator,buff) in typedBuffs) {
+                    yield return buff;
+                }
+            } 
+        }
+    }
 
     public void AddBuff(Buff buff) {
         bool addBuff = true;
