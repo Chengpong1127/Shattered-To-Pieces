@@ -8,6 +8,7 @@ public abstract class Buff {
 
     public Buff() {
         data = BuffFactory.Instance.RequireBuffData();
+        data.Type = typeof(Buff);
     }
     public virtual void Init() {
         data.Status = BuffExecutionStatus.Running;
@@ -25,8 +26,6 @@ public abstract class Buff {
         data.Target.BuffManager.RemoveBuff(this);
         BuffFactory.Instance.ReleaseBuffData(data);
     }
-
-    public abstract Buff GetInstance();
 }
 
 #region exampleBuff
@@ -36,6 +35,7 @@ public class TakeDamage : Buff {
 
     public TakeDamage() {
         data.Name = "TakeDamage";
+        data.Type = typeof(TakeDamage);
     }
 
     public override void Execute() {
@@ -47,10 +47,6 @@ public class TakeDamage : Buff {
         data.Status = BuffExecutionStatus.Finish;
         Finish();
     }
-
-    public override Buff GetInstance() {
-        return new TakeDamage();
-    }
 }
 
 public class Attack : Buff {
@@ -60,6 +56,7 @@ public class Attack : Buff {
 
     public Attack() {
         data.Name = "Attack";
+        data.Type = typeof(Attack);
     }
 
     public override void Init() {
@@ -82,9 +79,6 @@ public class Attack : Buff {
 
         data.Status = BuffExecutionStatus.Finish;
         Finish();
-    }
-    public override Buff GetInstance() {
-        return new Attack();
     }
 }
 
