@@ -51,6 +51,10 @@ public static class EventName
 		public static string OnEventTrigger(BuffAffectedObject obj, string eventName) { return obj.GetHashCode() + eventName; }
 	}
 
+	public static class BuffEvents {
+		public static string AddBuff = nameof(BuffEvents) + nameof(AddBuff);
+	}
+
 	public static class DraggableMoverEvents
 	{
 		/// <summary>

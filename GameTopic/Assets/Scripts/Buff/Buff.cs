@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class Buff {
+public abstract class Buff {
     public BuffData data { get; set; }
 
     public Buff() {
@@ -24,6 +25,8 @@ public class Buff {
         data.Target.BuffManager.RemoveBuff(this);
         BuffFactory.Instance.ReleaseBuffData(data);
     }
+
+    public abstract Buff GetInstance();
 }
 
 #region exampleBuff
@@ -33,7 +36,6 @@ public class TakeDamage : Buff {
 
     public TakeDamage() {
         data.Name = "TakeDamage";
-        data.Type = BuffType.TakeDamage;
     }
 
     public override void Execute() {
@@ -45,6 +47,10 @@ public class TakeDamage : Buff {
         data.Status = BuffExecutionStatus.Finish;
         Finish();
     }
+
+    public override Buff GetInstance() {
+        return new TakeDamage();
+    }
 }
 
 public class Attack : Buff {
@@ -53,7 +59,6 @@ public class Attack : Buff {
     TakeDamage damageBuff = new TakeDamage(); // if buff won't leave on target, you can reuse them directly.
 
     public Attack() {
-        data.Type = BuffType.Attack;
         data.Name = "Attack";
     }
 
@@ -68,7 +73,7 @@ public class Attack : Buff {
 
         if(attacker != null && AttackTarget is IDamageable) {
             
-            damageBuff.data.Creater = data.Target;
+            damageBuff.data.Creator = data.Target;
             damageBuff.data.Target = AttackTarget;
             damageBuff.damage = attacker.GetAttackValue();
 
@@ -77,6 +82,9 @@ public class Attack : Buff {
 
         data.Status = BuffExecutionStatus.Finish;
         Finish();
+    }
+    public override Buff GetInstance() {
+        return new Attack();
     }
 }
 
