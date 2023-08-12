@@ -23,8 +23,7 @@ public class EventExtensionTest{
         EventManager.Instance.ClearAllListeners();
         var value = 0;
         void testAction(int i) {value = i;}
-        Action<int> action = testAction;
-        this.StartListening("TestEventWithOneParam", action);
+        this.StartListening("TestEventWithOneParam", new Action<int> (testAction));
         this.TriggerEvent("TestEventWithOneParam", 5);
 
         Assert.True(value == 5);
@@ -34,8 +33,7 @@ public class EventExtensionTest{
         EventManager.Instance.ClearAllListeners();
         var value = 0;
         void testAction(int i, int j) {value = i + j;}
-        Action<int, int> action = testAction;
-        this.StartListening("TestEventWithTwoParam", action);
+        this.StartListening("TestEventWithTwoParam", new Action<int, int> (testAction));
         this.TriggerEvent("TestEventWithTwoParam", 5, 10);
 
         Assert.True(value == 15);
@@ -45,8 +43,7 @@ public class EventExtensionTest{
         EventManager.Instance.ClearAllListeners();
         var value = 0;
         void testAction(int i, int j, int k) {value = i + j + k;}
-        Action<int, int, int> action = testAction;
-        this.StartListening("TestEventWithThreeParam", action);
+        this.StartListening("TestEventWithThreeParam", new Action<int, int, int> (testAction));
         this.TriggerEvent("TestEventWithThreeParam", 5, 10, 15);
 
         Assert.True(value == 30);
@@ -57,13 +54,12 @@ public class EventExtensionTest{
         EventManager.Instance.ClearAllListeners();
         var value = 0;
         void testAction(int i, int j, int k) {value = i + j + k;}
-        Action<int, int, int> action = testAction;
-        this.StartListening("TestEventWithThreeParam", action);
+        this.StartListening("TestEventWithThreeParam", new Action<int, int, int> (testAction));
         this.TriggerEvent("TestEventWithThreeParam", 5, 10, 15);
 
         Assert.True(value == 30);
 
-        this.StopListening("TestEventWithThreeParam", action);
+        this.StopListening("TestEventWithThreeParam", new Action<int, int, int> (testAction));
         this.TriggerEvent("TestEventWithThreeParam", 1, 10, 15);
 
         Assert.True(value == 30);
@@ -73,19 +69,18 @@ public class EventExtensionTest{
         EventManager.Instance.ClearAllListeners();
         var value = 0;
         void testAction(int i, int j, int k) {value = i + j + k;}
-        Action<int, int, int> action = testAction;
-        this.StartListening("TestEventWithThreeParam", action);
-        this.StartListening("TestEventWithThreeParam", action);
+        this.StartListening("TestEventWithThreeParam", new Action<int, int, int> (testAction));
+        this.StartListening("TestEventWithThreeParam", new Action<int, int, int> (testAction));
         this.TriggerEvent("TestEventWithThreeParam", 5, 10, 15);
 
         Assert.True(value == 30);
 
-        this.StopListening("TestEventWithThreeParam", action);
+        this.StopListening("TestEventWithThreeParam", new Action<int, int, int> (testAction));
         this.TriggerEvent("TestEventWithThreeParam", 10, 10, 15);
 
         Assert.True(value == 35);
 
-        this.StopListening("TestEventWithThreeParam", action);
+        this.StopListening("TestEventWithThreeParam", new Action<int, int, int> (testAction));
         this.TriggerEvent("TestEventWithThreeParam", 1, 10, 15);
 
         Assert.True(value == 35);
