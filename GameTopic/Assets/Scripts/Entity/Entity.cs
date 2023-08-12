@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using System;
 
 public abstract class Entity: BaseEntity{
-    Dictionary<EntityStatusType, IStatus> _statuses = new Dictionary<EntityStatusType, IStatus>();
+    Dictionary<Type, IStatus> _statuses = new Dictionary<Type, IStatus>();
     public BuffManager BuffManager= new BuffManager();
 
     private void Update() {
@@ -10,16 +11,13 @@ public abstract class Entity: BaseEntity{
         }
     }
 
-    public IStatus GetStatus(EntityStatusType type) {
-        return _statuses.ContainsKey(type) ? _statuses[type] : null;
+    public IStatus GetStatus(Type type) {
+        return type.IsSubclassOf(typeof(IStatus)) && _statuses.ContainsKey(type) ? _statuses[type] : null;
     }
 }
 
-public enum EntityStatusType {
-
-}
-
 public interface IStatus {
-    EntityStatusType Type { get; }
+    Type Type { get; }
 }
+
 
