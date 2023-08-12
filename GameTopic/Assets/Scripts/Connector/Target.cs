@@ -4,13 +4,13 @@ using UnityEngine;
 
 
 /*
- * ¥Î©ó³Q Connector ¦b³s±µ¼Ò¦¡¤¤ºË·Çªº³s±µÂI¡A¤]­t³d°O¿ý­þ¤@­Ó Connector ³s±µ¦b¥L¨­¤W
- * ¦b Connector ¤¤¥H¤lª«¥ó¦s¦b¡A¥²¶·¸m©ó¾Ö¦³ Connector ªº GameObject ©³¤U¡A
- * ¦b¨ä¥L Connector ³s±µ®É·|°Ñ¦Ò Target ©Ò¦³ª«¥ó¬Û¹ï©ó¤÷ª«¥óªº position §@¬° Joint ³s±µ®Éªº®y¼Ð¡C
+ * ï¿½Î©ï¿½Q Connector ï¿½bï¿½sï¿½ï¿½ï¿½Ò¦ï¿½ï¿½ï¿½ï¿½Ë·Çªï¿½ï¿½sï¿½ï¿½ï¿½Iï¿½Aï¿½]ï¿½tï¿½dï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½ Connector ï¿½sï¿½ï¿½ï¿½bï¿½Lï¿½ï¿½ï¿½W
+ * ï¿½b Connector ï¿½ï¿½ï¿½Hï¿½lï¿½ï¿½ï¿½ï¿½sï¿½bï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½mï¿½ï¿½Ö¦ï¿½ Connector ï¿½ï¿½ GameObject ï¿½ï¿½ï¿½Uï¿½A
+ * ï¿½bï¿½ï¿½L Connector ï¿½sï¿½ï¿½ï¿½É·|ï¿½Ñ¦ï¿½ Target ï¿½Ò¦ï¿½ï¿½ï¿½ï¿½ï¿½Û¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ position ï¿½@ï¿½ï¿½ Joint ï¿½sï¿½ï¿½ï¿½Éªï¿½ï¿½yï¿½Ð¡C
  */
 public class Target : MonoBehaviour
 {
-    public int targetID { get; set; } = -1;
+    public int TargetID { get; set; }
     public GameObject targetPoint { get; set; }
     public Connector ownerConnector { get; set; } = null;
 

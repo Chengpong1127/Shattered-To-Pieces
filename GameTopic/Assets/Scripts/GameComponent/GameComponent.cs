@@ -56,15 +56,19 @@ public class GameComponent : MonoBehaviour, IGameComponent
     }
 
     public IInfo Dump(){
-        var info = new GameComponentInfo();
-        info.ComponentName = ComponentName;
-        info.ConnectionInfo = connector.Dump() as ConnectionInfo;
-        info.ConnectionZRotation = zRotation;
+        var info = new GameComponentInfo
+        {
+            ComponentName = ComponentName,
+            ConnectionInfo = connector.Dump() as ConnectionInfo,
+            ConnectionZRotation = zRotation
+        };
         return info;
     }
     public void Load(IInfo info)
     {
-        Debug.Assert(info is GameComponentInfo);
+        if (info is not GameComponentInfo){
+            throw new ArgumentException("info is not GameComponentInfo");
+        }
         var componentInfo = info as GameComponentInfo;
         ComponentName = componentInfo.ComponentName;
         zRotation = componentInfo.ConnectionZRotation;
@@ -77,7 +81,6 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
         Debug.Assert(availableParent.GameComponent != null);
 
-        // check availableParent cannot be one of the children of this component
         var tempTree = new Tree(this);
         var result = false;
         tempTree.TraverseBFS((node) => {
@@ -96,14 +99,14 @@ public class GameComponent : MonoBehaviour, IGameComponent
     }
 
     public ITreeNode GetParent(){
-        var parentConnector = connector.GetParentConnector();
+        var parentConnector = connector.ParentConnector;
         if (parentConnector == null){
             return null;
         }
         return parentConnector.GameComponent as ITreeNode;
     }
     public IList<ITreeNode> GetChildren(){
-        var childConnectors = connector.GetChildConnectors();
+        var childConnectors = connector.ChildConnectors;
         var children = new List<ITreeNode>();
         foreach (var childConnector in childConnectors){
             if (childConnector == null){
@@ -114,8 +117,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
         return children;
     }
     public void SetDragging(bool dragging){
-        Debug.Assert(connector != null);
-        connector.SetSelectingMode(dragging);
+        connector.ActiveAllTargets(!dragging);
         BodyRigidbody.angularVelocity = 0;
         switch(dragging){
             case true:
@@ -129,14 +131,14 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
     }
     public void SetAvailableForConnection(bool available){
-        Debug.Assert(connector != null);
+        connector.ActiveAllTargets(available);
         switch(available){
             case true:
                 break;
             case false:
                 break;
         }
-        connector.SetConnectMode(available);
+        
     }
 
     private void Awake()
