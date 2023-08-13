@@ -1,16 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public enum BuffType {
-    None,
-    Attack,
-    TakeDamage,
-    Cure,
-    Slow,
-    UnAttackable,
-    UnDebuffable
-}
+using System;
 
 public enum BuffExecutionStatus {
     Waitting,
@@ -20,13 +11,13 @@ public enum BuffExecutionStatus {
 
 public class BuffData {
     public string Name { get;set; }
-    public BuffType Type { get; set; }
+    public Type Type { get; set; }
     public BuffExecutionStatus Status { get; set; }
-    public BuffAffectedObject Creater { get; set; }
-    public BuffAffectedObject Target { get; set; }
+    public Entity Creator { get; set; }
+    public Entity Target { get; set; }
     public bool HaveCreater { get; set; }
     public bool Layerable { get; set; }
     public int Layer { get; set; }
     public int LayerLimit { get; set; }
-    public List<BuffType> RepelBuff { get;set; } = new List<BuffType>();
+    public List<Type> RepelBuff { get;set; } = new List<Type>();
 }

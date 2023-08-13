@@ -46,10 +46,11 @@ public static class EventName
 		public const string OnSetBinding = nameof(AbilityManagerEvents) + nameof(OnSetBinding);
 	}
 
-	public static class BuffAffectedObjectEvents
-	{
-		public static string OnEventTrigger(BuffAffectedObject obj, string eventName) { return obj.GetHashCode() + eventName; }
-	}
+	public static class BuffEvents {
+		public static string AddBuff = nameof(BuffEvents) + nameof(AddBuff);
+		public static string RemoveBuff = nameof(BuffEvents) + nameof(RemoveBuff);
+        public static string OnTrigger(Entity target, string eventName) { return target.GetHashCode() + eventName; }
+    }
 
 	public static class DraggableMoverEvents
 	{

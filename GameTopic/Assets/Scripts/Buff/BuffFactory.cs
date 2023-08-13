@@ -11,9 +11,9 @@ public class BuffFactory : Singleton<BuffFactory> {
     }
     public void ReleaseBuffData(BuffData obj) {
         obj.Name = string.Empty;
-        obj.Type = BuffType.None;
+        obj.Type = null;
         obj.Status = BuffExecutionStatus.Waitting;
-        obj.Creater = BuffAffectedObject.Instance;
+        obj.Creator = null; // BuffAffectedObject.Instance;
         obj.Target = null;
         obj.HaveCreater = false;
         obj.Layerable = false;
