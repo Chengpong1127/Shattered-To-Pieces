@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7edbe836890bd452e9486843fcac7c64, type: 3}
   m_Name: Shield
   m_EditorClassIdentifier: 
-  DisplayName: 
-  DisplayImage: {fileID: 0}
-  Description: 
-  Price: 0
-  Type: 0
-  ResourcePath: 
+  DisplayName: "\u76FE\u724C"
+  DisplayImage: {fileID: 21300000, guid: 0c8749185e5dc4e79adc67818769dffc, type: 3}
+  Description: "\u53EF\u4EE5\u64CB\u4E0B\u81F4\u547D\u50B7\u5BB3"
+  Price: 100
+  Type: 3
+  ResourcePath: Shield
   DisplayAtShop: 1

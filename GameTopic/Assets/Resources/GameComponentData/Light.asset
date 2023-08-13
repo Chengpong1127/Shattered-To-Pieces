@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7edbe836890bd452e9486843fcac7c64, type: 3}
   m_Name: Light
   m_EditorClassIdentifier: 
-  DisplayName: 
-  DisplayImage: {fileID: 0}
-  Description: 
-  Price: 0
-  Type: 0
-  ResourcePath: 
+  DisplayName: "\u5927\u71C8"
+  DisplayImage: {fileID: 21300000, guid: b6c99af21d6ea455fa8fc9890ff81251, type: 3}
+  Description: "\u5927\u71C8\u53EF\u4EE5\u767C\u51FA\u4E00\u500B\u6247\u5F62\u7BC4\u570D\u7684\u5149\u7DDA,\u88AB\u5927\u71C8\u7167\u5230\u7684\u73A9\u5BB6\u6703\u53D7\u5230\u5149\u7DDA\u7684\u5F71\u97FF\u4F7F\u756B\u9762\u904E\u66DD"
+  Price: 80
+  Type: 3
+  ResourcePath: Light
   DisplayAtShop: 1
