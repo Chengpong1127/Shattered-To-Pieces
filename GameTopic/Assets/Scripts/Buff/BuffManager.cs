@@ -23,6 +23,13 @@ public class BuffManager {
             Debug.LogError("buff not in Waiting status.");
             return;
         }
+        if(buff.data.Target == null) {
+            Debug.LogError("this buff has no target.");
+            return;
+        }
+        if (!buff.data.HaveCreater) {
+            buff.data.Creator = buff.data.Target;
+        }
 
         buff.data.RepelBuff.ForEach(type => {
             if (Buffs.ContainsKey(type) &&

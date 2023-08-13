@@ -15,6 +15,7 @@ public abstract class Buff {
     }
     public virtual void Init() {
         data.Status = BuffExecutionStatus.Running;
+        this.TriggerEvent(EventName.BuffEvents.OnTrigger(data.Target,nameof(data.Type)),this); // <-- trigger event when this buff can be executed.
         Execute();
     }
     public virtual void Execute() {
