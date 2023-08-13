@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7edbe836890bd452e9486843fcac7c64, type: 3}
   m_Name: Fan
   m_EditorClassIdentifier: 
-  DisplayName: "\u98A8\u6247"
-  DisplayImage: {fileID: 21300000, guid: 97a5c046f91bf42f5996010c65ec28bd, type: 3}
-  Description: "\u6301\u7E8C\u5439\u98A8"
-  Price: 150
-  Type: 3
-  ResourcePath: Fan
+  DisplayName: 
+  DisplayImage: {fileID: 0}
+  Description: 
+  Price: 0
+  Type: 0
+  ResourcePath: 
   DisplayAtShop: 1
