@@ -3,16 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public enum BuffType {
-    None,
-    Attack,
-    TakeDamage,
-    Cure,
-    Slow,
-    UnAttackable,
-    UnDebuffable
-}
-
 public enum BuffExecutionStatus {
     Waitting,
     Running,
