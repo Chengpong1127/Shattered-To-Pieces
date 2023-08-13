@@ -13,6 +13,4 @@ public interface IConnector: IDumpable<IInfo>
     (IConnector, int) GetAvailableConnector();
     void ConnectToComponent(IConnector connectorPoint, ConnectionInfo info);
     void Disconnect();
-    public IList<IConnector> ChildConnectors { get; }
-    public IConnector ParentConnector { get; }
 }

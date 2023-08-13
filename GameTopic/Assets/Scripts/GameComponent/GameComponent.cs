@@ -11,7 +11,8 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     public Collider2D BodyCollider => bodyCollider;
     public int UnitID { get; set; }
-    
+    public ITreeNode Parent { get; private set; } = null;
+    public IList<ITreeNode> Children { get; private set; } = new List<ITreeNode>();
 
     public IConnector Connector => connector;
     public ICoreComponent CoreComponent => coreComponent;
@@ -42,16 +43,19 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     public void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
     {
-        Debug.Assert(parentComponent != null);
-        Debug.Assert(connector != null);
-        Debug.Assert(parentComponent.Connector != null);
+        if (parentComponent == null) throw new ArgumentNullException("parentComponent");
+        if (info == null) throw new ArgumentNullException("info");
         connector.ConnectToComponent(parentComponent.Connector, info);
+        Parent = parentComponent;
+        Parent.Children.Add(this);
         BodyCollider.enabled = false;
-        
     }
 
     public void DisconnectFromParent()
     {
+        if (Parent == null) return;
+        Parent.Children.Remove(this);
+        Parent = null;
         connector.Disconnect();
         BodyCollider.enabled = true;
     }
@@ -97,25 +101,6 @@ public class GameComponent : MonoBehaviour, IGameComponent
             linkedTargetID = targetID,
         };
         return (availableParent.GameComponent, newInfo);
-    }
-
-    public ITreeNode GetParent(){
-        var parentConnector = connector.ParentConnector;
-        if (parentConnector == null){
-            return null;
-        }
-        return parentConnector.GameComponent as ITreeNode;
-    }
-    public IList<ITreeNode> GetChildren(){
-        var childConnectors = connector.ChildConnectors;
-        var children = new List<ITreeNode>();
-        foreach (var childConnector in childConnectors){
-            if (childConnector == null){
-                continue;
-            }
-            children.Add(childConnector.GameComponent as ITreeNode);
-        }
-        return children;
     }
     public void SetDragging(bool dragging){
         connector.SetAllTargetsDisplay(!dragging);
@@ -197,7 +182,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     public ITreeNode GetRoot()
     {
-        var parent = GetParent();
+        var parent = Parent;
         if (parent == null){
             return this;
         }

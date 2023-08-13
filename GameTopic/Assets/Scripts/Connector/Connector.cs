@@ -8,10 +8,6 @@ using System.Linq;
 
 public class Connector : MonoBehaviour, IConnector
 {
-
-    public IList<IConnector> ChildConnectors { get; private set; } = new List<IConnector>();
-
-    public IConnector ParentConnector { get; private set; }
     public IGameComponent GameComponent { get; private set; }
     private Collider2D SelfCollider => GameComponent.BodyCollider;
 
@@ -145,8 +141,6 @@ public class Connector : MonoBehaviour, IConnector
     {
         GameComponent.BodyRigidbody.isKinematic = false;
         UnlinkToConnector();
-        ParentConnector?.ChildConnectors.Remove(this);
-        ParentConnector = null;
     }
 
     public void ConnectToComponent(IConnector newParent, ConnectionInfo info)
@@ -156,7 +150,5 @@ public class Connector : MonoBehaviour, IConnector
         GameComponent.BodyRigidbody.isKinematic = true;
         var target = newParent.GetTarget(info.linkedTargetID);
         LinkToConnector(target.OwnerConnector, info);
-        ParentConnector = newParent;
-        newParent.ChildConnectors.Add(this);
     }
 }
