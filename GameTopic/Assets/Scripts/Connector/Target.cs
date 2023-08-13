@@ -11,46 +11,35 @@ using UnityEngine;
 public class Target : MonoBehaviour
 {
     public int TargetID { get; set; }
-    public GameObject targetPoint { get; set; }
-    public Connector ownerConnector { get; set; } = null;
+    public Connector OwnerConnector { get; set; } = null;
+    public bool IsConnected { get => AimerConnector != null; }
 
-    Connector aimerConnector { get; set; } = null;
+    private Connector AimerConnector = null;
+    private Renderer Renderer = null;
 
-    private void Awake()
-    {
-        aimerConnector = null;
-        targetPoint = gameObject;
-
-        targetPoint.SetActive(false);
+    private void Awake() {
+        Renderer = GetComponent<Renderer>();
+        if (Renderer == null) {
+            Debug.LogWarning("Target: Renderer is null");
+        }
     }
-
 
     public void SetOwner(Connector oc)
     {
-        ownerConnector = oc;
+        OwnerConnector = oc;
+    }
+    public void LinkTo(Connector lic)
+    {
+        AimerConnector = lic ?? throw new System.ArgumentNullException("lic");
+    }
+    public void Unlink()
+    {
+        AimerConnector = null;
     }
 
-    public void SwitchActive(bool b)
+    public void SetTargetDisplay(bool b)
     {
-        if (aimerConnector != null) {  return; }
-        this.gameObject.SetActive(b);
-    }
-
-    public bool LinkToTarget(Connector lic)
-    {
-        if(lic == null) { return false; }
-        if(aimerConnector != null) { return false; }
-        UnLinkToTarget();
-        SwitchActive(false);
-        aimerConnector = lic;
-
-        return true;
-    }
-    public void UnLinkToTarget()
-    {
-        if (aimerConnector == null) { return; }
-        aimerConnector = null;
-        SwitchActive(true);
+        Renderer.enabled = b;
     }
 
 }

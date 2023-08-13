@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6508652183922362645}
   - component: {fileID: 4443644458778705711}
   - component: {fileID: 4234352918938833372}
-  - component: {fileID: 323697144701428813}
   m_Layer: 0
   m_Name: GameComponentTemplate
   m_TagString: Untagged
@@ -72,24 +71,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!255 &323697144701428813
-FixedJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2569851066582173084}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0, y: 0}
-  m_DampingRatio: 0
-  m_Frequency: 0
 --- !u!1 &5822608388449159307
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +116,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d1af8e55226334a88c765539831e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selfJoint: {fileID: 323697144701428813}
   ConnectionAnchor: {fileID: 646425904242467134}
   targetList:
   - {fileID: 5957387579149278725}

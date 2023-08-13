@@ -15,7 +15,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     public IConnector Connector => connector;
     public ICoreComponent CoreComponent => coreComponent;
-    public Transform DragableTransform => bodyTransform;
+    public Transform DraggableTransform => bodyTransform;
     public string ComponentName { get; set; }
     private float zRotation = 0;
 
@@ -46,13 +46,14 @@ public class GameComponent : MonoBehaviour, IGameComponent
         Debug.Assert(connector != null);
         Debug.Assert(parentComponent.Connector != null);
         connector.ConnectToComponent(parentComponent.Connector, info);
+        BodyCollider.enabled = false;
         
     }
 
     public void DisconnectFromParent()
     {
         connector.Disconnect();
-        
+        BodyCollider.enabled = true;
     }
 
     public IInfo Dump(){
@@ -117,7 +118,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
         return children;
     }
     public void SetDragging(bool dragging){
-        connector.ActiveAllTargets(!dragging);
+        connector.SetAllTargetsDisplay(!dragging);
         BodyRigidbody.angularVelocity = 0;
         switch(dragging){
             case true:
@@ -131,7 +132,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
     }
     public void SetAvailableForConnection(bool available){
-        connector.ActiveAllTargets(available);
+        connector.SetAllTargetsDisplay(available);
         switch(available){
             case true:
                 break;
@@ -174,9 +175,9 @@ public class GameComponent : MonoBehaviour, IGameComponent
                 coreComponent.OwnerGameComponent = this;
             }
         }
-
+    }
+    private void Start() {
         DisconnectFromParent();
-        
     }
     public void SetZRotation()
     {

@@ -13,10 +13,8 @@ public class Connector : MonoBehaviour, IConnector
 
     public IConnector ParentConnector { get; private set; }
     public IGameComponent GameComponent { get; private set; }
-    private Rigidbody2D SelfRigidbody => GameComponent.BodyRigidbody;
     private Collider2D SelfCollider => GameComponent.BodyCollider;
 
-    [SerializeField] AnchoredJoint2D selfJoint;
     [Tooltip("The anchor of the connection point to attach to targets, should be a transform. If null, use the center of the connector as the anchor.")]
     [SerializeField] Transform ConnectionAnchor;
     [SerializeField] List<Target> targetList;
@@ -31,48 +29,61 @@ public class Connector : MonoBehaviour, IConnector
 
 
     private void Awake() {
-        Debug.Assert(selfJoint);
-        selfJoint.autoConfigureConnectedAnchor = false;
+        // Debug.Assert(selfJoint);
+        // selfJoint.autoConfigureConnectedAnchor = false;
 
         // initialize for filter
+
+        GameComponent = GetComponentInParent<IGameComponent>();
+
         targetLayerFilter.useLayerMask = true;
         targetLayerFilter.useTriggers = true;
         targetLayerFilter.SetLayerMask(LayerMask.GetMask("targetLayer"));// this string should be Target's layer
         SetTargetList(targetList);
 
-        GameComponent = GetComponentInParent<IGameComponent>();
+        
 
-        if (ConnectionAnchor != null) selfJoint.anchor = (Vector2)ConnectionAnchor.transform.localPosition;
+        //if (ConnectionAnchor != null) selfJoint.anchor = (Vector2)ConnectionAnchor.transform.localPosition;
     }
-    public void ActiveAllTargets(bool b) {
+    public void SetAllTargetsDisplay(bool b) {
         targetList.ForEach(target => {
-            target.SwitchActive(b);
+            target.SetTargetDisplay(b);
+        });
+    }
+
+    public void SetNonConnectedTargetsDisplay(bool b) {
+        targetList.ForEach(target => {
+            if (!target.IsConnected){
+                target.SetTargetDisplay(b);
+            }
         });
     }
 
     private void LinkToConnector(Connector connector, ConnectionInfo info) {
 
         _currentLinkedTarget = connector.targetList[info.linkedTargetID];
+        GameComponent.BodyTransform.SetParent(_currentLinkedTarget.transform);
 
-
-        selfJoint.connectedBody = connector.SelfRigidbody;
-
-        selfJoint.connectedAnchor = (Vector2)_currentLinkedTarget.targetPoint.transform.localPosition;
+        //selfJoint.connectedBody = connector.SelfRigidbody;
+        //selfJoint.connectedAnchor = (Vector2)_currentLinkedTarget.targetPoint.transform.localPosition;
         if (ConnectionAnchor != null)
         {
-            Vector3 positionOffset = _currentLinkedTarget.targetPoint.transform.position - ConnectionAnchor.position;
+            Vector3 positionOffset = _currentLinkedTarget.gameObject.transform.position - ConnectionAnchor.position;
             GameComponent.BodyTransform.position += positionOffset;
-
         }
-        selfJoint.enabled = true;
+        else{
+            GameComponent.BodyTransform.localPosition = Vector3.zero;
+        }
+        //selfJoint.enabled = false;
     }
     private void UnlinkToConnector() {
-        selfJoint.connectedBody = null;
-        selfJoint.enabled = false;
+        //selfJoint.connectedBody = null;
+        //selfJoint.enabled = false;
+        GameComponent.BodyTransform.SetParent(null);
 
         if (_currentLinkedTarget == null) { return; }
 
-        _currentLinkedTarget.UnLinkToTarget();
+        _currentLinkedTarget.Unlink();
         _currentLinkedTarget = null;
     }
     private Target FindClosestOverlapTarget()
@@ -83,8 +94,8 @@ public class Connector : MonoBehaviour, IConnector
         SelfCollider.OverlapCollider(targetLayerFilter, collisionResult);
 
         GameObject selectedTargetObj = null;
-        collisionResult.RemoveAll(c => c.gameObject == gameObject || c.gameObject.transform.IsChildOf(transform) || c.GetComponent<Target>() == null);
         float distance = float.PositiveInfinity;
+        collisionResult.RemoveAll(c => c.gameObject == gameObject || c.gameObject.transform.IsChildOf(transform) || c.GetComponent<Target>() == null);
         collisionResult.ForEach(c =>
         {
             var compareObjDist = SelfCollider.Distance(c).distance;
@@ -111,7 +122,7 @@ public class Connector : MonoBehaviour, IConnector
 
         if (detectedTarget != null)
         {
-            IConnector resIC = detectedTarget.ownerConnector;
+            IConnector resIC = detectedTarget.OwnerConnector;
             int resTid = detectedTarget.TargetID;
             if (resIC.Equals(this)) { return (null, -1); }
             return (resIC, resTid);
@@ -132,6 +143,7 @@ public class Connector : MonoBehaviour, IConnector
 
     public void Disconnect()
     {
+        GameComponent.BodyRigidbody.isKinematic = false;
         UnlinkToConnector();
         ParentConnector?.ChildConnectors.Remove(this);
         ParentConnector = null;
@@ -141,9 +153,9 @@ public class Connector : MonoBehaviour, IConnector
     {
         if (newParent == null) throw new ArgumentException("newParent is null");
         if (info == null) throw new ArgumentException("info is null");
-
+        GameComponent.BodyRigidbody.isKinematic = true;
         var target = newParent.GetTarget(info.linkedTargetID);
-        LinkToConnector(target.ownerConnector, info);
+        LinkToConnector(target.OwnerConnector, info);
         ParentConnector = newParent;
         newParent.ChildConnectors.Add(this);
     }
