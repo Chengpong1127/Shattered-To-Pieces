@@ -7,7 +7,7 @@ public class WheelAffect : SkillAffectBase
 {
     public WheelJoint2D wheelJoint { get; set; } = null;
     public bool direction { get; set; } //True=Right;False=Left
-    const float MoveForce = 100f;
+    const float MoveForce = 200f;
     public WheelAffect(){
         this.type = SkillAffectType.Move;
     }

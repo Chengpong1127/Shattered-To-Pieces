@@ -2,23 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bat : MonoBehaviour, ICoreComponent, IAffectObjectOwner
+public class Bat : BaseCoreComponent, IAffectObjectOwner
 {
-    public Dictionary<string, Ability> AllAbilities { get; private set; } = new Dictionary<string, Ability>();
-    public IGameComponent OwnerGameComponent { get; set; }
     public IAffectedObject affectedObject { get { return affectedObjectInstance; } }
     public AffectedObjectBase affectedObjectInstance { get; set; }
     public Transform connectAnchor;
     BatAffect affect { get; set; }
 
     private void Awake() {
-        AllAbilities = new Dictionary<string, Ability>{
-            {"SwingRight", new Ability("SwingRight", SwingRight, this)},
-            {"SwingLeft", new Ability("SwingLeft", SwingLeft, this)}
-        };
-    }
-    private void Start()
-    {
         affect = ScriptableObject.CreateInstance<BatAffect>();
         affectedObjectInstance = ScriptableObject.CreateInstance<AffectedObjectBase>();
         affectedObject.collider = GetComponentInParent<Collider2D>();
@@ -28,7 +19,12 @@ public class Bat : MonoBehaviour, ICoreComponent, IAffectObjectOwner
         affect.owner = affectedObject;
         affect.affectedObjectList.Add(affectedObject);
         affect.connectAnchor = connectAnchor;
+        AllAbilities = new Dictionary<string, Ability>{
+            {"SwingRight", new Ability("SwingRight", SwingRight, this)},
+            {"SwingLeft", new Ability("SwingLeft", SwingLeft, this)}
+        };
     }
+   
 
     public void SwingRight()
     {

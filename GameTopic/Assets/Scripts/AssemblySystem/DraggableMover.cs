@@ -6,36 +6,39 @@ using System;
 
 public class DraggableMover: MonoBehaviour
 {
-    public InputAction DragAction { get; set; }
-    public Camera mainCamera;
-    public event Action<IDraggable, Vector2> OnDragStart;
-    public event Action<IDraggable, Vector2> OnDragEnd;
-    public event Action<IDraggable ,Vector2> OnScrollWhenDragging;
+    public InputAction DragAction { get; private set; }
+    public Camera MainCamera { get; private set; }
 
     private IDraggable draggedComponent = null;
     private bool isDragging = false;
-    private void Awake() {
-        mainCamera = Camera.main;
+    public static DraggableMover CreateInstance(GameObject where, InputAction dragAction, Camera mainCamera){
+        var instance = where.AddComponent<DraggableMover>();
+        instance.DragAction = dragAction ?? throw new ArgumentNullException(nameof(dragAction));
+        instance.MainCamera = mainCamera;
+        if (mainCamera == null)
+        {
+            Debug.LogWarning("Main camera is null");
+        }
+        return instance;
     }
-    private void Start() {
-        Debug.Assert(DragAction != null, "DragAction is null");
+    protected void Start() {
         DragAction.started += DragStarted;
         DragAction.canceled += DragCanceled;
     }
-    private void Update() {
+    protected void Update() {
         if (isDragging)
         {
             Debug.Assert(draggedComponent != null, "draggedComponent is null");
             Vector2 mousePosition = Mouse.current.position.ReadValue();
             SetDraggablePosition(mousePosition);
-            OnScrollWhenDragging?.Invoke(draggedComponent ,Mouse.current.scroll.ReadValue());
+            this.TriggerEvent(EventName.DraggableMoverEvents.OnScrollWhenDragging, draggedComponent ,Mouse.current.scroll.ReadValue());
         }
     }
-    private void OnEnable() {
+    protected void OnEnable() {
         DragAction?.Enable();
         
     }
-    private void OnDisable() {
+    protected void OnDisable() {
         DragAction?.Disable();
     }
     private void DragStarted(InputAction.CallbackContext ctx)
@@ -43,11 +46,12 @@ public class DraggableMover: MonoBehaviour
         Vector2 mousePosition = Mouse.current.position.ReadValue();
         draggedComponent = GetDraggableUnderMouse(mousePosition);
         
-        var worldPoint = mainCamera.ScreenToWorldPoint(mousePosition);
+        var worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
         if (draggedComponent != null)
         {
             isDragging = true;
-            OnDragStart?.Invoke(draggedComponent, worldPoint);
+            Vector2 worldPoint2D = new Vector2(worldPoint.x, worldPoint.y);
+            this.TriggerEvent(EventName.DraggableMoverEvents.OnDragStart, draggedComponent, worldPoint2D);
         }
         
     }
@@ -59,8 +63,9 @@ public class DraggableMover: MonoBehaviour
             return;
         }
         var mousePosition = Mouse.current.position.ReadValue();
-        var targetPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-        OnDragEnd?.Invoke(draggedComponent, targetPosition);
+        var targetPosition = MainCamera.ScreenToWorldPoint(mousePosition);
+        Vector2 targetPosition2D = new Vector2(targetPosition.x, targetPosition.y);
+        this.TriggerEvent(EventName.DraggableMoverEvents.OnDragEnd, draggedComponent, targetPosition2D);
         draggedComponent = null;
     }
 
@@ -79,7 +84,7 @@ public class DraggableMover: MonoBehaviour
 
     private GameObject GetGameObjectUnderMouse(Vector2 mousePosition)
     {
-        Vector3 worldPoint = mainCamera.ScreenToWorldPoint(mousePosition);
+        Vector3 worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
 
         RaycastHit2D hit;
         hit = Physics2D.Raycast(worldPoint, Vector2.zero);
@@ -95,7 +100,7 @@ public class DraggableMover: MonoBehaviour
 
     private void SetDraggablePosition(Vector2 mousePosition)
     {
-        var newPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+        var newPosition = MainCamera.ScreenToWorldPoint(mousePosition);
         newPosition.z = 0;
         if (draggedComponent != null)
         {

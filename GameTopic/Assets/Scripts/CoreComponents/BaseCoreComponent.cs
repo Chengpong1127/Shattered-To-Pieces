@@ -33,7 +33,34 @@ public abstract class BaseCoreComponent : MonoBehaviour, ICoreComponent
     public bool HasTheSameRootWith(ICoreComponent other){
         return OwnerGameComponent.GetRoot() == other.OwnerGameComponent.GetRoot();
     }
-    protected void Start() {
+    /// <summary>
+    /// Get all of the core components that are overlapped with a circle.
+    /// </summary>
+    /// <param name="radius"> The radius of the circle. </param>
+    /// <param name="fromPosition"> The center of the circle. </param>
+    /// <returns> All of the core components that are overlapped with a circle. </returns>
+    protected ICoreComponent[] GetOverlapCircleCoreComponentsAll(float radius, Vector2 fromPosition){
+        var colliders = Physics2D.OverlapCircleAll(fromPosition, radius);
+        var coreComponents = new List<ICoreComponent>();
+        foreach(var collider in colliders){
+            var gameComponent = collider.GetComponentInParent<IGameComponent>();
+            var coreComponent = gameComponent?.CoreComponent;
+            if(coreComponent is BaseCoreComponent && coreComponent != null && !coreComponent.Equals(this)){
+                coreComponents.Add(coreComponent);
+            }
+        }
+        return coreComponents.ToArray();
+    }
+    /// <summary>
+    /// Get all of the core components that are overlapped with the circle of the game component.
+    /// </summary>
+    /// <param name="radius"> The radius of the circle. </param>
+    /// <returns> All of the core components that are overlapped with the circle of the game component. </returns>
+    protected ICoreComponent[] GetOverlapCircleCoreComponentsAll(float radius){
+        return GetOverlapCircleCoreComponentsAll(radius, BodyTransform.position);
+    }
+
+    protected virtual void Start() {
         Debug.Assert(OwnerGameComponent != null, "OwnerGameComponent is null");
     }
 }
