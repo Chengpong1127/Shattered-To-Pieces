@@ -47,15 +47,13 @@ public class Device: IDevice
             var component = tempDictionary[key];
             component.Load(componentInfo);
         }
-
-        foreach (var (key, _) in deviceInfo.treeInfo.NodeInfoMap){
-            var component = tempDictionary[key];
-            component.SetZRotation();
-        }
-
         RootGameComponent = tempDictionary[deviceInfo.treeInfo.rootID];
-
+        foreach (var (key, componentInfo) in deviceInfo.treeInfo.NodeInfoMap){
+            var component = tempDictionary[key];
+            component.SetZRotation(componentInfo.ConnectionZRotation);
+        }
         ConnectAllComponents(tempDictionary, deviceInfo.treeInfo.NodeInfoMap, deviceInfo.treeInfo.EdgeInfoList);
+        
         AbilityManager.Load(this, deviceInfo.abilityManagerInfo, tempDictionary);
     }
 

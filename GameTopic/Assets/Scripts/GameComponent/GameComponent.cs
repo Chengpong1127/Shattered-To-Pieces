@@ -164,19 +164,15 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
         DisconnectFromParent();
     }
-    public void SetZRotation()
-    {
-        SetZRotation(zRotation);
-    }
     public void SetZRotation(float newZRotation)
     {
         zRotation = newZRotation;
         bodyTransform.rotation = Quaternion.Euler(0, 0, zRotation);
     }
 
-    public void AddZRotation(float newzRotation)
+    public void AddZRotation(float newZRotation)
     {
-        zRotation += newzRotation;
+        zRotation += newZRotation;
         SetZRotation(zRotation);
     }
 
