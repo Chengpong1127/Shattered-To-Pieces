@@ -105,7 +105,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
         return (availableParent.GameComponent, newInfo);
     }
     public void SetDragging(bool dragging){
-        connector.SetAllTargetsDisplay(!dragging);
+        connector.SetNonConnectedTargetsDisplay(!dragging);
         BodyRigidbody.angularVelocity = 0;
         switch(dragging){
             case true:
@@ -119,11 +119,12 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
     }
     public void SetAvailableForConnection(bool available){
-        connector.SetAllTargetsDisplay(available);
         switch(available){
             case true:
+                connector.SetNonConnectedTargetsDisplay(true);
                 break;
             case false:
+                connector.SetAllTargetDisplay(false);
                 break;
         }
         

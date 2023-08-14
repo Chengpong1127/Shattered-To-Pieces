@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-/*
- * �Ω�Q Connector �b�s���Ҧ����˷Ǫ��s���I�A�]�t�d�O�����@�� Connector �s���b�L���W
- * �b Connector ���H�l����s�b�A�����m��֦� Connector �� GameObject ���U�A
- * �b��L Connector �s���ɷ|�Ѧ� Target �Ҧ�����۹������� position �@�� Joint �s���ɪ��y�СC
- */
 public class Target : MonoBehaviour
 {
     public int TargetID { get; set; }
     public Connector OwnerConnector { get; set; } = null;
     public bool IsConnected { get => AimerConnector != null; }
+    public Collider2D BodyCollider { get; private set; } = null;
 
     private Connector AimerConnector = null;
     private Renderer Renderer = null;
@@ -22,13 +17,18 @@ public class Target : MonoBehaviour
         if (Renderer == null) {
             Debug.LogWarning("Target: Renderer is null");
         }
+        BodyCollider = GetComponent<Collider2D>();
+        if (BodyCollider == null) {
+            Debug.LogWarning("Target: BodyCollider is null");
+        }
+        SetTargetDisplay(false);
     }
 
     public void SetOwner(Connector oc)
     {
         OwnerConnector = oc;
     }
-    public void LinkTo(Connector lic)
+    public void LinkedBy(Connector lic)
     {
         AimerConnector = lic ?? throw new System.ArgumentNullException("lic");
     }
@@ -37,9 +37,9 @@ public class Target : MonoBehaviour
         AimerConnector = null;
     }
 
-    public void SetTargetDisplay(bool b)
+    public void SetTargetDisplay(bool display)
     {
-        Renderer.enabled = b;
+        Renderer.enabled = display;
     }
 
 }

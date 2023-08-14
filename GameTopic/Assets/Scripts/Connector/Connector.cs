@@ -34,11 +34,6 @@ public class Connector : MonoBehaviour, IConnector
         SetTargetList(targetList);
 
     }
-    public void SetAllTargetsDisplay(bool b) {
-        targetList.ForEach(target => {
-            target.SetTargetDisplay(b);
-        });
-    }
 
     public void SetNonConnectedTargetsDisplay(bool b) {
         targetList.ForEach(target => {
@@ -47,24 +42,32 @@ public class Connector : MonoBehaviour, IConnector
             }
         });
     }
+    public void SetAllTargetDisplay(bool b) {
+        targetList.ForEach(target => {
+            target.SetTargetDisplay(b);
+        });
+    }
     private Target FindClosestOverlapTarget()
     {
         List<Collider2D> collisionResult = new();
-        SelfCollider.OverlapCollider(targetLayerFilter, collisionResult);
+        if (SelfCollider.OverlapCollider(targetLayerFilter, collisionResult) != 0){
+            var targets = collisionResult
+                .Select(c => c.GetComponent<Target>())
+                .Where(t => t != null && !t.IsConnected && t.OwnerConnector != this)
+                .ToList();
 
-        GameObject selectedTargetObj = null;
-        float distance = float.PositiveInfinity;
-        collisionResult.RemoveAll(c => c.gameObject == gameObject || c.gameObject.transform.IsChildOf(transform) || c.GetComponent<Target>() == null);
-        collisionResult.ForEach(c =>
-        {
-            var compareObjDist = SelfCollider.Distance(c).distance;
-            if (compareObjDist < distance)
-            {
-                selectedTargetObj = c.gameObject;
-            }
-        });
+            if (targets.Count == 0) return null;
 
-        return selectedTargetObj?.GetComponent<Target>();
+            var closestTarget = targets
+                .OrderBy(t => SelfCollider.Distance(t.BodyCollider).distance)
+                .First();
+
+            return closestTarget;
+        }
+        else{
+            return null;
+        }
+
     }
     
     public void SetTargetList(List<Target> tl) {
@@ -116,6 +119,7 @@ public class Connector : MonoBehaviour, IConnector
         if (info == null) throw new ArgumentException("info is null");
         _currentLinkedTarget = newParent.GetTarget(info.linkedTargetID);
         GameComponent.BodyTransform.SetParent(_currentLinkedTarget.transform);
+        _currentLinkedTarget.LinkedBy(this);
         if (ConnectionAnchor != null)
         {
             Vector3 positionOffset = _currentLinkedTarget.transform.position - ConnectionAnchor.position;
