@@ -25,10 +25,6 @@ public class Connector : MonoBehaviour, IConnector
 
 
     private void Awake() {
-        // Debug.Assert(selfJoint);
-        // selfJoint.autoConfigureConnectedAnchor = false;
-
-        // initialize for filter
 
         GameComponent = GetComponentInParent<IGameComponent>();
 
@@ -37,9 +33,6 @@ public class Connector : MonoBehaviour, IConnector
         targetLayerFilter.SetLayerMask(LayerMask.GetMask("targetLayer"));// this string should be Target's layer
         SetTargetList(targetList);
 
-        
-
-        //if (ConnectionAnchor != null) selfJoint.anchor = (Vector2)ConnectionAnchor.transform.localPosition;
     }
     public void SetAllTargetsDisplay(bool b) {
         targetList.ForEach(target => {
@@ -54,38 +47,8 @@ public class Connector : MonoBehaviour, IConnector
             }
         });
     }
-
-    private void LinkToConnector(Connector connector, ConnectionInfo info) {
-
-        _currentLinkedTarget = connector.targetList[info.linkedTargetID];
-        GameComponent.BodyTransform.SetParent(_currentLinkedTarget.transform);
-
-        //selfJoint.connectedBody = connector.SelfRigidbody;
-        //selfJoint.connectedAnchor = (Vector2)_currentLinkedTarget.targetPoint.transform.localPosition;
-        if (ConnectionAnchor != null)
-        {
-            Vector3 positionOffset = _currentLinkedTarget.gameObject.transform.position - ConnectionAnchor.position;
-            GameComponent.BodyTransform.position += positionOffset;
-        }
-        else{
-            GameComponent.BodyTransform.localPosition = Vector3.zero;
-        }
-        //selfJoint.enabled = false;
-    }
-    private void UnlinkToConnector() {
-        //selfJoint.connectedBody = null;
-        //selfJoint.enabled = false;
-        GameComponent.BodyTransform.SetParent(null);
-
-        if (_currentLinkedTarget == null) { return; }
-
-        _currentLinkedTarget.Unlink();
-        _currentLinkedTarget = null;
-    }
     private Target FindClosestOverlapTarget()
     {
-        
-        
         List<Collider2D> collisionResult = new();
         SelfCollider.OverlapCollider(targetLayerFilter, collisionResult);
 
@@ -139,16 +102,27 @@ public class Connector : MonoBehaviour, IConnector
 
     public void Disconnect()
     {
-        GameComponent.BodyRigidbody.isKinematic = false;
-        UnlinkToConnector();
+        GameComponent.BodyTransform.SetParent(null);
+        if (_currentLinkedTarget != null){
+            _currentLinkedTarget.Unlink();
+            _currentLinkedTarget = null;
+        }
+        
     }
 
     public void ConnectToComponent(IConnector newParent, ConnectionInfo info)
     {
         if (newParent == null) throw new ArgumentException("newParent is null");
         if (info == null) throw new ArgumentException("info is null");
-        GameComponent.BodyRigidbody.isKinematic = true;
-        var target = newParent.GetTarget(info.linkedTargetID);
-        LinkToConnector(target.OwnerConnector, info);
+        _currentLinkedTarget = newParent.GetTarget(info.linkedTargetID);
+        GameComponent.BodyTransform.SetParent(_currentLinkedTarget.transform);
+        if (ConnectionAnchor != null)
+        {
+            Vector3 positionOffset = _currentLinkedTarget.transform.position - ConnectionAnchor.position;
+            GameComponent.BodyTransform.position += positionOffset;
+        }
+        else{
+            GameComponent.BodyTransform.localPosition = Vector3.zero;
+        }
     }
 }

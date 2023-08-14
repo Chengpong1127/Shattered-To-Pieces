@@ -48,7 +48,8 @@ public class GameComponent : MonoBehaviour, IGameComponent
         connector.ConnectToComponent(parentComponent.Connector, info);
         Parent = parentComponent;
         Parent.Children.Add(this);
-        BodyCollider.enabled = false;
+        BodyRigidbody.isKinematic = true;
+        BodyCollider.isTrigger = true;
     }
 
     public void DisconnectFromParent()
@@ -57,7 +58,8 @@ public class GameComponent : MonoBehaviour, IGameComponent
         Parent.Children.Remove(this);
         Parent = null;
         connector.Disconnect();
-        BodyCollider.enabled = true;
+        BodyRigidbody.isKinematic = false;
+        BodyCollider.isTrigger = false;
     }
 
     public IInfo Dump(){
@@ -160,8 +162,6 @@ public class GameComponent : MonoBehaviour, IGameComponent
                 coreComponent.OwnerGameComponent = this;
             }
         }
-    }
-    private void Start() {
         DisconnectFromParent();
     }
     public void SetZRotation()
