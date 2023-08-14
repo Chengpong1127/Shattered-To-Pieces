@@ -17,7 +17,7 @@ public class Device: IDevice
     }
     public IInfo Dump()
     {
-        Debug.Assert(RootGameComponent != null, "RootGameComponent is null");
+        if (RootGameComponent == null) throw new NullReferenceException("RootGameComponent is null");
         var tree = new Tree(RootGameComponent);
         var deviceInfo = new DeviceInfo();
         var (info, nodeMapping) = tree.Dump<GameComponentInfo>();
@@ -47,15 +47,13 @@ public class Device: IDevice
             var component = tempDictionary[key];
             component.Load(componentInfo);
         }
-
-        foreach (var (key, _) in deviceInfo.treeInfo.NodeInfoMap){
-            var component = tempDictionary[key];
-            component.SetZRotation();
-        }
-
         RootGameComponent = tempDictionary[deviceInfo.treeInfo.rootID];
-
+        foreach (var (key, componentInfo) in deviceInfo.treeInfo.NodeInfoMap){
+            var component = tempDictionary[key];
+            component.SetZRotation(componentInfo.ConnectionZRotation);
+        }
         ConnectAllComponents(tempDictionary, deviceInfo.treeInfo.NodeInfoMap, deviceInfo.treeInfo.EdgeInfoList);
+        
         AbilityManager.Load(this, deviceInfo.abilityManagerInfo, tempDictionary);
     }
 
@@ -71,12 +69,11 @@ public class Device: IDevice
     }
 
     private void ConnectAllComponents(Dictionary<int, IGameComponent> nodes, Dictionary<int, GameComponentInfo> infos, List<(int, int)> edges){
-        foreach (var (from, to) in edges){
-            var fromComponent = nodes[from];
-            var toComponent = nodes[to];
-            var toInfo = infos[to];
-            
-            toComponent.ConnectToParent(fromComponent, toInfo.ConnectionInfo);
+        foreach (var (parent, child) in edges){
+            var parentComponent = nodes[parent];
+            var childComponent = nodes[child];
+            var childInfo = infos[child];
+            childComponent.ConnectToParent(parentComponent, childInfo.ConnectionInfo);
         }
     }
 

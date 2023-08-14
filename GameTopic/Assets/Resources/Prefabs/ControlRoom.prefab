@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d1af8e55226334a88c765539831e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selfJoint: {fileID: 6512100955249166513}
   ConnectionAnchor: {fileID: 0}
   targetList:
   - {fileID: 1316357019969997787}
@@ -62,8 +61,7 @@ GameObject:
   - component: {fileID: 3271157491183235334}
   - component: {fileID: 3751762239132960530}
   - component: {fileID: 2980435649703600411}
-  - component: {fileID: 6512100955249166513}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ControlRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 3271157491183235334}
   bodyRigidbody: {fileID: 2980435649703600411}
-  bodyCollider: {fileID: 7676240777278520257}
+  bodyCollider: {fileID: 0}
 --- !u!50 &2980435649703600411
 Rigidbody2D:
   serializedVersion: 4
@@ -122,25 +120,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!255 &6512100955249166513
-FixedJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5310481455017282531}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 0
-  m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0, y: 0}
-  m_DampingRatio: 0
-  m_Frequency: 0
+  m_Constraints: 4
 --- !u!1 &8482326372692520532
 GameObject:
   m_ObjectHideFlags: 0

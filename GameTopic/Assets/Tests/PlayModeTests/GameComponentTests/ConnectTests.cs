@@ -18,8 +18,8 @@ public class ConnectTests
         Assert.AreEqual(componentName, info.ComponentName);
         Assert.AreNotEqual(c.Connector, null);
         Assert.AreEqual(info.ConnectionInfo, ConnectionInfo.NoConnection());
-        Assert.AreEqual(c.GetParent(), null);
-        Assert.AreEqual(c.GetChildren().Count, 0);
+        Assert.AreEqual(c.Parent, null);
+        Assert.AreEqual(c.Children.Count, 0);
         Assert.True(c.Connector != null);
 
     }
@@ -57,11 +57,11 @@ public class ConnectTests
         };
         c1.ConnectToParent(c2, connectionInfo);
         c2.ConnectToParent(c3, connectionInfo);
-        Assert.True(c1.GetParent() != null);
-        Assert.True(c1.GetParent() == c2);
-        Assert.AreEqual(c2.GetParent(), c3);
+        Assert.True(c1.Parent != null);
+        Assert.True(c1.Parent == c2);
+        Assert.AreEqual(c2.Parent, c3);
         c1.DisconnectFromParent();
-        Assert.True(c1.GetParent() == null);
+        Assert.True(c1.Parent == null);
     }
 
 
@@ -77,41 +77,41 @@ public class ConnectTests
         };
         c1.ConnectToParent(c2, connectionInfo);
         c2.ConnectToParent(c3, connectionInfo);
-        Assert.True(c1.GetChildren().Count == 0);
-        Assert.True(c2.GetChildren().Count == 1);
-        Assert.True(c3.GetChildren().Count == 1);
-        Assert.True(c2.GetChildren()[0] == c1);
-        Assert.True(c3.GetChildren()[0] == c2);
+        Assert.True(c1.Children.Count == 0);
+        Assert.True(c2.Children.Count == 1);
+        Assert.True(c3.Children.Count == 1);
+        Assert.True(c2.Children[0] == c1);
+        Assert.True(c3.Children[0] == c2);
         c1.DisconnectFromParent();
-        Assert.True(c1.GetChildren().Count == 0);
-        Assert.True(c2.GetChildren().Count == 0);
-        Assert.True(c3.GetChildren().Count == 1);
-        Assert.True(c3.GetChildren()[0] == c2);
+        Assert.True(c1.Children.Count == 0);
+        Assert.True(c2.Children.Count == 0);
+        Assert.True(c3.Children.Count == 1);
+        Assert.True(c3.Children[0] == c2);
 
         c1.DisconnectFromParent();
-        Assert.True(c1.GetChildren().Count == 0);
+        Assert.True(c1.Children.Count == 0);
         c2.DisconnectFromParent();
-        Assert.True(c2.GetChildren().Count == 0);
+        Assert.True(c2.Children.Count == 0);
         c3.DisconnectFromParent();
-        Assert.True(c3.GetChildren().Count == 0);
+        Assert.True(c3.Children.Count == 0);
         c4.DisconnectFromParent();
-        Assert.True(c4.GetChildren().Count == 0);
+        Assert.True(c4.Children.Count == 0);
 
         c1.ConnectToParent(c2, connectionInfo);
         c3.ConnectToParent(c2, connectionInfo);
         c4.ConnectToParent(c2, connectionInfo);
-        Assert.True(c1.GetChildren().Count == 0);
-        Assert.True(c2.GetChildren().Count == 3);
-        Assert.True(c3.GetChildren().Count == 0);
-        Assert.True(c4.GetChildren().Count == 0);
+        Assert.True(c1.Children.Count == 0);
+        Assert.True(c2.Children.Count == 3);
+        Assert.True(c3.Children.Count == 0);
+        Assert.True(c4.Children.Count == 0);
         
-        Assert.AreEqual(c2.GetChildren()[0], c1);
-        Assert.AreEqual(c2.GetChildren()[1], c3);
-        Assert.AreEqual(c2.GetChildren()[2], c4);
+        Assert.AreEqual(c2.Children[0], c1);
+        Assert.AreEqual(c2.Children[1], c3);
+        Assert.AreEqual(c2.Children[2], c4);
 
-        Assert.AreEqual(c1.GetParent(), c2);
-        Assert.AreEqual(c3.GetParent(), c2);
-        Assert.AreEqual(c4.GetParent(), c2);
+        Assert.AreEqual(c1.Parent, c2);
+        Assert.AreEqual(c3.Parent, c2);
+        Assert.AreEqual(c4.Parent, c2);
     }
     [Test]
     public void GetRootTest(){

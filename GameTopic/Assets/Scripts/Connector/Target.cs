@@ -2,55 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-/*
- * 用於被 Connector 在連接模式中瞄準的連接點，也負責記錄哪一個 Connector 連接在他身上
- * 在 Connector 中以子物件存在，必須置於擁有 Connector 的 GameObject 底下，
- * 在其他 Connector 連接時會參考 Target 所有物件相對於父物件的 position 作為 Joint 連接時的座標。
- */
 public class Target : MonoBehaviour
 {
-    public int targetID { get; set; } = -1;
-    public GameObject targetPoint { get; set; }
-    public Connector ownerConnector { get; set; } = null;
+    public int TargetID { get; set; }
+    public Connector OwnerConnector { get; set; } = null;
+    public bool IsConnected { get => AimerConnector != null; }
+    public Collider2D BodyCollider { get; private set; } = null;
 
-    Connector aimerConnector { get; set; } = null;
+    private Connector AimerConnector = null;
+    private Renderer Renderer = null;
 
-    private void Awake()
-    {
-        aimerConnector = null;
-        targetPoint = gameObject;
-
-        targetPoint.SetActive(false);
+    private void Awake() {
+        Renderer = GetComponent<Renderer>();
+        if (Renderer == null) {
+            Debug.LogWarning("Target: Renderer is null");
+        }
+        BodyCollider = GetComponent<Collider2D>();
+        if (BodyCollider == null) {
+            Debug.LogWarning("Target: BodyCollider is null");
+        }
+        SetTargetDisplay(false);
     }
-
 
     public void SetOwner(Connector oc)
     {
-        ownerConnector = oc;
+        OwnerConnector = oc;
+    }
+    public void LinkedBy(Connector lic)
+    {
+        AimerConnector = lic ?? throw new System.ArgumentNullException("lic");
+    }
+    public void Unlink()
+    {
+        AimerConnector = null;
     }
 
-    public void SwitchActive(bool b)
+    public void SetTargetDisplay(bool display)
     {
-        if (aimerConnector != null) {  return; }
-        this.gameObject.SetActive(b);
-    }
-
-    public bool LinkToTarget(Connector lic)
-    {
-        if(lic == null) { return false; }
-        if(aimerConnector != null) { return false; }
-        UnLinkToTarget();
-        SwitchActive(false);
-        aimerConnector = lic;
-
-        return true;
-    }
-    public void UnLinkToTarget()
-    {
-        if (aimerConnector == null) { return; }
-        aimerConnector = null;
-        SwitchActive(true);
+        Renderer.enabled = display;
     }
 
 }
