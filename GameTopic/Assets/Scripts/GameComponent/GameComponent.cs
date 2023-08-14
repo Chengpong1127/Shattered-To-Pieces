@@ -107,7 +107,8 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public void SetDragging(bool dragging){
         connector.SetNonConnectedTargetsDisplay(!dragging);
         BodyRigidbody.angularVelocity = 0;
-        switch(dragging){
+        BodyRigidbody.velocity = Vector2.zero;
+        switch (dragging){
             case true:
                 BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
                 BodyCollider.enabled = false;
