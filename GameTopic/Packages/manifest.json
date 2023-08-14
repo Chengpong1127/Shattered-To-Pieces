@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.gameframe.saveload": "https://github.com/coryleach/UnitySaveLoad.git#1.0.7",
+    "com.sjai013.abilitysystem": "https://github.com/sjai013/unity-gameplay-ability-system.git#upm",
     "com.unity.collab-proxy": "2.0.4",
     "com.unity.feature.2d": "1.0.0",
     "com.unity.ide.rider": "3.0.21",

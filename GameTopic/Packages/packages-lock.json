@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "1490a06dbe456de6ebcf33fa2eb534462f3afc01"
     },
+    "com.sjai013.abilitysystem": {
+      "version": "https://github.com/sjai013/unity-gameplay-ability-system.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "7fb9a68132c325fe2d228ea8d9651915d1546cd9"
+    },
     "com.unity.2d.animation": {
       "version": "7.0.10",
       "depth": 1,
