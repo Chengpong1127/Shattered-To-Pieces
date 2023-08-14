@@ -11,11 +11,12 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     public Collider2D BodyCollider => bodyCollider;
     public int UnitID { get; set; }
-    
+    public ITreeNode Parent { get; private set; } = null;
+    public IList<ITreeNode> Children { get; private set; } = new List<ITreeNode>();
 
     public IConnector Connector => connector;
     public ICoreComponent CoreComponent => coreComponent;
-    public Transform DragableTransform => bodyTransform;
+    public Transform DraggableTransform => bodyTransform;
     public string ComponentName { get; set; }
     private float zRotation = 0;
 
@@ -42,29 +43,39 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     public void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
     {
-        Debug.Assert(parentComponent != null);
-        Debug.Assert(connector != null);
-        Debug.Assert(parentComponent.Connector != null);
+        if (parentComponent == null) throw new ArgumentNullException("parentComponent");
+        if (info == null) throw new ArgumentNullException("info");
         connector.ConnectToComponent(parentComponent.Connector, info);
-        
+        Parent = parentComponent;
+        Parent.Children.Add(this);
+        BodyRigidbody.isKinematic = true;
+        BodyCollider.isTrigger = true;
     }
 
     public void DisconnectFromParent()
     {
+        if (Parent == null) return;
+        Parent.Children.Remove(this);
+        Parent = null;
         connector.Disconnect();
-        
+        BodyRigidbody.isKinematic = false;
+        BodyCollider.isTrigger = false;
     }
 
     public IInfo Dump(){
-        var info = new GameComponentInfo();
-        info.ComponentName = ComponentName;
-        info.ConnectionInfo = connector.Dump() as ConnectionInfo;
-        info.ConnectionZRotation = zRotation;
+        var info = new GameComponentInfo
+        {
+            ComponentName = ComponentName,
+            ConnectionInfo = connector.Dump() as ConnectionInfo,
+            ConnectionZRotation = zRotation
+        };
         return info;
     }
     public void Load(IInfo info)
     {
-        Debug.Assert(info is GameComponentInfo);
+        if (info is not GameComponentInfo){
+            throw new ArgumentException("info is not GameComponentInfo");
+        }
         var componentInfo = info as GameComponentInfo;
         ComponentName = componentInfo.ComponentName;
         zRotation = componentInfo.ConnectionZRotation;
@@ -77,7 +88,6 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
         Debug.Assert(availableParent.GameComponent != null);
 
-        // check availableParent cannot be one of the children of this component
         var tempTree = new Tree(this);
         var result = false;
         tempTree.TraverseBFS((node) => {
@@ -94,28 +104,8 @@ public class GameComponent : MonoBehaviour, IGameComponent
         };
         return (availableParent.GameComponent, newInfo);
     }
-
-    public ITreeNode GetParent(){
-        var parentConnector = connector.GetParentConnector();
-        if (parentConnector == null){
-            return null;
-        }
-        return parentConnector.GameComponent as ITreeNode;
-    }
-    public IList<ITreeNode> GetChildren(){
-        var childConnectors = connector.GetChildConnectors();
-        var children = new List<ITreeNode>();
-        foreach (var childConnector in childConnectors){
-            if (childConnector == null){
-                continue;
-            }
-            children.Add(childConnector.GameComponent as ITreeNode);
-        }
-        return children;
-    }
     public void SetDragging(bool dragging){
-        Debug.Assert(connector != null);
-        connector.SetSelectingMode(dragging);
+        connector.SetNonConnectedTargetsDisplay(!dragging);
         BodyRigidbody.angularVelocity = 0;
         switch(dragging){
             case true:
@@ -129,14 +119,15 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
     }
     public void SetAvailableForConnection(bool available){
-        Debug.Assert(connector != null);
         switch(available){
             case true:
+                connector.SetNonConnectedTargetsDisplay(true);
                 break;
             case false:
+                connector.SetAllTargetDisplay(false);
                 break;
         }
-        connector.SetConnectMode(available);
+        
     }
 
     private void Awake()
@@ -172,13 +163,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
                 coreComponent.OwnerGameComponent = this;
             }
         }
-
         DisconnectFromParent();
-        
-    }
-    public void SetZRotation()
-    {
-        SetZRotation(zRotation);
     }
     public void SetZRotation(float newZRotation)
     {
@@ -186,15 +171,15 @@ public class GameComponent : MonoBehaviour, IGameComponent
         bodyTransform.rotation = Quaternion.Euler(0, 0, zRotation);
     }
 
-    public void AddZRotation(float newzRotation)
+    public void AddZRotation(float newZRotation)
     {
-        zRotation += newzRotation;
+        zRotation += newZRotation;
         SetZRotation(zRotation);
     }
 
     public ITreeNode GetRoot()
     {
-        var parent = GetParent();
+        var parent = Parent;
         if (parent == null){
             return this;
         }

@@ -156,7 +156,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         if (newComponent != null)
             Debug.Log(newComponent);
         GameComponentsUnitManager.AddUnit(newComponent);
-        newComponent.DragableTransform.position = position;
+        newComponent.DraggableTransform.position = position;
         return newComponent;
     }
 

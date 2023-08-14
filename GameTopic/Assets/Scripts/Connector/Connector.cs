@@ -4,246 +4,129 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Linq;
 
 public class Connector : MonoBehaviour, IConnector
 {
-
-    public IList<IConnector> ChildConnectors { get; set; }
-
-    public IConnector ParentConnector { get; set; }
     public IGameComponent GameComponent { get; private set; }
-    public Rigidbody2D selfRigidbody => GameComponent.BodyRigidbody;
-    private Collider2D selfCollider => GameComponent.BodyCollider;
-    UnityEvent<bool> attachHandler = new UnityEvent<bool>();
+    private Collider2D SelfCollider => GameComponent.BodyCollider;
 
-    [SerializeField] AnchoredJoint2D selfJoint;
     [Tooltip("The anchor of the connection point to attach to targets, should be a transform. If null, use the center of the connector as the anchor.")]
     [SerializeField] Transform ConnectionAnchor;
     [SerializeField] List<Target> targetList;
 
-    Target linkedTarget = null;
-    Target detectedTarget = null;
+    Target _currentLinkedTarget = null;
 
     // target detect process
-    static ContactFilter2D targetLayerFilter = new ContactFilter2D();
-    List<Collider2D> collisionResult = new List<Collider2D>();
-    float selectedObjDist;
-    float compareObjDist;
+    static ContactFilter2D targetLayerFilter = new();
+    
 
     //==================================functions==================================//
 
 
     private void Awake() {
-        Debug.Assert(selfJoint);
-        selfJoint.autoConfigureConnectedAnchor = false;
-        linkedTarget = null;
-        selectedObjDist = float.PositiveInfinity;
 
-        // initialize for filter
+        GameComponent = GetComponentInParent<IGameComponent>();
+
         targetLayerFilter.useLayerMask = true;
         targetLayerFilter.useTriggers = true;
         targetLayerFilter.SetLayerMask(LayerMask.GetMask("targetLayer"));// this string should be Target's layer
+        SetTargetList(targetList);
 
-        int tid = 0;
+    }
+
+    public void SetNonConnectedTargetsDisplay(bool b) {
         targetList.ForEach(target => {
-            target.ownerConnector = this;
-            target.targetID = tid++;
-        });
-
-        GameComponent = GetComponentInParent<IGameComponent>();
-        ChildConnectors = new List<IConnector>();
-
-        if (ConnectionAnchor != null) selfJoint.anchor = (Vector2)ConnectionAnchor.transform.localPosition;
-    }
-
-    public void SetConnectMode(bool draggingMode){
-        SwitchCombine(draggingMode);
-    }
-    public void SetSelectingMode(bool selectingMode){
-        SwitchSelecting(selectingMode);
-    }
-
-    // State chang function
-    void SwitchCombine(bool b) {
-        if (!b) { SwitchSelecting(false); }
-        //selfRigidbody.freezeRotation = b;
-        SwitchTargetActive(b);
-
-
-    }
-    public void SwitchSelecting(bool b) {
-
-        if (b) { this.UnlinkToConnector(); }
-
-        //selfRigidbody.gravityScale = b ? 0 : 1;
-        SwitchTargetActive(!b);
-        attachHandler.Invoke(b);
-
-    }
-    void SwitchAttach(bool b) {
-
-        SwitchTargetActive(!b);
-        //selfRigidbody.gravityScale = b ? 0 : 1;
-        attachHandler.Invoke(b);
-
-    }
-    void SwitchTargetActive(bool b) {
-        targetList.ForEach(target => {
-            target.SwitchActive(b);
-        });
-    }
-
-    // Target interact
-    void LinkToConnector(Connector connector, ConnectionInfo info) {
-        if (connector == null ||
-            !(connector.targetList.Count > info.linkedTargetID) ||
-            !connector.targetList[(int)info.linkedTargetID].LinkToTarget(this)||
-            connector.selfJoint.connectedBody == GameComponent.BodyRigidbody
-            ) { return; }
-
-
-        linkedTarget = connector.targetList[(int)info.linkedTargetID];
-
-        linkedTarget.ownerConnector.attachHandler.AddListener(this.SwitchAttach);
-
-        this.selfJoint.connectedBody = connector.selfRigidbody;
-
-        this.selfJoint.connectedAnchor = (Vector2)linkedTarget.targetPoint.transform.localPosition;
-        if (ConnectionAnchor != null)
-        {
-            Vector3 positionOffset = linkedTarget.targetPoint.transform.position - ConnectionAnchor.position;
-            GameComponent.BodyTransform.position += positionOffset;
-
-        }
-        this.selfJoint.enabled = true;
-    }
-    public void UnlinkToConnector() {
-        this.selfJoint.connectedBody = null;
-        this.selfJoint.enabled = false;
-
-        if (linkedTarget == null) { return; }
-
-        linkedTarget.UnLinkToTarget();
-        linkedTarget.ownerConnector.attachHandler.RemoveListener(this.SwitchAttach);
-        linkedTarget = null;
-    }
-    public void DetectTarget()
-    {
-        GameObject selectedTargetObj = null;
-        selectedObjDist = float.PositiveInfinity;
-        selfCollider.OverlapCollider(targetLayerFilter, collisionResult);
-
-        collisionResult.ForEach(c =>
-        {
-            compareObjDist = selfCollider.Distance(c).distance;
-            if (compareObjDist < selectedObjDist&&c.gameObject!=gameObject&&!c.gameObject.transform.IsChildOf(transform))
-            {
-                selectedTargetObj = c.gameObject;
+            if (!target.IsConnected){
+                target.SetTargetDisplay(b);
             }
         });
+    }
+    public void SetAllTargetDisplay(bool b) {
+        targetList.ForEach(target => {
+            target.SetTargetDisplay(b);
+        });
+    }
+    private Target FindClosestOverlapTarget()
+    {
+        List<Collider2D> collisionResult = new();
+        if (SelfCollider.OverlapCollider(targetLayerFilter, collisionResult) != 0){
+            var targets = collisionResult
+                .Select(c => c.GetComponent<Target>())
+                .Where(t => t != null && !t.IsConnected && t.OwnerConnector != this)
+                .ToList();
 
-        detectedTarget = selectedTargetObj?.GetComponent<Target>();
+            if (targets.Count == 0) return null;
+
+            var closestTarget = targets
+                .OrderBy(t => SelfCollider.Distance(t.BodyCollider).distance)
+                .First();
+
+            return closestTarget;
+        }
+        else{
+            return null;
+        }
+
     }
     
-
-    // TestProgram functitons
-    public void AssignTargetList(List<Target> tl) {
+    public void SetTargetList(List<Target> tl) {
         targetList = tl;
         int tid = 0;
         targetList.ForEach(t => {
-            t.targetID = tid++;
+            t.TargetID = tid++;
             t.SetOwner(this);
         });
-        return;
     }
-    public List<Target> GetTargetList() {  return targetList; }
-
-    public void AssignDetectedTarget(Target t) {
-        detectedTarget = t;
-    }
-
-    public void AssignLinkedTarget(Target t) {
-        linkedTarget = t;
-    }
-
-
-    // implement interface
-
-    public GameObject GetTargetObjByIndex(int targetID) {
-        return (targetID >= 0 && this.targetList.Count > targetID) ? this.targetList[targetID].gameObject : null;
-    }
-    public void ConnectToComponent(IConnector connectorPoint, ConnectionInfo info) {
-        detectedTarget = connectorPoint?.GetTargetObjByIndex((int)info.linkedTargetID)?.gameObject.GetComponent<Target>();
-        if (detectedTarget == null) { return; }
-        this.LinkToConnector(detectedTarget.ownerConnector, info);
-    }
+    public Target GetTarget(int targetID) => targetList[targetID];
     public (IConnector, int) GetAvailableConnector() {
-        DetectTarget();
-        IConnector resIC = null;
-        int resTid = -1;
+        var detectedTarget = FindClosestOverlapTarget();
 
         if (detectedTarget != null)
         {
-            resIC = detectedTarget.ownerConnector;
-            resTid = detectedTarget.targetID;
-            if (resIC.Equals(this))
-            {
-                resIC = null;
-                resTid = -1;
-            }
+            IConnector resIC = detectedTarget.OwnerConnector;
+            int resTid = detectedTarget.TargetID;
+            if (resIC.Equals(this)) { return (null, -1); }
+            return (resIC, resTid);
+        }else{
+            return (null, -1);
         }
-
-        return (resIC, resTid);
     }
     public IInfo Dump() {
-        if (linkedTarget == null) {
+        if (_currentLinkedTarget == null) {
             return ConnectionInfo.NoConnection();
         }
-        var res = new ConnectionInfo();
-        res.linkedTargetID = linkedTarget.targetID;
+        var res = new ConnectionInfo
+        {
+            linkedTargetID = _currentLinkedTarget.TargetID
+        };
         return res;
     }
 
     public void Disconnect()
     {
-        UnlinkToConnector();
-        if(ParentConnector!=null)ParentConnector.ChildConnectors.Remove(this as IConnector);
-        ParentConnector = null;
-    }
-
-    IList<IConnector> IConnector.GetChildConnectors()
-    {
-        return ChildConnectors;
-    }
-
-
-    IConnector IConnector.GetParentConnector()
-    {
-        return ParentConnector;
-    }
-
-    GameObject IConnector.GetTargetObjByIndex(int targetID)
-    {
-        if (targetID < 0 || targetID >= transform.childCount)
-        {
-            return null; 
+        GameComponent.BodyTransform.SetParent(null);
+        if (_currentLinkedTarget != null){
+            _currentLinkedTarget.Unlink();
+            _currentLinkedTarget = null;
         }
-
-        Transform childTransform = transform.GetChild(targetID);
-        if (childTransform == null)
-        {
-            return null; 
-        }
-
-        return childTransform.gameObject;
+        
     }
 
-    void IConnector.ConnectToComponent(IConnector connectorPoint, ConnectionInfo info)
+    public void ConnectToComponent(IConnector newParent, ConnectionInfo info)
     {
-        detectedTarget = connectorPoint?.GetTargetObjByIndex((int)info.linkedTargetID)?.gameObject.GetComponent<Target>();
-        if (detectedTarget == null) {  return; }
-        this.LinkToConnector(detectedTarget.ownerConnector, info);
-        this.ParentConnector = connectorPoint;
-        connectorPoint.ChildConnectors.Add(this as IConnector);
+        if (newParent == null) throw new ArgumentException("newParent is null");
+        if (info == null) throw new ArgumentException("info is null");
+        _currentLinkedTarget = newParent.GetTarget(info.linkedTargetID);
+        GameComponent.BodyTransform.SetParent(_currentLinkedTarget.transform);
+        _currentLinkedTarget.LinkedBy(this);
+        if (ConnectionAnchor != null)
+        {
+            Vector3 positionOffset = _currentLinkedTarget.transform.position - ConnectionAnchor.position;
+            GameComponent.BodyTransform.position += positionOffset;
+        }
+        else{
+            GameComponent.BodyTransform.localPosition = Vector3.zero;
+        }
     }
 }

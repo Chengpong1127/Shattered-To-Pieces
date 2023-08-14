@@ -15,7 +15,7 @@ public class Tree
         while (queue.Count > 0){
             var node = queue.Dequeue();
             action(node);
-            foreach (var child in node.GetChildren()){
+            foreach (var child in node.Children){
                 queue.Enqueue(child);
             }
         }
@@ -27,7 +27,7 @@ public class Tree
         while (stack.Count > 0){
             var node = stack.Pop();
             action(node);
-            foreach (var child in node.GetChildren()){
+            foreach (var child in node.Children){
                 stack.Push(child);
             }
         }
@@ -46,7 +46,7 @@ public class Tree
         });
 
         foreach (var (node, _localID) in tempDictionary){
-            var parent = node.GetParent();
+            var parent = node.Parent;
             if (parent == null){
                 continue;
             }

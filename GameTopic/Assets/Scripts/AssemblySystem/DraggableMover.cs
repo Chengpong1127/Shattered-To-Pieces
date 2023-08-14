@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.EventSystems;
 
 public class DraggableMover: MonoBehaviour
 {
@@ -64,7 +65,7 @@ public class DraggableMover: MonoBehaviour
         }
         var mousePosition = Mouse.current.position.ReadValue();
         var targetPosition = MainCamera.ScreenToWorldPoint(mousePosition);
-        Vector2 targetPosition2D = new Vector2(targetPosition.x, targetPosition.y);
+        Vector2 targetPosition2D = new(targetPosition.x, targetPosition.y);
         this.TriggerEvent(EventName.DraggableMoverEvents.OnDragEnd, draggedComponent, targetPosition2D);
         draggedComponent = null;
     }
@@ -104,7 +105,7 @@ public class DraggableMover: MonoBehaviour
         newPosition.z = 0;
         if (draggedComponent != null)
         {
-            draggedComponent.DragableTransform.position = newPosition;
+            draggedComponent.DraggableTransform.position = newPosition;
         }
     }
 }

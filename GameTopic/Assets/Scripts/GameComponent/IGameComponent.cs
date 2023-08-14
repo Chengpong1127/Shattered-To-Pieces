@@ -42,7 +42,6 @@ public interface IGameComponent: ITreeNode, IUnit, IDraggable
     public void SetAvailableForConnection(bool draggingMode);
 
     public void SetZRotation(float zRotation);
-    public void SetZRotation();
     public void AddZRotation(float zRotation);
 }
 
