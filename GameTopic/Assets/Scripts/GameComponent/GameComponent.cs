@@ -105,17 +105,19 @@ public class GameComponent : MonoBehaviour, IGameComponent
         return (availableParent.GameComponent, newInfo);
     }
     public void SetDragging(bool dragging){
-        connector.SetNonConnectedTargetsDisplay(!dragging);
-        BodyRigidbody.angularVelocity = 0;
-        BodyRigidbody.velocity = Vector2.zero;
+        
         switch (dragging){
             case true:
+                connector.SetNonConnectedTargetsDisplay(false);
                 BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
                 BodyCollider.enabled = false;
                 break;
             case false:
+                connector.SetNonConnectedTargetsDisplay(true);
                 BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
                 BodyCollider.enabled = true;
+                BodyRigidbody.angularVelocity = 0;
+                BodyRigidbody.velocity = Vector2.zero;
                 break;
         }
     }
