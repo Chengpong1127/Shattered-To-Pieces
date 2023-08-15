@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed0d8ea92145548a88e47c99a228fead, type: 3}
   m_Name: RotationAbility
   m_EditorClassIdentifier: 
-  AbilityName: 
+  AbilityName: Rotation
   AbilityTags:
     AssetTag: {fileID: 0}
     CancelAbilitiesWithTags: []
@@ -29,8 +29,7 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  RotationSpeed: 0
-  RotationTime: 0
-  RotationAngle: 0
+  RotationTime: 0.1
+  RotationAngle: 90
   RotateClockwise: 0
-  RotateBack: 0
+  RotateBack: 1
