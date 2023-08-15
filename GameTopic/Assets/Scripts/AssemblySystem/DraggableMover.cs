@@ -66,6 +66,7 @@ public class DraggableMover: MonoBehaviour
         var mousePosition = Mouse.current.position.ReadValue();
         var targetPosition = MainCamera.ScreenToWorldPoint(mousePosition);
         Vector2 targetPosition2D = new(targetPosition.x, targetPosition.y);
+        Debug.Log("Drag canceled: " + targetPosition2D + " " + draggedComponent);
         this.TriggerEvent(EventName.DraggableMoverEvents.OnDragEnd, draggedComponent, targetPosition2D);
         draggedComponent = null;
     }
@@ -107,5 +108,9 @@ public class DraggableMover: MonoBehaviour
         {
             draggedComponent.DraggableTransform.position = newPosition;
         }
+    }
+    private void OnDestroy() {
+        DragAction.started -= DragStarted;
+        DragAction.canceled -= DragCanceled;
     }
 }

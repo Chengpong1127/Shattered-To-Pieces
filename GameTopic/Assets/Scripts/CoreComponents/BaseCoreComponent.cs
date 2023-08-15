@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem.Authoring;
-public abstract class BaseCoreComponent : AbilityEntity, ICoreComponent
+public class BaseCoreComponent : AbilityEntity, ICoreComponent
 {
 
     /// <summary>
