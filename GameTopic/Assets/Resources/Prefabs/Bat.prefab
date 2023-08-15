@@ -277,7 +277,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttributeSystemComponent: {fileID: 6196673575775549594}
   AbilitySystemCharacter: {fileID: 8490295395548007965}
-  Abilities: []
+  Abilities:
+  - {fileID: 11400000, guid: 87bd55e048f2f4629aab77cff5a99f6f, type: 2}
   InitializationAbilities: []
 --- !u!114 &6196673575775549594
 MonoBehaviour:

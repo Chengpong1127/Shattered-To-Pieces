@@ -23,6 +23,7 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
 
     public GameComponentAbility[] GameComponentAbilities {
         get{
+            Debug.Log("Get GameComponentAbilities, Ability count: " + Abilities.Length);
             var gameComponentAbilities = new GameComponentAbility[Abilities.Length];
             var abilitySpecs = GetAbilitySpecs();
             for (int i = 0; i < Abilities.Length; i++)
@@ -68,8 +69,7 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
         return GetOverlapCircleCoreComponentsAll(radius, BodyTransform.position);
     }
 
-    protected override void Start() {
-        base.Start();
+    protected virtual void Start() {
         Debug.Assert(OwnerGameComponent != null, "OwnerGameComponent is null");
     }
 }

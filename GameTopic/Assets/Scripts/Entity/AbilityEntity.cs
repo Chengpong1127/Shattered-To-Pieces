@@ -9,7 +9,8 @@ public abstract class AbilityEntity: Entity{
     [SerializeField]
     protected AbstractAbilityScriptableObject[] InitializationAbilities;
     private Dictionary<AbstractAbilityScriptableObject, AbstractAbilitySpec> _abilityMap = new();
-    protected virtual void Start(){
+    protected override void Awake(){
+        base.Awake();
         ActivateInitializationAbilities();
         GrantCastableAbilities();
     }
