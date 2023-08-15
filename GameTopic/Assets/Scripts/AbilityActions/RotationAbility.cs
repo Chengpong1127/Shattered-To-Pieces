@@ -7,8 +7,6 @@ using AbilitySystem;
 public class RotationAbility : AbstractAbilityScriptableObject
 {
     [SerializeField]
-    protected float RotationSpeed;
-    [SerializeField]
     protected float RotationTime;
     [SerializeField]
     protected float RotationAngle;

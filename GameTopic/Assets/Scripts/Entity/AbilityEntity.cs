@@ -11,6 +11,8 @@ public abstract class AbilityEntity: Entity{
     private Dictionary<AbstractAbilityScriptableObject, AbstractAbilitySpec> _abilityMap = new();
     protected override void Awake(){
         base.Awake();
+        Abilities = Abilities.Where(x => x != null).ToArray();
+        InitializationAbilities = InitializationAbilities.Where(x => x != null).ToArray();
         ActivateInitializationAbilities();
         GrantCastableAbilities();
     }

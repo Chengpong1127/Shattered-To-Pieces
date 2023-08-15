@@ -47,7 +47,7 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
     /// <param name="radius"> The radius of the circle. </param>
     /// <param name="fromPosition"> The center of the circle. </param>
     /// <returns> All of the core components that are overlapped with a circle. </returns>
-    protected ICoreComponent[] GetOverlapCircleCoreComponentsAll(float radius, Vector2 fromPosition){
+    public ICoreComponent[] GetOverlapCircleCoreComponentsAll(float radius, Vector2 fromPosition){
         var colliders = Physics2D.OverlapCircleAll(fromPosition, radius);
         var coreComponents = new List<ICoreComponent>();
         foreach(var collider in colliders){
@@ -64,7 +64,7 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
     /// </summary>
     /// <param name="radius"> The radius of the circle. </param>
     /// <returns> All of the core components that are overlapped with the circle of the game component. </returns>
-    protected ICoreComponent[] GetOverlapCircleCoreComponentsAll(float radius){
+    public ICoreComponent[] GetOverlapCircleCoreComponentsAll(float radius){
         return GetOverlapCircleCoreComponentsAll(radius, BodyTransform.position);
     }
 

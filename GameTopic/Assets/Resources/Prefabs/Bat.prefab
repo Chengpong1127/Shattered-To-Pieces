@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 6118062715801404506}
   - component: {fileID: 8963888072718538740}
   - component: {fileID: 6196673575775549594}
-  - component: {fileID: 8490295395548007965}
+  - component: {fileID: 8261234539780816078}
   m_Layer: 6
   m_Name: Core
   m_TagString: Untagged
@@ -276,7 +276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AttributeSystemComponent: {fileID: 6196673575775549594}
-  AbilitySystemCharacter: {fileID: 8490295395548007965}
+  AbilitySystemCharacter: {fileID: 8261234539780816078}
   Abilities:
   - {fileID: 11400000, guid: d45349da545054f169bb77154f070376, type: 2}
   InitializationAbilities: []
@@ -296,7 +296,7 @@ MonoBehaviour:
   AttributeSystemEvents: []
   Attributes: []
   AttributeValues: []
---- !u!114 &8490295395548007965
+--- !u!114 &8261234539780816078
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
