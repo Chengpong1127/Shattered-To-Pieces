@@ -1,14 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
-public abstract class BaseCoreComponent : MonoBehaviour, ICoreComponent
+using AbilitySystem.Authoring;
+public abstract class BaseCoreComponent : AbilityEntity, ICoreComponent
 {
-    /// <summary>
-    /// All abilities of this game component.
-    /// </summary>
-    /// <typeparam name="string"> The name of the ability. </typeparam>
-    /// <typeparam name="Ability"> The ability. </typeparam>
-    /// <returns> All abilities of this game component. </returns>
-    public Dictionary<string, Ability> AllAbilities { get; set; } = new Dictionary<string, Ability>();
+
     /// <summary>
     /// The game component that owns this core component. This will be automatically set when the game component is created.
     /// </summary>
@@ -25,6 +20,9 @@ public abstract class BaseCoreComponent : MonoBehaviour, ICoreComponent
     /// Get the controllable collider of the game component.
     /// </summary>
     public Collider2D BodyCollider => OwnerGameComponent.BodyCollider;
+
+    public GameComponentAbility[] GameComponentAbilities { get; private set; }
+
     /// <summary>
     /// Determine whether the other game component has the same root game component as this game component.
     /// </summary>
@@ -58,6 +56,18 @@ public abstract class BaseCoreComponent : MonoBehaviour, ICoreComponent
     /// <returns> All of the core components that are overlapped with the circle of the game component. </returns>
     protected ICoreComponent[] GetOverlapCircleCoreComponentsAll(float radius){
         return GetOverlapCircleCoreComponentsAll(radius, BodyTransform.position);
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        GameComponentAbilities = new GameComponentAbility[Abilities.Length];
+        var abilitySpecs = GetAbilitySpecs();
+        for (int i = 0; i < Abilities.Length; i++)
+        {
+            GameComponentAbilities[i] = new GameComponentAbility(i, this, Abilities[i], abilitySpecs[i]);
+        }
+
     }
 
     protected virtual void Start() {

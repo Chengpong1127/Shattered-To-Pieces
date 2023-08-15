@@ -19,10 +19,10 @@ public class Bat : BaseCoreComponent, IAffectObjectOwner
         affect.owner = affectedObject;
         affect.affectedObjectList.Add(affectedObject);
         affect.connectAnchor = connectAnchor;
-        AllAbilities = new Dictionary<string, Ability>{
-            {"SwingRight", new Ability("SwingRight", SwingRight, this)},
-            {"SwingLeft", new Ability("SwingLeft", SwingLeft, this)}
-        };
+        // AllAbilities = new Dictionary<string, GameComponentAbility>{
+        //     {"SwingRight", new GameComponentAbility("SwingRight", SwingRight, this)},
+        //     {"SwingLeft", new GameComponentAbility("SwingLeft", SwingLeft, this)}
+        // };
     }
    
 

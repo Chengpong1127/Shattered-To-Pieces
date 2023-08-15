@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using AbilitySystem.Authoring;
 
 public class AbilityManager
 {
     /// <summary>
     /// Triggered after the ability is set to an entry.
     /// </summary>
-    public event Action<Ability> OnSetAbilityToEntry;
+    public event Action<GameComponentAbility> OnSetAbilityToEntry;
     /// <summary>
     /// Triggered after the ability is set to out of an entry.
     /// </summary>
-    public event Action<Ability> OnSetAbilityOutOfEntry;
+    public event Action<GameComponentAbility> OnSetAbilityOutOfEntry;
     /// <summary>
     /// Triggered after setting binding
     /// </summary>
@@ -28,7 +29,7 @@ public class AbilityManager
     public IDevice Device { get; set; }
 
     public int AbilityInputEntryNumber = 10;
-    private readonly Dictionary<Ability, bool> abilityInEntryStatus = new();
+    private readonly Dictionary<GameComponentAbility, bool> abilityInEntryStatus = new();
 
     public AbilityManager(IDevice device, int abilityInputEntryNumber = 10){
         Debug.Assert(abilityInputEntryNumber > 0, "The number of ability input entry should be greater than 0");
@@ -43,14 +44,14 @@ public class AbilityManager
         Load(device, info, componentMap);
     }
     public void Load(IDevice device, AbilityManagerInfo info, Dictionary<int, IGameComponent> componentMap){
-        Debug.Assert(device != null, "The device should not be null");
-        Debug.Assert(info != null, "The info should not be null");
-        Debug.Assert(componentMap != null, "The component map should not be null");
+        if (device == null) throw new ArgumentNullException(nameof(device));
+        if (componentMap == null) throw new ArgumentNullException(nameof(componentMap));
+        if (info != null && info.EntryPaths.Count() != info.EntryAbilities.Count()) throw new ArgumentException("The number of entry paths and entry abilities should be the same");
 
-        Ability getAbility(int componentID, string abilityName){
+        GameComponentAbility getAbility(int componentID, int abilityIndex){
             var component = componentMap[componentID];
             Debug.Assert(component != null, "The component should not be null");
-            var ability = component.CoreComponent.AllAbilities[abilityName];
+            var ability = component.CoreComponent.GameComponentAbilities[abilityIndex];
             
             Debug.Assert(ability != null, "The ability should not be null");
             return ability;
@@ -69,17 +70,17 @@ public class AbilityManager
             {
                 abilityInEntryStatus.Add(ability, true);
             }
-            foreach (var (componentID, abilityName) in info.OutOfEntryAbilities)
+            foreach (var (componentID, abilityIndex) in info.OutOfEntryAbilities)
             {
-                var ability = getAbility(componentID, abilityName);
+                var ability = getAbility(componentID, abilityIndex);
                 abilityInEntryStatus[ability] = false;
             }
 
             for (int i = 0; i < AbilityInputEntryNumber; i++)
             {
-                foreach (var (componentID, abilityName) in info.EntryAbilities[i])
+                foreach (var (componentID, abilityIndex) in info.EntryAbilities[i])
                 {
-                    var ability = getAbility(componentID, abilityName);
+                    var ability = getAbility(componentID, abilityIndex);
                     SetAbilityToEntry(i, ability);
                 }
             }
@@ -102,7 +103,7 @@ public class AbilityManager
     public void UpdateDeviceAbilities(){
         var abilityList = GetDeviceCurrentAbilityList();
 
-        var removedList = new List<Ability>();
+        var removedList = new List<GameComponentAbility>();
         foreach (var ability in abilityInEntryStatus.Keys){
             if(!abilityList.Contains(ability)){
                 RemoveAbilityFromEntry(ability);
@@ -144,7 +145,7 @@ public class AbilityManager
     /// </summary>
     /// <param name="entryID"></param>
     /// <param name="ability"></param>
-    public void SetAbilityToEntry(int entryID, Ability ability){
+    public void SetAbilityToEntry(int entryID, GameComponentAbility ability){
         RemoveAbilityFromEntry(ability);
         Debug.Assert(entryID < AbilityInputEntries.Count, "index out of range");
         var removed = AbilityInputEntries[entryID].AddAbility(ability);
@@ -164,7 +165,7 @@ public class AbilityManager
     /// Remove the ability from the input entry;
     /// </summary>
     /// <param name="ability"></param>
-    public void SetAbilityOutOfEntry(Ability ability){
+    public void SetAbilityOutOfEntry(GameComponentAbility ability){
         RemoveAbilityFromEntry(ability);
         if(!abilityInEntryStatus.ContainsKey(ability)){
             Debug.LogWarning("The ability is not in the device");
@@ -179,17 +180,19 @@ public class AbilityManager
     /// Get all the abilities that are not in the input entry.
     /// </summary>
     /// <returns></returns>
-    public List<Ability> GetAbilitiesOutOfEntry(){
+    public List<GameComponentAbility> GetAbilitiesOutOfEntry(){
         return abilityInEntryStatus
             .Where(x => !x.Value)
             .Select(x => x.Key)
             .ToList();
     }
-    private List<Ability> GetDeviceCurrentAbilityList(){
-        return Device.GetAbilityList();
+
+    public GameComponentAbility[] GetDeviceCurrentAbilityList(){
+        return Device.GetAbilityData();
     }
 
-    private void RemoveAbilityFromEntry(Ability ability){
+
+    private void RemoveAbilityFromEntry(GameComponentAbility ability){
         foreach (var entry in AbilityInputEntries)
         {
             if(entry.ContainsAbility(ability)){

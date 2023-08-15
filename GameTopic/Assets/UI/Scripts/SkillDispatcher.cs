@@ -13,11 +13,11 @@ public class SkillDispatcher : MonoBehaviour
     public bool isEditing { get; private set; }
 
     // reassign skill to other box
-    public UnityAction<int, Ability> setAbilityAction { get; set; }
-    public UnityAction<Ability> setNullAbilityAction { get; set; }
+    public UnityAction<int, GameComponentAbility> setAbilityAction { get; set; }
+    public UnityAction<GameComponentAbility> setNullAbilityAction { get; set; }
     public UnityAction<int> refreshAbilityAction { get; set; }
     public UnityAction refreshNullAbilityAction { get; set; }
-    public List<Ability> abilityList { get; set; }
+    public List<GameComponentAbility> abilityList { get; set; }
 
     // rebind box key
     public UnityAction<int> rebindKeyAction { get; set; }
@@ -47,7 +47,7 @@ public class SkillDispatcher : MonoBehaviour
     /// </summary>
     /// <param name="boxId"></param>
     /// <param name="ability"></param>
-    public void SetAbilityAction(int boxId, Ability ability) {
+    public void SetAbilityAction(int boxId, GameComponentAbility ability) {
         bool refreshNullAbility = skillBoxes[boxId].IsAssignedLastSkill();
         setAbilityAction?.Invoke(boxId, ability);
         if (refreshNullAbility) {
@@ -60,7 +60,7 @@ public class SkillDispatcher : MonoBehaviour
     /// </summary>
     /// <param name="boxId"></param>
     /// <param name="ability"></param>
-    public void SetNullAbilityAction(int boxId, Ability ability) {
+    public void SetNullAbilityAction(int boxId, GameComponentAbility ability) {
         setNullAbilityAction?.Invoke(ability);
     }
 

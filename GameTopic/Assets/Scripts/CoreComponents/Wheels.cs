@@ -23,11 +23,11 @@ public class Wheels : BaseCoreComponent, IAffectObjectOwner
         affect.affectedObjectList.Add(affectedObject);
         affect.wheelJoint = wheelJoint;
         Debug.Assert(wheelJoint != null, "wheelJoint is null");
-        AllAbilities = new Dictionary<string, Ability>
-        {
-            {"TurnLeft", new Ability("TurnLeft",AbiliityStart, LeftRunning, AbiliityEnd,this)},
-            {"TurnRight", new Ability("TurnRight", AbiliityStart, RightRunning, AbiliityEnd,this)},
-        };
+        // AllAbilities = new Dictionary<string, GameComponentAbility>
+        // {
+        //     {"TurnLeft", new GameComponentAbility("TurnLeft",AbiliityStart, LeftRunning, AbiliityEnd,this)},
+        //     {"TurnRight", new GameComponentAbility("TurnRight", AbiliityStart, RightRunning, AbiliityEnd,this)},
+        // };
     }
     public void AbiliityStart()
     {

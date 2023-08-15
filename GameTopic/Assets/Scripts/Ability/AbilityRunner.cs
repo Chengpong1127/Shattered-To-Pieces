@@ -2,11 +2,12 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using AbilitySystem;
+using AbilitySystem.Authoring;
+using System.Linq;
 
 public class AbilityRunner: MonoBehaviour{
     public AbilityManager AbilityManager { get; private set; }
-    private readonly HashSet<int> RunningAbilitySet = new();
-
     public static AbilityRunner CreateInstance(GameObject where, AbilityManager abilityManager){
         if (where == null){
             throw new ArgumentNullException(nameof(where));
@@ -27,12 +28,10 @@ public class AbilityRunner: MonoBehaviour{
             var abilityNumber = i;
             abilityActions[abilityNumber].AddBinding(AbilityManager.AbilityInputEntries[abilityNumber].InputPath);
             abilityActions[abilityNumber].started += ctx => StartAbility(abilityNumber);
-            abilityActions[abilityNumber].canceled += ctx => EndAbility(abilityNumber);
         }
     }
     public void StartAbility(int entryIndex){
-        AbilityManager.AbilityInputEntries[entryIndex].StartAllAbilities();
-        RunningAbilitySet.Add(entryIndex);
+        ActivateEntry(AbilityManager.AbilityInputEntries[entryIndex].Abilities);
     }
     public void StartAbility(string entryKey){
         for (int i = 0; i < AbilityManager.AbilityInputEntries.Count; i++)
@@ -43,26 +42,9 @@ public class AbilityRunner: MonoBehaviour{
         }
     }
 
-    public void EndAbility(int entryIndex){
-        if (!RunningAbilitySet.Contains(entryIndex)){
-            throw new ArgumentException("The ability is not running");
-        }
-        AbilityManager.AbilityInputEntries[entryIndex].EndAllAbilities();
-        RunningAbilitySet.Remove(entryIndex);
-    }
-
-    public void EndAbility(string entryKey){
-        for (int i = 0; i < AbilityManager.AbilityInputEntries.Count; i++)
-        {
-            if(AbilityManager.AbilityInputEntries[i].InputPath == entryKey){
-                EndAbility(i);
-            }
-        }
-    }
-
-    private void Update() {
-        foreach (var entryIndex in RunningAbilitySet){
-            AbilityManager.AbilityInputEntries[entryIndex].RunAllAbilitiesForEachFrame();
+    private void ActivateEntry(List<GameComponentAbility> abilities){
+        foreach (var ability in abilities){
+            StartCoroutine(ability.AbilitySpec.TryActivateAbility());
         }
     }
 

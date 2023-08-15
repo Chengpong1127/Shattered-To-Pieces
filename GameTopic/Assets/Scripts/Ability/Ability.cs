@@ -1,24 +1,12 @@
 using System;
 using UnityEngine;  
+using AbilitySystem.Authoring;
 
-
-public class Ability{
+public class GameComponentAbility{
     /// <summary>
-    /// The name of the ability.
+    /// The index of the ability in a core component.
     /// </summary>
-    public readonly string AbilityName;
-    /// <summary>
-    /// The action that will be executed when the ability is triggered.
-    /// </summary>
-    public Action ActionStarted = () => {};
-    /// <summary>
-    /// The action that will be executed each frame when the ability is running.
-    /// </summary>
-    public Action ActionRunning = () => {};
-    /// <summary>
-    /// The action that will be executed when the ability is ended.
-    /// </summary>
-    public Action ActionEnded = () => {};
+    public int AbilityIndex;
 
     /// <summary>
     /// The game component that own this ability.
@@ -26,53 +14,28 @@ public class Ability{
     /// <value></value>
     public readonly ICoreComponent OwnerGameComponent;
 
-    public Ability(string name){
-        this.AbilityName = name;
+    public AbstractAbilityScriptableObject AbilityScriptableObject;
+    public AbstractAbilitySpec AbilitySpec;
+
+    public GameComponentAbility(int index, ICoreComponent owner, AbstractAbilityScriptableObject abilityScriptableObject, AbstractAbilitySpec abilitySpec){
+        AbilityIndex = index;
+        OwnerGameComponent = owner;
+        AbilityScriptableObject = abilityScriptableObject;
+        AbilitySpec = abilitySpec;
     }
 
-    public Ability(string name, Action actionStarted, ICoreComponent ownerGameComponent){
-        this.AbilityName = name;
-        this.ActionStarted = actionStarted;
-        this.OwnerGameComponent = ownerGameComponent;
-    }
-
-    public Ability(string name, Action actionStarted, Action actionRunning, Action actionEnded, ICoreComponent ownerGameComponent){
-        this.AbilityName = name;
-        this.ActionStarted = actionStarted;
-        this.ActionRunning = actionRunning;
-        this.ActionEnded = actionEnded;
-        this.OwnerGameComponent = ownerGameComponent;
-    }
-    public Ability(string name, Action actionStarted){
-        this.AbilityName = name;
-        this.ActionStarted = actionStarted;
-    }
-    public void StartAbility(){
-        ActionStarted();
-    }
-
-    public void RunAbility(){
-        ActionRunning();
-    }
-
-    public void EndAbility(){
-        ActionEnded();
-    }
 
     public override bool Equals(object obj)
     {
-        return obj is Ability ability 
-            && AbilityName == ability.AbilityName 
-            && OwnerGameComponent == ability.OwnerGameComponent;
+        return obj is GameComponentAbility ability 
+            && AbilityIndex == ability.AbilityIndex 
+            && OwnerGameComponent == ability.OwnerGameComponent
+            && AbilityScriptableObject == ability.AbilityScriptableObject
+            && AbilitySpec == ability.AbilitySpec;
     }
 
     public override int GetHashCode()
     {
-        if (OwnerGameComponent == null){
-            return AbilityName.GetHashCode();
-        }else{
-            return AbilityName.GetHashCode() ^ OwnerGameComponent.GetHashCode();
-        }
-        
+        return HashCode.Combine(AbilityIndex, OwnerGameComponent, AbilityScriptableObject, AbilitySpec);
     }
 }

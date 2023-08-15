@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AbilitySystem.Authoring;
 public interface ICoreComponent
 {
     /// <summary>
@@ -6,7 +7,6 @@ public interface ICoreComponent
     /// Core component should put all of its abilities in this dictionary at Awake(). Not Start().
     /// </summary>
     /// <value> The ability list. Ability name: Ability</value>
-    public Dictionary<string, Ability> AllAbilities { get; }
-
+    public GameComponentAbility[] GameComponentAbilities { get; }
     public IGameComponent OwnerGameComponent { get; set; }
 }

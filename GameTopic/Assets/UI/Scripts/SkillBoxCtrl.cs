@@ -16,7 +16,7 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
     [SerializeField] TMP_Text bindKeyDisplay;
     [SerializeField] List<SkillCtrl> skillList;
     public int boxID {  get; set; }
-    public UnityAction<int, Ability> setAbilityAction { get; set; }
+    public UnityAction<int, GameComponentAbility> setAbilityAction { get; set; }
     public UnityAction<int> refreshAbilityAction { get; set; }
     public UnityAction<int> rebindKeyAction { get; set; }
 
@@ -51,7 +51,7 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
     /// Set ability to certain skill box.
     /// </summary>
     /// <param name="ability"></param>
-    public void JoinSkillBox(Ability ability) {
+    public void JoinSkillBox(GameComponentAbility ability) {
         setAbilityAction?.Invoke(boxID, ability);
         refreshAbilityAction?.Invoke(boxID);
         // Debug.Log(gameObject.name + " get skill : " + ability.AbilityName);
@@ -75,7 +75,7 @@ public class SkillBoxCtrl : MonoBehaviour ,IDropHandler
     /// Write abilitys into each skillCttrl's skillData and update them.
     /// </summary>
     /// <param name="skills"></param>
-    public void SetSkillList(List<Ability> skills) {
+    public void SetSkillList(List<GameComponentAbility> skills) {
         int loopId = 0;
         if(skills == null) {
             for (; loopId < skillList.Count; loopId++) {

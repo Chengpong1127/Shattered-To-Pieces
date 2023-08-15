@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using AbilitySystem.Authoring;
 
 public class AbilityInputEntry{
     /// <summary>
@@ -8,7 +9,7 @@ public class AbilityInputEntry{
     /// <value></value>
     public string InputPath { get; private set; } = "";
     public static readonly int AbilityNumber = 3;
-    public List<Ability> Abilities = new();
+    public List<GameComponentAbility> Abilities = new();
     public AbilityInputEntry(){
     }
     /// <summary>
@@ -18,7 +19,7 @@ public class AbilityInputEntry{
     public void SetInputPath(string inputPath){
         InputPath = inputPath;
     }
-    public void SetAbility(int index, Ability ability){
+    public void SetAbility(int index, GameComponentAbility ability){
         Debug.Assert(index < Abilities.Count, "index out of range");
         Abilities[index] = ability;
     }
@@ -28,48 +29,19 @@ public class AbilityInputEntry{
     /// </summary>
     /// <param name="ability"> The ability to be added.</param>
     /// <returns> The removed ability.</returns>
-    public Ability AddAbility(Ability ability){
+    public GameComponentAbility AddAbility(GameComponentAbility ability){
         Abilities.Insert(0, ability);
         if(Abilities.Count > AbilityNumber){
-            Ability removedAbility = Abilities[^1];
+            GameComponentAbility removedAbility = Abilities[^1];
             Abilities.RemoveAt(Abilities.Count - 1);
             return removedAbility;
         }
         return null;
     }
-    /// <summary>
-    /// Trigger all of the abilities in this entry.
-    /// </summary>
-    public void StartAllAbilities(){
-        foreach (var ability in Abilities)
-        {
-            ability?.StartAbility();
-        }
-    }
-    /// <summary>
-    /// Run all of the abilities in this entry. Call this function at each frame.
-    /// </summary>
-    public void RunAllAbilitiesForEachFrame(){
-        foreach (var ability in Abilities)
-        {
-            ability?.RunAbility();
-        }
-    }
-    /// <summary>
-    /// End all of the abilities in this entry.
-    /// </summary>
-    public void EndAllAbilities(){
-        foreach (var ability in Abilities)
-        {
-            if(ability != null){
-                ability.EndAbility();
-            }
-        }
-    }
-    public void RemoveAbility(Ability ability){
+    public void RemoveAbility(GameComponentAbility ability){
         Abilities.Remove(ability);
     }
-    public bool ContainsAbility(Ability ability){
+    public bool ContainsAbility(GameComponentAbility ability){
         return Abilities.Contains(ability);
     }
     public void Reset(){

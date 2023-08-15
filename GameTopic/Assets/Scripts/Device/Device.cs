@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using AbilitySystem.Authoring;
 
 /// <summary>
 /// Device of the game. Must assign GameComponentFactory after Initialize.
@@ -76,11 +77,14 @@ public class Device: IDevice
             childComponent.ConnectToParent(parentComponent, childInfo.ConnectionInfo);
         }
     }
-
-    public List<Ability> GetAbilityList(){
-        var abilityList = new List<Ability>();
+    /// <summary>
+    /// Get all ability data in the device from root game component.
+    /// </summary>
+    /// <returns> (abilityList, abilitySpecsList) The information and the instances of abilities. </returns>
+    public GameComponentAbility[] GetAbilityData(){
+        var abilityList = new List<GameComponentAbility>();
         if (RootGameComponent == null)
-            return abilityList;
+            return abilityList.ToArray();
 
         var tree = new Tree(RootGameComponent);
         tree.TraverseBFS((node) => {
@@ -88,12 +92,9 @@ public class Device: IDevice
             Debug.Assert(component != null);
             if(component.CoreComponent == null)
                 return;
-            var abilities = component.CoreComponent.AllAbilities;
-            foreach (var ability in abilities){
-                abilityList.Add(ability.Value);
-            }
+            abilityList.AddRange(component.CoreComponent.GameComponentAbilities);
         });
-        return abilityList;
+        return abilityList.ToArray();
     }
 
     public void ForEachGameComponent(Action<IGameComponent> action){

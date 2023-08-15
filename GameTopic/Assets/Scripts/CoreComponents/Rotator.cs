@@ -21,7 +21,7 @@ public class Rotator : BaseCoreComponent, IAffectObjectOwner {
         affect.affectedObjectList.Add(affectedObject);
         affect.rotateAnchor = connectionAnchor;
 
-        AllAbilities.Add("RotatorRotate", new Ability("RotatorRotate", AbiliityStart, AbilityRunning, AbiliityEnd, this));
+        // AllAbilities.Add("RotatorRotate", new GameComponentAbility("RotatorRotate", AbiliityStart, AbilityRunning, AbiliityEnd, this));
     }
 
     public void AbiliityStart() {

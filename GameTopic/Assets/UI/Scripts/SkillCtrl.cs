@@ -16,7 +16,7 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     Image selfImage;
     SkillBoxCtrl dropObjTarget;
 
-    public Ability skillData { get; set; }
+    public GameComponentAbility skillData { get; set; }
 
     private void Awake() {
         selfRectTransform  = GetComponent<RectTransform>();
@@ -40,7 +40,7 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
             this.gameObject.SetActive(false);
         } else {
             this.gameObject.SetActive(true);
-            this.gameObject.name = skillData.AbilityName;
+            //this.gameObject.name = skillData.AbilityIndex;
         }
     }
 
