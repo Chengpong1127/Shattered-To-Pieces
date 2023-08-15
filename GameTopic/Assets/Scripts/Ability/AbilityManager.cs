@@ -135,7 +135,6 @@ public class AbilityManager
     /// <param name="entryID"> The index of the input entry.</param>
     /// <param name="path"> The key path of the input entry.</param>
     public void SetBinding(int entryID, string path){
-        Debug.Assert(entryID < AbilityInputEntries.Count, "index out of range");
         AbilityInputEntries[entryID].SetInputPath(path);
         OnSetBinding?.Invoke(entryID, path);
         this.TriggerEvent(EventName.AbilityManagerEvents.OnSetBinding, entryID, path);

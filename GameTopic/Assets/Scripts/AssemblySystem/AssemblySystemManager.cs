@@ -40,7 +40,7 @@ public class AssemblySystemManager : MonoBehaviour
         DraggableMover.enabled = false;
     }
 
-    protected void Start() {
+    protected void Awake() {
         this.StartListening(EventName.DraggableMoverEvents.OnDragStart, new Action<IDraggable, Vector2>(HandleComponentDraggedStart));
         this.StartListening(EventName.DraggableMoverEvents.OnDragEnd, new Action<IDraggable, Vector2>(HandleComponentDraggedEnd));
         this.StartListening(EventName.DraggableMoverEvents.OnScrollWhenDragging, new Action<IDraggable, Vector2>(HandleScrollWhenDragging));

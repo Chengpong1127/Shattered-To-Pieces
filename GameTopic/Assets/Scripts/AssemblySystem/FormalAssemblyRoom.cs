@@ -86,7 +86,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     }
     protected void Start() {
         
-        SetRoomMode(AssemblyRoomMode.PlayMode);
+        //SetRoomMode(AssemblyRoomMode.PlayMode);
+        
     }
 
     private void UpdateSave(){

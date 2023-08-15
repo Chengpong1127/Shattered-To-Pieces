@@ -21,7 +21,17 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
     /// </summary>
     public Collider2D BodyCollider => OwnerGameComponent.BodyCollider;
 
-    public GameComponentAbility[] GameComponentAbilities { get; private set; }
+    public GameComponentAbility[] GameComponentAbilities {
+        get{
+            var gameComponentAbilities = new GameComponentAbility[Abilities.Length];
+            var abilitySpecs = GetAbilitySpecs();
+            for (int i = 0; i < Abilities.Length; i++)
+            {
+                gameComponentAbilities[i] = new GameComponentAbility(i, this, Abilities[i], abilitySpecs[i]);
+            }
+            return gameComponentAbilities;
+        }
+    }
 
     /// <summary>
     /// Determine whether the other game component has the same root game component as this game component.
@@ -58,19 +68,8 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
         return GetOverlapCircleCoreComponentsAll(radius, BodyTransform.position);
     }
 
-    protected override void Awake()
-    {
-        base.Awake();
-        GameComponentAbilities = new GameComponentAbility[Abilities.Length];
-        var abilitySpecs = GetAbilitySpecs();
-        for (int i = 0; i < Abilities.Length; i++)
-        {
-            GameComponentAbilities[i] = new GameComponentAbility(i, this, Abilities[i], abilitySpecs[i]);
-        }
-
-    }
-
-    protected virtual void Start() {
+    protected override void Start() {
+        base.Start();
         Debug.Assert(OwnerGameComponent != null, "OwnerGameComponent is null");
     }
 }
