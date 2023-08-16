@@ -9,6 +9,7 @@ public class AffectedObjectBase : ScriptableObject, IAffectedObject {
     public Collider2D collider { get; set; }
     public Transform transform { get; set; }
     public AnchoredJoint2D joint { get; set; }
+    public BaseCoreComponent coreComponent { get; set; }
     public bool IsRigidbodyAffected { get; set; } = true;
     public bool IsColliderAffected { get; set; } = true;
     public bool IsTransformAffected { get; set; } = true;

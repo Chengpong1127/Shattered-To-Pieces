@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7edbe836890bd452e9486843fcac7c64, type: 3}
-  m_Name: Bat
+  m_Name: Cloth
   m_EditorClassIdentifier: 
-  DisplayName: Bat
-  DisplayImage: {fileID: 21300000, guid: 7a90c7303de674406b115b613e2c8d66, type: 3}
-  Description: "\u53EF\u4EE5\u6253\u4EBA\u7684\u5927\u68D2\u68D2"
-  Price: 30
-  Type: 1
-  ResourcePath: Bat
+  DisplayName: "\u8B8A\u8272\u906E\u853D\u7269"
+  DisplayImage: {fileID: 21300000, guid: 15d0893c408574e72837fc15abd39d08, type: 3}
+  Description: "\u8B8A\u8272\u906E\u853D\u7269\u53EF\u4EE5\u8B93\u5143\u4EF6\u8B8A\u5F97\u50CF\u8B8A\u8272\u9F8D\u4E00\u6A23\u4EE5\u4FDD\u8B77\u8272"
+  Price: 40
+  Type: 3
+  ResourcePath: Cloth
   DisplayAtShop: 1

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7edbe836890bd452e9486843fcac7c64, type: 3}
-  m_Name: Bat
+  m_Name: Watergun
   m_EditorClassIdentifier: 
-  DisplayName: Bat
-  DisplayImage: {fileID: 21300000, guid: 7a90c7303de674406b115b613e2c8d66, type: 3}
-  Description: "\u53EF\u4EE5\u6253\u4EBA\u7684\u5927\u68D2\u68D2"
-  Price: 30
-  Type: 1
-  ResourcePath: Bat
+  DisplayName: "\u5674\u6C34\u5668"
+  DisplayImage: {fileID: 21300000, guid: 0b9f4da2e75e94fd894458199074920a, type: 3}
+  Description: "\u4E00\u500B\u653B\u64CA\u5143\u4EF6,\u4F7F\u7528\u6642\u5674\u51FA\u6C34\u67F1,\u5C01\u9396\u5176\u4ED6\u73A9\u5BB6\u5143\u4EF6,\u6216\u6F86\u7184\u5730\u5F62\u8ECA\u5B50\u706B\u7130"
+  Price: 50
+  Type: 3
+  ResourcePath: Watergun
   DisplayAtShop: 1
