@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7edbe836890bd452e9486843fcac7c64, type: 3}
   m_Name: Paw
   m_EditorClassIdentifier: 
-  DisplayName: 
-  DisplayImage: {fileID: 0}
-  Description: 
+  DisplayName: Paw
+  DisplayImage: {fileID: -1890021897, guid: 5b6f29cd6eb1c461f944ef1e3c23ddc1, type: 3}
+  Description: Paw
   Price: 0
   Type: 0
-  ResourcePath: 
+  ResourcePath: Paw
   DisplayAtShop: 1

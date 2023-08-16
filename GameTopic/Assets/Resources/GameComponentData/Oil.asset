@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7edbe836890bd452e9486843fcac7c64, type: 3}
   m_Name: Oil
   m_EditorClassIdentifier: 
-  DisplayName: 
-  DisplayImage: {fileID: 0}
-  Description: 
+  DisplayName: Oil
+  DisplayImage: {fileID: 21300000, guid: 8050d7661024f46e6863f285daf13990, type: 3}
+  Description: Oil
   Price: 0
   Type: 0
-  ResourcePath: 
+  ResourcePath: Oil
   DisplayAtShop: 1

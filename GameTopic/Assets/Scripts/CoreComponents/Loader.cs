@@ -23,7 +23,7 @@ public class Loader : BaseCoreComponent, IAffectObjectOwner {
         affect.colliderTransform = gameObject.transform;
         affect.transform = rendererTransform;
 
-        AllAbilities.Add("LoaderRotate", new Ability("LoaderRotate", AbiliityStart, this));
+        // AllAbilities.Add("LoaderRotate", new Ability("LoaderRotate", AbiliityStart, this));
     }
 
     public void AbiliityStart() {

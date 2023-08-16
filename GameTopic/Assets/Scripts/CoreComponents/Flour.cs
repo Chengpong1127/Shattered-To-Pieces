@@ -21,7 +21,7 @@ public class Flour : BaseCoreComponent, IAffectObjectOwner {
         affect.owner = affectedObject;
         affect.affectedObjectList.Add(affectedObject);
 
-        AllAbilities.Add("ThrowFlour", new Ability("ThrowFlour", AbiliityStart, AbilityRunning, AbiliityEnd, this));
+        // AllAbilities.Add("ThrowFlour", new Ability("ThrowFlour", AbiliityStart, AbilityRunning, AbiliityEnd, this));
     }
 
     public void AbiliityStart() {
