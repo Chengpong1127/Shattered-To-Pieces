@@ -278,7 +278,7 @@ MonoBehaviour:
   AttributeSystemComponent: {fileID: 6196673575775549594}
   AbilitySystemCharacter: {fileID: 8261234539780816078}
   Abilities:
-  - {fileID: 11400000, guid: d45349da545054f169bb77154f070376, type: 2}
+  - {fileID: 11400000, guid: a058e92244b774e1095decf3c62b3517, type: 2}
   InitializationAbilities: []
   Handle: {fileID: 1311407351214941710}
 --- !u!114 &6196673575775549594
@@ -293,8 +293,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73cbd57edc91b874a8bd957309e1f62c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttributeSystemEvents: []
-  Attributes: []
+  AttributeSystemEvents:
+  - {fileID: 11400000, guid: 62c9e2e9c231e4692b24322eb8e32698, type: 2}
+  Attributes:
+  - {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
   AttributeValues: []
 --- !u!114 &8261234539780816078
 MonoBehaviour:

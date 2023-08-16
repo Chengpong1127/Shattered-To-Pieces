@@ -8,7 +8,7 @@ public class Sheetmetel : BaseCoreComponent, IAffectObjectOwner
     public AffectedObjectBase affectedObjectInstance { get; set; }
     public Transform connectAnchor;
     public SheetmetelAffect affect;
-    public void Awake()
+    protected override void Awake()
     {
         affect = ScriptableObject.CreateInstance<SheetmetelAffect>();
         affectedObjectInstance = ScriptableObject.CreateInstance<AffectedObjectBase>();

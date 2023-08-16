@@ -11,7 +11,7 @@ public class Wheels : BaseCoreComponent, IAffectObjectOwner
     public AffectedObjectBase affectedObjectInstance { get; set; }
     WheelAffect affect { get; set; }
 
-    private void Awake()
+    protected override void Awake()
     {
         affect = ScriptableObject.CreateInstance<WheelAffect>();
         affectedObjectInstance = ScriptableObject.CreateInstance<AffectedObjectBase>();

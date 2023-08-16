@@ -1,22 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem.Authoring;
 using AbilitySystem;
-[CreateAssetMenu(fileName = "RotationAbility", menuName = "AbilitySystem/RotationAbility")]
-public class RotationAbility : AbstractAbilityScriptableObject
-{
-    [SerializeField]
-    protected float RotationTime;
-    [SerializeField]
-    protected float RotationAngle;
-    [SerializeField]
-    protected bool RotateClockwise;
-    [SerializeField]
-    protected bool RotateBack;
+using System.Collections;
+
+[CreateAssetMenu(fileName = "RotationTriggerAbility", menuName = "AbilitySystem/RotationTriggerAbility")]
+public class RotationTriggerEntityAbility: RotationAbility{
+    public GameplayEffectScriptableObject GameplayEffect;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
-        var spec = new RotationAbilitySpec(this, owner);
+        var spec = new RotationTriggerAbilitySpec(this, owner);
         var rotateComponent = owner.GetComponentInParent<IRotatable>();
         if (rotateComponent == null)
         {
@@ -29,18 +21,15 @@ public class RotationAbility : AbstractAbilityScriptableObject
         spec.RotationAngle = RotationAngle;
         spec.RotateClockwise = RotateClockwise;
         spec.RotateBack = RotateBack;
+        spec.GameplayEffect = GameplayEffect;
+        spec.TriggerEntity = owner.GetComponentInParent<ITriggerEntity>() ?? throw new System.Exception("RotationTriggerEntityAbility requires a ITriggerEntity component on the owner");
         return spec;
-
     }
-    protected class RotationAbilitySpec : AbstractAbilitySpec
+    protected class RotationTriggerAbilitySpec : RotationAbilitySpec
     {
-        public Transform RotationTransform;
-        public Transform RotateCenter;
-        public float RotationTime;
-        public float RotationAngle;
-        public bool RotateClockwise;
-        public bool RotateBack;
-        public RotationAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner){
+        public ITriggerEntity TriggerEntity;
+        public GameplayEffectScriptableObject GameplayEffect;
+        public RotationTriggerAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner){
 
         }
         public override void CancelAbility()
@@ -55,6 +44,7 @@ public class RotationAbility : AbstractAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
+            TriggerEntity.OnTriggerEnterEvent += TriggerAction;
             var rotationSpeed = RotationAngle / RotationTime;
             var time = 0f;
             while (time < RotationTime)
@@ -72,6 +62,7 @@ public class RotationAbility : AbstractAbilityScriptableObject
                     yield return null;
                 }
             }
+            TriggerEntity.OnTriggerEnterEvent -= TriggerAction;
             EndAbility();
             
         }
@@ -80,6 +71,9 @@ public class RotationAbility : AbstractAbilityScriptableObject
         {
             yield return null;
         }
+        private void TriggerAction(Entity entity){
+            var spec = Owner.MakeOutgoingSpec(GameplayEffect);
+            entity.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(spec);
+        }
     }
 }
-

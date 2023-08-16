@@ -8,7 +8,7 @@ public class Rotator : BaseCoreComponent, IAffectObjectOwner {
     RotatorAffect affect { get; set; }
     [field: SerializeField] Transform connectionAnchor { get;set; }
 
-    private void Awake() {
+    protected override void Awake() {
         affect = ScriptableObject.CreateInstance<RotatorAffect>();
         affectedObjectInstance = ScriptableObject.CreateInstance<AffectedObjectBase>();
 

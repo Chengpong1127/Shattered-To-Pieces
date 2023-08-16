@@ -3,7 +3,7 @@ using AbilitySystem.Authoring;
 using UnityEngine;
 using System.Linq;
 
-public abstract class AbilityEntity: Entity{
+public class AbilityEntity: Entity{
     [SerializeField]
     protected AbstractAbilityScriptableObject[] Abilities;
     [SerializeField]
