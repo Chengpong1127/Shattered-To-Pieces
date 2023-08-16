@@ -88,4 +88,12 @@ public static class EventName
 		/// </summary>
 		public const string AfterGameComponentConnected = nameof(AssemblySystemManagerEvents) + nameof(AfterGameComponentConnected);
 	}
+
+	public static class AbilityRebinderEvents{
+		/// <summary>
+		/// Triggered after a key is rebind.
+		/// Handler Type: Action<string>
+		/// </summary>
+		public const string OnFinishRebinding = nameof(AbilityRebinderEvents) + nameof(OnFinishRebinding);
+	}
 }

@@ -74,15 +74,18 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         LoadDevice(CurrentLoadedDeviceID);
 
         AssemblySystemManager = AssemblySystemManager.CreateInstance(gameObject, GameComponentsUnitManager, _inputManager.AssemblyRoom.Drag, 45f);
-        AssemblySystemManager.OnGameComponentDraggedStart += _ => UpdateSave();
-        AssemblySystemManager.AfterGameComponentConnected += _ => UpdateSave();
-
         GameComponentDataList = ResourceManager.Instance.LoadAllGameComponentData();
 
         AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager);
         AbilityRunner.BindInputActionsToRunner(GetAbilityInputActions());
 
         _inputManager.Enable();
+        SetEventHandler();
+    }
+
+    private void SetEventHandler(){
+        this.StartListening(EventName.AssemblySystemManagerEvents.OnGameComponentDraggedStart, new Action<IGameComponent>(UpdateSaveHandler));
+        this.StartListening(EventName.AssemblySystemManagerEvents.AfterGameComponentConnected, new Action<IGameComponent>(UpdateSaveHandler));
     }
     protected void Start() {
         
@@ -90,7 +93,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         
     }
 
-    private void UpdateSave(){
+    private void UpdateSaveHandler(object _){
         ControlledDevice.AbilityManager.UpdateDeviceAbilities();
         SaveCurrentDevice();
     }
@@ -197,6 +200,10 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         }
         OnSetRoomMode?.Invoke(mode);
         this.TriggerEvent(EventName.AssemblyRoomEvents.OnSetRoomMode, mode);
+    }
+    private void OnDestroy() {
+        this.StopListening(EventName.AssemblySystemManagerEvents.OnGameComponentDraggedStart, new Action<IGameComponent>(UpdateSaveHandler));
+        this.StopListening(EventName.AssemblySystemManagerEvents.AfterGameComponentConnected, new Action<IGameComponent>(UpdateSaveHandler));
     }
 }
 

@@ -28,10 +28,14 @@ public class AbilityRunner: MonoBehaviour{
             var abilityNumber = i;
             abilityActions[abilityNumber].AddBinding(AbilityManager.AbilityInputEntries[abilityNumber].InputPath);
             abilityActions[abilityNumber].started += ctx => StartAbility(abilityNumber);
+            abilityActions[abilityNumber].canceled += ctx => CancelAbility(abilityNumber);
         }
     }
     public void StartAbility(int entryIndex){
         ActivateEntry(AbilityManager.AbilityInputEntries[entryIndex].Abilities);
+    }
+    public void CancelAbility(int entryIndex){
+        CancelEntry(AbilityManager.AbilityInputEntries[entryIndex].Abilities);
     }
     public void StartAbility(string entryKey){
         for (int i = 0; i < AbilityManager.AbilityInputEntries.Count; i++)
@@ -45,6 +49,11 @@ public class AbilityRunner: MonoBehaviour{
     private void ActivateEntry(List<GameComponentAbility> abilities){
         foreach (var ability in abilities){
             StartCoroutine(ability.AbilitySpec.TryActivateAbility());
+        }
+    }
+    private void CancelEntry(List<GameComponentAbility> abilities){
+        foreach (var ability in abilities){
+            ability.AbilitySpec.CancelAbility();
         }
     }
 

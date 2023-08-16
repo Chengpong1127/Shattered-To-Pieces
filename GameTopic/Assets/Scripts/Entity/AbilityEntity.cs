@@ -8,7 +8,7 @@ public abstract class AbilityEntity: Entity{
     protected AbstractAbilityScriptableObject[] Abilities;
     [SerializeField]
     protected AbstractAbilityScriptableObject[] InitializationAbilities;
-    private Dictionary<AbstractAbilityScriptableObject, AbstractAbilitySpec> _abilityMap = new();
+    private readonly Dictionary<AbstractAbilityScriptableObject, AbstractAbilitySpec> _abilityMap = new();
     protected override void Awake(){
         base.Awake();
         Abilities = Abilities.Where(x => x != null).ToArray();
