@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem.Authoring;
 using AbilitySystem;
-[CreateAssetMenu(fileName = "RotationAbility", menuName = "AbilitySystem/RotationAbility")]
+[CreateAssetMenu(fileName = "RotationAbility", menuName = "Ability/RotationAbility")]
 public class RotationAbility : AbstractAbilityScriptableObject
 {
     [SerializeField]

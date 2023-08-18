@@ -5664,7 +5664,14 @@ MonoBehaviour:
   AttributeSystemEvents: []
   Attributes:
   - {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
-  AttributeValues: []
+  AttributeValues:
+  - Attribute: {fileID: 0}
+    BaseValue: 0
+    CurrentValue: 0
+    Modifier:
+      Add: 0
+      Multiply: 0
+      Override: 0
 --- !u!212 &1480054148
 SpriteRenderer:
   m_ObjectHideFlags: 0

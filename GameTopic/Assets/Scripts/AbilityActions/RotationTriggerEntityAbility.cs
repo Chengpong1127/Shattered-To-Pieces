@@ -3,7 +3,7 @@ using AbilitySystem.Authoring;
 using AbilitySystem;
 using System.Collections;
 
-[CreateAssetMenu(fileName = "RotationTriggerAbility", menuName = "AbilitySystem/RotationTriggerAbility")]
+[CreateAssetMenu(fileName = "RotationTriggerAbility", menuName = "Ability/RotationTriggerAbility")]
 public class RotationTriggerEntityAbility: RotationAbility{
     public GameplayEffectScriptableObject GameplayEffect;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
