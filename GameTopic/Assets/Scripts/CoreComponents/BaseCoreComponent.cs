@@ -15,11 +15,11 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
     /// <summary>
     /// Get the controllable rigidbody of the game component.
     /// </summary>
-    public Rigidbody2D BodyRigidbody => OwnerGameComponent.BodyRigidbody;
+    public override Rigidbody2D BodyRigidbody => OwnerGameComponent.BodyRigidbody;
     /// <summary>
     /// Get the controllable collider of the game component.
     /// </summary>
-    public Collider2D BodyCollider => OwnerGameComponent.BodyCollider;
+    public override Collider2D BodyCollider => OwnerGameComponent.BodyCollider;
     /// <summary>
     /// Get the camera of the game component.
     /// </summary>

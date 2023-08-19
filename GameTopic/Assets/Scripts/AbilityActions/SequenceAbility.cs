@@ -11,9 +11,11 @@ public class SequenceAbility : AbstractAbilityScriptableObject
     protected bool TerminateOnCancel;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
-        var spec = new SequenceAbilitySpec(this, owner);
-        spec.Abilities = Abilities;
-        spec.TerminateOnCancel = TerminateOnCancel;
+        var spec = new SequenceAbilitySpec(this, owner)
+        {
+            Abilities = Abilities,
+            TerminateOnCancel = TerminateOnCancel
+        };
         return spec;
     }
     protected class SequenceAbilitySpec : AbstractAbilitySpec

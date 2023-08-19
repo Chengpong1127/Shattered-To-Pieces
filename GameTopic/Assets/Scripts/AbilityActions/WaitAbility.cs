@@ -10,8 +10,10 @@ public class WaitAbility: AbstractAbilityScriptableObject{
 
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
-        var spec = new WaitAbilitySpec(this, owner);
-        spec.WaitSeconds = WaitSeconds;
+        var spec = new WaitAbilitySpec(this, owner)
+        {
+            WaitSeconds = WaitSeconds
+        };
         return spec;
     }
     protected class WaitAbilitySpec : AbstractAbilitySpec

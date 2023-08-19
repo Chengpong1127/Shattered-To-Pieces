@@ -10,19 +10,19 @@ public class RigibodyControlAbility : AbstractAbilityScriptableObject
     private RigidbodyType2D SetRigidbodyType;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
-        var spec = new RigibodyControlAbilitySpec(this, owner);
-        var baseCoreComponent = owner.GetComponent<BaseCoreComponent>();
-        spec.Rigidbody2D = baseCoreComponent.BodyRigidbody;
-        spec.SetRigidbodyType = SetRigidbodyType;
+        var spec = new RigibodyControlAbilitySpec(this, owner)
+        {
+            SetRigidbodyType = SetRigidbodyType
+        };
         return spec;
     }
-    protected class RigibodyControlAbilitySpec : AbstractAbilitySpec
+    protected class RigibodyControlAbilitySpec : EntityAbilitySpec
     {
         public Rigidbody2D Rigidbody2D;
         public RigidbodyType2D SetRigidbodyType;
         public RigibodyControlAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
-
+            Rigidbody2D = SelfEntity.BodyRigidbody;
         }
         public override void CancelAbility()
         {

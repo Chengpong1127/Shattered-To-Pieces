@@ -3,8 +3,8 @@ using AbilitySystem.Authoring;
 using AbilitySystem;
 using System.Collections;
 
-[CreateAssetMenu(fileName = "RotationTriggerAbility", menuName = "Ability/RotationTriggerAbility")]
-public class GiveEffectAbility: RotationAbility{
+[CreateAssetMenu(fileName = "GiveEffectAbility", menuName = "Ability/GiveEffectAbility")]
+public class GiveEffectAbility: AbstractAbilityScriptableObject{
     [SerializeField]
     protected TargetChoice targetChoice;
     [SerializeField]
@@ -14,15 +14,13 @@ public class GiveEffectAbility: RotationAbility{
         var spec = new GiveEffectAbilityAbilitySpec(this, owner)
         {
             GameplayEffects = GameplayEffects,
-            SelfEntity = owner.GetComponent<Entity>() ?? throw new System.ArgumentNullException("owner"),
             targetChoice = targetChoice,
         };
         return spec;
     }
-    protected class GiveEffectAbilityAbilitySpec : RotationAbilitySpec
+    protected class GiveEffectAbilityAbilitySpec : EntityAbilitySpec
     {
         public TargetChoice targetChoice;
-        public Entity SelfEntity;
         public GameplayEffectScriptableObject[] GameplayEffects;
         public GiveEffectAbilityAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner){
 
@@ -39,9 +37,6 @@ public class GiveEffectAbility: RotationAbility{
 
         protected override IEnumerator ActivateAbility()
         {
-            
-
-
             switch (targetChoice)
             {
                 case TargetChoice.Self:

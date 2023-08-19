@@ -21,20 +21,19 @@ public class RotationAbility : AbstractAbilityScriptableObject
 
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
-        var spec = new RotationAbilitySpec(this, owner);
-        var rotateComponent = owner.GetComponentInParent<IRotatable>() ?? throw new System.ArgumentNullException("owner");
-        spec.RotationTransform = rotateComponent.RotateBody;
-        spec.RotateCenter = rotateComponent.RotateCenter;
-        spec.RotationTime = DurationTime;
-        spec.RotationValue = RotationValue;
-        spec.Local = Local;
-        spec.RotateMode = RotateMode;
-        spec.EaseMode = EaseMode;
+        var spec = new RotationAbilitySpec(this, owner)
+        {
+            RotationTime = DurationTime,
+            RotationValue = RotationValue,
+            Local = Local,
+            RotateMode = RotateMode,
+            EaseMode = EaseMode
+        };
 
         return spec;
 
     }
-    protected class RotationAbilitySpec : AbstractAbilitySpec
+    protected class RotationAbilitySpec : EntityAbilitySpec
     {
         public Transform RotationTransform;
         public Transform RotateCenter;
@@ -44,7 +43,9 @@ public class RotationAbility : AbstractAbilityScriptableObject
         public RotateMode RotateMode;
         public Ease EaseMode;
         public RotationAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner){
-
+            var rotatable = SelfEntity as IRotatable ?? throw new System.ArgumentNullException("SelfEntity");
+            RotationTransform = rotatable.RotateBody;
+            RotateCenter = rotatable.RotateCenter;
         }
         public override void CancelAbility()
         {

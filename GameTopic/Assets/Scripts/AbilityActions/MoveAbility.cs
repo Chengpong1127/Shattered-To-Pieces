@@ -3,6 +3,7 @@ using AbilitySystem.Authoring;
 using AbilitySystem;
 using System.Collections;
 using DG.Tweening;
+using UnityEditor.UI;
 
 [CreateAssetMenu(fileName = "MoveAbility", menuName = "Ability/MoveAbility")]
 public class MoveAbility : AbstractAbilityScriptableObject
@@ -23,16 +24,16 @@ public class MoveAbility : AbstractAbilityScriptableObject
     protected Ease EaseMode;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
-        var spec = new MovePositionAbilitySpec(this, owner);
-        var entity = owner.GetComponent<Entity>() ?? throw new System.ArgumentNullException("owner");
-        spec.TargetTransform = entity.BodyTransform;
-        spec.Local = Local;
-        spec.Position = Position;
-        spec.Duration = Duration;
-        spec.EaseMode = EaseMode;
+        var spec = new MovePositionAbilitySpec(this, owner)
+        {
+            Local = Local,
+            Position = Position,
+            Duration = Duration,
+            EaseMode = EaseMode
+        };
         return spec;
     }
-    protected class MovePositionAbilitySpec : AbstractAbilitySpec
+    protected class MovePositionAbilitySpec : EntityAbilitySpec
     {
         public Transform TargetTransform;
         public bool Local;
@@ -42,6 +43,7 @@ public class MoveAbility : AbstractAbilityScriptableObject
 
         public MovePositionAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
+            TargetTransform = SelfEntity.BodyTransform;
         }
 
         public override void CancelAbility()
