@@ -32,7 +32,7 @@ public class GiveEffectToTriggeredEntityAbility : AbstractAbilityScriptableObjec
         return spec;
     }
 
-    protected class GiveEffectToTriggeredEntityAbilityAbilitySpec : EntityAbilitySpec
+    public class GiveEffectToTriggeredEntityAbilityAbilitySpec : EntityAbilitySpec
     {
         public int EntityTriggerCount;
         public float Duration;

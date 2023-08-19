@@ -33,7 +33,7 @@ public class RotationAbility : AbstractAbilityScriptableObject
         return spec;
 
     }
-    protected class RotationAbilitySpec : EntityAbilitySpec
+    public class RotationAbilitySpec : EntityAbilitySpec
     {
         public Transform RotationTransform;
         public Transform RotateCenter;

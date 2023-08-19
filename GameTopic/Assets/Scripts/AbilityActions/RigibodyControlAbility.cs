@@ -38,7 +38,7 @@ public class RigibodyControlAbility : AbstractAbilityScriptableObject
         };
         return spec;
     }
-    protected class RigibodyControlAbilitySpec : EntityAbilitySpec
+    public class RigibodyControlAbilitySpec : EntityAbilitySpec
     {
         private Rigidbody2D Rigidbody2D;
         public RigidbodyType2D SetRigidbodyType;

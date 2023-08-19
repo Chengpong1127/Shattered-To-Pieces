@@ -16,7 +16,7 @@ public class WaitAbility: AbstractAbilityScriptableObject{
         };
         return spec;
     }
-    protected class WaitAbilitySpec : AbstractAbilitySpec
+    public class WaitAbilitySpec : AbstractAbilitySpec
     {
         public float WaitSeconds;
         public WaitAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)

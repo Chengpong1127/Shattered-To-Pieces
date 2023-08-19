@@ -22,7 +22,7 @@ public class SequenceAbility : AbstractAbilityScriptableObject
         };
         return spec;
     }
-    protected class SequenceAbilitySpec : AbstractAbilitySpec
+    public class SequenceAbilitySpec : AbstractAbilitySpec
     {
         public AbstractAbilityScriptableObject[] Abilities;
         public bool Async;

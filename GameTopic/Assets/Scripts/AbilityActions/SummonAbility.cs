@@ -16,7 +16,7 @@ public class SummonAbility : AbstractAbilityScriptableObject
         };
         return spec;
     }
-    protected class SummonAbilitySpec: EntityAbilitySpec{
+    public class SummonAbilitySpec: EntityAbilitySpec{
         public GameObject SummonPrefab;
         private ISummonable Summonable;
         public SummonAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)

@@ -17,7 +17,7 @@ public class AimAbility: AbstractAbilityScriptableObject{
         };
         return spec;
     }
-    protected class AimAbilitySpec : EntityAbilitySpec
+    public class AimAbilitySpec : EntityAbilitySpec
     {
         public EndTriggerType triggerType;
         private IAimable Aimable;
@@ -64,7 +64,7 @@ public class AimAbility: AbstractAbilityScriptableObject{
             return mousePosition - startPoint;
         }
     }
-    protected enum EndTriggerType
+    public enum EndTriggerType
     {
         Press,
         Release,

@@ -33,7 +33,7 @@ public class MoveAbility : AbstractAbilityScriptableObject
         };
         return spec;
     }
-    protected class MovePositionAbilitySpec : EntityAbilitySpec
+    public class MovePositionAbilitySpec : EntityAbilitySpec
     {
         public Transform TargetTransform;
         public bool Local;
