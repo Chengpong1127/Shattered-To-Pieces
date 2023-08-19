@@ -4,14 +4,14 @@ using AbilitySystem;
 using System.Collections;
 using DG.Tweening;
 
-[CreateAssetMenu(fileName = "MovePositionAbility", menuName = "Ability/MovePositionAbility")]
-public class MovePositionAbility : AbstractAbilityScriptableObject
+[CreateAssetMenu(fileName = "MoveAbility", menuName = "Ability/MoveAbility")]
+public class MoveAbility : AbstractAbilityScriptableObject
 {
     /// <summary>
     /// If true, the position is set relative to the owner's position, otherwise it is set relative to the world.
     /// </summary>
     [SerializeField]
-    protected bool SetLocal;
+    protected bool Local;
     /// <summary>
     /// The position to set.
     /// </summary>
@@ -19,22 +19,26 @@ public class MovePositionAbility : AbstractAbilityScriptableObject
     protected Vector2 Position;
     [SerializeField]
     protected float Duration;
+    [SerializeField]
+    protected Ease EaseMode;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
         var spec = new MovePositionAbilitySpec(this, owner);
         var entity = owner.GetComponent<Entity>();
         spec.TargetTransform = entity.BodyTransform;
-        spec.SetLocalPosition = SetLocal;
+        spec.Local = Local;
         spec.Position = Position;
         spec.Duration = Duration;
+        spec.EaseMode = EaseMode;
         return spec;
     }
     protected class MovePositionAbilitySpec : AbstractAbilitySpec
     {
         public Transform TargetTransform;
-        public bool SetLocalPosition;
+        public bool Local;
         public Vector2 Position;
         public float Duration;
+        public Ease EaseMode;
 
         public MovePositionAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
@@ -52,13 +56,15 @@ public class MovePositionAbility : AbstractAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
-            if (SetLocalPosition)
+            if (Local)
             {
-                TargetTransform.DOLocalMove(Position, Duration);
+                TargetTransform.DOLocalMove(Position, Duration)
+                    .SetEase(EaseMode);
             }
             else
             {
-                TargetTransform.DOMove(Position, Duration);
+                TargetTransform.DOMove(Position, Duration)
+                    .SetEase(EaseMode);
             }
             yield return new WaitForSeconds(Duration);
         }

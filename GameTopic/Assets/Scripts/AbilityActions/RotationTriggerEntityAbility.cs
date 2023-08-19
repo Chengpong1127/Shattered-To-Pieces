@@ -17,10 +17,8 @@ public class RotationTriggerEntityAbility: RotationAbility{
         }
         spec.RotationTransform = rotateComponent.RotateBody;
         spec.RotateCenter = rotateComponent.RotateCenter;
-        spec.RotationTime = RotationTime;
-        spec.RotationAngle = RotationAngle;
-        spec.RotateClockwise = RotateClockwise;
-        spec.RotateBack = RotateBack;
+        spec.RotationTime = DurationTime;
+        spec.RotationValue = RotationValue;
         spec.GameplayEffect = GameplayEffect;
         spec.TriggerEntity = owner.GetComponentInParent<ITriggerEntity>() ?? throw new System.Exception("RotationTriggerEntityAbility requires a ITriggerEntity component on the owner");
         return spec;
@@ -44,27 +42,8 @@ public class RotationTriggerEntityAbility: RotationAbility{
 
         protected override IEnumerator ActivateAbility()
         {
-            TriggerEntity.OnTriggerEnterEvent += TriggerAction;
-            var rotationSpeed = RotationAngle / RotationTime;
-            var time = 0f;
-            while (time < RotationTime)
-            {
-                time += Time.deltaTime;
-                RotationTransform.RotateAround(RotateCenter.position, Vector3.forward, rotationSpeed * Time.deltaTime * (RotateClockwise ? 1 : -1));
-                yield return null;
-            }
-            if (RotateBack)
-            {
-                while (time > 0)
-                {
-                    time -= Time.deltaTime;
-                    RotationTransform.RotateAround(RotateCenter.position, Vector3.forward, rotationSpeed * Time.deltaTime * (RotateClockwise ? -1 : 1));
-                    yield return null;
-                }
-            }
-            TriggerEntity.OnTriggerEnterEvent -= TriggerAction;
-            EndAbility();
-            
+
+            throw new System.NotImplementedException();
         }
 
         protected override IEnumerator PreActivate()

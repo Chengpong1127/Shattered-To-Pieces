@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem.Authoring;
 using AbilitySystem;
+using DG.Tweening;
 [CreateAssetMenu(fileName = "RotationAbility", menuName = "Ability/RotationAbility")]
 public class RotationAbility : AbstractAbilityScriptableObject
 {
     [SerializeField]
-    protected float RotationTime;
+    protected bool Local;
     [SerializeField]
-    protected float RotationAngle;
+    protected float RotationValue;
     [SerializeField]
-    protected bool RotateClockwise;
+    protected float DurationTime;
     [SerializeField]
-    protected bool RotateBack;
+    protected RotateMode RotateMode;
+    [SerializeField]
+    protected Ease EaseMode;
+
+
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
         var spec = new RotationAbilitySpec(this, owner);
@@ -25,10 +30,12 @@ public class RotationAbility : AbstractAbilityScriptableObject
         }
         spec.RotationTransform = rotateComponent.RotateBody;
         spec.RotateCenter = rotateComponent.RotateCenter;
-        spec.RotationTime = RotationTime;
-        spec.RotationAngle = RotationAngle;
-        spec.RotateClockwise = RotateClockwise;
-        spec.RotateBack = RotateBack;
+        spec.RotationTime = DurationTime;
+        spec.RotationValue = RotationValue;
+        spec.Local = Local;
+        spec.RotateMode = RotateMode;
+        spec.EaseMode = EaseMode;
+
         return spec;
 
     }
@@ -37,9 +44,10 @@ public class RotationAbility : AbstractAbilityScriptableObject
         public Transform RotationTransform;
         public Transform RotateCenter;
         public float RotationTime;
-        public float RotationAngle;
-        public bool RotateClockwise;
-        public bool RotateBack;
+        public float RotationValue;
+        public bool Local;
+        public RotateMode RotateMode;
+        public Ease EaseMode;
         public RotationAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner){
 
         }
@@ -55,24 +63,16 @@ public class RotationAbility : AbstractAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
-            var rotationSpeed = RotationAngle / RotationTime;
-            var time = 0f;
-            while (time < RotationTime)
-            {
-                time += Time.deltaTime;
-                RotationTransform.RotateAround(RotateCenter.position, Vector3.forward, rotationSpeed * Time.deltaTime * (RotateClockwise ? 1 : -1));
-                yield return null;
+
+            if (Local){
+                RotationTransform.DOLocalRotate(new Vector3(0, 0, RotationValue), RotationTime, RotateMode)
+                .SetEase(EaseMode);
             }
-            if (RotateBack)
-            {
-                while (time > 0)
-                {
-                    time -= Time.deltaTime;
-                    RotationTransform.RotateAround(RotateCenter.position, Vector3.forward, rotationSpeed * Time.deltaTime * (RotateClockwise ? -1 : 1));
-                    yield return null;
-                }
+            else{
+                RotationTransform.DORotate(new Vector3(0, 0, RotationValue), RotationTime, RotateMode)
+                .SetEase(EaseMode);
             }
-            EndAbility();
+            yield return new WaitForSeconds(RotationTime);
             
         }
 

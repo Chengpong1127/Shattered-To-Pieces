@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97edf4f97cbf94b628d9997aa408d5bb, type: 3}
-  m_Name: RigibodyControlAbility
+  m_Script: {fileID: 11500000, guid: ed0d8ea92145548a88e47c99a228fead, type: 3}
+  m_Name: RotationAbility 1Back
   m_EditorClassIdentifier: 
   AbilityName: 
   AbilityTags:
@@ -29,4 +29,6 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  SetRigidbodyType: 0
+  RotationTime: 0
+  RotationAngle: 0
+  Local: 0

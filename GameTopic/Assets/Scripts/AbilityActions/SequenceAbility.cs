@@ -7,16 +7,19 @@ public class SequenceAbility : AbstractAbilityScriptableObject
 {
     [SerializeField] 
     protected AbstractAbilityScriptableObject[] Abilities;
-
+    [SerializeField]
+    protected bool TerminateOnCancel;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
         var spec = new SequenceAbilitySpec(this, owner);
         spec.Abilities = Abilities;
+        spec.TerminateOnCancel = TerminateOnCancel;
         return spec;
     }
     protected class SequenceAbilitySpec : AbstractAbilitySpec
     {
         public AbstractAbilityScriptableObject[] Abilities;
+        public bool TerminateOnCancel;
         private AbstractAbilitySpec[] Specs;
         private int CurrentIndex = 0;
         public SequenceAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
@@ -25,8 +28,11 @@ public class SequenceAbility : AbstractAbilityScriptableObject
         }
         public override void CancelAbility()
         {
-            Specs[CurrentIndex].CancelAbility();
-            EndAbility();
+            if (TerminateOnCancel)
+            {
+                Specs[CurrentIndex].CancelAbility();
+                EndAbility();
+            }
         }
 
         public override bool CheckGameplayTags()

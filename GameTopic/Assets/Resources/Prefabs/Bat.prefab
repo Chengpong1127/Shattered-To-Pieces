@@ -33,7 +33,6 @@ Transform:
   m_Children:
   - {fileID: 7929465402450986578}
   - {fileID: 2873931639003064237}
-  - {fileID: 1311407351214941710}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2968296889150377650
@@ -78,37 +77,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!1 &1661413272298256151
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1311407351214941710}
-  m_Layer: 0
-  m_Name: ConnectionAnchor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1311407351214941710
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1661413272298256151}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.76, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5584664317331441971}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4240192772804819617
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d1af8e55226334a88c765539831e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ConnectionAnchor: {fileID: 1311407351214941710}
+  ConnectionAnchor: {fileID: 0}
   targetList: []
 --- !u!1 &9201870183039675491
 GameObject:
@@ -185,7 +153,7 @@ Transform:
   m_GameObject: {fileID: 9201870183039675491}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -306,7 +274,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a2452141b3a134589879a70b0bf113ef, type: 2}
   Abilities:
   - {fileID: 11400000, guid: 97e9eda283786444ea36cbbd928e40da, type: 2}
-  Handle: {fileID: 1311407351214941710}
+  - {fileID: 11400000, guid: b15dc3d54f819448e800cdeacb9a1c49, type: 2}
+  Handle: {fileID: 0}
 --- !u!114 &6196673575775549594
 MonoBehaviour:
   m_ObjectHideFlags: 0
