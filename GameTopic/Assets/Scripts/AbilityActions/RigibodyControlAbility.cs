@@ -36,6 +36,8 @@ public class RigibodyControlAbility : AbstractAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
+            Rigidbody2D.velocity = Vector2.zero;
+            Rigidbody2D.angularVelocity = 0;
             Rigidbody2D.bodyType = SetRigidbodyType;
             yield return null;
         }

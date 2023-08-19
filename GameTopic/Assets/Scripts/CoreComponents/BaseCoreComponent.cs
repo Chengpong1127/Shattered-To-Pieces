@@ -11,7 +11,7 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
     /// <summary>
     /// Get the controllable transform of the body of the game component.
     /// </summary>
-    public Transform BodyTransform => OwnerGameComponent.BodyTransform;
+    public override Transform BodyTransform => OwnerGameComponent.BodyTransform;
     /// <summary>
     /// Get the controllable rigidbody of the game component.
     /// </summary>
@@ -68,7 +68,7 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
         return GetOverlapCircleCoreComponentsAll(radius, BodyTransform.position);
     }
 
-    protected virtual void Start() {
+    protected override void Start() {
         Debug.Assert(OwnerGameComponent != null, "OwnerGameComponent is null");
     }
 }

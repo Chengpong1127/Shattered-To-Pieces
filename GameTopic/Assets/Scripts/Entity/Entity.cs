@@ -12,7 +12,8 @@ public class Entity: BaseEntity{
     public AbilitySystemCharacter AbilitySystemCharacter;
     [SerializeField]
     protected AbstractAbilityScriptableObject[] InitializationAbilities;
-    protected virtual void Awake() {
+    protected override void Awake() {
+        base.Awake();
         AttributeSystemComponent ??= GetComponent<AttributeSystemComponent>();
         AbilitySystemCharacter ??= GetComponent<AbilitySystemCharacter>();
         AbilitySystemCharacter.AttributeSystem = AttributeSystemComponent;
