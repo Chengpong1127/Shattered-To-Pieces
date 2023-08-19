@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem.Authoring;
+using UnityEditor.UI;
+
 public class BaseCoreComponent : AbilityEntity, ICoreComponent
 {
 
@@ -100,4 +102,12 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
     protected override void Start() {
         Debug.Assert(OwnerGameComponent != null, "OwnerGameComponent is null");
     }
+
+    public override void Repel(Vector2 force){
+        if (this == Root){
+            base.Repel(force);
+        }else{
+            Root.Repel(force);
+        }
+    } 
 }
