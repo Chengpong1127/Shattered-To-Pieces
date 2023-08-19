@@ -22,12 +22,7 @@ public class RotationAbility : AbstractAbilityScriptableObject
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
         var spec = new RotationAbilitySpec(this, owner);
-        var rotateComponent = owner.GetComponentInParent<IRotatable>();
-        if (rotateComponent == null)
-        {
-            Debug.LogError("RotationAbility requires a IRotatable component on the owner");
-            return null;
-        }
+        var rotateComponent = owner.GetComponentInParent<IRotatable>() ?? throw new System.ArgumentNullException("owner");
         spec.RotationTransform = rotateComponent.RotateBody;
         spec.RotateCenter = rotateComponent.RotateCenter;
         spec.RotationTime = DurationTime;

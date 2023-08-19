@@ -24,7 +24,7 @@ public class MoveAbility : AbstractAbilityScriptableObject
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
         var spec = new MovePositionAbilitySpec(this, owner);
-        var entity = owner.GetComponent<Entity>();
+        var entity = owner.GetComponent<Entity>() ?? throw new System.ArgumentNullException("owner");
         spec.TargetTransform = entity.BodyTransform;
         spec.Local = Local;
         spec.Position = Position;
