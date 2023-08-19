@@ -5661,17 +5661,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73cbd57edc91b874a8bd957309e1f62c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttributeSystemEvents: []
+  AttributeSystemEvents:
+  - {fileID: 11400000, guid: 62c9e2e9c231e4692b24322eb8e32698, type: 2}
   Attributes:
   - {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
-  AttributeValues:
-  - Attribute: {fileID: 0}
-    BaseValue: 0
-    CurrentValue: 0
-    Modifier:
-      Add: 0
-      Multiply: 0
-      Override: 0
+  - {fileID: 11400000, guid: e0d843f15ad51485c8b6d6f25aa2554f, type: 2}
+  - {fileID: 11400000, guid: f15e7b9836f3b4d6695b01461a2d5da0, type: 2}
+  AttributeValues: []
 --- !u!212 &1480054148
 SpriteRenderer:
   m_ObjectHideFlags: 0

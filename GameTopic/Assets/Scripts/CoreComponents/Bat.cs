@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bat : BaseCoreComponent, IRotatable, ITriggerEntity, IAimable
+public class Bat : BaseCoreComponent, IRotatable, IEntityTriggerable, IAimable
 {
     [SerializeField]
     private Transform Handle;
@@ -12,7 +12,7 @@ public class Bat : BaseCoreComponent, IRotatable, ITriggerEntity, IAimable
 
     public Vector2 AimStartPoint => BodyTransform.position;
 
-    public event Action<Entity> OnTriggerEnterEvent;
+    public event Action<Entity> OnTriggerEntity;
 
     public void EndAim(Vector2 aimVector)
     {
@@ -29,7 +29,7 @@ public class Bat : BaseCoreComponent, IRotatable, ITriggerEntity, IAimable
         var entity = other.GetComponent<Entity>();
         if (entity != null)
         {
-            OnTriggerEnterEvent?.Invoke(entity);
+            OnTriggerEntity?.Invoke(entity);
         }
     }
 }

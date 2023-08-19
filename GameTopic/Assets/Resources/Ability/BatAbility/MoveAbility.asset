@@ -29,7 +29,7 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  Local: 0
+  Local: 1
   Position: {x: 0, y: 0}
-  Duration: 0
+  Duration: 1
   EaseMode: 0

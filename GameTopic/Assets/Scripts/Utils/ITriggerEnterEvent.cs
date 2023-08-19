@@ -1,4 +1,4 @@
 using System;
-public interface ITriggerEntity{
-    public event Action<Entity> OnTriggerEnterEvent;
+public interface IEntityTriggerable{
+    public event Action<Entity> OnTriggerEntity;
 }

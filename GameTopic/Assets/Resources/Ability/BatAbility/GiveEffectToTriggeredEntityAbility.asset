@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f679129b22e91458a8e4563d1b660595, type: 3}
-  m_Name: BatAbility
+  m_Script: {fileID: 11500000, guid: e4b3cd2550aa7479583bc2e476183f3a, type: 3}
+  m_Name: GiveEffectToTriggeredEntityAbility
   m_EditorClassIdentifier: 
   AbilityName: 
   AbilityTags:
@@ -29,8 +29,7 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  Abilities:
-  - {fileID: 11400000, guid: 58320ce11be3a4e6492436989510d38a, type: 2}
-  - {fileID: 11400000, guid: 313771f95178447ce86f671493174388, type: 2}
-  Async: 1
-  TerminateOnCancel: 0
+  EntityTriggerCount: 2
+  Duration: 999
+  GameplayEffects:
+  - {fileID: 11400000, guid: 6b1bc2fda2e6e4e4db97ad8cc025cea3, type: 2}

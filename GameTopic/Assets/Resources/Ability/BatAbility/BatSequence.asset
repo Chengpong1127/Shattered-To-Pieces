@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f679129b22e91458a8e4563d1b660595, type: 3}
-  m_Name: BatAbility
+  m_Name: BatSequence
   m_EditorClassIdentifier: 
   AbilityName: 
   AbilityTags:
@@ -30,7 +30,9 @@ MonoBehaviour:
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
   Abilities:
-  - {fileID: 11400000, guid: 58320ce11be3a4e6492436989510d38a, type: 2}
-  - {fileID: 11400000, guid: 313771f95178447ce86f671493174388, type: 2}
-  Async: 1
+  - {fileID: 11400000, guid: 00c5793c7269d4ab886bb092a63d53ef, type: 2}
+  - {fileID: 11400000, guid: 950ef0b490a4747cfa4ed01148388158, type: 2}
+  - {fileID: 11400000, guid: 0e85bbca97c9d404d8258ecf3e61eb1d, type: 2}
+  - {fileID: 11400000, guid: a690ce1102f6b404c98209e47368c53f, type: 2}
+  Async: 0
   TerminateOnCancel: 0

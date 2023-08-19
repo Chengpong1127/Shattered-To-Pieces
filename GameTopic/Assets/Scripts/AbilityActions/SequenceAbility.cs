@@ -2,11 +2,14 @@ using UnityEngine;
 using AbilitySystem.Authoring;
 using AbilitySystem;
 using System.Collections;
+using System.Linq;
 [CreateAssetMenu(fileName = "SequenceAbility", menuName = "Ability/SequenceAbility")]
 public class SequenceAbility : AbstractAbilityScriptableObject
 {
     [SerializeField] 
     protected AbstractAbilityScriptableObject[] Abilities;
+    [SerializeField]
+    protected bool Async;
     [SerializeField]
     protected bool TerminateOnCancel;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
@@ -14,6 +17,7 @@ public class SequenceAbility : AbstractAbilityScriptableObject
         var spec = new SequenceAbilitySpec(this, owner)
         {
             Abilities = Abilities,
+            Async = Async,
             TerminateOnCancel = TerminateOnCancel
         };
         return spec;
@@ -21,6 +25,7 @@ public class SequenceAbility : AbstractAbilityScriptableObject
     protected class SequenceAbilitySpec : AbstractAbilitySpec
     {
         public AbstractAbilityScriptableObject[] Abilities;
+        public bool Async;
         public bool TerminateOnCancel;
         private AbstractAbilitySpec[] Specs;
         private int CurrentIndex = 0;
@@ -44,9 +49,20 @@ public class SequenceAbility : AbstractAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
-            for (CurrentIndex = 0; CurrentIndex < Specs.Length; CurrentIndex++)
+            if (Async)
             {
-                yield return Specs[CurrentIndex].TryActivateAbility();
+                for (CurrentIndex = 0; CurrentIndex < Specs.Length; CurrentIndex++)
+                {
+                    Owner.StartCoroutine(Specs[CurrentIndex].TryActivateAbility());
+                }
+                yield return new WaitUntil(() => Specs.All(spec => spec.isActive == false));
+            }
+            else
+            {
+                for (CurrentIndex = 0; CurrentIndex < Specs.Length; CurrentIndex++)
+                {
+                    yield return Specs[CurrentIndex].TryActivateAbility();
+                }
             }
             EndAbility();
         }

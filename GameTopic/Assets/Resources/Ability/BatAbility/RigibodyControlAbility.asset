@@ -29,11 +29,11 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  SetRigidbodyType: 0
+  SetRigidbodyType: 1
   GivenForce: {x: 0, y: 0}
   GivenTorque: 0
   ForceMode: 0
-  SetVelocity: 0
+  SetVelocity: 1
   GivenVelocity: {x: 0, y: 0}
-  SetAngularVelocity: 0
+  SetAngularVelocity: 1
   GivenAngularVelocity: 0
