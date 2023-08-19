@@ -4,30 +4,23 @@ using AbilitySystem;
 using System.Collections;
 
 [CreateAssetMenu(fileName = "RotationTriggerAbility", menuName = "Ability/RotationTriggerAbility")]
-public class RotationTriggerEntityAbility: RotationAbility{
-    public GameplayEffectScriptableObject GameplayEffect;
+public class GiveEffectAbility: RotationAbility{
+    [SerializeField]
+    protected GameplayEffectScriptableObject GameplayEffect;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
-        var spec = new RotationTriggerAbilitySpec(this, owner);
-        var rotateComponent = owner.GetComponentInParent<IRotatable>();
-        if (rotateComponent == null)
+        var spec = new GiveEffectAbilityAbilitySpec(this, owner)
         {
-            Debug.LogError("RotationAbility requires a IRotatable component on the owner");
-            return null;
-        }
-        spec.RotationTransform = rotateComponent.RotateBody;
-        spec.RotateCenter = rotateComponent.RotateCenter;
-        spec.RotationTime = DurationTime;
-        spec.RotationValue = RotationValue;
-        spec.GameplayEffect = GameplayEffect;
-        spec.TriggerEntity = owner.GetComponentInParent<ITriggerEntity>() ?? throw new System.Exception("RotationTriggerEntityAbility requires a ITriggerEntity component on the owner");
+            GameplayEffect = GameplayEffect,
+            TriggerEntity = owner.GetComponentInParent<ITriggerEntity>() ?? throw new System.Exception("RotationTriggerEntityAbility requires a ITriggerEntity component on the owner")
+        };
         return spec;
     }
-    protected class RotationTriggerAbilitySpec : RotationAbilitySpec
+    protected class GiveEffectAbilityAbilitySpec : RotationAbilitySpec
     {
         public ITriggerEntity TriggerEntity;
         public GameplayEffectScriptableObject GameplayEffect;
-        public RotationTriggerAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner){
+        public GiveEffectAbilityAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner){
 
         }
         public override void CancelAbility()
@@ -54,5 +47,10 @@ public class RotationTriggerEntityAbility: RotationAbility{
             var spec = Owner.MakeOutgoingSpec(GameplayEffect);
             entity.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(spec);
         }
+    }
+
+    protected enum TargetChoice{
+        Self,
+        TriggerEntity,
     }
 }

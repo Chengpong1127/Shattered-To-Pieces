@@ -20,6 +20,35 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
     /// Get the controllable collider of the game component.
     /// </summary>
     public Collider2D BodyCollider => OwnerGameComponent.BodyCollider;
+    /// <summary>
+    /// Get the camera of the game component.
+    /// </summary>
+    public Camera PlayerCamera => Camera.main;
+
+    /// <summary>
+    /// Get the root core component of the game component in the device.
+    /// </summary>
+    /// <returns></returns>
+    public BaseCoreComponent Root => (OwnerGameComponent.GetRoot() as GameComponent).CoreComponent as BaseCoreComponent;
+    /// <summary>
+    /// Get the parent core component of the game component in the device.
+    /// </summary>
+    /// <returns></returns>
+    public BaseCoreComponent Parent => (OwnerGameComponent.Parent as GameComponent)?.CoreComponent as BaseCoreComponent;
+    /// <summary>
+    /// Get the children core components of the game component in the device.
+    /// </summary>
+    /// <returns></returns>
+    public BaseCoreComponent[] GetAllChildren(){
+        var children = new List<BaseCoreComponent>();
+        var tree = new Tree(OwnerGameComponent);
+        tree.TraverseBFS((node) => {
+            if(node is GameComponent gameComponent){
+                children.Add(gameComponent.CoreComponent as BaseCoreComponent);
+            }
+        });
+        return children.ToArray();
+    }
 
     public GameComponentAbility[] GameComponentAbilities {
         get{
