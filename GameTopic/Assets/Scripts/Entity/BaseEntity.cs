@@ -19,4 +19,10 @@ public abstract class BaseEntity : MonoBehaviour, IUnit
     {
         
     }
+
+    public virtual void Repel(Vector2 force){
+        if (BodyRigidbody != null){
+            BodyRigidbody.AddForce(force, ForceMode2D.Impulse);
+        }
+    }
 }
