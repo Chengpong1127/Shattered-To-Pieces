@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2adb9b3f019f4e1a8f9c04194089b2e, type: 3}
-  m_Name: SetKenamic
+  m_Script: {fileID: 11500000, guid: f679129b22e91458a8e4563d1b660595, type: 3}
+  m_Name: BatAbility
   m_EditorClassIdentifier: 
   AbilityName: 
   AbilityTags:
@@ -29,4 +29,5 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  SetRigidbodyType: 0
+  Abilities: []
+  TerminateOnCancel: 0

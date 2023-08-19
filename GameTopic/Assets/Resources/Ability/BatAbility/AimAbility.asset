@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2adb9b3f019f4e1a8f9c04194089b2e, type: 3}
-  m_Name: SetDynamic
+  m_Script: {fileID: 11500000, guid: 8182ab67623914c4e90b36c1ef4b01c9, type: 3}
+  m_Name: AimAbility
   m_EditorClassIdentifier: 
   AbilityName: 
   AbilityTags:
@@ -29,4 +29,4 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  SetRigidbodyType: 0
+  endTriggerType: 0
