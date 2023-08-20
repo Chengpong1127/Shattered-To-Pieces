@@ -5,8 +5,17 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AbilitySystemCharacter
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AttributeSystemComponent
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_Name
       value: Wheel
@@ -15,6 +24,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 4547a4cebdde9af4dba2323bbcfba165, type: 3}
+    - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: bodyCollider
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5957387579149278726, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -103,13 +116,23 @@ PrefabInstance:
       propertyPath: targetList.Array.size
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7988756380201010643, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-      propertyPath: targetList.Array.data[0]
-      value: 
-      objectReference: {fileID: 4089748444752673632}
     m_RemovedComponents:
     - {fileID: 323697144701428813, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
     - {fileID: 7388634133129272788, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+    - {fileID: 3908426105045055669, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+    - {fileID: 8933114590945976158, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5548205001882539384}
+    - targetCorrespondingSourceObject: {fileID: 6948558256880769377, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4188707942884288980}
+    - targetCorrespondingSourceObject: {fileID: 6948558256880769377, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5712121747296150700}
   m_SourcePrefab: {fileID: 100100000, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
 --- !u!1 &721539186129665028 stripped
 GameObject:
@@ -126,6 +149,25 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -144,18 +186,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2d425bf44353467a9d472232efc9a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AttributeSystemComponent: {fileID: 0}
+  AbilitySystemCharacter: {fileID: 0}
+  InitializationAbilities: []
+  Abilities: []
   wheelJoint: {fileID: 5548205001882539384}
---- !u!114 &4089748444752673632 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5957387579149278725, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-  m_PrefabInstance: {fileID: 7668874776407188837}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22820bff0638fb240bf8a033875c29a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5315550583178797305 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -174,6 +209,7 @@ WheelJoint2D:
   m_ConnectedRigidBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
+  m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}

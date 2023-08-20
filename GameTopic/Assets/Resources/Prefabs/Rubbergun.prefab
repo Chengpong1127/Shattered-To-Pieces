@@ -33,13 +33,21 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AbilitySystemCharacter
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AttributeSystemComponent
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: InitializationAbilities.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: InitializationAbilities.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: a2452141b3a134589879a70b0bf113ef, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_Name
       value: Rubbergun
@@ -132,7 +140,9 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 13.32
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3908426105045055669, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+    - {fileID: 8933114590945976158, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

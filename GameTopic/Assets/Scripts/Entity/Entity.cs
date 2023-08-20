@@ -23,6 +23,7 @@ public class Entity: BaseEntity{
     {
         foreach (var initializationAbility in InitializationAbilities)
         {
+            if (initializationAbility == null) continue;
             var spec = initializationAbility.CreateSpec(AbilitySystemCharacter);
             AbilitySystemCharacter.GrantAbility(spec);
             StartCoroutine(spec.TryActivateAbility());

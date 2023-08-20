@@ -17,9 +17,17 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AbilitySystemCharacter
+      value: 
+      objectReference: {fileID: 4527543799263060443}
+    - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: Abilities.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 59dfe41bbd40e61499326721b09f3986, type: 2}
+    - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AttributeSystemComponent
+      value: 
+      objectReference: {fileID: 6331637611104552976}
     - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: InitializationAbilities.Array.size
       value: 1
@@ -27,7 +35,7 @@ PrefabInstance:
     - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: InitializationAbilities.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: a2452141b3a134589879a70b0bf113ef, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_Name
       value: Cloth
@@ -124,8 +132,32 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 12.62
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3908426105045055669, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+    - {fileID: 8933114590945976158, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+--- !u!114 &4527543799263060443 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3949341022062034961, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+  m_PrefabInstance: {fileID: 584326266991813066}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 174b4c691442c4c7fab309adaf4cdfe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6331637611104552976 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6901079752671095258, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+  m_PrefabInstance: {fileID: 584326266991813066}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84cd0cb271574403ebdc2ee5fba2e363, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -135,8 +135,8 @@ GameObject:
   - component: {fileID: 1794385320539548986}
   - component: {fileID: 6118062715801404506}
   - component: {fileID: 8963888072718538740}
-  - component: {fileID: 6196673575775549594}
-  - component: {fileID: 8261234539780816078}
+  - component: {fileID: 8534154877124904707}
+  - component: {fileID: 936121724388479871}
   m_Layer: 6
   m_Name: Core
   m_TagString: Untagged
@@ -268,14 +268,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23e4f962e4c8a47bd9ac1065cafaf06f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttributeSystemComponent: {fileID: 6196673575775549594}
-  AbilitySystemCharacter: {fileID: 8261234539780816078}
-  InitializationAbilities:
-  - {fileID: 11400000, guid: a2452141b3a134589879a70b0bf113ef, type: 2}
+  AttributeSystemComponent: {fileID: 8534154877124904707}
+  AbilitySystemCharacter: {fileID: 936121724388479871}
+  InitializationAbilities: []
   Abilities:
   - {fileID: 11400000, guid: f8ff516c34aa34b30a0d1c5f053cabc0, type: 2}
   Handle: {fileID: 0}
---- !u!114 &6196673575775549594
+--- !u!114 &8534154877124904707
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -284,13 +283,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 9201870183039675491}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73cbd57edc91b874a8bd957309e1f62c, type: 3}
+  m_Script: {fileID: 11500000, guid: 84cd0cb271574403ebdc2ee5fba2e363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AttributeSystemEvents: []
   Attributes: []
   AttributeValues: []
---- !u!114 &8261234539780816078
+--- !u!114 &936121724388479871
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -299,8 +298,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 9201870183039675491}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c1425312ee2f5e4da3ab46a2724a3d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 174b4c691442c4c7fab309adaf4cdfe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attributeSystem: {fileID: 6196673575775549594}
+  _attributeSystem: {fileID: 0}
   Level: 0
