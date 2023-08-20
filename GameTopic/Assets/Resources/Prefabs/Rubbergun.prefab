@@ -5,6 +5,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 323697144701428813, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -27,6 +28,18 @@ PrefabInstance:
       propertyPath: m_AutoConfigureConnectedAnchor
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Abilities.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: InitializationAbilities.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: InitializationAbilities.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: a2452141b3a134589879a70b0bf113ef, type: 2}
     - target: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_Name
       value: Rubbergun
@@ -35,6 +48,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: affa8c90de5754ead94c5d3445c06592, type: 3}
+    - target: {fileID: 3908426105045055669, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Attributes.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
+    - target: {fileID: 3908426105045055669, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AttributeSystemEvents.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -112,4 +133,7 @@ PrefabInstance:
       value: 13.32
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
