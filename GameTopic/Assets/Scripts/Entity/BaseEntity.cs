@@ -25,4 +25,7 @@ public abstract class BaseEntity : MonoBehaviour, IUnit
             BodyRigidbody.AddForce(force, ForceMode2D.Impulse);
         }
     }
+    public virtual void Die(){
+        Destroy(BodyTransform.gameObject);
+    }
 }

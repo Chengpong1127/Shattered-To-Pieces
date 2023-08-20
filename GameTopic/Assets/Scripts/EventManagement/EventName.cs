@@ -96,4 +96,21 @@ public static class EventName
 		/// </summary>
 		public const string OnFinishRebinding = nameof(AbilityRebinderEvents) + nameof(OnFinishRebinding);
 	}
+
+	public static class GameEffectManagerEvents{
+		/// <summary>
+		/// Used to request giving a game effect to an entity.
+		/// Handler Type: Action<Entity, Entity, GameplayEffectModifier> (sender, receiver, modifier)
+		/// </summary>
+		/// <param name="nameof(RequestGiveGameEffect"></param>
+		/// <returns></returns>
+		public const string RequestGiveGameEffect = nameof(GameEffectManagerEvents) + nameof(RequestGiveGameEffect);
+		/// <summary>
+		/// Used to request simply modifying an attribute of an entity.
+		/// Handler Type: Action<Entity, Entity, GameplayEffectScriptableObject> (sender, receiver, gameplayEffect)
+		/// </summary>
+		/// <param name="nameof(RequestModifyAttribute"></param>
+		/// <returns></returns>
+		public const string RequestModifyAttribute = nameof(GameEffectManagerEvents) + nameof(RequestModifyAttribute);
+	}
 }

@@ -77,8 +77,7 @@ public class GiveEffectToTriggeredEntityAbility : AbstractAbilityScriptableObjec
             Debug.Log("GiveEffect to " + entity.name + "");
             foreach (var effect in GameplayEffects)
             {
-                var spec = Owner.MakeOutgoingSpec(effect);
-                entity.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(spec);
+                this.TriggerEvent(EventName.GameEffectManagerEvents.RequestGiveGameEffect, SelfEntity, entity, effect);
             }
             count++;
         }

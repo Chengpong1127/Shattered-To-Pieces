@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AttributeSystem.Authoring;
 using UnityEngine;
 
 public class Bat : BaseCoreComponent, IRotatable, IEntityTriggerable, IAimable
 {
+    [SerializeField]
+    private AttributeScriptableObject AttackPointAttribute; 
     [SerializeField]
     private Transform Handle;
     public Transform RotateBody => BodyTransform;
@@ -31,5 +34,10 @@ public class Bat : BaseCoreComponent, IRotatable, IEntityTriggerable, IAimable
         {
             OnTriggerEntity?.Invoke(entity);
         }
+    }
+    protected override void Awake()
+    {
+        base.Awake();
+        AttackDecorator.Instance.Decorate(this);
     }
 }

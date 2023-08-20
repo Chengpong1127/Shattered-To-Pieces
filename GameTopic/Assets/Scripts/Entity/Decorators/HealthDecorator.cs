@@ -1,7 +1,6 @@
 using AbilitySystem.Authoring;
 using AttributeSystem.Authoring;
 using AttributeSystem.Components;
-using UnityEngine;
 public class HealthEntityDecorator : Singleton<HealthEntityDecorator>, IMonoDecorator<Entity>
 {
     protected AttributeScriptableObject MaxHealthAttribute;

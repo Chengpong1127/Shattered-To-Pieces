@@ -63,6 +63,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     public int CurrentLoadedDeviceID { get; private set; } = 0;
 
     private InputManager _inputManager;
+    private GameEffectManager _gameEffectManager;
 
     #endregion
 
@@ -81,6 +82,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
         _inputManager.Enable();
         SetEventHandler();
+        _gameEffectManager = new GameEffectManager();
     }
 
     private void SetEventHandler(){
