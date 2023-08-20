@@ -119,6 +119,16 @@ namespace AttributeSystem.Components
 
                 this.Attributes.Add(attributes[i]);
                 attributeCache.Add(attributes[i], this.Attributes.Count - 1);
+                AttributeValues.Add(new AttributeValue()
+                {
+                    Attribute = attributes[i],
+                    Modifier = new AttributeModifier()
+                    {
+                        Add = 0f,
+                        Multiply = 0f,
+                        Override = 0f
+                    }
+                });
             }
         }
 

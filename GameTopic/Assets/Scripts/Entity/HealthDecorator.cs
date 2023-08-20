@@ -1,3 +1,4 @@
+using AbilitySystem.Authoring;
 using AttributeSystem.Authoring;
 using AttributeSystem.Components;
 using UnityEngine;
@@ -8,19 +9,20 @@ public class HealthEntityDecorator : Singleton<HealthEntityDecorator>, IMonoDeco
     protected AttributeScriptableObject HealthAttribute;
 
     protected AbstractAttributeEventHandler ClampHealthEventHandler;
+    protected GameplayEffectScriptableObject HealInitialEffect;
     public HealthEntityDecorator(){
         HealthAttribute = ResourceManager.Instance.LoadAttribute("Health");
         MaxHealthAttribute = ResourceManager.Instance.LoadAttribute("MaxHealth");
         MinHealthAttribute = ResourceManager.Instance.LoadAttribute("MinHealth");
-
         ClampHealthEventHandler = ResourceManager.Instance.LoadAttributeEventHandler("ClampHealthEventHandler");
+        HealInitialEffect = ResourceManager.Instance.LoadGameplayEffect("HealthInit");
     }
     public Entity Decorate(Entity entity)
     {
-        entity.AttributeSystemComponent.AddAttributes(HealthAttribute);
-        entity.AttributeSystemComponent.AddAttributes(MaxHealthAttribute);
-        entity.AttributeSystemComponent.AddAttributes(MinHealthAttribute);
+        entity.AttributeSystemComponent.AddAttributes(HealthAttribute, MaxHealthAttribute, MinHealthAttribute);
 
+        entity.AttributeSystemComponent.AddAttributeEventHandlers(ClampHealthEventHandler);
+        entity.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(entity.AbilitySystemCharacter.MakeOutgoingSpec(HealInitialEffect));
         return entity;
     }
 }

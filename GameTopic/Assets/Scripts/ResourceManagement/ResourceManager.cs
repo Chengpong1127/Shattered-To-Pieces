@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Gameframe.SaveLoad;
 using AttributeSystem.Authoring;
 using AttributeSystem.Components;
+using AbilitySystem.Authoring;
 
 public class ResourceManager
 {
@@ -14,6 +15,7 @@ public class ResourceManager
     public readonly string DefaultDeviceInfoPath = "DefaultDeviceInfo";
     public readonly string AttributeDir = "Attributes";
     public readonly string AttributeHandlerDir = "AttributeHandlers";
+    public readonly string GameplayEffectDir = "GameplayEffects";
 
     private SaveLoadManager localDeviceStorageManager;
     private ResourceManager() { 
@@ -72,6 +74,15 @@ public class ResourceManager
             Debug.LogWarning("Cannot load attribute event handler: " + path);
         }
         return handler;
+    }
+
+    public GameplayEffectScriptableObject LoadGameplayEffect(string name){
+        var path = Path.Combine(GameplayEffectDir, name);
+        var effect = Resources.Load<GameplayEffectScriptableObject>(path);
+        if(effect == null){
+            Debug.LogWarning("Cannot load gameplay effect: " + path);
+        }
+        return effect;
     }
 
 
