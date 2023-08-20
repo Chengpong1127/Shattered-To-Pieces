@@ -11,7 +11,7 @@ namespace AttributeSystem.Components
     public class AttributeSystemComponent : MonoBehaviour
     {
         [SerializeField]
-        private AbstractAttributeEventHandler[] AttributeSystemEvents;
+        private List<AbstractAttributeEventHandler> AttributeSystemEvents;
 
         /// <summary>
         /// Attribute sets assigned to the game character
@@ -187,7 +187,7 @@ namespace AttributeSystem.Components
                 this.AttributeValues[i] = _attribute.Attribute.CalculateCurrentAttributeValue(_attribute, this.AttributeValues);
             }
 
-            for (var i = 0; i < this.AttributeSystemEvents.Length; i++)
+            for (var i = 0; i < this.AttributeSystemEvents.Count; i++)
             {
                 this.AttributeSystemEvents[i].PreAttributeChange(this, prevAttributeValues, ref this.AttributeValues);
             }
@@ -219,6 +219,17 @@ namespace AttributeSystem.Components
             UpdateAttributeCurrentValues();
         }
 
+        public void AddAttributeEventHandlers(params AbstractAttributeEventHandler[] handlers)
+        {
+            AttributeSystemEvents.AddRange(handlers);
+        }
+        public void RemoveAttributeEventHandlers(params AbstractAttributeEventHandler[] handlers)
+        {
+            for (var i = 0; i < handlers.Length; i++)
+            {
+                AttributeSystemEvents.Remove(handlers[i]);
+            }
+        }
 
     }
 
