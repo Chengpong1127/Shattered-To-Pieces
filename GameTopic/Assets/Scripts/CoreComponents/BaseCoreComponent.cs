@@ -103,6 +103,11 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
         Debug.Assert(OwnerGameComponent != null, "OwnerGameComponent is null");
     }
 
+    protected override void Awake() {
+        base.Awake();
+        HealthEntityDecorator.Instance.Decorate(this);
+    }
+
     public override void Repel(Vector2 force){
         if (this == Root){
             base.Repel(force);

@@ -288,8 +288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AttributeSystemEvents: []
-  Attributes:
-  - {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
+  Attributes: []
   AttributeValues: []
 --- !u!114 &8261234539780816078
 MonoBehaviour:
