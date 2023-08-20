@@ -29,4 +29,5 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  InitialisationGE: []
+  InitialisationGE:
+  - {fileID: 11400000, guid: 98c78e9a671644108b06cb93184ee518, type: 2}
