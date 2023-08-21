@@ -2,6 +2,9 @@ using AttributeSystem.Components;
 using AbilitySystem;
 using UnityEngine;
 using AbilitySystem.Authoring;
+using System;
+using System.Collections;
+using System.Linq;
 
 /// <summary>
 /// Entity is the base class for all entities in the game. An entity has attributes and the init abilities to set up the init state of the entity.
@@ -10,6 +13,7 @@ using AbilitySystem.Authoring;
 public class Entity: BaseEntity{
     public AttributeSystemComponent AttributeSystemComponent;
     public AbilitySystemCharacter AbilitySystemCharacter;
+    public bool IsInitialized { get; private set;}
     [SerializeField]
     protected AbstractAbilityScriptableObject[] InitializationAbilities;
     protected override void Awake() {
@@ -17,16 +21,19 @@ public class Entity: BaseEntity{
         AttributeSystemComponent ??= GetComponent<AttributeSystemComponent>();
         AbilitySystemCharacter ??= GetComponent<AbilitySystemCharacter>();
         AbilitySystemCharacter.AttributeSystem = AttributeSystemComponent;
-        ActivateInitializationAbilities();
+        StartCoroutine(ActivateInitializationAbilities());
     }
-    private void ActivateInitializationAbilities()
+    private IEnumerator ActivateInitializationAbilities()
     {
-        foreach (var initializationAbility in InitializationAbilities)
+        AbstractAbilitySpec[] specs = new AbstractAbilitySpec[InitializationAbilities.Length];
+        for (int i = 0; i < InitializationAbilities.Length; i++)
         {
-            if (initializationAbility == null) continue;
-            var spec = initializationAbility.CreateSpec(AbilitySystemCharacter);
-            AbilitySystemCharacter.GrantAbility(spec);
-            StartCoroutine(spec.TryActivateAbility());
+            if (InitializationAbilities[i] == null) continue;
+            specs[i] = InitializationAbilities[i].CreateSpec(AbilitySystemCharacter);
+            AbilitySystemCharacter.GrantAbility(specs[i]);
+            StartCoroutine(specs[i].TryActivateAbility());
         }
+        yield return new WaitUntil(() => specs.All(spec => !spec.isActive));
+        IsInitialized = true;
     }
 }

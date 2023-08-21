@@ -8,11 +8,11 @@ public class ClampAttributeEventHandler : AbstractAttributeEventHandler
 {
 
     [SerializeField]
-    private AttributeScriptableObject PrimaryAttribute;
+    protected AttributeScriptableObject PrimaryAttribute;
     [SerializeField]
-    private AttributeScriptableObject MaxAttribute;
+    protected AttributeScriptableObject MaxAttribute;
     [SerializeField]
-    private AttributeScriptableObject MinAttribute;
+    protected AttributeScriptableObject MinAttribute;
     public override void PreAttributeChange(AttributeSystemComponent attributeSystem, List<AttributeValue> prevAttributeValues, ref List<AttributeValue> currentAttributeValues)
     {
         var attributeCacheDict = attributeSystem.mAttributeIndexCache;
@@ -24,7 +24,7 @@ public class ClampAttributeEventHandler : AbstractAttributeEventHandler
             Debug.LogWarning("ClampAttributeEventHandler: MaxAttribute and MinAttribute are both null, this event handler will do nothing.");
     }
 
-    private void ClampAttributeToMax(AttributeScriptableObject Attribute1, AttributeScriptableObject Attribute2, List<AttributeValue> attributeValues, Dictionary<AttributeScriptableObject, int> attributeCacheDict)
+    protected virtual void ClampAttributeToMax(AttributeScriptableObject Attribute1, AttributeScriptableObject Attribute2, List<AttributeValue> attributeValues, Dictionary<AttributeScriptableObject, int> attributeCacheDict)
     {
         if (attributeCacheDict.TryGetValue(Attribute1, out var primaryAttributeIndex)
             && attributeCacheDict.TryGetValue(Attribute2, out var maxAttributeIndex))
@@ -38,7 +38,7 @@ public class ClampAttributeEventHandler : AbstractAttributeEventHandler
             attributeValues[primaryAttributeIndex] = primaryAttribute;
         }
     }
-    private void ClampAttributeToMin(AttributeScriptableObject Attribute1, AttributeScriptableObject Attribute2, List<AttributeValue> attributeValues, Dictionary<AttributeScriptableObject, int> attributeCacheDict)
+    protected virtual void ClampAttributeToMin(AttributeScriptableObject Attribute1, AttributeScriptableObject Attribute2, List<AttributeValue> attributeValues, Dictionary<AttributeScriptableObject, int> attributeCacheDict)
     {
         if (attributeCacheDict.TryGetValue(Attribute1, out var primaryAttributeIndex)
             && attributeCacheDict.TryGetValue(Attribute2, out var minAttributeIndex))
