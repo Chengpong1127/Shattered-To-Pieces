@@ -16,7 +16,11 @@
     "precompiledReferences": [
         "Newtonsoft.Json.dll",
         "DOTween.dll",
-        "DOTweenEditor.dll"
+        "DOTweenEditor.dll",
+        "Fusion.Common.dll",
+        "Fusion.Realtime.dll",
+        "Fusion.Runtime.dll",
+        "Fusion.Sockets.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
