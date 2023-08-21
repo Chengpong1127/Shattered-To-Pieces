@@ -61,11 +61,11 @@ public class RotationAbility : AbstractAbilityScriptableObject
         {
 
             if (Local){
-                RotationTransform.DOLocalRotate(new Vector3(0, 0, RotationValue), RotationTime, RotateMode)
+                RotationTransform.DOLocalRotate(new Vector3(0, 0, RotationValue) + RotationTransform.localPosition, RotationTime, RotateMode)
                 .SetEase(EaseMode);
             }
             else{
-                RotationTransform.DORotate(new Vector3(0, 0, RotationValue), RotationTime, RotateMode)
+                RotationTransform.DORotate(new Vector3(0, 0, RotationValue) + RotationTransform.localPosition, RotationTime, RotateMode)
                 .SetEase(EaseMode);
             }
             yield return new WaitForSeconds(RotationTime);
