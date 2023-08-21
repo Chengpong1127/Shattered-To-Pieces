@@ -30,7 +30,7 @@ MonoBehaviour:
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
   Local: 1
-  RotationValue: 0
+  RotationValue: -90
   DurationTime: 0.5
-  RotateMode: 0
+  RotateMode: 3
   EaseMode: 1

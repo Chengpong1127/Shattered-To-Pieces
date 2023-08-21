@@ -32,5 +32,5 @@ MonoBehaviour:
   Local: 1
   RotationValue: 90
   DurationTime: 0.5
-  RotateMode: 0
+  RotateMode: 3
   EaseMode: 1
