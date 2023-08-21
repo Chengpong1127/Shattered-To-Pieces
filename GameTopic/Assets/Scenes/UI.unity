@@ -5628,7 +5628,6 @@ GameObject:
   - component: {fileID: 1480054146}
   - component: {fileID: 1480054151}
   - component: {fileID: 1480054152}
-  - component: {fileID: 1480054154}
   m_Layer: 0
   m_Name: TestEntity
   m_TagString: Untagged
@@ -5663,7 +5662,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AttributeSystemEvents:
-  - {fileID: 11400000, guid: 62c9e2e9c231e4692b24322eb8e32698, type: 2}
+  - {fileID: 11400000, guid: 4f4cdc7090ecd448f859aae79c310302, type: 2}
   Attributes:
   - {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
   - {fileID: 11400000, guid: e0d843f15ad51485c8b6d6f25aa2554f, type: 2}
@@ -5797,21 +5796,6 @@ MonoBehaviour:
   AbilitySystemCharacter: {fileID: 1480054146}
   InitializationAbilities:
   - {fileID: 11400000, guid: a2452141b3a134589879a70b0bf113ef, type: 2}
---- !u!114 &1480054154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1480054144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84cd0cb271574403ebdc2ee5fba2e363, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AttributeSystemEvents: []
-  Attributes: []
-  AttributeValues: []
 --- !u!1 &1593539954
 GameObject:
   m_ObjectHideFlags: 0

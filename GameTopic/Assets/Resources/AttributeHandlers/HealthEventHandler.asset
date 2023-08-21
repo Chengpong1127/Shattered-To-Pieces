@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74cb8647358ff42369eaba835edf6267, type: 3}
   m_Name: HealthEventHandler
   m_EditorClassIdentifier: 
-  PrimaryAttribute: {fileID: 0}
-  MaxAttribute: {fileID: 0}
-  MinAttribute: {fileID: 0}
+  PrimaryAttribute: {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
+  MaxAttribute: {fileID: 11400000, guid: e0d843f15ad51485c8b6d6f25aa2554f, type: 2}
+  MinAttribute: {fileID: 11400000, guid: f15e7b9836f3b4d6695b01461a2d5da0, type: 2}
