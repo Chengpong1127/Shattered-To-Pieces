@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem.Authoring;
-using UnityEditor.UI;
 
 public class BaseCoreComponent : AbilityEntity, ICoreComponent
 {

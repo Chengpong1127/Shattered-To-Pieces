@@ -3,7 +3,6 @@ using AbilitySystem.Authoring;
 using AbilitySystem;
 using System.Collections;
 using DG.Tweening;
-using UnityEditor.UI;
 
 [CreateAssetMenu(fileName = "MoveAbility", menuName = "Ability/MoveAbility")]
 public class MoveAbility : AbstractAbilityScriptableObject
