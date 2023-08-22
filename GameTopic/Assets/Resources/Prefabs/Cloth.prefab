@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 6331637611104552976}
     - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: InitializationAbilities.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: InitializationAbilities.Array.data[0]
