@@ -4,17 +4,22 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using Newtonsoft.Json;
+using Unity.Collections;
+using System.Text;
 
 public class NetworkManager : SingletonMonoBehavior<NetworkManager>, INetworkRunnerCallbacks
 {
-    public NetworkRunner Runner;
-    public NetworkPrefabRef networkPrefabRef;
-    public Dictionary<PlayerRef, Device> PlayerDeviceMap = new();
+    private NetworkRunner Runner;
+    public NetworkPrefabRef PlayerDevice;
     private void Start() {
+        Application.targetFrameRate = 60;
+        Runner = gameObject.AddComponent<NetworkRunner>();
         StartGame(GameMode.AutoHostOrClient);
     }
 
     async void StartGame(GameMode mode){
+        Runner.ProvideInput = true;
         var args = new StartGameArgs{
             GameMode = mode,
             SessionName = "MySession",
@@ -25,11 +30,10 @@ public class NetworkManager : SingletonMonoBehavior<NetworkManager>, INetworkRun
     
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        if (Runner.IsClient) return;
-        var factory = new NetworkGameComponentFactory(runner, player);
-        PlayerDeviceMap[player] = new Device(factory);
-        var deviceInfo = ResourceManager.Instance.LoadLocalDeviceInfo("0");
-        PlayerDeviceMap[player].Load(deviceInfo ?? ResourceManager.Instance.LoadDefaultDeviceInfo());
+        Debug.Log("Player joined: " + player);
+        if (Runner.IsServer){
+            Runner.Spawn(PlayerDevice, inputAuthority: player);
+        }
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -85,6 +89,9 @@ public class NetworkManager : SingletonMonoBehavior<NetworkManager>, INetworkRun
     public void OnSceneLoadDone(NetworkRunner runner)
     {
         Debug.Log("Scene load done");
+        if(runner.IsServer){
+            //factory = runner.Spawn(FactoryPrefab).GetComponent<NetworkGameComponentFactory>();
+        }
     }
 
     public void OnSceneLoadStart(NetworkRunner runner)

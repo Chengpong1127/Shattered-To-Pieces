@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2968296889150377650}
   - component: {fileID: 5402115233645595697}
   - component: {fileID: 4757446429877670758}
+  - component: {fileID: 3668550688498899387}
   m_Layer: 0
   m_Name: Bat
   m_TagString: Untagged
@@ -99,8 +100,37 @@ MonoBehaviour:
   NetworkGuid:
     RawGuidValue: 6080cc153519c4769ac12d5b0abdcf9c
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 3668550688498899387}
   SimulationBehaviours: []
+--- !u!114 &3668550688498899387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231371903342056086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  InterpolationSpace: 0
+  InterpolationTarget: {fileID: 5584664317331441971}
+  InterpolateErrorCorrection: 1
+  InterpolatedErrorCorrectionSettings:
+    MinRate: 3.3
+    MaxRate: 10
+    PosBlendStart: 0.25
+    PosBlendEnd: 1
+    PosMinCorrection: 0.025
+    PosTeleportDistance: 2
+    RotBlendStart: 0.1
+    RotBlendEnd: 0.5
+    RotTeleportRadians: 1.5
+  UseLegacySharedModeInterpolation: 0
+  TargetInterpolationDelay: 0.03
 --- !u!1 &4240192772804819617
 GameObject:
   m_ObjectHideFlags: 0
