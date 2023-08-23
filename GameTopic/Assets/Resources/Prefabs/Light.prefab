@@ -312,8 +312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
-  InitializationAbilities:
-  - {fileID: 0}
+  InitializationAbilities: []
   Abilities:
   - {fileID: 11400000, guid: 8fa6ff37f92d40a448795971caf2695f, type: 2}
   g_light: {fileID: 7679782485449668584}

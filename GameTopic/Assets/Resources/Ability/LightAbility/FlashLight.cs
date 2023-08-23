@@ -34,9 +34,11 @@ public class FlashLight : MonoBehaviour
     {
         foreach(BaseCoreComponent bs in baseCoreComponents)
         {
-            if (collision.gameObject == bs) return;
+             //Debug.Log(collision.transform.parent.name+" "+ bs.gameObject.transform.parent.name);
+            if (collision.gameObject == bs.gameObject) return;
         }
         monitor_Clear = false;
+       // Debug.Log(collision.transform.parent.name);
         StartCoroutine(FadeToWhite());
     }
     private void OnTriggerExit2D(Collider2D other)
@@ -46,7 +48,7 @@ public class FlashLight : MonoBehaviour
     }
     private IEnumerator FadeToWhite()
     {
-        while (!monitor_Clear)
+        while (!monitor_Clear&&Image.color.a<=0.7)
         {
             Image.color = Color.Lerp(Image.color, Color.white, FadeSpeed * Time.deltaTime);
             yield return null;
