@@ -1,0 +1,34 @@
+{
+    "name": "New Controls",
+    "maps": [
+        {
+            "name": "Game",
+            "id": "42df3374-dda6-4e0c-88a1-196c9f0eba90",
+            "actions": [
+                {
+                    "name": "Ability",
+                    "type": "Button",
+                    "id": "1cf74642-9f17-4b58-bc93-5b08f7fdd437",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f3441c79-2e45-4ef5-9755-182949625be2",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ability",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

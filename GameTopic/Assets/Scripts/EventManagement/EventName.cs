@@ -44,6 +44,12 @@ public static class EventName
 		/// Handler Type: Action<int, string>
 		/// </summary>
 		public const string OnSetBinding = nameof(AbilityManagerEvents) + nameof(OnSetBinding);
+
+		/// <summary>
+		/// Triggered after the ability is triggered. Get the ability entry number form 0 to 9.
+		/// Handler Type: Action<int> 
+		/// </summary>
+		public const string OnAbilityTriggered = nameof(AbilityManagerEvents) + nameof(OnAbilityTriggered);
 	}
 
 	public static class BuffEvents {

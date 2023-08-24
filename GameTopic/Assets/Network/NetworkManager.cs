@@ -4,18 +4,17 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.SceneManagement;
 using UnityEngine;
-using Newtonsoft.Json;
-using Unity.Collections;
-using System.Text;
 
 public class NetworkManager : SingletonMonoBehavior<NetworkManager>, INetworkRunnerCallbacks
 {
     private NetworkRunner Runner;
     public NetworkPrefabRef PlayerDevice;
+    private HashSet<int> TriggeredAbilityIDs = new HashSet<int>();
     private void Start() {
         Application.targetFrameRate = 60;
         Runner = gameObject.AddComponent<NetworkRunner>();
         StartGame(GameMode.AutoHostOrClient);
+        this.StartListening(EventName.AbilityManagerEvents.OnAbilityTriggered, new Action<int>(HandleAbilityTriggered));
     }
 
     async void StartGame(GameMode mode){
@@ -26,6 +25,9 @@ public class NetworkManager : SingletonMonoBehavior<NetworkManager>, INetworkRun
             Scene = SceneManager.GetActiveScene().buildIndex,
         };
         await Runner.StartGame(args);
+    }
+    private void HandleAbilityTriggered(int abilityNumber){
+        TriggeredAbilityIDs.Add(abilityNumber);
     }
     
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
@@ -72,11 +74,18 @@ public class NetworkManager : SingletonMonoBehavior<NetworkManager>, INetworkRun
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
+        if (TriggeredAbilityIDs.Count != 0){
+            var inputData = new NetworkInputData();
+            foreach (var abilityID in TriggeredAbilityIDs){
+                inputData.StartAbilityEntry.Set(abilityID, true);
+            }
+            TriggeredAbilityIDs.Clear();
+            input.Set(inputData);
+        }
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
     {
-        Debug.Log("Input missing: " + input);
     }
 
 
