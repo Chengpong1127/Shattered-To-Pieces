@@ -160,7 +160,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
             coreComponent = GetComponentInChildren<ICoreComponent>();
             if (coreComponent == null)
             {
-                Debug.LogWarning("The core component is not set.");
+                Debug.LogWarning("The core component is not set in " + gameObject.name + ".");
             }
             else{
                 coreComponent.OwnerGameComponent = this;
