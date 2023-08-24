@@ -326,9 +326,9 @@ MonoBehaviour:
   AbilitySystemCharacter: {fileID: 936121724388479871}
   InitializationAbilities: []
   Abilities:
-  - {fileID: 11400000, guid: f8ff516c34aa34b30a0d1c5f053cabc0, type: 2}
-  AttackPointAttribute: {fileID: 0}
-  Handle: {fileID: 0}
+  - {fileID: 11400000, guid: 667df11ad0ce8446ca762310a262fbb6, type: 2}
+  AttackPointAttribute: {fileID: 11400000, guid: 6aed56e620fb14348ba210fc3b5d043c, type: 2}
+  Handle: {fileID: 5584664317331441971}
 --- !u!114 &8534154877124904707
 MonoBehaviour:
   m_ObjectHideFlags: 0
