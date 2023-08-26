@@ -52,7 +52,7 @@ public class InvisibleAbility : AbstractAbilityScriptableObject
             var root = SelfEntity.transform.root;
             while (root.parent != null)
             {
-                //Debug.Log(root.name);
+                Debug.Log(root.name);
                 root = root.transform.root;
             }
             //Debug.Log(SelfEntity.transform.root.name);

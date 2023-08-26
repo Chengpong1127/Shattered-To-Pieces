@@ -12,7 +12,6 @@ public class FlashLight : MonoBehaviour
     private BaseCoreComponent[] baseCoreComponents;
     private void Awake()
     {
-        StartCoroutine(Set());
         this.gameObject.GetComponent<Collider2D>().enabled = false;
         this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
         monitor_Clear = this.transform.parent.GetChild(0).GetComponent<LightScript>().clear;
@@ -26,15 +25,17 @@ public class FlashLight : MonoBehaviour
             root = root.parent;
             yield return null;
         }
-        yield return null;
         var ControlRoom = root.GetChild(0).GetComponent<BaseCoreComponent>();
         baseCoreComponents = ControlRoom.GetAllChildren();
+        yield return null;
+
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        foreach(BaseCoreComponent bs in baseCoreComponents)
+        StartCoroutine(Set());
+        foreach (BaseCoreComponent bs in baseCoreComponents)
         {
-             //Debug.Log(collision.transform.parent.name+" "+ bs.gameObject.transform.parent.name);
+            
             if (collision.gameObject == bs.gameObject) return;
         }
         monitor_Clear = false;
