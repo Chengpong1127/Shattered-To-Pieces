@@ -2,19 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-public class GameComponentFactory : MonoBehaviour, IGameComponentFactory
+public class GameComponentFactory : IGameComponentFactory
 {
-    public static GameComponentFactory CreateInstance(GameObject where)
+    public GameComponentFactory()
     {
-        var instance = where.AddComponent<GameComponentFactory>();
-        return instance;
     }
     public IGameComponent CreateGameComponentObject(string gameComponentName)
     {
         GameObject prefab = ResourceManager.Instance.LoadPrefab(gameComponentName);
         if (prefab != null)
         {
-            var obj = Instantiate(prefab);
+            var obj = GameObject.Instantiate(prefab);
             var component = obj.GetComponent<IGameComponent>();
             component.ComponentName = gameComponentName;
             return component;

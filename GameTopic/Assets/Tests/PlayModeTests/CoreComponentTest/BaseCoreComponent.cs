@@ -10,7 +10,7 @@ public class BaseCoreComponentTest{
         var gameObject = new GameObject();
         gameObject.transform.position = Vector3.zero;
         var coreComponent = gameObject.AddComponent<TestBaseCoreComponent>();
-        var componentFactory = GameComponentFactory.CreateInstance(gameObject);
+        var componentFactory = new GameComponentFactory();
 
         var detectedComponents = coreComponent.TestGetOverlapCircleCoreComponentsAll(1, gameObject.transform.position);
         Assert.AreEqual(0, detectedComponents.Length);

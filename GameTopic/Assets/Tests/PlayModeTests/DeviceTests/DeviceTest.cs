@@ -8,7 +8,7 @@ public class DeviceTest
 {
     [Test]
     public void CreateDefaultDeviceTest(){
-        var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
+        var componentFactory = new GameComponentFactory();
         var device = new Device(componentFactory);
         device.Load(ResourceManager.Instance.LoadDefaultDeviceInfo());
         

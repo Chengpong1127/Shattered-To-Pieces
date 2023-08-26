@@ -12,7 +12,7 @@ public class ConnectTests
     [TestCase("Square")]
     public void CreateSingleComponentTest(string componentName)
     {
-        var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
+        var componentFactory = new GameComponentFactory();
         var c = componentFactory.CreateGameComponentObject(componentName);
         var info = c.Dump() as GameComponentInfo;
         Assert.AreEqual(componentName, info.ComponentName);
@@ -30,7 +30,7 @@ public class ConnectTests
     [TestCase("ControlRoom", 1)]
     public void SingleConnectionTest(string componentName, int targetID)
     {
-        var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
+        var componentFactory = new GameComponentFactory();
         var c1 = componentFactory.CreateGameComponentObject(componentName);
         var c2 = componentFactory.CreateGameComponentObject(componentName);
         var connectionInfo = new ConnectionInfo{
@@ -48,7 +48,7 @@ public class ConnectTests
     }
     [Test]
     public void GetParentTest(){
-        var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
+        var componentFactory = new GameComponentFactory();
         var c1 = componentFactory.CreateGameComponentObject("Square");
         var c2 = componentFactory.CreateGameComponentObject("Square");
         var c3 = componentFactory.CreateGameComponentObject("Square");
@@ -67,7 +67,7 @@ public class ConnectTests
 
         [Test]
     public void GetChildrenTest(){
-        var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
+        var componentFactory = new GameComponentFactory();
         var c1 = componentFactory.CreateGameComponentObject("Square");
         var c2 = componentFactory.CreateGameComponentObject("Square");
         var c3 = componentFactory.CreateGameComponentObject("Square");
@@ -115,7 +115,7 @@ public class ConnectTests
     }
     [Test]
     public void GetRootTest(){
-        var componentFactory = new GameObject().AddComponent<GameComponentFactory>();
+        var componentFactory = new GameComponentFactory();
         var c1 = componentFactory.CreateGameComponentObject("Square");
         var c2 = componentFactory.CreateGameComponentObject("Square");
         var c3 = componentFactory.CreateGameComponentObject("Square");

@@ -14,7 +14,7 @@ public class NetworkGameComponentFactory : IGameComponentFactory
         if (prefab != null)
         {
             var obj = GameObject.Instantiate(prefab);
-            obj.GetComponent<NetworkObject>().Spawn();
+            obj.GetComponent<NetworkObject>()?.Spawn();
             var component = obj.GetComponent<IGameComponent>();
             component.ComponentName = gameComponentName;
             return component;

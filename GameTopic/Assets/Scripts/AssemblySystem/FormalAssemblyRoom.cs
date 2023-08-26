@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Gameframe.SaveLoad;
 using System.Linq;
 using System;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
 
 public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 {
@@ -68,7 +68,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     #endregion
 
     protected void Awake() {
-        _gameComponentFactory = GameComponentFactory.CreateInstance(gameObject);
+        NetworkManager.Singleton.StartServer();
+        _gameComponentFactory = new NetworkGameComponentFactory();
         GameComponentsUnitManager = new UnitManager();
         _inputManager = new InputManager();
         ControlledDevice = new Device(_gameComponentFactory);
