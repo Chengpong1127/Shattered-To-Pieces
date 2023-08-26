@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.Netcode;
+using Unity.Netcode.Components;
 
 public class GameComponent : MonoBehaviour, IGameComponent
 {
@@ -17,6 +19,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public IConnector Connector => connector;
     public ICoreComponent CoreComponent => coreComponent;
     public Transform DraggableTransform => bodyTransform;
+    public NetworkObject NetworkObject { get; private set;}
     public string ComponentName { get; set; }
     private float zRotation = 0;
 
@@ -135,38 +138,15 @@ public class GameComponent : MonoBehaviour, IGameComponent
 
     private void Awake()
     {
-        if (bodyTransform == null)
-        {
-            bodyTransform = transform;
-            Debug.Assert(bodyTransform != null, "The body transform is not set.");
-        }
-        if (bodyRigidbody == null)
-        {
-            bodyRigidbody = GetComponent<Rigidbody2D>();
-            Debug.Assert(bodyRigidbody != null, "The body rigidbody is not set.");
-        }
-        if (bodyCollider == null)
-        {
-            bodyCollider = GetComponentInChildren<Collider2D>();
-            Debug.Assert(bodyCollider != null, "The body collider is not set.");
-        }
-        if (connector == null)
-        {
-            connector = GetComponentInChildren<IConnector>();
-            Debug.Assert(connector != null, "The connector is not set.");
-        }
-        if (coreComponent == null)
-        {
-            coreComponent = GetComponentInChildren<ICoreComponent>();
-            if (coreComponent == null)
-            {
-                Debug.LogWarning("The core component is not set in " + gameObject.name + ".");
-            }
-            else{
-                coreComponent.OwnerGameComponent = this;
-            }
-        }
+        bodyTransform ??= transform ?? throw new ArgumentNullException(nameof(bodyTransform));
+        bodyRigidbody ??= GetComponent<Rigidbody2D>() ?? throw new ArgumentNullException(nameof(bodyRigidbody));
+        bodyCollider ??= GetComponent<Collider2D>() ?? throw new ArgumentNullException(nameof(bodyCollider));
+        connector ??= GetComponentInChildren<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
+        coreComponent ??= GetComponentInChildren<ICoreComponent>() ?? throw new ArgumentNullException(nameof(coreComponent));
+        coreComponent.OwnerGameComponent = this;
+        
         DisconnectFromParent();
+
     }
     public void SetZRotation(float newZRotation)
     {

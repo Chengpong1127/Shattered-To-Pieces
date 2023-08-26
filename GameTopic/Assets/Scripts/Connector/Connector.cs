@@ -118,15 +118,13 @@ public class Connector : MonoBehaviour, IConnector
         if (newParent == null) throw new ArgumentException("newParent is null");
         if (info == null) throw new ArgumentException("info is null");
         _currentLinkedTarget = newParent.GetTarget(info.linkedTargetID);
-        GameComponent.BodyTransform.SetParent(_currentLinkedTarget.transform);
+        GameComponent.BodyTransform.SetParent(newParent.GameComponent.BodyTransform);
+        GameComponent.BodyTransform.localPosition = _currentLinkedTarget.ConnectionPosition;
         _currentLinkedTarget.LinkedBy(this);
         if (ConnectionAnchor != null)
         {
             Vector3 positionOffset = _currentLinkedTarget.transform.position - ConnectionAnchor.position;
-            GameComponent.BodyTransform.position += positionOffset;
-        }
-        else{
-            GameComponent.BodyTransform.localPosition = Vector3.zero;
+            GameComponent.BodyTransform.localPosition = positionOffset;
         }
     }
 }
