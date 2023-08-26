@@ -8,10 +8,7 @@ public interface IGameComponent: ITreeNode, IUnit, IDraggable
 
     public Collider2D BodyCollider { get; }
 
-    /// <summary>
-    /// Whether the game component is in the device. // TODO
-    /// </summary>
-    /// <value></value>
+    public Animator BodyAnimator { get; }
     public string ComponentName { get; set; }
     /// <summary>
     /// The Connector of the game component.

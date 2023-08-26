@@ -11,32 +11,19 @@ public class BatRotation : AbstractAbilityScriptableObject
     public float Angle;
     [SerializeField]
     public float DurationTime;
-    [SerializeField]
-    public Ease EaseMode;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
-        var spec = new BatRotationSpec(this, owner){
-            Angle = Angle,
-            DurationTime = DurationTime,
-            EaseMode = EaseMode
-        };
-
+        var spec = new BatRotationSpec(this, owner);
         return spec;
     }
 
     public class BatRotationSpec : EntityAbilitySpec
     {
-        public Transform RotationTransform;
-        public Transform RotateCenter;
-        public float Angle;
-        public float DurationTime;
-        public Ease EaseMode;
+        private Animator entityAnimator;
 
         public BatRotationSpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
-            var rotatable = SelfEntity as IRotatable ?? throw new System.ArgumentNullException("SelfEntity");
-            RotationTransform = rotatable.RotateBody;
-            RotateCenter = rotatable.RotateCenter;
+            entityAnimator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
         }
 
         public override void CancelAbility()
@@ -51,11 +38,9 @@ public class BatRotation : AbstractAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
-            Vector3 originPosition = RotationTransform.localPosition;
-            var rotation = RotationTransform.DOLocalRotate(new Vector3(0, 0, Angle) + RotationTransform.localPosition, DurationTime, RotateMode.FastBeyond360).SetEase(EaseMode);
-            yield return rotation.WaitForCompletion();
-            rotation = RotationTransform.DOLocalRotate(originPosition, DurationTime, RotateMode.FastBeyond360).SetEase(EaseMode);
-            yield return rotation.WaitForCompletion();
+            entityAnimator.SetTrigger("Swing");
+            yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+            Debug.Log("Swing end");
         }
 
         protected override IEnumerator PreActivate()

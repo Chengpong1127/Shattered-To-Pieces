@@ -19,7 +19,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public IConnector Connector => connector;
     public ICoreComponent CoreComponent => coreComponent;
     public Transform DraggableTransform => bodyTransform;
-    public NetworkObject NetworkObject { get; private set;}
+    public Animator BodyAnimator { get; private set;}
     public string ComponentName { get; set; }
     private float zRotation = 0;
 
@@ -143,6 +143,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
         bodyCollider ??= GetComponent<Collider2D>() ?? throw new ArgumentNullException(nameof(bodyCollider));
         connector ??= GetComponentInChildren<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
         coreComponent ??= GetComponentInChildren<ICoreComponent>() ?? throw new ArgumentNullException(nameof(coreComponent));
+        BodyAnimator ??= GetComponent<Animator>();
         coreComponent.OwnerGameComponent = this;
         
         DisconnectFromParent();

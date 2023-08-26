@@ -23,8 +23,9 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
     public override Collider2D BodyCollider => OwnerGameComponent.BodyCollider;
     /// <summary>
     /// Get the camera of the game component.
-    /// </summary>
+    /// </summary> 
     public Camera PlayerCamera => Camera.main;
+    public Animator BodyAnimator => OwnerGameComponent.BodyAnimator;
 
     /// <summary>
     /// Get the root core component of the game component in the device.
