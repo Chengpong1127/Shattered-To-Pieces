@@ -38,9 +38,9 @@ public class BatRotation : AbstractAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
-            entityAnimator.SetTrigger("Swing");
-            yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
-            Debug.Log("Swing end");
+            entityAnimator.Play("Swing");
+            yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Swing"));
+            yield return new WaitUntil(() => !entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Swing"));
         }
 
         protected override IEnumerator PreActivate()

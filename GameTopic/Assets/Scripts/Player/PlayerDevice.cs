@@ -9,7 +9,6 @@ public class PlayerDevice : NetworkBehaviour
 {
     public Device SelfDevice { get; private set; }
     public IGameComponentFactory GameComponentFactory { get; private set; }
-    private PlayerInput playerInput;
     private AbilityRunner abilityRunner;
     private Dictionary<InputAction, int> actionToAbilityNumber = new();
     [ServerRpc]
@@ -28,7 +27,6 @@ public class PlayerDevice : NetworkBehaviour
     void Awake()
     {
         GameComponentFactory = new NetworkGameComponentFactory();
-        playerInput = GetComponent<PlayerInput>();
     }
     void Start()
     {
@@ -36,7 +34,7 @@ public class PlayerDevice : NetworkBehaviour
         if (IsOwner){
             DeviceInfo info = GetLocalDeviceInfo();
             LoadDeviceServerRpc(info.ToJson());
-            SetInputActionMap(playerInput.currentActionMap, info.abilityManagerInfo.EntryPaths);
+            SetInputActionMap(new InputActionMap("AbilityAction"), info.abilityManagerInfo.EntryPaths);
         }
         
     }
