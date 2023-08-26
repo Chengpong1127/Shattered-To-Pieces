@@ -68,7 +68,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     #endregion
 
     protected void Awake() {
-        NetworkManager.Singleton.StartServer();
+        GetComponent<NetworkManager>().StartServer();
         _gameComponentFactory = new NetworkGameComponentFactory();
         GameComponentsUnitManager = new UnitManager();
         _inputManager = new InputManager();
