@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 3177596927761790558}
   - component: {fileID: 6471390726302226721}
   - component: {fileID: 8164266858177180753}
-  - component: {fileID: 5476162206092839043}
-  - component: {fileID: 2093749167197517285}
   m_Layer: 0
   m_Name: Rubber
   m_TagString: Untagged
@@ -145,38 +143,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b2f53859082a948a77bbdefd01b0b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttributeSystemComponent: {fileID: 5476162206092839043}
-  AbilitySystemCharacter: {fileID: 2093749167197517285}
-  InitializationAbilities: []
-  Abilities: []
-  SlowDown: {fileID: 11400000, guid: 9108a27569e077b4086137e3123b1657, type: 2}
-  UpSpeed: {fileID: 11400000, guid: 43a099410bda4d44ca7ef694e5c10ad7, type: 2}
---- !u!114 &5476162206092839043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7781413230551944993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84cd0cb271574403ebdc2ee5fba2e363, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AttributeSystemEvents: []
-  Attributes: []
-  AttributeValues: []
---- !u!114 &2093749167197517285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7781413230551944993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 174b4c691442c4c7fab309adaf4cdfe3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attributeSystem: {fileID: 5476162206092839043}
-  Level: 0

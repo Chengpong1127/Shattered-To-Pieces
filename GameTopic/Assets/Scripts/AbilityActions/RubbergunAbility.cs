@@ -19,9 +19,12 @@ public class RubbergunAbility : AbstractAbilityScriptableObject
     }
     protected class RubbergunAbilitySpec : EntityAbilitySpec
     {
-
+        public float DurationTime;
+        public GameObject g_light;
+        public bool clear;
         public RubbergunAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
+            g_light = SelfEntity.GetComponent<LightScript>().g_light;
         }
         public override void CancelAbility()
         {
