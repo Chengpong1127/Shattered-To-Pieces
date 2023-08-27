@@ -1,10 +1,6 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.InputSystem;
-using AbilitySystem;
-using AbilitySystem.Authoring;
-using System.Linq;
 
 public class AbilityRunner: MonoBehaviour{
     public AbilityManager AbilityManager { get; private set; }
@@ -17,7 +13,6 @@ public class AbilityRunner: MonoBehaviour{
         return abilityRunner;
     }
     public void StartAbility(int entryIndex){
-        Debug.Log("StartAbility: " + entryIndex);
         ActivateEntry(AbilityManager.AbilityInputEntries[entryIndex].Abilities);
     }
     public void CancelAbility(int entryIndex){
