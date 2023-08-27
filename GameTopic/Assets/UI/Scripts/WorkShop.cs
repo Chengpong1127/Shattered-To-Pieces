@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class WorkShop : MonoBehaviour
 {
@@ -64,8 +65,8 @@ public class WorkShop : MonoBehaviour
         }
 
         room = Iar;
-
-        room.AbilityRebinder.OnFinishRebinding += shopDispatcher.SetRebindKeyText;
+        this.StartListening(EventName.AbilityRebinderEvents.OnFinishRebinding, new Action<string>(shopDispatcher.SetRebindKeyText));
+        //room.AbilityRebinder.OnFinishRebinding += shopDispatcher.SetRebindKeyText;
         room.AssemblySystemManager.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
         room.AssemblySystemManager.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
         room.AssemblySystemManager.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
@@ -73,7 +74,8 @@ public class WorkShop : MonoBehaviour
         room.AssemblySystemManager.AfterGameComponentConnected += UpdateUserCostRemain;
 
         room.OnLoadedDevice += shopDispatcher.RefreshAllBoxAbility;
-        room.AbilityManager.OnSetBinding += RefreshSkillBoxDisplayText;
+        this.StartListening(EventName.AbilityManagerEvents.OnSetBinding, new Action<int, string>(RefreshSkillBoxDisplayText));
+        //room.AbilityManager.OnSetBinding += RefreshSkillBoxDisplayText;
 
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Basic), GameComponentType.Basic);
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Attack), GameComponentType.Attack);

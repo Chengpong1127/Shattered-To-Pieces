@@ -47,7 +47,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     public UnitManager GameComponentsUnitManager { get; private set;}
 
 
-    public AbilityManager AbilityManager => ControlledDevice.AbilityManager;
+    public AbilityManager AbilityManager => ControlledDevice?.AbilityManager;
 
     /// <summary>
     /// The factory for creating game components.
@@ -61,54 +61,39 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     public AbilityRunner AbilityRunner { get; private set; }
 
     public int CurrentLoadedDeviceID { get; private set; } = 0;
-
-    private InputManager _inputManager;
+    private PlayerInput playerInput;
     private GameEffectManager _gameEffectManager;
+    private InputActionMap AbilityInputActionMap;
 
     #endregion
 
     protected void Awake() {
-        GetComponent<NetworkManager>().StartServer();
+        NetworkManager.Singleton.StartServer();
         _gameComponentFactory = new NetworkGameComponentFactory();
         GameComponentsUnitManager = new UnitManager();
-        _inputManager = new InputManager();
+        playerInput = GetComponent<PlayerInput>();
         ControlledDevice = new Device(_gameComponentFactory);
         LoadDevice(CurrentLoadedDeviceID);
+        AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager);
 
-        AssemblySystemManager = AssemblySystemManager.CreateInstance(gameObject, GameComponentsUnitManager, _inputManager.AssemblyRoom.Drag, 45f);
+        AssemblySystemManager = AssemblySystemManager.CreateInstance(gameObject, GameComponentsUnitManager, playerInput.currentActionMap.FindAction("Drag"), 45f);
         GameComponentDataList = ResourceManager.Instance.LoadAllGameComponentData();
 
-        AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager);
-        AbilityRunner.BindInputActionsToRunner(GetAbilityInputActions());
-
-        _inputManager.Enable();
         SetEventHandler();
         _gameEffectManager = new GameEffectManager();
+        
     }
 
     private void SetEventHandler(){
         this.StartListening(EventName.AssemblySystemManagerEvents.OnGameComponentDraggedStart, new Action<IGameComponent>(UpdateSaveHandler));
         this.StartListening(EventName.AssemblySystemManagerEvents.AfterGameComponentConnected, new Action<IGameComponent>(UpdateSaveHandler));
-    }
-    protected void Start() {
-        
-        //SetRoomMode(AssemblyRoomMode.PlayMode);
-        
+        this.StartListening(EventName.AbilityManagerEvents.OnLocalStartAbility, new Action<int>(AbilityRunner.StartAbility));
+        this.StartListening(EventName.AbilityManagerEvents.OnLocalCancelAbility, new Action<int>(AbilityRunner.CancelAbility));
     }
 
     private void UpdateSaveHandler(object _){
         ControlledDevice.AbilityManager.UpdateDeviceAbilities();
         SaveCurrentDevice();
-    }
-    private InputAction[] GetAbilityInputActions(){
-        var abilityInputActions = new InputAction[ControlledDevice.AbilityManager.AbilityInputEntryNumber];
-        foreach(var action in _inputManager){
-            if (action.name.StartsWith("Ability")){
-                var abilityID = int.Parse(action.name[7..]);
-                abilityInputActions[abilityID] = action;
-            }
-        }
-        return abilityInputActions;
     }
 
     /// <summary>
@@ -116,6 +101,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// </summary>
     /// <returns></returns>
     public int GetDeviceTotalCost() {
+        if (ControlledDevice == null) return 0;
         var cost = 0;
         ControlledDevice.ForEachGameComponent((component) => {
             var data = GameComponentDataList.Where((data) => data.ResourcePath == component.ComponentName);
@@ -137,16 +123,16 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     private IDevice LoadNewDevice(DeviceInfo deviceInfo)
     {
-
+        AbilityInputActionMap?.Dispose();
 
         deviceInfo ??= ResourceManager.Instance.LoadDefaultDeviceInfo();
         ClearAllGameComponents();
         ControlledDevice.Load(deviceInfo);
         ControlledDevice.ForEachGameComponent(GameComponentsUnitManager.AddUnit);
 
-
-        
-        AbilityRebinder = new AbilityRebinder(ControlledDevice.AbilityManager, GetAbilityInputActions());
+        AbilityInputActionMap = deviceInfo.AbilityManagerInfo.GetAbilityInputActionMap();
+        AbilityInputActionMap.Enable();
+        AbilityRebinder = new AbilityRebinder(ControlledDevice.AbilityManager, AbilityInputActionMap);
         AbilityRebinder.OnFinishRebinding += _ => SaveCurrentDevice();
         AbilityManager.OnSetAbilityOutOfEntry += _ => SaveCurrentDevice();
         AbilityManager.OnSetAbilityToEntry += _ => SaveCurrentDevice();

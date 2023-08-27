@@ -6,27 +6,15 @@ using System;
 
 public class AbilityRebinder : IAbilityRebinder
 {
-    public InputAction[] Actions { get; set; }
+    public InputActionMap AbilityActionMap { get; private set; }
     public event Action<string> OnFinishRebinding;
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
     private readonly AbilityManager _abilityManager;
     private bool actionEnabled;
-    public AbilityRebinder(AbilityManager abilityManager, InputAction[] actions)
+    public AbilityRebinder(AbilityManager abilityManager, InputActionMap actions)
     {
         _abilityManager = abilityManager ?? throw new ArgumentNullException(nameof(abilityManager));
-        Actions = actions ?? throw new ArgumentNullException(nameof(actions));
-        if (Actions.Length != _abilityManager.AbilityInputEntryNumber)
-        {
-            throw new ArgumentException("The length of abilityActions should be the same as the length of abilityInputEntries");
-        }
-        for (int i = 0; i < Actions.Length; i++)
-        {
-            if(abilityManager.AbilityInputEntries[i].InputPath != ""){
-                Actions[i].ApplyBindingOverride(abilityManager.AbilityInputEntries[i].InputPath);
-            }else{
-                Actions[i].RemoveAllBindingOverrides();
-            }
-        }
+        AbilityActionMap = actions ?? throw new ArgumentNullException(nameof(actions));
     }
     public void CancelRebinding()
     {
@@ -44,7 +32,7 @@ public class AbilityRebinder : IAbilityRebinder
         if (rebindingOperation != null){
             CancelRebinding();
         }
-        var action = Actions[abilityButtonID];
+        var action = AbilityActionMap.FindAction("Ability" + abilityButtonID.ToString(), true);
         actionEnabled = action.enabled;
         action.Disable();
         rebindingOperation = action.PerformInteractiveRebinding()

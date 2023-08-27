@@ -22,13 +22,13 @@ public class Device: IDevice
         var tree = new Tree(RootGameComponent);
         var deviceInfo = new DeviceInfo();
         var (info, nodeMapping) = tree.Dump<GameComponentInfo>();
-        deviceInfo.treeInfo = info;
+        deviceInfo.TreeInfo = info;
         var gameComponentIDMapping = new Dictionary<IGameComponent, int>();
         foreach (var (key, value) in nodeMapping){
             Debug.Assert(key is IGameComponent);
             gameComponentIDMapping.Add(key as IGameComponent, value);
         }
-        deviceInfo.abilityManagerInfo = new AbilityManagerInfo(AbilityManager, gameComponentIDMapping);
+        deviceInfo.AbilityManagerInfo = new AbilityManagerInfo(AbilityManager, gameComponentIDMapping);
         return deviceInfo;
     }
 
@@ -42,20 +42,20 @@ public class Device: IDevice
         }
         var deviceInfo = info as DeviceInfo;
 
-        var tempDictionary = CreateAllComponents(deviceInfo.treeInfo.NodeInfoMap);
-        foreach (var (key, value) in deviceInfo.treeInfo.NodeInfoMap){
+        var tempDictionary = CreateAllComponents(deviceInfo.TreeInfo.NodeInfoMap);
+        foreach (var (key, value) in deviceInfo.TreeInfo.NodeInfoMap){
             var componentInfo = value;
             var component = tempDictionary[key];
             component.Load(componentInfo);
         }
-        RootGameComponent = tempDictionary[deviceInfo.treeInfo.rootID];
-        foreach (var (key, componentInfo) in deviceInfo.treeInfo.NodeInfoMap){
+        RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID];
+        foreach (var (key, componentInfo) in deviceInfo.TreeInfo.NodeInfoMap){
             var component = tempDictionary[key];
             component.SetZRotation(componentInfo.ConnectionZRotation);
         }
-        ConnectAllComponents(tempDictionary, deviceInfo.treeInfo.NodeInfoMap, deviceInfo.treeInfo.EdgeInfoList);
+        ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList);
         
-        AbilityManager.Load(this, deviceInfo.abilityManagerInfo, tempDictionary);
+        AbilityManager.Load(this, deviceInfo.AbilityManagerInfo, tempDictionary);
     }
 
     private Dictionary<int, IGameComponent> CreateAllComponents(Dictionary<int, GameComponentInfo> nodes){

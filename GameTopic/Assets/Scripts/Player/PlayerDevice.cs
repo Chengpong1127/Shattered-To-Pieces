@@ -34,7 +34,7 @@ public class PlayerDevice : NetworkBehaviour
         if (IsOwner){
             DeviceInfo info = GetLocalDeviceInfo();
             LoadDeviceServerRpc(info.ToJson());
-            SetInputActionMap(new InputActionMap("AbilityAction"), info.abilityManagerInfo.EntryPaths);
+            SetInputActionMap(new InputActionMap("AbilityAction"), info.AbilityManagerInfo.EntryPaths);
         }
         
     }

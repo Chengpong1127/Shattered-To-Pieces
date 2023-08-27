@@ -35,7 +35,7 @@ public class FormalAssemblyTest
         data.ResourcePath = "Square";
 
         roomManager.CreateNewGameComponent(data, new Vector2(0, 0));
-        Assert.AreEqual(roomManager.GameComponentsUnitManager.UnitMap.Count, deviceInfo.treeInfo.NodeInfoMap.Count + 1);
+        Assert.AreEqual(roomManager.GameComponentsUnitManager.UnitMap.Count, deviceInfo.TreeInfo.NodeInfoMap.Count + 1);
         
     }
 
@@ -77,14 +77,14 @@ public class FormalAssemblyTest
     
 
     private bool CompareDeviceInfo(DeviceInfo info1, DeviceInfo info2){
-        if(info1.treeInfo.rootID != info2.treeInfo.rootID) return false;
-        if(info1.treeInfo.NodeInfoMap.Count != info2.treeInfo.NodeInfoMap.Count) return false;
-        if(info1.treeInfo.EdgeInfoList.Count != info2.treeInfo.EdgeInfoList.Count) return false;
-        foreach(var node in info1.treeInfo.NodeInfoMap){
-            if(!info2.treeInfo.NodeInfoMap.ContainsKey(node.Key)) return false;
+        if(info1.TreeInfo.rootID != info2.TreeInfo.rootID) return false;
+        if(info1.TreeInfo.NodeInfoMap.Count != info2.TreeInfo.NodeInfoMap.Count) return false;
+        if(info1.TreeInfo.EdgeInfoList.Count != info2.TreeInfo.EdgeInfoList.Count) return false;
+        foreach(var node in info1.TreeInfo.NodeInfoMap){
+            if(!info2.TreeInfo.NodeInfoMap.ContainsKey(node.Key)) return false;
         }
-        foreach(var edge in info1.treeInfo.EdgeInfoList){
-            if(!info2.treeInfo.EdgeInfoList.Contains(edge)) return false;
+        foreach(var edge in info1.TreeInfo.EdgeInfoList){
+            if(!info2.TreeInfo.EdgeInfoList.Contains(edge)) return false;
         }
 
         return true;

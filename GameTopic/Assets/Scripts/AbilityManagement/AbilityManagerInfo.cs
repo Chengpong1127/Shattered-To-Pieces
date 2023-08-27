@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 public class AbilityManagerInfo: IInfo{
     public string[] EntryPaths;
@@ -24,6 +25,22 @@ public class AbilityManagerInfo: IInfo{
             OutOfEntryAbilities.Add((componentIDMap[ability.OwnerGameComponent.OwnerGameComponent], ability.AbilityIndex));
         }
 
+    }
+    public InputActionMap GetAbilityInputActionMap(){
+        var map = new InputActionMap("AbilityInput");
+        for(int i = 0; i < EntryPaths.Length; i++){
+            var abilityIndex = i;
+            string keyName = "Ability" + abilityIndex.ToString();
+            InputAction action = map.AddAction(keyName);
+            action.AddBinding(EntryPaths[abilityIndex]);
+            action.started += (ctx) => {
+                this.TriggerEvent(EventName.AbilityManagerEvents.OnLocalStartAbility, abilityIndex);
+            };
+            action.canceled += (ctx) => {
+                this.TriggerEvent(EventName.AbilityManagerEvents.OnLocalCancelAbility, abilityIndex);
+            };
+        }
+        return map;
     }
 
 }

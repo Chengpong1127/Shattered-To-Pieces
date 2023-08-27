@@ -44,6 +44,16 @@ public static class EventName
 		/// Handler Type: Action<int, string>
 		/// </summary>
 		public const string OnSetBinding = nameof(AbilityManagerEvents) + nameof(OnSetBinding);
+		/// <summary>
+		///	Triggered after the ability button is pressed.
+		/// Handler Type: Action<int> (AbilityIndex)
+		/// </summary>
+		public const string OnLocalStartAbility = nameof(AbilityManagerEvents) + nameof(OnLocalStartAbility);
+		/// <summary>
+		///	Triggered after the ability button is released.
+		///	Handler Type: Action<int> (AbilityIndex)
+		/// </summary>
+		public const string OnLocalCancelAbility = nameof(AbilityManagerEvents) + nameof(OnLocalCancelAbility);
 	}
 
 	public static class BuffEvents {
