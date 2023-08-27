@@ -44,6 +44,8 @@ public static class EventName
 		/// Handler Type: Action<int, string>
 		/// </summary>
 		public const string OnSetBinding = nameof(AbilityManagerEvents) + nameof(OnSetBinding);
+	}
+	public static class AbilityRunningEvents{
 		/// <summary>
 		///	Triggered after the ability button is pressed.
 		/// Handler Type: Action<int> (AbilityIndex)

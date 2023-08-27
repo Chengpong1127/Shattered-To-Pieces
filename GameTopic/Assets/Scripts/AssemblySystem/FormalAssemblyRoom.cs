@@ -87,8 +87,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     private void SetEventHandler(){
         this.StartListening(EventName.AssemblySystemManagerEvents.OnGameComponentDraggedStart, new Action<IGameComponent>(UpdateSaveHandler));
         this.StartListening(EventName.AssemblySystemManagerEvents.AfterGameComponentConnected, new Action<IGameComponent>(UpdateSaveHandler));
-        this.StartListening(EventName.AbilityManagerEvents.OnLocalStartAbility, new Action<int>(AbilityRunner.StartAbility));
-        this.StartListening(EventName.AbilityManagerEvents.OnLocalCancelAbility, new Action<int>(AbilityRunner.CancelAbility));
+        this.StartListening(EventName.AbilityRunningEvents.OnLocalStartAbility, new Action<int>(AbilityRunner.StartAbility));
+        this.StartListening(EventName.AbilityRunningEvents.OnLocalCancelAbility, new Action<int>(AbilityRunner.CancelAbility));
     }
 
     private void UpdateSaveHandler(object _){
@@ -116,7 +116,11 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     {
         GameComponentsUnitManager.ForEachUnit((unit) => {
             var component = unit as IGameComponent;
-            Destroy(component.BodyTransform.gameObject);
+            component.DisconnectFromParent();
+        });
+        GameComponentsUnitManager.ForEachUnit((unit) => {
+            var component = unit as IGameComponent;
+            component.BodyTransform.GetComponent<NetworkObject>()?.Despawn();
         });
         GameComponentsUnitManager.Clear();
     }

@@ -34,10 +34,10 @@ public class AbilityManagerInfo: IInfo{
             InputAction action = map.AddAction(keyName);
             action.AddBinding(EntryPaths[abilityIndex]);
             action.started += (ctx) => {
-                this.TriggerEvent(EventName.AbilityManagerEvents.OnLocalStartAbility, abilityIndex);
+                this.TriggerEvent(EventName.AbilityRunningEvents.OnLocalStartAbility, abilityIndex);
             };
             action.canceled += (ctx) => {
-                this.TriggerEvent(EventName.AbilityManagerEvents.OnLocalCancelAbility, abilityIndex);
+                this.TriggerEvent(EventName.AbilityRunningEvents.OnLocalCancelAbility, abilityIndex);
             };
         }
         return map;
