@@ -13,10 +13,11 @@ public class AbilityRunner: MonoBehaviour{
             throw new ArgumentNullException(nameof(where));
         }
         var abilityRunner = where.AddComponent<AbilityRunner>();
-        abilityRunner.AbilityManager = abilityManager ?? throw new System.ArgumentNullException(nameof(abilityManager));
+        abilityRunner.AbilityManager = abilityManager ?? throw new ArgumentNullException(nameof(abilityManager));
         return abilityRunner;
     }
     public void StartAbility(int entryIndex){
+        Debug.Log("StartAbility: " + entryIndex);
         ActivateEntry(AbilityManager.AbilityInputEntries[entryIndex].Abilities);
     }
     public void CancelAbility(int entryIndex){

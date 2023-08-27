@@ -65,7 +65,7 @@ public class WorkShop : MonoBehaviour
         }
 
         room = Iar;
-        this.StartListening(EventName.AbilityRebinderEvents.OnFinishRebinding, new Action<string>(shopDispatcher.SetRebindKeyText));
+        this.StartListening(EventName.AbilityRebinderEvents.OnFinishRebinding, new Action<int, string>((_, str) => shopDispatcher.SetRebindKeyText(str)));
         //room.AbilityRebinder.OnFinishRebinding += shopDispatcher.SetRebindKeyText;
         room.AssemblySystemManager.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
         room.AssemblySystemManager.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;

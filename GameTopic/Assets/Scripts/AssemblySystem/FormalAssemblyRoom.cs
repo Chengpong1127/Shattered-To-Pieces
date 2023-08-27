@@ -56,13 +56,17 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     public IAbilityRebinder AbilityRebinder { get; private set; }
 
-    public List<GameComponentData> GameComponentDataList { get; private set; }
-
+    public List<GameComponentData> GameComponentDataList {
+        get {
+            _gameComponentDataList ??= ResourceManager.Instance.LoadAllGameComponentData();
+            return _gameComponentDataList;
+        }
+    }
+    private List<GameComponentData> _gameComponentDataList;
     public AbilityRunner AbilityRunner { get; private set; }
 
     public int CurrentLoadedDeviceID { get; private set; } = 0;
     private PlayerInput playerInput;
-    private GameEffectManager _gameEffectManager;
     private InputActionMap AbilityInputActionMap;
 
     #endregion
@@ -77,10 +81,9 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager);
 
         AssemblySystemManager = AssemblySystemManager.CreateInstance(gameObject, GameComponentsUnitManager, playerInput.currentActionMap.FindAction("Drag"), 45f);
-        GameComponentDataList = ResourceManager.Instance.LoadAllGameComponentData();
 
         SetEventHandler();
-        _gameEffectManager = new GameEffectManager();
+        new GameEffectManager();
         
     }
 

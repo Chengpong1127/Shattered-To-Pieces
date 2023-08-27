@@ -37,16 +37,16 @@ public class AbilityRebinder : IAbilityRebinder
         action.Disable();
         rebindingOperation = action.PerformInteractiveRebinding()
             .WithControlsExcluding("Mouse")
-            .OnComplete(operation => RebindingComplete(abilityButtonID,operation))
+            .OnComplete(operation => RebindingComplete(abilityButtonID, operation))
             .Start();
 
     }
     private void RebindingComplete(int abilityID, InputActionRebindingExtensions.RebindingOperation operation){
         _abilityManager.SetBinding(abilityID, operation.action.bindings[0].effectivePath);
         OnFinishRebinding?.Invoke(operation.action.bindings[0].effectivePath);
-        this.TriggerEvent(EventName.AbilityRebinderEvents.OnFinishRebinding, operation.action.bindings[0].effectivePath);
-        rebindingOperation.Dispose();
+        this.TriggerEvent(EventName.AbilityRebinderEvents.OnFinishRebinding, abilityID, operation.action.bindings[0].effectivePath);
         if (actionEnabled) rebindingOperation.action.Enable();
+        rebindingOperation.Dispose();
         rebindingOperation = null;
     }
 }
