@@ -195,10 +195,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2d425bf44353467a9d472232efc9a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttributeSystemComponent: {fileID: 0}
-  AbilitySystemCharacter: {fileID: 0}
+  AttributeSystemComponent: {fileID: 3866586033599401151}
+  AbilitySystemCharacter: {fileID: 6675372889104377204}
   InitializationAbilities: []
   Abilities: []
+  MoveVelocityAttribute: {fileID: 11400000, guid: f50e3d22668b64514ace54053549b447, type: 2}
 --- !u!50 &563615708135208357
 Rigidbody2D:
   serializedVersion: 4
@@ -251,6 +252,17 @@ WheelJoint2D:
   m_Motor:
     m_MotorSpeed: 0
     m_MaximumMotorForce: 10000
+--- !u!114 &3866586033599401151 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6901079752671095258, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+  m_PrefabInstance: {fileID: 7668874776407188837}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721539186129665028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84cd0cb271574403ebdc2ee5fba2e363, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5315550583178797305 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -323,6 +335,17 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 4234352918938833372, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
   m_PrefabInstance: {fileID: 7668874776407188837}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6675372889104377204 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3949341022062034961, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+  m_PrefabInstance: {fileID: 7668874776407188837}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721539186129665028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 174b4c691442c4c7fab309adaf4cdfe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7103795183964095579 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 646425904242467134, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}

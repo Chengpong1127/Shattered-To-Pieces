@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 5081521119534702214}
   - component: {fileID: 7325295908851349562}
   - component: {fileID: 4069215428026139534}
+  - component: {fileID: 1793669155783448685}
+  - component: {fileID: 5285289135489144673}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -143,9 +145,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aeefa62a8ddb0d44bd681c37ea8340e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AttributeSystemComponent: {fileID: 0}
+  AbilitySystemCharacter: {fileID: 0}
+  InitializationAbilities: []
+  Abilities: []
   Image: {fileID: 0}
   FadeSpeed: 1.5
   monitor_Clear: 0
+--- !u!114 &1793669155783448685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7679782485449668584}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84cd0cb271574403ebdc2ee5fba2e363, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttributeSystemEvents: []
+  Attributes: []
+  AttributeValues: []
+--- !u!114 &5285289135489144673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7679782485449668584}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 174b4c691442c4c7fab309adaf4cdfe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attributeSystem: {fileID: 0}
+  Level: 0
 --- !u!1001 &584326266991813066
 PrefabInstance:
   m_ObjectHideFlags: 0

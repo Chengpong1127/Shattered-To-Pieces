@@ -30,13 +30,13 @@ public class FlashLight : MonoBehaviour
         yield return null;
 
     }
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D other)
     {
         StartCoroutine(Set());
         foreach (BaseCoreComponent bs in baseCoreComponents)
         {
-            
-            if (collision.gameObject == bs.gameObject) return;
+
+            if (other.gameObject == bs.gameObject) return;
         }
         monitor_Clear = false;
        // Debug.Log(collision.transform.parent.name);
