@@ -15,10 +15,14 @@ public class GameManager: SingletonMonoBehavior<GameManager>{
     }
     void Start()
     {
-        Players = FindObjectsOfType<PlayerDevice>();
-        for (int i = 0; i < Players.Length; i++)
+        if (NetworkManager.Singleton.IsHost)
         {
-            Players[i].SetPosition(PlayerSpawnPoint[i].position);
+            Players = FindObjectsOfType<PlayerDevice>();
+            for (int i = 0; i < Players.Length; i++)
+            {
+                Players[i].SetRootPosition(PlayerSpawnPoint[i].position);
+            }
         }
+        
     }
 }

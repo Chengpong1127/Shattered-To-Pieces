@@ -78,7 +78,7 @@ public class LobbyManager : MonoBehaviour
         
         await AddRelayCodeAsync(relayCode);
 
-        await Task.Delay(3000);
+        await Task.Delay(4000);
         BeginGame();
     }
 
