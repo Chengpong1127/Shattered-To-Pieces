@@ -52,4 +52,7 @@ public class PlayerDevice : NetworkBehaviour
     private DeviceInfo GetLocalDeviceInfo(){
         return ResourceManager.Instance.LoadLocalDeviceInfo("0") ?? ResourceManager.Instance.LoadDefaultDeviceInfo();
     }
+    public void SetPosition(Vector3 position){
+        SelfDevice.RootGameComponent.BodyTransform.position = position;
+    }
 }
