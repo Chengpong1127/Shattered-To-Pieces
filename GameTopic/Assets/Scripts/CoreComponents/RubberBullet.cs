@@ -11,7 +11,12 @@ public class RubberBullet : MonoBehaviour
         if(collision.gameObject.name == "Square")
         {
             Instantiate(Rubber,this.transform.position,Rubber.transform.rotation);
+            Destroy(this.gameObject);
         }
-        Destroy(this.gameObject);
+        else
+        {
+            return;
+        }
+
     }
 }
