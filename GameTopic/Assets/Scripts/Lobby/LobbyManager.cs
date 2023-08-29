@@ -34,7 +34,7 @@ public class LobbyManager : MonoBehaviour
         CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions { Player = SelfPlayer };
         CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
         BindLobbyEvents(CurrentLobby.Id);
-        Debug.Log("Lobby Created " + CurrentLobby.Name + " " + CurrentLobby.LobbyCode);
+        Debug.Log("Lobby Created with Lobby ID: " + CurrentLobby.Id);
     }
     public async void ListAllLobbies(){
         var responce = await LobbyService.Instance.QueryLobbiesAsync();
@@ -71,11 +71,10 @@ public class LobbyManager : MonoBehaviour
             Debug.Log("Already Joined Lobby");
             return;
         }
-        JoinLobbyByCodeOptions quickJoinLobbyOptions = new JoinLobbyByCodeOptions { Player = SelfPlayer };
-        Debug.Log("join lobby with code: " + lobby.LobbyCode);
-        CurrentLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobby.LobbyCode, quickJoinLobbyOptions);
+        JoinLobbyByIdOptions quickJoinLobbyOptions = new JoinLobbyByIdOptions { Player = SelfPlayer };
+        CurrentLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, quickJoinLobbyOptions);
         BindLobbyEvents(CurrentLobby.Id);
-        Debug.Log("Joined new lobby: " + CurrentLobby.Name);
+        Debug.Log("Joined new lobby with ID: " + CurrentLobby.Id);
     }
     public string GetLobbyRelayCode(){
         if (CurrentLobby == null)
