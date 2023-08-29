@@ -18,4 +18,4 @@ MonoBehaviour:
   Price: 20
   Type: 3
   ResourcePath: Flour
-  DisplayAtShop: 1
+  DisplayAtShop: 0

@@ -18,4 +18,4 @@ MonoBehaviour:
   Price: 50
   Type: 3
   ResourcePath: Scales
-  DisplayAtShop: 1
+  DisplayAtShop: 0

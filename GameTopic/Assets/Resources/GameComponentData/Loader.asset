@@ -18,4 +18,4 @@ MonoBehaviour:
   Price: 40
   Type: 1
   ResourcePath: Loader
-  DisplayAtShop: 1
+  DisplayAtShop: 0
