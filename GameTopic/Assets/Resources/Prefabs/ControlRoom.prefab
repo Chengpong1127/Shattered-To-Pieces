@@ -291,6 +291,10 @@ PrefabInstance:
       propertyPath: AttributeSystemEvents.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4234352918938833372, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5957387579149278727, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.336
