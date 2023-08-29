@@ -42,7 +42,7 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
             this.gameObject.SetActive(false);
         } else {
             this.gameObject.SetActive(true);
-            displayText.text = skillData.AbilityScriptableObject.name;
+            displayText.text = skillData.AbilityScriptableObject.AbilityName;
             //this.gameObject.name = skillData.AbilityIndex;
         }
     }

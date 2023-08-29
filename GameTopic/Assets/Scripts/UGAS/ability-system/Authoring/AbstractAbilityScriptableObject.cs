@@ -9,7 +9,7 @@ namespace AbilitySystem.Authoring
         /// <summary>
         /// Name of this ability
         /// </summary>
-        [SerializeField] private string AbilityName;
+        [SerializeField] public string AbilityName;
 
         /// <summary>
         /// Tags for this ability
