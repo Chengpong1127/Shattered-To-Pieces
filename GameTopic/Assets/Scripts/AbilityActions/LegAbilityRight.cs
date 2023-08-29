@@ -47,9 +47,14 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
             return true;
         }
         protected override IEnumerator ActivateAbility() {
-            
+
+            Debug.Log(Body.Root.BodyTransform.name);
+
             while(Active) {
-                Body.Root.BodyTransform.Translate(Direction* Speed * Time.fixedDeltaTime, Space.Self);
+                Body.Root.BodyRigidbody.AddForce(
+                    Body.Root.BodyTransform.TransformDirection(Direction) * Speed
+                );
+                // Body.Root.BodyTransform.Translate(Direction* Speed * Time.fixedDeltaTime, Space.Self);
                 yield return null;
             }
 
