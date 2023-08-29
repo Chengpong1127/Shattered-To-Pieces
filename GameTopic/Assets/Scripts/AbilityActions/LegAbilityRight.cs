@@ -29,13 +29,17 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
 
         BaseCoreComponent Body;
 
+        Animator animator;
+
         public LegAbilityRightSpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner) {
+            animator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
             var obj = SelfEntity as IBodyControlable ?? throw new System.ArgumentNullException("SelfEntity");
             Body = obj.body;
             Active = false;
         }
         public override void CancelAbility() {
             Active = false;
+            animator.SetBool("Move", false);
             return;
         }
 
@@ -43,6 +47,7 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
             return true;
         }
         protected override IEnumerator ActivateAbility() {
+            
             while(Active) {
                 Body.Root.BodyTransform.Translate(Direction* Speed * Time.fixedDeltaTime, Space.Self);
                 yield return null;
@@ -52,6 +57,8 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
         }
         protected override IEnumerator PreActivate() {
             Active = true;
+            animator.SetFloat("Speed", Speed);
+            animator.SetBool("Move", true);
             yield return null;
         }
     }
