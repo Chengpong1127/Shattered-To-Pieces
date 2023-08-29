@@ -41,6 +41,7 @@ public class Target : MonoBehaviour
     public void SetTargetDisplay(bool display)
     {
         Renderer.enabled = display;
+        BodyCollider.enabled = display;
     }
 
 }

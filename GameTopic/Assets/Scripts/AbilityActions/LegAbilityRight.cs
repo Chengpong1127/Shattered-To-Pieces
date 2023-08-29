@@ -47,7 +47,11 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
             return true;
         }
         protected override IEnumerator ActivateAbility() {
-            while(Active) {
+            Debug.Assert(Body);
+            Debug.Assert(Body.Root);
+            Debug.Assert(Body.Root.BodyRigidbody);
+            while (Active) {
+
                 Body.Root.BodyRigidbody.AddForce(
                     Body.BodyTransform.TransformDirection(Direction) * Speed
                 );

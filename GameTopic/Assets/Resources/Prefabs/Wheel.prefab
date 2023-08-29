@@ -144,6 +144,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3949341022062034961, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: _attributeSystem
+      value: 
+      objectReference: {fileID: 3866586033599401151}
     - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: bodyCollider
       value: 
@@ -257,6 +261,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7913336177616231855}
+    - targetCorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1451125356135643372}
     - targetCorrespondingSourceObject: {fileID: 6948558256880769377, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4188707942884288980}
@@ -319,7 +326,9 @@ MonoBehaviour:
   AttributeSystemComponent: {fileID: 3866586033599401151}
   AbilitySystemCharacter: {fileID: 6675372889104377204}
   InitializationAbilities: []
-  Abilities: []
+  Abilities:
+  - {fileID: 11400000, guid: 3e92ee7ce1680524bbdc946bc047c0ce, type: 2}
+  - {fileID: 11400000, guid: bfc2d420d8c90be4bb5aa48b5bbe25ee, type: 2}
   MoveVelocityAttribute: {fileID: 11400000, guid: f50e3d22668b64514ace54053549b447, type: 2}
 --- !u!4 &3476269112730545264 stripped
 Transform:
@@ -425,6 +434,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1451125356135643372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5315550583178797305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 7913336177616231855}
 --- !u!114 &6675372889104377204 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3949341022062034961, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}

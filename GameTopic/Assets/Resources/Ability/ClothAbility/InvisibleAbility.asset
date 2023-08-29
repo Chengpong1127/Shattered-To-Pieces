@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c0357771714f74699af433114b24e7, type: 3}
   m_Name: InvisibleAbility
   m_EditorClassIdentifier: 
-  AbilityName: 
+  AbilityName: Invisible
   AbilityTags:
     AssetTag: {fileID: 0}
     CancelAbilitiesWithTags: []

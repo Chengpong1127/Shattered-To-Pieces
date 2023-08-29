@@ -39,7 +39,6 @@ public class FlashLight : MonoBehaviour
             if (other.gameObject == bs.gameObject) return;
         }
         monitor_Clear = false;
-       // Debug.Log(collision.transform.parent.name);
         StartCoroutine(FadeToWhite());
     }
     private void OnTriggerExit2D(Collider2D other)
