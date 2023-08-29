@@ -123,7 +123,7 @@ public class Connector : MonoBehaviour, IConnector
         _currentLinkedTarget.LinkedBy(this);
         if (ConnectionAnchor != null)
         {
-            Vector3 positionOffset = _currentLinkedTarget.transform.position - ConnectionAnchor.position;
+            Vector3 positionOffset = _currentLinkedTarget.transform.localPosition - ConnectionAnchor.localPosition;
             GameComponent.BodyTransform.localPosition = positionOffset;
         }
     }
