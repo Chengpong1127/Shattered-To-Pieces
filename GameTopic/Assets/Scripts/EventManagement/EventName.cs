@@ -121,4 +121,16 @@ public static class EventName
 		/// </summary>
 		public const string RequestModifyAttribute = nameof(GameEffectManagerEvents) + nameof(RequestModifyAttribute);
 	}
+
+	public static class LobbyEvents{
+		/// <summary>
+		///	Triggered after the lobby data is changed.
+		///	Handler Type: Action<Dictionary<string, string>>
+		/// </summary>
+		public const string OnLobbyDataChanged = nameof(LobbyEvents) + nameof(OnLobbyDataChanged);
+		/// <summary>
+		///	Triggered after the lobby player joined.
+		/// </summary>
+		public const string OnLobbyPlayerJoined = nameof(LobbyEvents) + nameof(OnLobbyPlayerJoined);
+	}
 }
