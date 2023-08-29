@@ -71,8 +71,9 @@ public class LobbyManager : MonoBehaviour
             Debug.Log("Already Joined Lobby");
             return;
         }
-        JoinLobbyByIdOptions quickJoinLobbyOptions = new JoinLobbyByIdOptions { Player = SelfPlayer };
-        CurrentLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, quickJoinLobbyOptions);
+        JoinLobbyByCodeOptions quickJoinLobbyOptions = new JoinLobbyByCodeOptions { Player = SelfPlayer };
+        Debug.Log("join lobby with code: " + lobby.LobbyCode);
+        CurrentLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobby.LobbyCode, quickJoinLobbyOptions);
         BindLobbyEvents(CurrentLobby.Id);
         Debug.Log("Joined new lobby: " + CurrentLobby.Name);
     }

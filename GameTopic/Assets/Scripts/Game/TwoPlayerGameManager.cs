@@ -22,6 +22,7 @@ public class TwoPlayerGameManager : MonoBehaviour {
         }else{
             await lobbyManager.CreateLobby("my lobby", 2);
             string relayCode = await lobbyManager.CreateRelay(2);
+            Debug.Log("Relay Code: " + relayCode);
             await lobbyManager.AddRelayCodeAsync(relayCode);
             StartCoroutine(HostStartGame());
         }
