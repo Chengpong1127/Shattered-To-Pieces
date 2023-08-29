@@ -70,7 +70,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
         {
             ComponentName = ComponentName,
             ConnectionInfo = connector.Dump() as ConnectionInfo,
-            ConnectionZRotation = zRotation
+            ConnectionZRotation = BodyTransform.rotation.eulerAngles.z,
         };
         return info;
     }
