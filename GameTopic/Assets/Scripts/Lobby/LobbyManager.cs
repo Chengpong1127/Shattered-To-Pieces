@@ -16,28 +16,25 @@ using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviour
 {
-    private Lobby m_CurrentLobby;
-    private Player m_CurrentPlayer;
-    private Allocation allocation;
-    void Start()
+    public Lobby CurrentLobby;
+    public Player SelfPlayer;
+    public Allocation Allocation;
+    void Awake()
     {
-        SignIn();
     }
-    public async void SignIn(){
+    public async Task SignIn(){
         await UnityServices.InitializeAsync();
         AuthenticationService.Instance.SignedIn += () => {
-            Debug.Log("Signed In " + AuthenticationService.Instance.PlayerId);
+            Debug.Log("Signed In with ID: " + AuthenticationService.Instance.PlayerId);
         };
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        m_CurrentPlayer = new Player(AuthenticationService.Instance.PlayerId);
+        SelfPlayer = new Player(AuthenticationService.Instance.PlayerId);
     }
-    public async void CreateLobby(){
-        string lobbyName = "My Lobby";
-        int maxPlayers = 4;
-        CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions { Player = m_CurrentPlayer };
-        m_CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
-        BindLobbyEvents(m_CurrentLobby.Id);
-        Debug.Log("Lobby Created " + m_CurrentLobby.Name + " " + m_CurrentLobby.LobbyCode);
+    public async Task CreateLobby(string lobbyName, int maxPlayers){
+        CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions { Player = SelfPlayer };
+        CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
+        BindLobbyEvents(CurrentLobby.Id);
+        Debug.Log("Lobby Created " + CurrentLobby.Name + " " + CurrentLobby.LobbyCode);
     }
     public async void ListAllLobbies(){
         var responce = await LobbyService.Instance.QueryLobbiesAsync();
@@ -47,64 +44,79 @@ public class LobbyManager : MonoBehaviour
             Debug.Log("Lobby Name: " + lobby.Name + " Lobby Code: " + lobby.LobbyCode);
         }
     }
+    public async Task<Lobby> GetTheLastestLobby(){
+        QueryLobbiesOptions queryLobbiesOptions = new QueryLobbiesOptions {
+            Order = new List<QueryOrder> {
+                new QueryOrder (field: QueryOrder.FieldOptions.Created, asc: false)
+            }
+        };
+        try{
+            var responce = await LobbyService.Instance.QueryLobbiesAsync(queryLobbiesOptions);
+            if (responce.Results.Count == 0)
+            {
+                return null;
+            }
+            return responce.Results[0];
+        }catch (LobbyServiceException e){
+            Debug.Log(e.Message);
+            return null;
+        }
+        
+        
+    }
 
-    public async void JoinLobby(){
-        if (m_CurrentLobby != null)
+    public async Task JoinLobby(Lobby lobby){
+        if (CurrentLobby != null)
         {
             Debug.Log("Already Joined Lobby");
             return;
         }
-        QuickJoinLobbyOptions quickJoinLobbyOptions = new QuickJoinLobbyOptions { Player = m_CurrentPlayer };
-        m_CurrentLobby = await LobbyService.Instance.QuickJoinLobbyAsync(quickJoinLobbyOptions);
-        Debug.Log("Joined Lobby " + m_CurrentLobby.Name);
-        BindLobbyEvents(m_CurrentLobby.Id);
+        JoinLobbyByIdOptions quickJoinLobbyOptions = new JoinLobbyByIdOptions { Player = SelfPlayer };
+        CurrentLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, quickJoinLobbyOptions);
+        BindLobbyEvents(CurrentLobby.Id);
+        Debug.Log("Joined new lobby: " + CurrentLobby.Name);
     }
-    public void ListLobbyPlayers(){
-        if (m_CurrentLobby == null)
+    public string GetLobbyRelayCode(){
+        if (CurrentLobby == null)
         {
-            Debug.Log("No Lobby Joined");
-            return;
+            Debug.Log("Not Joined Lobby");
+            return null;
         }
-        Debug.Log(m_CurrentLobby.Players.Count);
-        foreach (var player in m_CurrentLobby.Players)
+        if (CurrentLobby.Data == null)
         {
-            Debug.Log("Player Id: " + player.Id);
+            Debug.Log("No Data in Lobby");
+            return null;
         }
+        if (!CurrentLobby.Data.TryGetValue("relayCode", out var relayCode))
+        {
+            Debug.Log("No Relay Code in Lobby");
+            return null;
+        }
+        return relayCode.Value;
     }
 
-    public async void StartGame(){
-        Debug.Log("Starting Game with players:" + m_CurrentLobby.Players.Count);
-        string relayCode = await CreateRelay(m_CurrentLobby.Players.Count);
-        
-        await AddRelayCodeAsync(relayCode);
-
-        await Task.Delay(4000);
-        BeginGame();
-    }
-
-    private async Task<string> CreateRelay(int maxConnections){
+    public async Task<string> CreateRelay(int maxConnections, bool startHost = false){
         Debug.Log("Creating Relay");
-        allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
-        var joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-        RelayServerData data = new RelayServerData(allocation, "dtls");
+        Allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
+        var joinCode = await RelayService.Instance.GetJoinCodeAsync(Allocation.AllocationId);
+        RelayServerData data = new RelayServerData(Allocation, "dtls");
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(data);
-        NetworkManager.Singleton.StartHost();
-
-        
+        if (startHost)
+        {
+            NetworkManager.Singleton.StartHost();
+        }
         return joinCode;
     }
-    private async void JoinRelay(string joinCode){
+    public async Task JoinRelay(string joinCode, bool startClient = false){
         if (NetworkManager.Singleton.IsHost) return;
-        Debug.Log("Joining Relay");
+        Debug.Log("Joining Relay with code: " + joinCode);
         JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
         RelayServerData data = new RelayServerData(allocation, "dtls");
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(data);
-        NetworkManager.Singleton.StartClient();
-        await UpdatePlayerDataAsync("ConnectionOK", "true");
-    }
-    private void BeginGame(){
-        Debug.Log("Starting Game");
-        NetworkManager.Singleton.SceneManager.LoadScene("NetworkTestScene", LoadSceneMode.Single);
+        if (startClient)
+        {
+            NetworkManager.Singleton.StartClient();
+        }
     }
 
     private void BindLobbyEvents(string lobbyID){
@@ -120,16 +132,15 @@ public class LobbyManager : MonoBehaviour
         };
         LobbyEventCallbacks.DataChanged += (data) => {
             Debug.Log("Data Changed");
+            this.TriggerEvent(EventName.LobbyEvents.OnLobbyDataChanged, ConvertLobbyData(CurrentLobby.Data));
         };
         LobbyEventCallbacks.DataRemoved += (data) => {
             Debug.Log("Data Removed");
+            this.TriggerEvent(EventName.LobbyEvents.OnLobbyDataChanged, ConvertLobbyData(CurrentLobby.Data));
         };
         LobbyEventCallbacks.DataAdded += (data) => {
             Debug.Log("Data Added");
-            if (data.TryGetValue("relayCode", out var relayCode))
-            {
-                JoinRelay(relayCode.Value.Value);
-            }
+            this.TriggerEvent(EventName.LobbyEvents.OnLobbyDataChanged, ConvertLobbyData(CurrentLobby.Data));
         };
         LobbyEventCallbacks.PlayerDataChanged += (data) => {
             Debug.Log("Player Data Changed");
@@ -151,6 +162,14 @@ public class LobbyManager : MonoBehaviour
         };
         LobbyService.Instance.SubscribeToLobbyEventsAsync(lobbyID, LobbyEventCallbacks);
     }
+    private Dictionary<string, string> ConvertLobbyData(Dictionary<string, DataObject> data){
+        Dictionary<string, string> result = new Dictionary<string, string>();
+        foreach (var item in data)
+        {
+            result.Add(item.Key, item.Value.Value);
+        }
+        return result;
+    }
 
     public async Task AddRelayCodeAsync(string relayCode)
     {
@@ -159,26 +178,26 @@ public class LobbyManager : MonoBehaviour
 
     public async Task UpdateLobbyDataAsync(string key, string value, bool isPrivate = false)
     {
-        if (m_CurrentLobby == null)
+        if (CurrentLobby == null)
             return;
 
-        Dictionary<string, DataObject> dataCurr = m_CurrentLobby.Data ?? new Dictionary<string, DataObject>();
+        Dictionary<string, DataObject> dataCurr = CurrentLobby.Data ?? new Dictionary<string, DataObject>();
         dataCurr[key] = new DataObject(isPrivate ? DataObject.VisibilityOptions.Private : DataObject.VisibilityOptions.Public, value);
 
         UpdateLobbyOptions updateOptions = new UpdateLobbyOptions { Data = dataCurr };
-        m_CurrentLobby = await LobbyService.Instance.UpdateLobbyAsync(m_CurrentLobby.Id, updateOptions);
+        CurrentLobby = await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, updateOptions);
     }
 
-    public async Task UpdatePlayerDataAsync(string key, string value, bool isPrivate = false)
+    public async Task UpdateSelfPlayerDataAsync(string key, string value, bool isPrivate = false)
     {
-        if (m_CurrentLobby == null)
+        if (CurrentLobby == null)
             return;
 
-        Dictionary<string, PlayerDataObject> dataCurr = m_CurrentPlayer.Data ?? new Dictionary<string, PlayerDataObject>();
+        Dictionary<string, PlayerDataObject> dataCurr = SelfPlayer.Data ?? new Dictionary<string, PlayerDataObject>();
         dataCurr[key] = new PlayerDataObject(isPrivate ? PlayerDataObject.VisibilityOptions.Private : PlayerDataObject.VisibilityOptions.Public, value);
 
         UpdatePlayerOptions updateOptions = new UpdatePlayerOptions { Data = dataCurr };
-        await LobbyService.Instance.UpdatePlayerAsync(m_CurrentLobby.Id, m_CurrentPlayer.Id, updateOptions);
+        await LobbyService.Instance.UpdatePlayerAsync(CurrentLobby.Id, SelfPlayer.Id, updateOptions);
     }
 
 }
