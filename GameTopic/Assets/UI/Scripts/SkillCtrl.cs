@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,6 +9,7 @@ using UnityEngine.UI;
 public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField] Transform canvasTransform;
+    [SerializeField] TMP_Text displayText;
     
     static SkillBoxCtrl NonSetBox;
     public SkillBoxCtrl ownerBox { get; set; }
@@ -40,6 +42,7 @@ public class SkillCtrl : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
             this.gameObject.SetActive(false);
         } else {
             this.gameObject.SetActive(true);
+            displayText.text = skillData.AbilityScriptableObject.name;
             //this.gameObject.name = skillData.AbilityIndex;
         }
     }

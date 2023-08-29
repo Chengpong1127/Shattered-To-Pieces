@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d193ac788fe1d4eb94009f1f1219e7, type: 3}
   m_Name: LegAbilityLeft
   m_EditorClassIdentifier: 
-  AbilityName: MoveRight
+  AbilityName: MoveLeft
   AbilityTags:
     AssetTag: {fileID: 0}
     CancelAbilitiesWithTags: []
