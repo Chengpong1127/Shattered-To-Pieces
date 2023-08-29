@@ -71,6 +71,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
             ComponentName = ComponentName,
             ConnectionInfo = connector.Dump() as ConnectionInfo,
             ConnectionZRotation = BodyTransform.rotation.eulerAngles.z,
+            ToggleXScale = BodyTransform.localScale.x < 0,
         };
         return info;
     }
@@ -160,6 +161,12 @@ public class GameComponent : MonoBehaviour, IGameComponent
         zRotation += newZRotation;
         SetZRotation(zRotation);
     }
+
+    public void ToggleXScale()
+    {
+        bodyTransform.localScale = new Vector3(-bodyTransform.localScale.x, bodyTransform.localScale.y, bodyTransform.localScale.z);
+    }
+    
 
     public ITreeNode GetRoot()
     {

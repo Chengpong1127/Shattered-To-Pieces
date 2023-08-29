@@ -49,12 +49,15 @@ public class Device: IDevice
             component.Load(componentInfo);
         }
         RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID];
+        
+        ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList);
         foreach (var (key, componentInfo) in deviceInfo.TreeInfo.NodeInfoMap){
             var component = tempDictionary[key];
             component.SetZRotation(componentInfo.ConnectionZRotation);
+            if (componentInfo.ToggleXScale){
+                component.ToggleXScale();
+            }
         }
-        ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList);
-        
         AbilityManager.Load(this, deviceInfo.AbilityManagerInfo, tempDictionary);
     }
 
@@ -62,7 +65,7 @@ public class Device: IDevice
         Debug.Assert(GameComponentFactory != null, "GameComponentFactory is null");
         var tempDictionary = new Dictionary<int, IGameComponent>();
         foreach (var (key, value) in nodes){
-            var componentInfo = value as GameComponentInfo;
+            var componentInfo = value;
             var component = GameComponentFactory.CreateGameComponentObject(componentInfo.ComponentName);
             tempDictionary.Add(key, component);
         }

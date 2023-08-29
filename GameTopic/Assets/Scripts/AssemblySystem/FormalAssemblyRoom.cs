@@ -80,7 +80,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         LoadDevice(CurrentLoadedDeviceID);
         AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager);
 
-        AssemblySystemManager = AssemblySystemManager.CreateInstance(gameObject, GameComponentsUnitManager, playerInput.currentActionMap.FindAction("Drag"), 45f);
+        AssemblySystemManager = AssemblySystemManager.CreateInstance(gameObject, GameComponentsUnitManager, playerInput.currentActionMap.FindAction("Drag"), playerInput.currentActionMap.FindAction("FlipComponent"), 45f);
 
         SetEventHandler();
         new GameEffectManager();
@@ -175,6 +175,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         this.TriggerEvent(EventName.AssemblyRoomEvents.OnSavedDevice);
     }
     public void LoadDevice(int DeviceID){
+        if (ControlledDevice?.RootGameComponent != null) UpdateSaveHandler(null);
         CurrentLoadedDeviceID = DeviceID;
         var deviceInfo = ResourceManager.Instance.LoadLocalDeviceInfo(DeviceID.ToString());
         LoadNewDevice(deviceInfo);
@@ -200,6 +201,10 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     private void OnDestroy() {
         this.StopListening(EventName.AssemblySystemManagerEvents.OnGameComponentDraggedStart, new Action<IGameComponent>(UpdateSaveHandler));
         this.StopListening(EventName.AssemblySystemManagerEvents.AfterGameComponentConnected, new Action<IGameComponent>(UpdateSaveHandler));
+    }
+    void OnApplicationQuit()
+    {
+        UpdateSaveHandler(null);
     }
 }
 

@@ -24,12 +24,12 @@ public class AssemblySystemManager : MonoBehaviour
     /// </summary>
     public event Action<IGameComponent> AfterGameComponentConnected;
 
-    public static AssemblySystemManager CreateInstance(GameObject where, UnitManager unitManager, InputAction dragAction, float SingleRotationAngle = 45f){
+    public static AssemblySystemManager CreateInstance(GameObject where, UnitManager unitManager, InputAction dragAction, InputAction flipAction, float SingleRotationAngle = 45f){
         var instance = where.AddComponent<AssemblySystemManager>();
         instance.DraggableMover = DraggableMover.CreateInstance(where, dragAction, Camera.main);
         instance.GameComponentsUnitManager = unitManager ?? throw new ArgumentNullException(nameof(unitManager));
         instance.SingleRotationAngle = SingleRotationAngle > 0 && SingleRotationAngle < 360 ? SingleRotationAngle : throw new ArgumentException(nameof(SingleRotationAngle));
-
+        flipAction.started += instance.FlipHandler;
         return instance;
     }
 
@@ -38,6 +38,12 @@ public class AssemblySystemManager : MonoBehaviour
     }
     public void DisableAssemblyComponents(){
         DraggableMover.enabled = false;
+    }
+
+    private void FlipHandler(InputAction.CallbackContext context){
+        if (DraggableMover.DraggedComponent != null){
+            DraggableMover.DraggedComponent.ToggleXScale();
+        }
     }
 
     protected void Awake() {
