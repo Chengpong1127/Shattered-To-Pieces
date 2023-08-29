@@ -33,7 +33,7 @@ public class TwoPlayerGameManager : MonoBehaviour {
         Debug.Log("Host Start Game");
         yield return new WaitUntil(() => NetworkManager.Singleton.ConnectedClientsList.Count == 2);
         Debug.Log("Player all connected");
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(3);
         DistributePlayers();
 
     }
