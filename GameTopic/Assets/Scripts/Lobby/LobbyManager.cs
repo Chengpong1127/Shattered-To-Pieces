@@ -47,7 +47,7 @@ public class LobbyManager : MonoBehaviour
     public async Task<Lobby> GetTheLastestLobby(){
         QueryLobbiesOptions queryLobbiesOptions = new QueryLobbiesOptions {
             Order = new List<QueryOrder> {
-                new QueryOrder (field: QueryOrder.FieldOptions.Created, asc: false)
+                new QueryOrder (field: QueryOrder.FieldOptions.Created, asc: true)
             }
         };
         try{
