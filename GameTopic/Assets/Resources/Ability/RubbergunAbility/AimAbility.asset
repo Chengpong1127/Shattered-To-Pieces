@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8182ab67623914c4e90b36c1ef4b01c9, type: 3}
   m_Name: AimAbility
   m_EditorClassIdentifier: 
-  AbilityName: 
+  AbilityName: Aim
   AbilityTags:
     AssetTag: {fileID: 0}
     CancelAbilitiesWithTags: []
