@@ -27,14 +27,20 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
         bool Active;
 
         BaseCoreComponent Body;
-
         Animator animator;
+
+        static ContactFilter2D filter = new();
+        List<Collider2D> collisionResult = new();
+        bool landing;
 
         public LegAbilityRightSpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner) {
             animator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
             var obj = SelfEntity as IBodyControlable ?? throw new System.ArgumentNullException("SelfEntity");
             Body = obj.body;
             Active = false;
+
+            filter.useTriggers = true;
+            filter.useLayerMask = false;
         }
         public override void CancelAbility() {
             Active = false;
@@ -46,24 +52,40 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
             return true;
         }
         protected override IEnumerator ActivateAbility() {
-            Debug.Assert(Body);
-            Debug.Assert(Body.Root);
-            Debug.Assert(Body.Root.BodyRigidbody);
-            while (Active) {
 
+            if (Body.BodyCollider.OverlapCollider(filter, collisionResult) != 0) {
+                collisionResult.ForEach(collider => {
+                    var obj = collider.gameObject.GetComponent<BaseCoreComponent>();
+                    if (obj == null || !obj.HasTheSameRootWith(Body)) { landing = true; }
+                });
+            }
+
+            if(Active && landing) {
+                animator.SetBool("Move", true);
+            }
+
+            while (Active && landing) {
                 Body.Root.BodyRigidbody.AddForce(
                     Body.BodyTransform.TransformDirection(Direction) * Speed
                 );
-                // Body.Root.BodyTransform.Translate(Direction* Speed * Time.fixedDeltaTime, Space.Self);
+
+                landing = false;
+                if (Body.BodyCollider.OverlapCollider(filter, collisionResult) != 0) {
+                    collisionResult.ForEach(collider => {
+                        var obj = collider.gameObject.GetComponent<BaseCoreComponent>();
+                        if (obj == null || !obj.HasTheSameRootWith(Body)) { landing = true; }
+                    });
+                }
                 yield return null;
             }
 
+            animator.SetBool("Move", false);
             yield return null;
         }
         protected override IEnumerator PreActivate() {
             Active = true;
+            landing = false;
             animator.SetFloat("Speed", Speed);
-            animator.SetBool("Move", true);
             yield return null;
         }
     }

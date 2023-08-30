@@ -54,7 +54,7 @@ public class JumpAbility : AbstractAbilityScriptableObject {
             if (Body.BodyCollider.OverlapCollider(filter, collisionResult) != 0) {
                 collisionResult.ForEach(collider => {
                     var obj = collider.gameObject.GetComponent<BaseCoreComponent>();
-                    if(obj == null || !obj.HasTheSameRootWith(Body)) { landing = true; return; }
+                    if(obj == null || !obj.HasTheSameRootWith(Body)) { landing = true; }
                 });
                 if (landing) {
                     Body.Root.BodyRigidbody.AddForce(
