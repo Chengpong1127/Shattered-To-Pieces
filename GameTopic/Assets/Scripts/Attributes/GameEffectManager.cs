@@ -10,8 +10,9 @@ public class GameEffectManager{
         this.StartListening(EventName.GameEffectManagerEvents.RequestGiveGameEffect, new Action<Entity, Entity, GameplayEffectScriptableObject>(ApplyGameplayEffect));
     }
     private void ModifyAttribute(Entity sender, Entity receiver, GameplayEffectModifier modifier){
-        var effect = ScriptableObject.CreateInstance<GameplayEffectScriptableObject>();
+        var effect = ResourceManager.Instance.LoadEmptyGameplayEffect();
         effect.gameplayEffect.Modifiers = new GameplayEffectModifier[]{modifier};
+        effect.gameplayEffect.DurationPolicy = EDurationPolicy.Instant;
         ApplyGameplayEffect(sender, receiver, effect);
     }
     private void ApplyGameplayEffect(Entity sender, Entity receiver, GameplayEffectScriptableObject gameplayEffect){

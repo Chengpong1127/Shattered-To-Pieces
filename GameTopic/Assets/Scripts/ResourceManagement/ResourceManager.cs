@@ -85,5 +85,14 @@ public class ResourceManager
         return effect;
     }
 
+    public GameplayEffectScriptableObject LoadEmptyGameplayEffect(){
+        var path = Path.Combine(GameplayEffectDir, "EmptyGameplayEffect");
+        var effect = Resources.Load<GameplayEffectScriptableObject>(path);
+        if(effect == null){
+            Debug.LogWarning("Cannot load gameplay effect: " + path);
+        }
+        return effect;
+    }
+
 
 }
