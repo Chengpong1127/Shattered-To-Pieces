@@ -3,27 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem.Authoring;
 using AbilitySystem;
-using DG.Tweening;
+using AbilitySystem.ModifierMagnitude;
 [CreateAssetMenu(fileName = "BatRotation", menuName = "Ability/BatRotation")]
 public class BatRotation : AbstractAbilityScriptableObject
 {
-    [SerializeField]
-    public float Angle;
-    [SerializeField]
-    public float DurationTime;
+    public GameplayEffectScriptableObject BatDamageEffect;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
-        var spec = new BatRotationSpec(this, owner);
+        var spec = new BatRotationSpec(this, owner)
+        {
+            DamageEffect = BatDamageEffect
+        };
         return spec;
     }
 
     public class BatRotationSpec : EntityAbilitySpec
     {
         private Animator entityAnimator;
+        private IEntityTriggerable entityTriggerable;
+        public GameplayEffectScriptableObject DamageEffect;
 
         public BatRotationSpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
             entityAnimator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
+            entityTriggerable = (SelfEntity as IEntityTriggerable) ?? throw new System.ArgumentNullException("The entity should have entity triggerable.");
         }
 
         public override void CancelAbility()
@@ -39,8 +42,14 @@ public class BatRotation : AbstractAbilityScriptableObject
         protected override IEnumerator ActivateAbility()
         {
             entityAnimator.Play("Swing");
+            entityTriggerable.OnTriggerEntity += TriggerAction;
             yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Swing"));
             yield return new WaitUntil(() => !entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Swing"));
+            entityTriggerable.OnTriggerEntity -= TriggerAction;
+        }
+
+        private void TriggerAction(Entity other){
+            this.TriggerEvent(EventName.GameEffectManagerEvents.RequestGiveGameEffect, SelfEntity, other, DamageEffect);
         }
 
         protected override IEnumerator PreActivate()

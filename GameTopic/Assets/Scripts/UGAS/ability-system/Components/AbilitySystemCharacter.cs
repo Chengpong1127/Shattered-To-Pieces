@@ -107,21 +107,21 @@ namespace AbilitySystem
                 var modifier = spec.GameplayEffect.gameplayEffect.Modifiers[i];
                 var magnitude = (modifier.ModifierMagnitude.CalculateMagnitude(spec) * modifier.Multiplier).GetValueOrDefault();
                 var attribute = modifier.Attribute;
-                this.AttributeSystem.GetAttributeValue(attribute, out var attributeValue);
-
-                switch (modifier.ModifierOperator)
-                {
-                    case EAttributeModifier.Add:
-                        attributeValue.BaseValue += magnitude;
-                        break;
-                    case EAttributeModifier.Multiply:
-                        attributeValue.BaseValue *= magnitude;
-                        break;
-                    case EAttributeModifier.Override:
-                        attributeValue.BaseValue = magnitude;
-                        break;
+                if (AttributeSystem.GetAttributeValue(attribute, out var attributeValue)){
+                    switch (modifier.ModifierOperator)
+                    {
+                        case EAttributeModifier.Add:
+                            attributeValue.BaseValue += magnitude;
+                            break;
+                        case EAttributeModifier.Multiply:
+                            attributeValue.BaseValue *= magnitude;
+                            break;
+                        case EAttributeModifier.Override:
+                            attributeValue.BaseValue = magnitude;
+                            break;
+                    }
+                    this.AttributeSystem.SetAttributeBaseValue(attribute, attributeValue.BaseValue);
                 }
-                this.AttributeSystem.SetAttributeBaseValue(attribute, attributeValue.BaseValue);
             }
         }
         void ApplyDurationalGameplayEffect(GameplayEffectSpec spec)

@@ -19,8 +19,8 @@ MonoBehaviour:
     Modifiers:
     - Attribute: {fileID: 11400000, guid: f50e3d22668b64514ace54053549b447, type: 2}
       ModifierOperator: 0
-      ModifierMagnitude: {fileID: 11400000, guid: dbd853b760d0646fd829f4b9c0e71daf, type: 2}
-      Multiplier: -20
+      ModifierMagnitude: {fileID: 11400000, guid: 090c1f5a10b524a9984237cd21431871, type: 2}
+      Multiplier: -1
     ConditionalGameplayEffects: []
   gameplayEffectTags:
     AssetTag: {fileID: 0}

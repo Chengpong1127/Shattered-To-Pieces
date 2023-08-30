@@ -29,6 +29,4 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  Angle: 0
-  DurationTime: 0
-  EaseMode: 0
+  BatDamage: {fileID: 11400000, guid: 014ad9d5295ea4323925c1089b96a863, type: 2}
