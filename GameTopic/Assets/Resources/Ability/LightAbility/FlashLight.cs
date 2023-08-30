@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Unity.Netcode;
 public class FlashLight : MonoBehaviour
 {
+    [SerializeField]
+    public GameObject canvas;
     public RawImage Image;
     public float FadeSpeed = 60f;
     public Action Clear;
@@ -15,6 +18,12 @@ public class FlashLight : MonoBehaviour
         this.gameObject.GetComponent<Collider2D>().enabled = false;
         this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
         monitor_Clear = this.transform.parent.GetChild(0).GetComponent<LightScript>().clear;
+        if (Camera.main.GetComponentInChildren<Canvas>() == null)
+        {
+            var s=Instantiate(canvas);
+            s.GetComponent<NetworkObject>()?.Spawn();
+            s.transform.parent = Camera.main.transform;
+        }
         Image =Camera.main.transform.GetChild(0).GetChild(0).GetComponent<RawImage>();
     }
     private IEnumerator Set()

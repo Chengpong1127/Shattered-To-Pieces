@@ -145,10 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aeefa62a8ddb0d44bd681c37ea8340e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttributeSystemComponent: {fileID: 0}
-  AbilitySystemCharacter: {fileID: 0}
-  InitializationAbilities: []
-  Abilities: []
+  canvas: {fileID: 5697735899157683136, guid: 4b7cda32902b66440824c6f87045aeb9, type: 3}
   Image: {fileID: 0}
   FadeSpeed: 1.5
   monitor_Clear: 0
