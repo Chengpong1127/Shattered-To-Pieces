@@ -35,6 +35,7 @@ public class TwoPlayerGameManager : MonoBehaviour {
         Debug.Log("Player all connected");
         yield return new WaitForSeconds(3);
         DistributePlayers();
+        new GameEffectManager();
 
     }
     void ClientStartGame(){

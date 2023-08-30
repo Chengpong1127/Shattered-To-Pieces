@@ -48,6 +48,9 @@ public class LobbyManager : MonoBehaviour
         QueryLobbiesOptions queryLobbiesOptions = new QueryLobbiesOptions {
             Order = new List<QueryOrder> {
                 new QueryOrder (field: QueryOrder.FieldOptions.Created, asc: true)
+            },
+            Filters = new List<QueryFilter>{
+                new QueryFilter(field: QueryFilter.FieldOptions.AvailableSlots, op: QueryFilter.OpOptions.GE, value: "1")
             }
         };
         try{

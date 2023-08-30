@@ -19,9 +19,7 @@ public class Bat : BaseCoreComponent, IRotatable, IEntityTriggerable
         var entity = other.GetComponent<Entity>();
         if (entity != null)
         {
-            if (entity is BaseCoreComponent coreComponent){
-                if (HasTheSameRootWith(coreComponent)) return;
-            }
+            if (entity is BaseCoreComponent coreComponent && HasTheSameRootWith(coreComponent)) return;
             OnTriggerEntity?.Invoke(entity);
         }
     }

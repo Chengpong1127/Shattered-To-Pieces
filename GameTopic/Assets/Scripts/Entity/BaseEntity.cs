@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using Unity.Netcode;
 
 public abstract class BaseEntity : MonoBehaviour, IUnit
 {
@@ -8,11 +8,16 @@ public abstract class BaseEntity : MonoBehaviour, IUnit
     public virtual Transform BodyTransform { get; protected set; }
     public virtual Rigidbody2D BodyRigidbody { get; protected set; }
     public virtual Collider2D BodyCollider { get; protected set; }
+    public virtual NetworkObject NetworkObject { get; protected set; }
     protected virtual void Awake()
     {
         BodyTransform = transform;
         BodyRigidbody = GetComponent<Rigidbody2D>();
         BodyCollider = GetComponent<Collider2D>();
+        NetworkObject = GetComponentInParent<NetworkObject>();
+        if (NetworkObject == null){
+            Debug.LogWarning($"An entity {gameObject.name} should have a NetworkObject component.");
+        }
     }
 
     protected virtual void Start()
@@ -25,7 +30,14 @@ public abstract class BaseEntity : MonoBehaviour, IUnit
             BodyRigidbody.AddForce(force, ForceMode2D.Impulse);
         }
     }
+
+    /// <summary>
+    /// This method will immediately destroy the BodyTransform of an entity.
+    /// </summary>
     public virtual void Die(){
-        Destroy(BodyTransform.gameObject);
+        NetworkObject?.Despawn();
+        if(NetworkObject == null){
+            Destroy(BodyTransform.gameObject);
+        }
     }
 }
