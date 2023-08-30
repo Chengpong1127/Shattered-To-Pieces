@@ -29,4 +29,4 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  BatDamage: {fileID: 11400000, guid: 014ad9d5295ea4323925c1089b96a863, type: 2}
+  BatDamageEffect: {fileID: 11400000, guid: ab4c43a8c1dba40848af589d6164b174, type: 2}
