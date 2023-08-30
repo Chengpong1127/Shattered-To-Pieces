@@ -144,7 +144,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
         bodyCollider ??= GetComponent<Collider2D>() ?? throw new ArgumentNullException(nameof(bodyCollider));
         connector ??= GetComponentInChildren<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
         coreComponent ??= GetComponentInChildren<ICoreComponent>() ?? throw new ArgumentNullException(nameof(coreComponent));
-        BodyAnimator ??= GetComponent<Animator>();
+        BodyAnimator ??= GetComponentInChildren<Animator>();
         coreComponent.OwnerGameComponent = this;
         
         DisconnectFromParent();
