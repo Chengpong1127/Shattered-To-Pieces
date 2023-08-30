@@ -65,9 +65,11 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
             }
 
             while (Active && landing) {
+                
+                // !Move
                 Body.Root.BodyRigidbody.AddForce(
                     Body.BodyTransform.TransformDirection(Direction) * Speed
-                );
+                ) ;
 
                 landing = false;
                 if (Body.BodyCollider.OverlapCollider(filter, collisionResult) != 0) {
