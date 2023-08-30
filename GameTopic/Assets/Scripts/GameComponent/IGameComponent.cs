@@ -31,6 +31,10 @@ public interface IGameComponent: ITreeNode, IUnit, IDraggable
     /// </summary>
     public void DisconnectFromParent();
     /// <summary>
+    /// Make all children disconnect from this component.
+    /// </summary>
+    public void DisconnectAllChildren();
+    /// <summary>
     /// Get the first available connection.
     /// </summary>
     /// <returns> The first available connection. </returns>

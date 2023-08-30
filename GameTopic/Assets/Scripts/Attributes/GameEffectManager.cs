@@ -16,7 +16,6 @@ public class GameEffectManager{
         ApplyGameplayEffect(sender, receiver, effect);
     }
     private void ApplyGameplayEffect(Entity sender, Entity receiver, GameplayEffectScriptableObject gameplayEffect){
-        Debug.Log("ApplyGameplayEffect");
         var spec = sender.AbilitySystemCharacter.MakeOutgoingSpec(gameplayEffect);
         receiver.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(spec);
     }

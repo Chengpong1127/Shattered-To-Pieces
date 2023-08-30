@@ -114,5 +114,13 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
         }else{
             Root.Repel(force);
         }
-    } 
+    }
+
+    public override void Die()
+    {
+        Debug.Log("Core component die: " + gameObject.name + "");
+        OwnerGameComponent.DisconnectFromParent();
+        OwnerGameComponent.DisconnectAllChildren();
+        base.Die();
+    }
 }

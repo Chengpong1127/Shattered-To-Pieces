@@ -176,4 +176,12 @@ public class GameComponent : MonoBehaviour, IGameComponent
         }
         return parent.GetRoot();
     }
+
+    public void DisconnectAllChildren()
+    {
+        while(Children.Count > 0){
+            var child = Children[0] as GameComponent;
+            child.DisconnectFromParent();
+        }
+    }
 }
