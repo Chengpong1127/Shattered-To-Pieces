@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControlRoom : BaseCoreComponent, ICoreComponent
+public class ControlRoom : BaseCoreComponent
 {
 
 }
