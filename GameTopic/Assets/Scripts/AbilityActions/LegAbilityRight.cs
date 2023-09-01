@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using UnityEngine.TextCore.Text;
 
 [CreateAssetMenu(fileName = "LegAbilityRight", menuName = "Ability/LegAbilityRight")]
 public class LegAbilityRight : AbstractAbilityScriptableObject {
@@ -27,20 +28,14 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
         bool Active;
 
         BaseCoreComponent Body;
+        ICharacterCtrl Character;
         Animator animator;
-
-        static ContactFilter2D filter = new();
-        List<Collider2D> collisionResult = new();
-        bool landing;
 
         public LegAbilityRightSpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner) {
             animator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
             var obj = SelfEntity as IBodyControlable ?? throw new System.ArgumentNullException("SelfEntity");
             Body = obj.body;
             Active = false;
-
-            filter.useTriggers = true;
-            filter.useLayerMask = false;
         }
         public override void CancelAbility() {
             Active = false;
@@ -52,32 +47,17 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
             return true;
         }
         protected override IEnumerator ActivateAbility() {
-
-            if (Body.BodyCollider.OverlapCollider(filter, collisionResult) != 0) {
-                collisionResult.ForEach(collider => {
-                    var obj = collider.gameObject.GetComponent<BaseCoreComponent>();
-                    if (obj == null || !obj.HasTheSameRootWith(Body)) { landing = true; }
-                });
-            }
-
-            if(Active && landing) {
+            if(Active && Character.Landing) {
                 animator.SetBool("Move", true);
             }
 
-            while (Active && landing) {
-                
-                // !Move
-                Body.Root.BodyRigidbody.AddForce(
-                    Body.BodyTransform.TransformDirection(Direction) * Speed
-                ) ;
+            while (Active && Character.Landing) {
 
-                landing = false;
-                if (Body.BodyCollider.OverlapCollider(filter, collisionResult) != 0) {
-                    collisionResult.ForEach(collider => {
-                        var obj = collider.gameObject.GetComponent<BaseCoreComponent>();
-                        if (obj == null || !obj.HasTheSameRootWith(Body)) { landing = true; }
-                    });
-                }
+                // !Move
+                // Body.Root.BodyRigidbody.AddForce(
+                //     Body.BodyTransform.TransformDirection(Direction) * Speed
+                // ) ;
+                Character.Move(Body.BodyTransform.TransformDirection(Direction) * Speed, ForceMode2D.Force);
                 yield return null;
             }
 
@@ -85,8 +65,9 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
             yield return null;
         }
         protected override IEnumerator PreActivate() {
-            Active = true;
-            landing = false;
+            Character = Body.Root as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
+
+            Active = Character != null;
             animator.SetFloat("Speed", Speed);
             yield return null;
         }

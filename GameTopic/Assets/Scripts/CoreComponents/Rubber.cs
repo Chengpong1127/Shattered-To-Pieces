@@ -28,10 +28,10 @@ public class Rubber :BaseCoreComponent
     }
     public IEnumerator AddDeBuffToObject(Entity entity)
     {
-        this.TriggerEvent(EventName.GameEffectManagerEvents.RequestGiveGameEffect, this as Entity, entity, SlowDown);
+        GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(this, entity, SlowDown);
         this.GetComponent<SpriteRenderer>().enabled=false;
         yield return new WaitForSeconds(3);
-        this.TriggerEvent(EventName.GameEffectManagerEvents.RequestGiveGameEffect, this as Entity, entity, UpSpeed);
+        GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(this, entity, UpSpeed);
         Destroy(this.gameObject);
         yield return null;
     }

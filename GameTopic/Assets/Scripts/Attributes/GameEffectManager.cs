@@ -4,10 +4,16 @@ using AttributeSystem.Authoring;
 using AbilitySystem.Authoring;
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem.LowLevel;
+
 public class GameEffectManager{
-    public GameEffectManager(){
-        this.StartListening(EventName.GameEffectManagerEvents.RequestModifyAttribute, new Action<Entity, Entity, GameplayEffectModifier>(ModifyAttribute));
-        this.StartListening(EventName.GameEffectManagerEvents.RequestGiveGameEffect, new Action<Entity, Entity, GameplayEffectScriptableObject>(ApplyGameplayEffect));
+    public void Enable(){
+        GameEvents.GameEffectManagerEvents.RequestModifyAttribute += ModifyAttribute;
+        GameEvents.GameEffectManagerEvents.RequestGiveGameEffect += ApplyGameplayEffect;
+    }
+    public void Disable(){
+        GameEvents.GameEffectManagerEvents.RequestModifyAttribute -= ModifyAttribute;
+        GameEvents.GameEffectManagerEvents.RequestGiveGameEffect -= ApplyGameplayEffect;
     }
     private void ModifyAttribute(Entity sender, Entity receiver, GameplayEffectModifier modifier){
         var effect = ResourceManager.Instance.LoadEmptyGameplayEffect();

@@ -65,7 +65,7 @@ public class WorkShop : MonoBehaviour
         }
 
         room = Iar;
-        this.StartListening(EventName.AbilityRebinderEvents.OnFinishRebinding, new Action<int, string>((_, str) => shopDispatcher.SetRebindKeyText(str)));
+        GameEvents.RebindEvents.OnFinishRebinding += (_, str) => shopDispatcher.SetRebindKeyText(str);
         //room.AbilityRebinder.OnFinishRebinding += shopDispatcher.SetRebindKeyText;
         room.AssemblySystemManager.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
         room.AssemblySystemManager.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
@@ -74,7 +74,7 @@ public class WorkShop : MonoBehaviour
         room.AssemblySystemManager.AfterGameComponentConnected += UpdateUserCostRemain;
 
         room.OnLoadedDevice += shopDispatcher.RefreshAllBoxAbility;
-        this.StartListening(EventName.AbilityManagerEvents.OnSetBinding, new Action<int, string>(RefreshSkillBoxDisplayText));
+        GameEvents.AbilityManagerEvents.OnSetBinding += RefreshSkillBoxDisplayText;
         //room.AbilityManager.OnSetBinding += RefreshSkillBoxDisplayText;
 
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Basic), GameComponentType.Basic);
