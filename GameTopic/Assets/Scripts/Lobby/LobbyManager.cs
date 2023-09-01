@@ -135,15 +135,15 @@ public class LobbyManager : MonoBehaviour
         };
         LobbyEventCallbacks.DataChanged += (data) => {
             Debug.Log("Data Changed");
-            this.TriggerEvent(EventName.LobbyEvents.OnLobbyDataChanged, ConvertLobbyData(CurrentLobby.Data));
+            GameEvents.LobbyEvents.OnLobbyDataChanged.Invoke(ConvertLobbyData(CurrentLobby.Data));
         };
         LobbyEventCallbacks.DataRemoved += (data) => {
             Debug.Log("Data Removed");
-            this.TriggerEvent(EventName.LobbyEvents.OnLobbyDataChanged, ConvertLobbyData(CurrentLobby.Data));
+            GameEvents.LobbyEvents.OnLobbyDataChanged.Invoke(ConvertLobbyData(CurrentLobby.Data));
         };
         LobbyEventCallbacks.DataAdded += (data) => {
             Debug.Log("Data Added");
-            this.TriggerEvent(EventName.LobbyEvents.OnLobbyDataChanged, ConvertLobbyData(CurrentLobby.Data));
+            GameEvents.LobbyEvents.OnLobbyDataChanged.Invoke(ConvertLobbyData(CurrentLobby.Data));
         };
         LobbyEventCallbacks.PlayerDataChanged += (data) => {
             Debug.Log("Player Data Changed");

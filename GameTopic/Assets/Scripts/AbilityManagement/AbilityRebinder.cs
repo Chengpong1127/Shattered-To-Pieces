@@ -44,7 +44,7 @@ public class AbilityRebinder : IAbilityRebinder
     private void RebindingComplete(int abilityID, InputActionRebindingExtensions.RebindingOperation operation){
         _abilityManager.SetBinding(abilityID, operation.action.bindings[0].effectivePath);
         OnFinishRebinding?.Invoke(operation.action.bindings[0].effectivePath);
-        this.TriggerEvent(EventName.AbilityRebinderEvents.OnFinishRebinding, abilityID, operation.action.bindings[0].effectivePath);
+        GameEvents.RebindEvents.OnFinishRebinding?.Invoke(abilityID, operation.action.bindings[0].effectivePath);
         if (actionEnabled) rebindingOperation.action.Enable();
         rebindingOperation.Dispose();
         rebindingOperation = null;

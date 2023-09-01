@@ -49,7 +49,7 @@ public class BatRotation : AbstractAbilityScriptableObject
         }
 
         private void TriggerAction(Entity other){
-            this.TriggerEvent(EventName.GameEffectManagerEvents.RequestGiveGameEffect, SelfEntity, other, DamageEffect);
+            GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(SelfEntity, other, DamageEffect);
         }
 
         protected override IEnumerator PreActivate()

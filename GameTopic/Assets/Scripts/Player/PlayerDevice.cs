@@ -43,8 +43,8 @@ public class PlayerDevice : NetworkBehaviour
             LoadDeviceServerRpc(info.ToJson());
             abilityActionMap = info.AbilityManagerInfo.GetAbilityInputActionMap();
             abilityActionMap.Enable();
-            this.StartListening(EventName.AbilityRunningEvents.OnLocalStartAbility, new Action<int>(StartAbility_ServerRPC));
-            this.StartListening(EventName.AbilityRunningEvents.OnLocalCancelAbility, new Action<int>(CancelAbility_ServerRPC));
+            GameEvents.AbilityRunnerEvents.OnLocalStartAbility += StartAbility_ServerRPC;
+            GameEvents.AbilityRunnerEvents.OnLocalCancelAbility += CancelAbility_ServerRPC;
         }
         
     }

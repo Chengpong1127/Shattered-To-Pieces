@@ -5,15 +5,18 @@ using UnityEngine.InputSystem;
 using System;
 using UnityEngine.EventSystems;
 
-public class DraggableMover: MonoBehaviour
+public class DraggableController: MonoBehaviour
 {
     public InputAction DragAction { get; private set; }
     public Camera MainCamera { get; private set; }
+    public event Action<IDraggable, Vector2> OnDragStart;
+    public event Action<IDraggable, Vector2> OnDragEnd;
+    public event Action<IDraggable, Vector2> OnScrollWhenDragging;
 
     public IDraggable DraggedComponent = null;
     private bool isDragging = false;
-    public static DraggableMover CreateInstance(GameObject where, InputAction dragAction, Camera mainCamera){
-        var instance = where.AddComponent<DraggableMover>();
+    public static DraggableController CreateInstance(GameObject where, InputAction dragAction, Camera mainCamera){
+        var instance = where.AddComponent<DraggableController>();
         instance.DragAction = dragAction ?? throw new ArgumentNullException(nameof(dragAction));
         instance.MainCamera = mainCamera;
         if (mainCamera == null)
@@ -32,7 +35,7 @@ public class DraggableMover: MonoBehaviour
             Debug.Assert(DraggedComponent != null, "draggedComponent is null");
             Vector2 mousePosition = Mouse.current.position.ReadValue();
             SetDraggablePosition(mousePosition);
-            this.TriggerEvent(EventName.DraggableMoverEvents.OnScrollWhenDragging, DraggedComponent ,Mouse.current.scroll.ReadValue());
+            OnScrollWhenDragging?.Invoke(DraggedComponent, Mouse.current.scroll.ReadValue());
         }
     }
     protected void OnEnable() {
@@ -52,7 +55,7 @@ public class DraggableMover: MonoBehaviour
         {
             isDragging = true;
             Vector2 worldPoint2D = new Vector2(worldPoint.x, worldPoint.y);
-            this.TriggerEvent(EventName.DraggableMoverEvents.OnDragStart, DraggedComponent, worldPoint2D);
+            OnDragStart?.Invoke(DraggedComponent, worldPoint2D);
         }
         
     }
@@ -66,7 +69,7 @@ public class DraggableMover: MonoBehaviour
         var mousePosition = Mouse.current.position.ReadValue();
         var targetPosition = MainCamera.ScreenToWorldPoint(mousePosition);
         Vector2 targetPosition2D = new(targetPosition.x, targetPosition.y);
-        this.TriggerEvent(EventName.DraggableMoverEvents.OnDragEnd, DraggedComponent, targetPosition2D);
+        OnDragEnd?.Invoke(DraggedComponent, targetPosition2D);
         DraggedComponent = null;
     }
 
