@@ -17,7 +17,7 @@ public class BatRotation : AbstractAbilityScriptableObject
         return spec;
     }
 
-    public class BatRotationSpec : EntityAbilitySpec
+    public class BatRotationSpec : RunnerAbilitySpec
     {
         private Animator entityAnimator;
         private IEntityTriggerable entityTriggerable;
@@ -41,6 +41,7 @@ public class BatRotation : AbstractAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
+            Runner.StartSingleAbility("Jump");;
             entityAnimator.Play("Swing");
             entityTriggerable.OnTriggerEntity += TriggerAction;
             yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Swing"));

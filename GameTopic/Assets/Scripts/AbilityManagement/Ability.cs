@@ -7,6 +7,7 @@ public class GameComponentAbility{
     /// The index of the ability in a core component.
     /// </summary>
     public int AbilityIndex;
+    public string AbilityName => AbilityScriptableObject.AbilityName;
 
     /// <summary>
     /// The game component that own this ability.
@@ -15,13 +16,13 @@ public class GameComponentAbility{
     public readonly ICoreComponent OwnerGameComponent;
 
     public AbstractAbilityScriptableObject AbilityScriptableObject;
-    public AbstractAbilitySpec AbilitySpec;
+    public RunnerAbilitySpec AbilitySpec;
 
-    public GameComponentAbility(int index, ICoreComponent owner, AbstractAbilityScriptableObject abilityScriptableObject, AbstractAbilitySpec abilitySpec){
+    public GameComponentAbility(int index, ICoreComponent owner, AbstractAbilityScriptableObject abilityScriptableObject, RunnerAbilitySpec abilitySpec){
         AbilityIndex = index;
-        OwnerGameComponent = owner;
-        AbilityScriptableObject = abilityScriptableObject;
-        AbilitySpec = abilitySpec;
+        OwnerGameComponent = owner ?? throw new ArgumentNullException(nameof(owner));
+        AbilityScriptableObject = abilityScriptableObject ?? throw new ArgumentNullException(nameof(abilityScriptableObject));
+        AbilitySpec = abilitySpec ?? throw new ArgumentNullException(nameof(abilitySpec));
     }
 
 

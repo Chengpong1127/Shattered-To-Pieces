@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem.Authoring;
+using System.Collections;
 
-public class AbilityInputEntry{
+public class AbilityInputEntry: IEnumerable<GameComponentAbility>{
     /// <summary>
     /// The path of the input, for example, the space of keyboard, the left mouse button, etc.
     /// </summary>
@@ -50,4 +51,13 @@ public class AbilityInputEntry{
         }
     }
 
+    public IEnumerator<GameComponentAbility> GetEnumerator()
+    {
+        return Abilities.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 }

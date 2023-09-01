@@ -3,7 +3,6 @@ using AbilitySystem.Authoring;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static MoveAbility;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UIElements;
 using DG.Tweening;
@@ -28,7 +27,7 @@ public class RotatorAbility : AbstractAbilityScriptableObject {
         return spec;
     }
 
-    public class RotatorAbilitySpec : EntityAbilitySpec {
+    public class RotatorAbilitySpec : RunnerAbilitySpec {
         public float angle;
         public float duration;
         public Transform RotationTransform;

@@ -90,8 +90,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     }
 
     private void SetEventHandler(){
-        GameEvents.AbilityRunnerEvents.OnLocalStartAbility += AbilityRunner.StartAbility;
-        GameEvents.AbilityRunnerEvents.OnLocalCancelAbility += AbilityRunner.CancelAbility;
+        GameEvents.AbilityRunnerEvents.OnLocalStartAbility += AbilityRunner.StartEntryAbility;
+        GameEvents.AbilityRunnerEvents.OnLocalCancelAbility += AbilityRunner.CancelEntryAbility;
     }
 
     private void UpdateSaveHandler(object _){

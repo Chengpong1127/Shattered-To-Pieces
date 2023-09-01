@@ -58,7 +58,7 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
             var abilitySpecs = GetAbilitySpecs();
             for (int i = 0; i < Abilities.Length; i++)
             {
-                gameComponentAbilities[i] = new GameComponentAbility(i, this, Abilities[i], abilitySpecs[i]);
+                gameComponentAbilities[i] = new GameComponentAbility(i, this, Abilities[i], abilitySpecs[i] as RunnerAbilitySpec);
             }
             return gameComponentAbilities;
         }

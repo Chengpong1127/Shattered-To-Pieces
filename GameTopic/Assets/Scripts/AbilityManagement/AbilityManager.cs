@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
-using AbilitySystem.Authoring;
 
-public class AbilityManager
+public class AbilityManager: IEnumerable<GameComponentAbility>
 {
     /// <summary>
     /// Triggered after the ability is set to an entry.
@@ -198,5 +197,15 @@ public class AbilityManager
                 entry.RemoveAbility(ability);
             }
         }
+    }
+
+    public IEnumerator<GameComponentAbility> GetEnumerator()
+    {
+        return AbilityInputEntries.SelectMany(x => x).GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

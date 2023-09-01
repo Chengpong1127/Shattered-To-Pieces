@@ -15,7 +15,7 @@ public class ChickenAttack : AbstractAbilityScriptableObject {
         return spec;
     }
 
-    public class ChickenAttackSpec : EntityAbilitySpec {
+    public class ChickenAttackSpec : RunnerAbilitySpec {
         public GameObject SummonPrefab;
 
         Animator entityAnimator;
