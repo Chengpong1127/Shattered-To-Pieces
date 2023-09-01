@@ -26,6 +26,7 @@ public class JumpAbility : AbstractAbilityScriptableObject {
         public float Power;
 
         BaseCoreComponent Body;
+        CharacterController Character;
         Animator animator;
 
         static ContactFilter2D filter = new();
@@ -56,11 +57,12 @@ public class JumpAbility : AbstractAbilityScriptableObject {
                     var obj = collider.gameObject.GetComponent<BaseCoreComponent>();
                     if(obj == null || !obj.HasTheSameRootWith(Body)) { landing = true; }
                 });
-                if (landing) {
-                    Body.Root.BodyRigidbody.AddForce(
-                        Body.BodyTransform.TransformDirection(Direction) * Power,
-                        ForceMode2D.Impulse
-                    );
+                if (landing && Character != null) {
+                    // Body.Root.BodyRigidbody.AddForce(
+                    //     Body.BodyTransform.TransformDirection(Direction) * Power,
+                    //     ForceMode2D.Impulse
+                    // );
+                    Character.Move(Body.BodyTransform.TransformDirection(Direction) * Power * Time.fixedDeltaTime);
                 }
             }
 
@@ -68,6 +70,8 @@ public class JumpAbility : AbstractAbilityScriptableObject {
         }
 
         protected override IEnumerator PreActivate() {
+            Character = (Body.Root as ICharacter)?.Character ?? throw new System.ArgumentNullException("Root entity has no CharacterController.");
+
             landing = false;
             yield return null;
         }

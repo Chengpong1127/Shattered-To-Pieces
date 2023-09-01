@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using UnityEngine.InputSystem.XR;
 
 [CreateAssetMenu(fileName = "LegAbilityRight", menuName = "Ability/LegAbilityRight")]
 public class LegAbilityRight : AbstractAbilityScriptableObject {
@@ -27,6 +28,7 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
         bool Active;
 
         BaseCoreComponent Body;
+        CharacterController Character;
         Animator animator;
 
         static ContactFilter2D filter = new();
@@ -65,11 +67,12 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
             }
 
             while (Active && landing) {
-                
+
                 // !Move
-                Body.Root.BodyRigidbody.AddForce(
-                    Body.BodyTransform.TransformDirection(Direction) * Speed
-                ) ;
+                // Body.Root.BodyRigidbody.AddForce(
+                //     Body.BodyTransform.TransformDirection(Direction) * Speed
+                // ) ;
+                Character.Move(Body.BodyTransform.TransformDirection(Direction) * Speed * Time.fixedDeltaTime);
 
                 landing = false;
                 if (Body.BodyCollider.OverlapCollider(filter, collisionResult) != 0) {
@@ -85,7 +88,9 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
             yield return null;
         }
         protected override IEnumerator PreActivate() {
-            Active = true;
+            Character = (Body.Root as ICharacter)?.Character ?? throw new System.ArgumentNullException("Root entity has no CharacterController.");
+
+            Active = (Character !=  null);
             landing = false;
             animator.SetFloat("Speed", Speed);
             yield return null;
