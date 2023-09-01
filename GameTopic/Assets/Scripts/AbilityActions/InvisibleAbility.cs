@@ -25,7 +25,7 @@ public class InvisibleAbility : AbstractAbilityScriptableObject
         return spec;
 
     }
-    protected class InvisibleAbilitySpec : EntityAbilitySpec
+    protected class InvisibleAbilitySpec : RunnerAbilitySpec
     {
         public Material m_default;
         public Material invisible;

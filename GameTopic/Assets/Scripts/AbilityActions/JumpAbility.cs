@@ -21,7 +21,7 @@ public class JumpAbility : AbstractAbilityScriptableObject {
         return spec;
     }
 
-    public class JunmpAbilitySpec : EntityAbilitySpec {
+    public class JunmpAbilitySpec : RunnerAbilitySpec {
         public Vector2 Direction;
         public float Power;
 

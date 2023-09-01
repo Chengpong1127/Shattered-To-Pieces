@@ -19,7 +19,7 @@ public class LightAbility : AbstractAbilityScriptableObject
         return spec;
 
     }
-    protected class LightAbilitySpec : EntityAbilitySpec
+    protected class LightAbilitySpec : RunnerAbilitySpec
     {
         public float DurationTime;
         public GameObject g_light;

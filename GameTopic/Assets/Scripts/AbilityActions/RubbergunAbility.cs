@@ -17,7 +17,7 @@ public class RubbergunAbility : AbstractAbilityScriptableObject
         return spec;
 
     }
-    protected class RubbergunAbilitySpec : EntityAbilitySpec
+    protected class RubbergunAbilitySpec : RunnerAbilitySpec
     {
 
         public RubbergunAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)

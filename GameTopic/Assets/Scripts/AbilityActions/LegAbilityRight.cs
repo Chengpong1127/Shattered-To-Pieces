@@ -22,7 +22,7 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
         return spec;
     }
 
-    public class LegAbilityRightSpec : EntityAbilitySpec {
+    public class LegAbilityRightSpec : RunnerAbilitySpec {
         public Vector3 Direction;
         public float Speed;
         bool Active;

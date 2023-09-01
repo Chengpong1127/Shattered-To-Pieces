@@ -14,7 +14,7 @@ public class ChainsawAttack : AbstractAbilityScriptableObject {
         return spec;
     }
 
-    public class ChainsawAttackSpec : EntityAbilitySpec {
+    public class ChainsawAttackSpec : RunnerAbilitySpec {
         public GameplayEffectScriptableObject DamageEffect;
 
         Animator entityAnimator;

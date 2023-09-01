@@ -23,13 +23,13 @@ public class PlayerDevice : NetworkBehaviour
     private void StartAbility_ServerRPC(int abilityNumber)
     {
         Debug.Log("StartAbility_ServerRPC: " + abilityNumber);
-        abilityRunner.StartAbility(abilityNumber);
+        abilityRunner.StartEntryAbility(abilityNumber);
     }
     [ServerRpc]
     private void CancelAbility_ServerRPC(int abilityNumber)
     {
         Debug.Log("CancelAbility_ServerRPC: " + abilityNumber);
-        abilityRunner.CancelAbility(abilityNumber);
+        abilityRunner.CancelEntryAbility(abilityNumber);
     }
     void Awake()
     {
