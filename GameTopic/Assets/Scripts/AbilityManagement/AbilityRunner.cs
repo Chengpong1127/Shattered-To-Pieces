@@ -12,23 +12,25 @@ public class AbilityRunner: MonoBehaviour, IAbilityRunner{
         abilityRunner.AbilityManager = abilityManager ?? throw new ArgumentNullException(nameof(abilityManager));
         return abilityRunner;
     }
-    public void StartSingleAbility(string abilityName){
+    public void StartSingleAbility(string abilityName, ICoreComponent specificOwner = null, bool all = false){
         foreach (var ability in AbilityManager){
             if (ability.AbilityName == abilityName){
+                if (specificOwner != null && ability.OwnerGameComponent != specificOwner) continue;
                 ability.AbilitySpec.Runner = this;
                 StartCoroutine(ability.AbilitySpec.TryActivateAbility());
-                return;
+                if (!all) return;
             }
         }
     }
     public void StartEntryAbility(int entryIndex){
         ActivateEntry(AbilityManager.AbilityInputEntries[entryIndex].Abilities);
     }
-    public void CancelSingleAbility(string abilityName){
+    public void CancelSingleAbility(string abilityName, ICoreComponent specificOwner = null, bool all = false){
         foreach (var ability in AbilityManager){
             if (ability.AbilityName == abilityName){
+                if (specificOwner != null && ability.OwnerGameComponent != specificOwner) continue;
                 ability.AbilitySpec.CancelAbility();
-                return;
+                if (!all) return;
             }
         }
     }
