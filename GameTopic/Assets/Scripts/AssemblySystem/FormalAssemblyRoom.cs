@@ -145,7 +145,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         AbilityManager.OnSetAbilityToEntry += _ => SaveCurrentDevice();
 
         OnLoadedDevice?.Invoke();
-        this.TriggerEvent(EventName.AssemblyRoomEvents.OnLoadedDevice);
+        GameEvents.AssemblyRoomEvents.OnLoadedDevice.Invoke();
         return ControlledDevice;
     }
 
@@ -172,7 +172,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         Debug.Assert(deviceInfo != null);
         ResourceManager.Instance.SaveLocalDeviceInfo(deviceInfo, CurrentLoadedDeviceID.ToString());
         OnSavedDevice?.Invoke();
-        this.TriggerEvent(EventName.AssemblyRoomEvents.OnSavedDevice);
+        GameEvents.AssemblyRoomEvents.OnSavedDevice.Invoke();
     }
     public void LoadDevice(int DeviceID){
         if (ControlledDevice?.RootGameComponent != null) UpdateSaveHandler(null);
@@ -196,7 +196,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
                 break;
         }
         OnSetRoomMode?.Invoke(mode);
-        this.TriggerEvent(EventName.AssemblyRoomEvents.OnSetRoomMode, mode);
+        GameEvents.AssemblyRoomEvents.OnSetRoomMode.Invoke(mode);
     }
     private void OnDestroy() {
         this.StopListening(EventName.AssemblySystemManagerEvents.OnGameComponentDraggedStart, new Action<IGameComponent>(UpdateSaveHandler));

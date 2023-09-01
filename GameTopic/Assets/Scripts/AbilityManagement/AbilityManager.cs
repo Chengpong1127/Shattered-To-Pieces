@@ -158,7 +158,7 @@ public class AbilityManager
             abilityInEntryStatus[removed] = false;
         }
         OnSetAbilityToEntry?.Invoke(ability);
-        this.TriggerEvent(EventName.AbilityManagerEvents.OnSetAbilityToEntry, ability);
+        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry.Invoke(ability);
     }
     /// <summary>
     /// Remove the ability from the input entry;

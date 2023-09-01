@@ -3,29 +3,6 @@
 
 public static class EventName
 {
-	/// <summary>
-	/// Events in AssemblyRoom
-	/// </summary>
-	public static class AssemblyRoomEvents
-	{
-		/// <summary>
-		/// Event for when the room mode is changed. 
-		/// Handler Type: Action<AssemblyRoomMode>
-		/// </summary>
-		public const string OnSetRoomMode = nameof(AssemblyRoomEvents) + nameof(OnSetRoomMode);
-
-		/// <summary>
-		/// Called when the device is loaded. 
-		/// Handler Type: Action
-		/// </summary>
-		public const string OnLoadedDevice = nameof(AssemblyRoomEvents) + nameof(OnLoadedDevice);
-
-		/// <summary>
-		/// Called when the device is saved. 
-		/// Handler Type: Action
-		/// </summary>
-		public const string OnSavedDevice = nameof(AssemblyRoomEvents) + nameof(OnSavedDevice);
-	}
 
 	public static class AbilityManagerEvents
 	{
@@ -57,12 +34,6 @@ public static class EventName
 		/// </summary>
 		public const string OnLocalCancelAbility = nameof(AbilityManagerEvents) + nameof(OnLocalCancelAbility);
 	}
-
-	public static class BuffEvents {
-		public static string AddBuff = nameof(BuffEvents) + nameof(AddBuff);
-		public static string RemoveBuff = nameof(BuffEvents) + nameof(RemoveBuff);
-        public static string OnTrigger(Entity target, string eventName) { return target.GetHashCode() + eventName; }
-    }
 
 	public static class DraggableMoverEvents
 	{
