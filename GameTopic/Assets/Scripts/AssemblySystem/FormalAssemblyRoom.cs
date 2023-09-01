@@ -68,6 +68,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     public int CurrentLoadedDeviceID { get; private set; } = 0;
     private PlayerInput playerInput;
     private InputActionMap AbilityInputActionMap;
+    private GameEffectManager gameEffectManager;
 
     #endregion
 
@@ -83,15 +84,14 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         AssemblySystemManager = AssemblySystemManager.CreateInstance(gameObject, GameComponentsUnitManager, playerInput.currentActionMap.FindAction("Drag"), playerInput.currentActionMap.FindAction("FlipComponent"), 45f);
 
         SetEventHandler();
-        new GameEffectManager();
+        gameEffectManager = new GameEffectManager();
+        gameEffectManager.Enable();
         
     }
 
     private void SetEventHandler(){
-        this.StartListening(EventName.AssemblySystemManagerEvents.OnGameComponentDraggedStart, new Action<IGameComponent>(UpdateSaveHandler));
-        this.StartListening(EventName.AssemblySystemManagerEvents.AfterGameComponentConnected, new Action<IGameComponent>(UpdateSaveHandler));
-        this.StartListening(EventName.AbilityRunningEvents.OnLocalStartAbility, new Action<int>(AbilityRunner.StartAbility));
-        this.StartListening(EventName.AbilityRunningEvents.OnLocalCancelAbility, new Action<int>(AbilityRunner.CancelAbility));
+        GameEvents.AbilityRunnerEvents.OnLocalStartAbility += AbilityRunner.StartAbility;
+        GameEvents.AbilityRunnerEvents.OnLocalCancelAbility += AbilityRunner.CancelAbility;
     }
 
     private void UpdateSaveHandler(object _){
@@ -189,18 +189,14 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     {
         switch(mode){
             case AssemblyRoomMode.ConnectionMode:
-                AssemblySystemManager.EnableAssemblyComponents();
+                AssemblySystemManager.enabled = true;
                 break;
             case AssemblyRoomMode.PlayMode:
-                AssemblySystemManager.DisableAssemblyComponents();
+                AssemblySystemManager.enabled = false;
                 break;
         }
         OnSetRoomMode?.Invoke(mode);
         GameEvents.AssemblyRoomEvents.OnSetRoomMode.Invoke(mode);
-    }
-    private void OnDestroy() {
-        this.StopListening(EventName.AssemblySystemManagerEvents.OnGameComponentDraggedStart, new Action<IGameComponent>(UpdateSaveHandler));
-        this.StopListening(EventName.AssemblySystemManagerEvents.AfterGameComponentConnected, new Action<IGameComponent>(UpdateSaveHandler));
     }
     void OnApplicationQuit()
     {

@@ -21,7 +21,7 @@ public class Egg : BaseCoreComponent, ICreated {
 
         hit = true;
         var entity = hitComponent as Entity;
-        this.TriggerEvent(EventName.GameEffectManagerEvents.RequestGiveGameEffect, Owner, entity, DamageEffect);
+        GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(Owner, entity, DamageEffect);
         Destroy(gameObject.transform.root.gameObject);
     }
 }

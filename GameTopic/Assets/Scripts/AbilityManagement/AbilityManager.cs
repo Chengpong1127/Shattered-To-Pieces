@@ -137,7 +137,7 @@ public class AbilityManager
     public void SetBinding(int entryID, string path){
         AbilityInputEntries[entryID].SetInputPath(path);
         OnSetBinding?.Invoke(entryID, path);
-        this.TriggerEvent(EventName.AbilityManagerEvents.OnSetBinding, entryID, path);
+        GameEvents.AbilityManagerEvents.OnSetBinding.Invoke(entryID, path);
     }
     /// <summary>
     /// Assign an ability to the input entry.
@@ -172,7 +172,7 @@ public class AbilityManager
         }
         abilityInEntryStatus[ability] = false;
         OnSetAbilityOutOfEntry?.Invoke(ability);
-        this.TriggerEvent(EventName.AbilityManagerEvents.OnSetAbilityOutOfEntry, ability);
+        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry.Invoke(ability);
     }
 
     /// <summary>

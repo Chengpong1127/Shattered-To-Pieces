@@ -32,7 +32,7 @@ public static class GameEvents{
         /// <summary>
         /// Triggered after setting binding. 
         /// </summary>
-        public static Action<int, GameComponentAbility> OnSetBinding = delegate { };
+        public static Action<int, string> OnSetBinding = delegate { };
     }
 
     public static class AbilityRunnerEvents{
@@ -64,8 +64,9 @@ public static class GameEvents{
     public static class RebindEvents{
         /// <summary>
         /// Triggered after a key is rebind.
+        /// Parameters: (index, path)
         /// </summary>
-        public static Action<string> OnFinishRebinding = delegate { };
+        public static Action<int, string> OnFinishRebinding = delegate { };
     }
 
     public static class GameEffectManagerEvents{
