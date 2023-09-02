@@ -27,7 +27,7 @@ public class LobbyManager
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
         SelfPlayer = new Player(AuthenticationService.Instance.PlayerId);
     }
-    public async Task CreateLobby(string lobbyName, int maxPlayers, CreateLobbyOptions options = null, bool createRelay = false){
+    public async Task CreateLobby(string lobbyName, int maxPlayers, CreateLobbyOptions options = null, bool createRelay = true){
         var createLobbyOptions = options ?? new CreateLobbyOptions(){
             IsPrivate = false,
             IsLocked = false,
@@ -69,7 +69,7 @@ public class LobbyManager
         
     }
 
-    public async Task JoinLobby(Lobby lobby, bool joinRelay = false){
+    public async Task JoinLobby(Lobby lobby, bool joinRelay = true){
         if (CurrentLobby != null)
         {
             Debug.Log("Already Joined Lobby");

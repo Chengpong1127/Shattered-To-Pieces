@@ -3,19 +3,20 @@ using UnityEngine;
 using System.Collections.Generic;
 public class PlayerSpawner{
     private GameObject playerPrefab;
-    public Dictionary<ulong, GameObject> Players = new();
     public PlayerSpawner(){
         playerPrefab = ResourceManager.Instance.LoadPlayerObject();
     }
 
 
-    public void SpawnAllPlayers()
+    public Dictionary<ulong, IPlayer> SpawnAllPlayers()
     {
+        Dictionary<ulong, IPlayer> Players = new();
         foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
         {
             var player = SpawnPlayer(client.ClientId);
-            Players.Add(client.ClientId, player);
+            Players.Add(client.ClientId, player.GetComponent<IPlayer>());
         }
+        return Players;
     }
 
     private GameObject SpawnPlayer(ulong clientId)

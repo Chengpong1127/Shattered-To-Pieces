@@ -5,7 +5,7 @@ using UnityEngine;
 using System;
 
 public class ConnectionManager : MonoBehaviour {
-    public LobbyManager lobbyManager;
+    private LobbyManager lobbyManager;
     public event Action OnAllPlayerConnected;
     public int AllPlayerCount;
     async void Start()
@@ -19,9 +19,9 @@ public class ConnectionManager : MonoBehaviour {
 
         var lobby = await lobbyManager.GetTheLastestLobby();
         if(lobby != null){
-            await lobbyManager.JoinLobby(lobby, true);
+            await lobbyManager.JoinLobby(lobby);
         }else{
-            await lobbyManager.CreateLobby("my lobby", AllPlayerCount, createRelay: true);
+            await lobbyManager.CreateLobby("my lobby", AllPlayerCount);
             StartCoroutine(WaitForAllConnection());
         }
     }
