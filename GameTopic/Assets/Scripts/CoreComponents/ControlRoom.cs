@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
     public bool Landing { get; private set; }
-    bool Pushing;
+    int Pushing;
     int Moving;
 
     Vector2 replaceVec = Vector2.zero;
@@ -13,8 +13,7 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
     List<Collider2D> collisionResult = new();
     protected override void Awake() {
         base.Awake();
-
-        // filter.useLayerMask = false;
+        Bondage();
     }
 
     private void Update() {
@@ -22,30 +21,37 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
         if (LandCheckCollider.OverlapCollider(filter, collisionResult) != 0) {
             collisionResult.ForEach(collider => {
                 var obj = collider.gameObject.GetComponent<BaseCoreComponent>();
-                if (obj == null || !obj.HasTheSameRootWith(this)) { Landing = true; } // Need a Tag to confirm landable Object
+                if (obj == null || !obj.HasTheSameRootWith(this)) {
+                    Landing = true;
+                    Pushing--;
+                } // Need a Tag to confirm landable Object
             });
         }
 
-        if (Moving <= 0 && !Pushing && Landing) {
+        if (Moving <= 0 && Pushing <= 0 && Landing) {
             Bondage();
         }
         Moving--;
     }
 
     public void Move(Vector3 Motion, ForceMode2D Mode) {
-        if(Pushing) { return; }
+        if(Pushing > 0) { return; }
         Moving = 20;
-        this.BodyRigidbody.AddForce(Motion, Mode);
+        // this.BodyRigidbody.AddForce(Motion, Mode);
+        replaceVec = Motion;
+        replaceVec.y += BodyRigidbody.velocity.y;
+        BodyRigidbody.velocity = replaceVec;
     }
     public void Push(Vector3 Motion) {
         Bondage();
-        Pushing = true;
+        Pushing = 20;
         this.BodyRigidbody.AddForce(Motion, ForceMode2D.Impulse);
     }
     public void Bondage() {
-        Pushing = false;
+        Pushing = 0;
         Moving = 0;
         replaceVec.y = this.BodyRigidbody.velocity.y;
+        replaceVec.x = 0;
         this.BodyRigidbody.velocity = replaceVec;
         this.BodyRigidbody.angularVelocity = 0;
     }
