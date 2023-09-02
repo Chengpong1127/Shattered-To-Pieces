@@ -34,7 +34,10 @@ public class AssemblySystemManager : MonoBehaviour
     }
     void OnEnable()
     {
-        DraggableController.enabled = true;
+        if (DraggableController != null)
+        {
+            DraggableController.enabled = true;
+        }
     }
     public void DisableAssemblyComponents(){
         DraggableController.enabled = false;

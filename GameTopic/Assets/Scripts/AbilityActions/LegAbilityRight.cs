@@ -30,6 +30,7 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
         BaseCoreComponent Body;
         ICharacterCtrl Character;
         Animator animator;
+        bool addConfirm = false;
 
         public LegAbilityRightSpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner) {
             animator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
@@ -39,7 +40,6 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
         }
         public override void CancelAbility() {
             Active = false;
-            animator.SetBool("Move", false);
             return;
         }
 
@@ -49,26 +49,28 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
         protected override IEnumerator ActivateAbility() {
             if(Active && Character.Landing) {
                 animator.SetBool("Move", true);
+                animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") + 1);
+                addConfirm = true;
             }
 
             while (Active && Character.Landing) {
-
-                // !Move
-                // Body.Root.BodyRigidbody.AddForce(
-                //     Body.BodyTransform.TransformDirection(Direction) * Speed
-                // ) ;
                 Character.Move(Body.BodyTransform.TransformDirection(Direction) * Speed, ForceMode2D.Force);
                 yield return null;
             }
 
-            animator.SetBool("Move", false);
+
+            if (addConfirm) {
+                animator.SetBool("Move", false);
+                animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") - 1);
+            }
             yield return null;
         }
         protected override IEnumerator PreActivate() {
             Character = Body.Root as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
 
             Active = Character != null;
-            animator.SetFloat("Speed", Speed);
+            addConfirm = false;
+            animator.SetFloat("Speed", Speed / 2);
             yield return null;
         }
     }
