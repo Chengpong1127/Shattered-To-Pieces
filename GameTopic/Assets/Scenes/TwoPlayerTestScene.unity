@@ -581,6 +581,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectionManager: {fileID: 1443777350}
+  SpawnPoints:
+  - {fileID: 1720327777}
+  - {fileID: 1462674786}
 --- !u!1 &1462674785
 GameObject:
   m_ObjectHideFlags: 0

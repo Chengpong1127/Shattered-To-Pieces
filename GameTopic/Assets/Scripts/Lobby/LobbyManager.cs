@@ -69,11 +69,11 @@ public class LobbyManager
         
     }
 
-    public async Task JoinLobby(Lobby lobby, bool joinRelay = true){
+    public async Task<bool> JoinLobby(Lobby lobby, bool joinRelay = true){
         if (CurrentLobby != null)
         {
             Debug.Log("Already Joined Lobby");
-            return;
+            return false;
         }
         JoinLobbyByIdOptions quickJoinLobbyOptions = new JoinLobbyByIdOptions { Player = SelfPlayer };
         CurrentLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, quickJoinLobbyOptions);
@@ -82,28 +82,39 @@ public class LobbyManager
 
         if (joinRelay)
         {
-            string relayCode = GetLobbyRelayCode();
-            await JoinRelay(relayCode);
-            NetworkManager.Singleton.StartClient();
+            if (TryGetLobbyRelayCode(out string relayCode))
+            {
+                await JoinRelay(relayCode);
+                NetworkManager.Singleton.StartClient();
+            }
+            else
+            {
+                Debug.Log("Lobby does not have relay code");
+                await LobbyService.Instance.RemovePlayerAsync(CurrentLobby.Id, SelfPlayer.Id);
+                CurrentLobby = null;
+                return false;
+            }
         }
+        return true;
     }
-    public string GetLobbyRelayCode(){
+    private bool TryGetLobbyRelayCode(out string relayCode){
         if (CurrentLobby == null)
         {
-            Debug.Log("Not Joined Lobby");
-            return null;
+            relayCode = null;
+            return false;
         }
         if (CurrentLobby.Data == null)
         {
-            Debug.Log("No Data in Lobby");
-            return null;
+            relayCode = null;
+            return false;
         }
-        if (!CurrentLobby.Data.TryGetValue("RelayCode", out var relayCode))
+        if (!CurrentLobby.Data.ContainsKey("RelayCode"))
         {
-            Debug.Log("No Relay Code in Lobby");
-            return null;
+            relayCode = null;
+            return false;
         }
-        return relayCode.Value;
+        relayCode = CurrentLobby.Data["RelayCode"].Value;
+        return true;
     }
 
     private async Task<string> CreateRelay(int maxConnections){

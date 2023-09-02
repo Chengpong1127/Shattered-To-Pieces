@@ -19,11 +19,14 @@ public class ConnectionManager : MonoBehaviour {
 
         var lobby = await lobbyManager.GetTheLastestLobby();
         if(lobby != null){
-            await lobbyManager.JoinLobby(lobby);
-        }else{
-            await lobbyManager.CreateLobby("my lobby", AllPlayerCount);
-            StartCoroutine(WaitForAllConnection());
+            bool success = await lobbyManager.JoinLobby(lobby);
+            if(success){
+                Debug.Log("Joined Lobby");
+                return;
+            }
         }
+        await lobbyManager.CreateLobby("my lobby", AllPlayerCount);
+        StartCoroutine(WaitForAllConnection());
     }
 
     IEnumerator WaitForAllConnection(){
