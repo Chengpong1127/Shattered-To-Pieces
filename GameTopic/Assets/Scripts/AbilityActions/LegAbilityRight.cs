@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using UnityEngine.TextCore.Text;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "LegAbilityRight", menuName = "Ability/LegAbilityRight")]
 public class LegAbilityRight : AbstractAbilityScriptableObject {
@@ -47,23 +48,44 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
             return true;
         }
         protected override IEnumerator ActivateAbility() {
-            if(Active && Character.Landing) {
-                animator.SetBool("Move", true);
-                animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") + 1);
-                addConfirm = true;
-            }
 
-            while (Active && Character.Landing) {
-                Character.Move(Body.BodyTransform.TransformDirection(Direction) * Speed, ForceMode2D.Force);
+            while(Active) {
+                if (Character.Landing) {
+                    animator.SetBool("Move", true);
+                    animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") + 1);
+                    addConfirm = true;
+                }
+                while (Active && Character.Landing) {
+                    Character.Move(Body.BodyTransform.TransformDirection(Direction) * Speed, ForceMode2D.Force);
+                    yield return null;
+                }
+
+                if(addConfirm) {
+                    animator.SetBool("Move", false);
+                    animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") - 1);
+                    addConfirm = false;
+                }
                 yield return null;
             }
 
 
-            if (addConfirm) {
-                animator.SetBool("Move", false);
-                animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") - 1);
-            }
-            yield return null;
+            // if(Active && Character.Landing) {
+            //     animator.SetBool("Move", true);
+            //     animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") + 1);
+            //     addConfirm = true;
+            // }
+            // 
+            // while (Active && Character.Landing) {
+            //     Character.Move(Body.BodyTransform.TransformDirection(Direction) * Speed, ForceMode2D.Force);
+            //     yield return null;
+            // }
+            // 
+            // 
+            // if (addConfirm) {
+            //     animator.SetBool("Move", false);
+            //     animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") - 1);
+            // }
+            // yield return null;
         }
         protected override IEnumerator PreActivate() {
             Character = Body.Root as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
