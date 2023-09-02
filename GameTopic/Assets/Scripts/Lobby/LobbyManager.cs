@@ -14,14 +14,11 @@ using Unity.Networking.Transport.Relay;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 
-public class LobbyManager : MonoBehaviour
+public class LobbyManager
 {
     public Lobby CurrentLobby;
     public Player SelfPlayer;
     public Allocation Allocation;
-    void Awake()
-    {
-    }
     public async Task SignIn(){
         await UnityServices.InitializeAsync();
         AuthenticationService.Instance.SignedIn += () => {
@@ -30,20 +27,24 @@ public class LobbyManager : MonoBehaviour
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
         SelfPlayer = new Player(AuthenticationService.Instance.PlayerId);
     }
-    public async Task CreateLobby(string lobbyName, int maxPlayers){
-        CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions { Player = SelfPlayer };
+    public async Task CreateLobby(string lobbyName, int maxPlayers, CreateLobbyOptions options = null, bool createRelay = false){
+        var createLobbyOptions = options ?? new CreateLobbyOptions(){
+            IsPrivate = false,
+            IsLocked = false,
+            Player = SelfPlayer};
         CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
         BindLobbyEvents(CurrentLobby.Id);
         Debug.Log("Lobby Created with Lobby ID: " + CurrentLobby.Id);
-    }
-    public async void ListAllLobbies(){
-        var responce = await LobbyService.Instance.QueryLobbiesAsync();
-        Debug.Log("Lobby Count " + responce.Results.Count);
-        foreach (var lobby in responce.Results)
+
+        if (createRelay)
         {
-            Debug.Log("Lobby Name: " + lobby.Name + " Lobby Code: " + lobby.LobbyCode);
+            string relayCode = await CreateRelay(maxPlayers);
+            Debug.Log("Relay Code: " + relayCode);
+            await AddRelayCodeAsync(relayCode);
+            NetworkManager.Singleton.StartHost();
         }
     }
+
     public async Task<Lobby> GetTheLastestLobby(){
         QueryLobbiesOptions queryLobbiesOptions = new QueryLobbiesOptions {
             Order = new List<QueryOrder> {
@@ -68,7 +69,7 @@ public class LobbyManager : MonoBehaviour
         
     }
 
-    public async Task JoinLobby(Lobby lobby){
+    public async Task JoinLobby(Lobby lobby, bool joinRelay = false){
         if (CurrentLobby != null)
         {
             Debug.Log("Already Joined Lobby");
@@ -78,6 +79,13 @@ public class LobbyManager : MonoBehaviour
         CurrentLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, quickJoinLobbyOptions);
         BindLobbyEvents(CurrentLobby.Id);
         Debug.Log("Joined new lobby with ID: " + CurrentLobby.Id);
+
+        if (joinRelay)
+        {
+            string relayCode = GetLobbyRelayCode();
+            await JoinRelay(relayCode);
+            NetworkManager.Singleton.StartClient();
+        }
     }
     public string GetLobbyRelayCode(){
         if (CurrentLobby == null)
@@ -90,7 +98,7 @@ public class LobbyManager : MonoBehaviour
             Debug.Log("No Data in Lobby");
             return null;
         }
-        if (!CurrentLobby.Data.TryGetValue("relayCode", out var relayCode))
+        if (!CurrentLobby.Data.TryGetValue("RelayCode", out var relayCode))
         {
             Debug.Log("No Relay Code in Lobby");
             return null;
@@ -98,28 +106,20 @@ public class LobbyManager : MonoBehaviour
         return relayCode.Value;
     }
 
-    public async Task<string> CreateRelay(int maxConnections, bool startHost = false){
+    private async Task<string> CreateRelay(int maxConnections){
         Debug.Log("Creating Relay");
         Allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
         var joinCode = await RelayService.Instance.GetJoinCodeAsync(Allocation.AllocationId);
         RelayServerData data = new RelayServerData(Allocation, "dtls");
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(data);
-        if (startHost)
-        {
-            NetworkManager.Singleton.StartHost();
-        }
         return joinCode;
     }
-    public async Task JoinRelay(string joinCode, bool startClient = false){
+    private async Task JoinRelay(string joinCode){
         if (NetworkManager.Singleton.IsHost) return;
         Debug.Log("Joining Relay with code: " + joinCode);
         JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
         RelayServerData data = new RelayServerData(allocation, "dtls");
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(data);
-        if (startClient)
-        {
-            NetworkManager.Singleton.StartClient();
-        }
     }
 
     private void BindLobbyEvents(string lobbyID){
@@ -174,12 +174,12 @@ public class LobbyManager : MonoBehaviour
         return result;
     }
 
-    public async Task AddRelayCodeAsync(string relayCode)
+    private async Task AddRelayCodeAsync(string relayCode)
     {
-        await UpdateLobbyDataAsync("relayCode", relayCode);
+        await UpdateLobbyDataAsync("RelayCode", relayCode);
     }
 
-    public async Task UpdateLobbyDataAsync(string key, string value, bool isPrivate = false)
+    private async Task UpdateLobbyDataAsync(string key, string value, bool isPrivate = false)
     {
         if (CurrentLobby == null)
             return;
@@ -191,7 +191,7 @@ public class LobbyManager : MonoBehaviour
         CurrentLobby = await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, updateOptions);
     }
 
-    public async Task UpdateSelfPlayerDataAsync(string key, string value, bool isPrivate = false)
+    private async Task UpdateSelfPlayerDataAsync(string key, string value, bool isPrivate = false)
     {
         if (CurrentLobby == null)
             return;

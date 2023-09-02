@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefa8972f262a411ebb02dd7541aa2b0, type: 3}
   m_Name: BatRotation
   m_EditorClassIdentifier: 
-  AbilityName: 
+  AbilityName: BatSwing
   AbilityTags:
     AssetTag: {fileID: 0}
     CancelAbilitiesWithTags: []

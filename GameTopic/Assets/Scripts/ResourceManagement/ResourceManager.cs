@@ -94,5 +94,14 @@ public class ResourceManager
         return effect;
     }
 
+    public GameObject LoadPlayerObject(){
+        var path = Path.Combine(PrefabPath, "Player");
+        var player = Resources.Load<GameObject>(path);
+        if(player == null){
+            Debug.LogWarning("Cannot load player object: " + path);
+        }
+        return player;
+    }
+
 
 }

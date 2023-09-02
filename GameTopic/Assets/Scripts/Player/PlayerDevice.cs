@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using UnityEngine.InputSystem;
 using System;
 
-public class PlayerDevice : NetworkBehaviour
+public class PlayerDevice : NetworkBehaviour, IPlayer
 {
     public Device SelfDevice { get; private set; }
     public IGameComponentFactory GameComponentFactory { get; private set; }
