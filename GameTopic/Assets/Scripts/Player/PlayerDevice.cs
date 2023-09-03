@@ -11,11 +11,10 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     public Device SelfDevice { get; private set; }
     public IGameComponentFactory GameComponentFactory { get; private set; }
 
-    public Transform TracedTransform => SelfDevice.RootGameComponent.BodyTransform;
+    
 
     private AbilityRunner abilityRunner;
     private InputActionMap abilityActionMap;
-    private Transform initTransform;
     public bool IsLoaded => SelfDevice != null;
     [ServerRpc]
     private void LoadDeviceServerRpc(string json)
@@ -23,10 +22,6 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
         SelfDevice = new Device(GameComponentFactory);
         SelfDevice.Load(DeviceInfo.CreateFromJson(json));
         abilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager);
-        if (initTransform != null)
-        {
-            SetPlayerInitPoint(initTransform);
-        }
     }
     [ServerRpc]
     private void StartAbility_ServerRPC(int abilityNumber)
@@ -59,15 +54,22 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
         return ResourceManager.Instance.LoadLocalDeviceInfo("0") ?? ResourceManager.Instance.LoadDefaultDeviceInfo();
     }
 
-    public void SetPlayerInitPoint(Transform transform)
+    public void SetPlayerPoint(Transform transform)
     {
-        if (IsLoaded)
-        {
-            SelfDevice.RootGameComponent.BodyTransform.SetPositionAndRotation(transform.position, transform.rotation);
-        }
-        else
-        {
-            initTransform = transform;
-        }
+        LoadCheck();
+        SelfDevice.RootGameComponent.BodyTransform.SetPositionAndRotation(transform.position, transform.rotation);
+    }
+
+    public Transform GetTracedTransform(){
+        throw new NotImplementedException();
+    }
+    [ServerRpc]
+    private void GetRootObjectID(){
+        LoadCheck();
+        var rootObjectID = SelfDevice.RootGameComponent.BodyTransform.GetComponent<NetworkObject>().NetworkObjectId;
+        
+    }
+    private void LoadCheck(){
+        if (!IsLoaded) throw new InvalidOperationException("The device is not loaded");
     }
 }

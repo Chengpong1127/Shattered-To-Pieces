@@ -533,6 +533,8 @@ GameObject:
   - component: {fileID: 1443777349}
   - component: {fileID: 1443777350}
   - component: {fileID: 1443777351}
+  - component: {fileID: 1443777353}
+  - component: {fileID: 1443777354}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -584,6 +586,40 @@ MonoBehaviour:
   SpawnPoints:
   - {fileID: 1720327777}
   - {fileID: 1462674786}
+  localPlayerManager: {fileID: 1443777353}
+--- !u!114 &1443777353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443777347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ec7efa627bc44828963d663f35303e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VirtualCamera: {fileID: 1957124926}
+--- !u!114 &1443777354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443777347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 269866648
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &1462674785
 GameObject:
   m_ObjectHideFlags: 0

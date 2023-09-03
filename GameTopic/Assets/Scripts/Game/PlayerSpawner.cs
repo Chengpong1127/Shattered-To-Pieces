@@ -22,7 +22,7 @@ public class PlayerSpawner{
     private GameObject SpawnPlayer(ulong clientId)
     {
         var player = GameObject.Instantiate(playerPrefab);
-        player.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+        player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
         return player;
     }
 }

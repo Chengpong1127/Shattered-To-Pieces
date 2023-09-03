@@ -126,7 +126,6 @@ public class LobbyManager
         return joinCode;
     }
     private async Task JoinRelay(string joinCode){
-        if (NetworkManager.Singleton.IsHost) return;
         Debug.Log("Joining Relay with code: " + joinCode);
         JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
         RelayServerData data = new RelayServerData(allocation, "dtls");
@@ -172,7 +171,7 @@ public class LobbyManager
             Debug.Log("Kicked From Lobby");
         };
         LobbyEventCallbacks.LobbyEventConnectionStateChanged += (state) => {
-            Debug.Log("Lobby Event Connection State Changed " + state);
+            Debug.Log("Lobby Event Connection State Changed: " + state);
         };
         LobbyService.Instance.SubscribeToLobbyEventsAsync(lobbyID, LobbyEventCallbacks);
     }
