@@ -2,6 +2,7 @@ using Unity.Netcode;
 using Cinemachine;
 using UnityEngine;
 using System.Collections;
+using Cysharp.Threading.Tasks;
 
 public class LocalPlayerManager : NetworkBehaviour
 {
@@ -14,13 +15,17 @@ public class LocalPlayerManager : NetworkBehaviour
         if(Player == null){
             SetPlayer();
         }
-        StartCoroutine(WaitForLoadedAndSetCamera());
+        SetCamera();
 
     }
 
-    IEnumerator WaitForLoadedAndSetCamera(){
-        yield return new WaitUntil(() => Player.IsLoaded);
+    private async void SetCamera(){
+        await WaitForLoaded();
         VirtualCamera.Follow = Player.GetTracedTransform();
+    }
+
+    private async UniTask WaitForLoaded(){
+        await UniTask.WaitUntil(() => Player.IsLoaded);
     }
 
     private void SetPlayer(){

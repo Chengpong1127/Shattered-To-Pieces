@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using System;
+using Cysharp.Threading.Tasks;
 
 public class ConnectionManager : MonoBehaviour {
     private LobbyManager lobbyManager;
@@ -26,11 +27,11 @@ public class ConnectionManager : MonoBehaviour {
             }
         }
         await lobbyManager.CreateLobby("my lobby", AllPlayerCount);
-        StartCoroutine(WaitForAllConnection());
+        await WaitForAllConnection();
     }
 
-    IEnumerator WaitForAllConnection(){
-        yield return new WaitUntil(() => NetworkManager.Singleton.ConnectedClientsList.Count == AllPlayerCount);
+    private async UniTask WaitForAllConnection(){
+        await UniTask.WaitUntil(() => NetworkManager.Singleton.ConnectedClientsList.Count == AllPlayerCount);
         OnAllPlayerConnected?.Invoke();
         Debug.Log("All Player Connected");
     }
