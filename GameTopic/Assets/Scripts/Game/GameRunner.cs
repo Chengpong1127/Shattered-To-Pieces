@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections;
 using Cysharp.Threading.Tasks;
 
-public class TwoPlayerRoomRunner: MonoBehaviour{
+public class GameRunner: MonoBehaviour{
     public ConnectionManager connectionManager;
     public Transform[] SpawnPoints;
     private Dictionary<ulong, IPlayer> Players;
