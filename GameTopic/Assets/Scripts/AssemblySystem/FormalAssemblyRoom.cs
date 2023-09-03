@@ -5,7 +5,6 @@ using System.Linq;
 using System;
 using UnityEngine.InputSystem;
 using Unity.Netcode;
-using System.Reflection;
 
 public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 {
@@ -40,12 +39,12 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// <summary>
     /// The manager for assembly system.
     /// </summary>
-    public AssemblySystemManager AssemblySystemManager { get; private set;}
+    public AssemblyController AssemblySystemManager { get; private set;}
     /// <summary>
     /// The manager for recording game component units.
     /// </summary>
     /// <value></value>
-    public UnitManager GameComponentsUnitManager { get; private set;}
+    public List<IGameComponent> SpawnedGameComponents = new();
 
 
     public AbilityManager AbilityManager => ControlledDevice?.AbilityManager;
@@ -76,13 +75,12 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     protected void Awake() {
         NetworkManager.Singleton.StartServer();
         _gameComponentFactory = new NetworkGameComponentFactory();
-        GameComponentsUnitManager = new UnitManager();
         playerInput = GetComponent<PlayerInput>();
         ControlledDevice = new Device(_gameComponentFactory);
         LoadDevice(CurrentLoadedDeviceID);
         AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager);
 
-        AssemblySystemManager = AssemblySystemManager.CreateInstance(gameObject, GameComponentsUnitManager, playerInput.currentActionMap.FindAction("Drag"), playerInput.currentActionMap.FindAction("FlipComponent"), 45f);
+        AssemblySystemManager = AssemblyController.CreateInstance(gameObject, () => SpawnedGameComponents.ToArray(), playerInput.currentActionMap.FindAction("Drag"), playerInput.currentActionMap.FindAction("FlipComponent"), 45f);
 
         SetEventHandler();
         gameEffectManager = new GameEffectManager();
@@ -120,15 +118,14 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
     private void ClearAllGameComponents()
     {
-        GameComponentsUnitManager.ForEachUnit((unit) => {
-            var component = unit as IGameComponent;
+        SpawnedGameComponents.ForEach((component) => {
             component.DisconnectFromParent();
         });
-        GameComponentsUnitManager.ForEachUnit((unit) => {
-            var component = unit as IGameComponent;
-            component.BodyTransform.GetComponent<NetworkObject>()?.Despawn();
+        SpawnedGameComponents.ForEach((component) => {
+            component.BodyNetworkObject?.Despawn();
         });
-        GameComponentsUnitManager.Clear();
+
+        SpawnedGameComponents.Clear();
     }
 
     private IDevice LoadNewDevice(DeviceInfo deviceInfo)
@@ -138,7 +135,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         deviceInfo ??= ResourceManager.Instance.LoadDefaultDeviceInfo();
         ClearAllGameComponents();
         ControlledDevice.Load(deviceInfo);
-        ControlledDevice.ForEachGameComponent(GameComponentsUnitManager.AddUnit);
+        ControlledDevice.ForEachGameComponent(SpawnedGameComponents.Add);
 
         AbilityInputActionMap = deviceInfo.AbilityManagerInfo.GetAbilityInputActionMap();
         AbilityInputActionMap.Enable();
@@ -156,7 +153,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     {
         var path = componentData.ResourcePath;
         var newComponent = _gameComponentFactory.CreateGameComponentObject(path);
-        GameComponentsUnitManager.AddUnit(newComponent);
+        SpawnedGameComponents.Add(newComponent);
         newComponent.DraggableTransform.position = position;
         return newComponent;
     }

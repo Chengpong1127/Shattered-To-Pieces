@@ -28,6 +28,7 @@ public class DraggableController: MonoBehaviour
     protected void Start() {
         DragAction.started += DragStarted;
         DragAction.canceled += DragCanceled;
+        DragAction.Enable();
     }
     protected void Update() {
         if (isDragging)

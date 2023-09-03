@@ -35,7 +35,7 @@ public class FormalAssemblyTest
         data.ResourcePath = "Square";
 
         roomManager.CreateNewGameComponent(data, new Vector2(0, 0));
-        Assert.AreEqual(roomManager.GameComponentsUnitManager.UnitMap.Count, deviceInfo.TreeInfo.NodeInfoMap.Count + 1);
+        Assert.AreEqual(roomManager.SpawnedGameComponents.Count, deviceInfo.TreeInfo.NodeInfoMap.Count + 1);
         
     }
 

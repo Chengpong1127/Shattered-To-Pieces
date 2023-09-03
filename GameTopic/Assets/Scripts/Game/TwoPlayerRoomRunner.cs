@@ -21,7 +21,6 @@ public class TwoPlayerRoomRunner: MonoBehaviour{
 
     private void GameSetup(){
         gameEffectManager = new GameEffectManager();
-        
     }
 
     private async UniTask PlayerSetup(){
@@ -29,10 +28,10 @@ public class TwoPlayerRoomRunner: MonoBehaviour{
         Players = playerSpawner.SpawnAllPlayers();
         await UniTask.WaitUntil(() => Players.Values.All(player => player.IsLoaded));
         SetPlayerSpawnPoints();
-        SetPlayerCamera();
+        LocalPlayerSetup();
     }
-    private void SetPlayerCamera(){
-        localPlayerManager.SetCameraOnPlayer_ClientRpc();
+    private void LocalPlayerSetup(){
+        localPlayerManager.LocalPlayerSetup_ClientRpc();
     }
 
     private void SetPlayerSpawnPoints(){

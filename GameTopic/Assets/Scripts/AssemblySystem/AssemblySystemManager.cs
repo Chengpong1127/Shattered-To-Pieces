@@ -2,14 +2,19 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using System;
 using System.Threading.Tasks;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 
-public class AssemblySystemManager : MonoBehaviour
+public class AssemblyController : MonoBehaviour
 {
     private DraggableController DraggableController;
-    public UnitManager GameComponentsUnitManager { get; private set; }
+    private Func<IGameComponent[]> GetConnectableGameObject { get; set; }
     public float SingleRotationAngle { get; private set; }
 
     private bool _scrollAvailable = true;
+    private IGameComponent[] connectableComponents;
 
     /// <summary>
     /// This event will be invoked when a game component is started to drag.
@@ -24,12 +29,13 @@ public class AssemblySystemManager : MonoBehaviour
     /// </summary>
     public event Action<IGameComponent> AfterGameComponentConnected;
 
-    public static AssemblySystemManager CreateInstance(GameObject where, UnitManager unitManager, InputAction dragAction, InputAction flipAction, float SingleRotationAngle = 45f){
-        var instance = where.AddComponent<AssemblySystemManager>();
+    public static AssemblyController CreateInstance(GameObject where, Func<IGameComponent[]> getConnectableGameObject, InputAction dragAction, InputAction flipAction, float SingleRotationAngle = 45f){
+        var instance = where.AddComponent<AssemblyController>();
         instance.DraggableController = DraggableController.CreateInstance(where, dragAction, Camera.main);
-        instance.GameComponentsUnitManager = unitManager ?? throw new ArgumentNullException(nameof(unitManager));
+        instance.GetConnectableGameObject = getConnectableGameObject;
         instance.SingleRotationAngle = SingleRotationAngle > 0 && SingleRotationAngle < 360 ? SingleRotationAngle : throw new ArgumentException(nameof(SingleRotationAngle));
-        flipAction.started += instance.FlipHandler;
+        if (flipAction != null) flipAction.started += instance.FlipHandler;
+        else Debug.LogWarning("flipAction is null");
         return instance;
     }
     void OnEnable()
@@ -39,7 +45,8 @@ public class AssemblySystemManager : MonoBehaviour
             DraggableController.enabled = true;
         }
     }
-    public void DisableAssemblyComponents(){
+    void OnDisable()
+    {
         DraggableController.enabled = false;
     }
 
@@ -64,12 +71,9 @@ public class AssemblySystemManager : MonoBehaviour
         Debug.Assert(component != null, "component is null");
         component.DisconnectFromParent();
         component.SetDragging(true);
-        GameComponentsUnitManager.ForEachUnit((unit) => {
-            if (unit is IGameComponent gameComponent && gameComponent != component)
-            {
-                gameComponent.SetAvailableForConnection(true);
-            }
-        });
+        connectableComponents = GetConnectableGameObject();
+        Debug.Log(connectableComponents.Length);
+        SetAvailableForConnection(connectableComponents, true);
         OnGameComponentDraggedStart?.Invoke(component);
     }
 
@@ -85,13 +89,15 @@ public class AssemblySystemManager : MonoBehaviour
             component.ConnectToParent(availableParent, connectorInfo);
             AfterGameComponentConnected?.Invoke(component);
         }
-        GameComponentsUnitManager.ForEachUnit((unit) => {
-            if (unit is IGameComponent gameComponent)
-            {
-                gameComponent.SetAvailableForConnection(false);
-            }
-        });
+        SetAvailableForConnection(connectableComponents, false);
+        connectableComponents = null;
         OnGameComponentDraggedEnd?.Invoke(component);
+    }
+    private void SetAvailableForConnection(ICollection<IGameComponent> components, bool available){
+        foreach (var component in components)
+        {
+            component.SetAvailableForConnection(available);
+        }
     }
 
     private void HandleScrollWhenDragging(IDraggable draggedComponent, Vector2 scrollValue){
