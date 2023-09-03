@@ -20,8 +20,6 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     );
     private IGameComponentFactory GameComponentFactory;
 
-    
-
     private AbilityRunner abilityRunner;
     private InputActionMap abilityActionMap;
 
@@ -59,6 +57,12 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
             GameEvents.AbilityRunnerEvents.OnLocalStartAbility += StartAbility_ServerRPC;
             GameEvents.AbilityRunnerEvents.OnLocalCancelAbility += CancelAbility_ServerRPC;
         }
+    }
+    public void EnableAbilityInput(){
+        abilityActionMap.Enable();
+    }
+    public void DisableAbilityInput(){
+        abilityActionMap.Disable();
     }
 
     private DeviceInfo GetLocalDeviceInfo(){

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 public class DraggableController: MonoBehaviour
 {
@@ -12,10 +13,11 @@ public class DraggableController: MonoBehaviour
     public event Action<IDraggable, Vector2> OnDragStart;
     public event Action<IDraggable, Vector2> OnDragEnd;
     public event Action<IDraggable, Vector2> OnScrollWhenDragging;
+    private Func<IDraggable[]> GetDraggableObjects;
 
     public IDraggable DraggedComponent = null;
     private bool isDragging = false;
-    public static DraggableController CreateInstance(GameObject where, InputAction dragAction, Camera mainCamera){
+    public static DraggableController CreateInstance(GameObject where, Func<IDraggable[]> GetDraggableObjects, InputAction dragAction, Camera mainCamera){
         var instance = where.AddComponent<DraggableController>();
         instance.DragAction = dragAction ?? throw new ArgumentNullException(nameof(dragAction));
         instance.MainCamera = mainCamera;
@@ -23,6 +25,7 @@ public class DraggableController: MonoBehaviour
         {
             Debug.LogWarning("Main camera is null");
         }
+        instance.GetDraggableObjects = GetDraggableObjects ?? throw new ArgumentNullException(nameof(GetDraggableObjects));
         return instance;
     }
     protected void Start() {
@@ -50,13 +53,14 @@ public class DraggableController: MonoBehaviour
     {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
         DraggedComponent = GetDraggableUnderMouse(mousePosition);
-        
         var worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
-        if (DraggedComponent != null)
+        if (DraggedComponent != null && GetDraggableObjects().Contains(DraggedComponent))
         {
             isDragging = true;
             Vector2 worldPoint2D = new Vector2(worldPoint.x, worldPoint.y);
             OnDragStart?.Invoke(DraggedComponent, worldPoint2D);
+        }else{
+            DraggedComponent = null;
         }
         
     }

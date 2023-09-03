@@ -19,17 +19,22 @@ public class LocalPlayerManager : NetworkBehaviour
     [ClientRpc]
     public void LocalPlayerSetup_ClientRpc()
     {
-        if(Player == null){
-            SetPlayer();
-        }
+        PlayerSetup();
+    }
+    private async void PlayerSetup(){
+        SetPlayer();
+        await UniTask.WaitUntil(() => Player.IsLoaded);
         SetCamera();
         assemblyController = AssemblyController.CreateInstance(gameObject, GetConnectableGameObjects, inputActionsMap["Drag"], inputActionsMap["FlipComponent"]);
         assemblyController.enabled = false;
         inputActionsMap["AssemblyToggle"].started += _ => {
             assemblyController.enabled = !assemblyController.enabled;
+            if (assemblyController.enabled) Player.DisableAbilityInput();
+            else Player.EnableAbilityInput();
             Debug.Log($"AssemblyController enabled: {assemblyController.enabled}");
         };
         inputActionsMap["AssemblyToggle"].Enable();
+        Player.EnableAbilityInput();
     }
 
     private IGameComponent[] GetConnectableGameObjects(){
@@ -39,13 +44,20 @@ public class LocalPlayerManager : NetworkBehaviour
             .ToArray();
     }
 
-    private async void SetCamera(){
-        await WaitForLoaded();
-        VirtualCamera.Follow = Player.GetTracedTransform();
+    void OnDrawGizmos()
+    {
+        if (Player != null && Player.IsLoaded){
+            if (assemblyController != null && assemblyController.enabled){
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(Player.SelfDevice.RootGameComponent.BodyTransform.position, AssemblyRange);
+            }
+            
+        }
+        
     }
 
-    private async UniTask WaitForLoaded(){
-        await UniTask.WaitUntil(() => Player.IsLoaded);
+    private void SetCamera(){
+        VirtualCamera.Follow = Player.GetTracedTransform();
     }
 
     private void SetPlayer(){

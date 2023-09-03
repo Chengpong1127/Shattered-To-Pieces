@@ -31,7 +31,7 @@ public class AssemblyController : MonoBehaviour
 
     public static AssemblyController CreateInstance(GameObject where, Func<IGameComponent[]> getConnectableGameObject, InputAction dragAction, InputAction flipAction, float SingleRotationAngle = 45f){
         var instance = where.AddComponent<AssemblyController>();
-        instance.DraggableController = DraggableController.CreateInstance(where, dragAction, Camera.main);
+        instance.DraggableController = DraggableController.CreateInstance(where, getConnectableGameObject, dragAction, Camera.main);
         instance.GetConnectableGameObject = getConnectableGameObject;
         instance.SingleRotationAngle = SingleRotationAngle > 0 && SingleRotationAngle < 360 ? SingleRotationAngle : throw new ArgumentException(nameof(SingleRotationAngle));
         if (flipAction != null) flipAction.started += instance.FlipHandler;
@@ -51,9 +51,7 @@ public class AssemblyController : MonoBehaviour
     }
 
     private void FlipHandler(InputAction.CallbackContext context){
-        if (DraggableController.DraggedComponent != null){
-            DraggableController.DraggedComponent.ToggleXScale();
-        }
+        DraggableController.DraggedComponent?.ToggleXScale();
     }
 
     protected void Start() {
@@ -72,7 +70,7 @@ public class AssemblyController : MonoBehaviour
         component.DisconnectFromParent();
         component.SetDragging(true);
         connectableComponents = GetConnectableGameObject();
-        Debug.Log(connectableComponents.Length);
+        connectableComponents.ToList().Remove(component);
         SetAvailableForConnection(connectableComponents, true);
         OnGameComponentDraggedStart?.Invoke(component);
     }

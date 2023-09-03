@@ -25,7 +25,7 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
     /// Get the camera of the game component.
     /// </summary> 
     public Camera PlayerCamera => Camera.main;
-    public Animator BodyAnimator => OwnerGameComponent.BodyAnimator;
+    public Animator BodyAnimator => OwnerGameComponent?.BodyAnimator;
 
     /// <summary>
     /// Get the root core component of the game component in the device.
