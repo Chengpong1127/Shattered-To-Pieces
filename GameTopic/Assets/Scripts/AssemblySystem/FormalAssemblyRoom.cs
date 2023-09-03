@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using UnityEngine.InputSystem;
 using Unity.Netcode;
+using System.Reflection;
 
 public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 {
@@ -92,11 +93,13 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     private void SetEventHandler(){
         GameEvents.AbilityRunnerEvents.OnLocalStartAbility += AbilityRunner.StartEntryAbility;
         GameEvents.AbilityRunnerEvents.OnLocalCancelAbility += AbilityRunner.CancelEntryAbility;
+        AssemblySystemManager.OnGameComponentDraggedStart += _ => UpdateAbility();
+        AssemblySystemManager.OnGameComponentDraggedEnd += _ => UpdateAbility();
+
     }
 
-    private void UpdateSaveHandler(object _){
+    private void UpdateAbility(){
         ControlledDevice.AbilityManager.UpdateDeviceAbilities();
-        SaveCurrentDevice();
     }
 
     /// <summary>
@@ -175,7 +178,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         GameEvents.AssemblyRoomEvents.OnSavedDevice.Invoke();
     }
     public void LoadDevice(int DeviceID){
-        if (ControlledDevice?.RootGameComponent != null) UpdateSaveHandler(null);
+        if (ControlledDevice?.RootGameComponent != null) SaveCurrentDevice();
         CurrentLoadedDeviceID = DeviceID;
         var deviceInfo = ResourceManager.Instance.LoadLocalDeviceInfo(DeviceID.ToString());
         LoadNewDevice(deviceInfo);
@@ -200,7 +203,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     }
     void OnApplicationQuit()
     {
-        UpdateSaveHandler(null);
+        SaveCurrentDevice();
     }
 }
 
