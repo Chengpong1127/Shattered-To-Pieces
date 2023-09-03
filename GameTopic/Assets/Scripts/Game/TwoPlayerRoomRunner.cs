@@ -2,31 +2,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.Collections;
+using Cysharp.Threading.Tasks;
 
 public class TwoPlayerRoomRunner: MonoBehaviour{
     public ConnectionManager connectionManager;
     public Transform[] SpawnPoints;
     private Dictionary<ulong, IPlayer> Players;
     public LocalPlayerManager localPlayerManager;
+    private GameEffectManager gameEffectManager;
     void Start()
     {
-        connectionManager.OnAllPlayerConnected += () => {
-            StartCoroutine(GameSetup());
+        connectionManager.OnAllPlayerConnected += async () => {
+            GameSetup();
+            await PlayerSetup();
             GameStart();
         };
     }
 
-    private IEnumerator GameSetup(){
-        Debug.Log("Game Setup");
+    private void GameSetup(){
+        gameEffectManager = new GameEffectManager();
+        
+    }
+
+    private async UniTask PlayerSetup(){
         var playerSpawner = new PlayerSpawner();
         Players = playerSpawner.SpawnAllPlayers();
-        yield return new WaitUntil(() => Players.Values.All(player => player.IsLoaded));
+        await UniTask.WaitUntil(() => Players.Values.All(player => player.IsLoaded));
         SetPlayerSpawnPoints();
         SetPlayerCamera();
-
-
-        var gameEffectManager = new GameEffectManager();
-        gameEffectManager.Enable();
     }
     private void SetPlayerCamera(){
         localPlayerManager.SetCameraOnPlayer_ClientRpc();
@@ -42,5 +45,6 @@ public class TwoPlayerRoomRunner: MonoBehaviour{
 
     private void GameStart(){
         Debug.Log("Game Start");
+        gameEffectManager.Enable();
     }
 }
