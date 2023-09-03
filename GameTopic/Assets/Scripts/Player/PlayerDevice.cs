@@ -9,19 +9,30 @@ using System;
 public class PlayerDevice : NetworkBehaviour, IPlayer
 {
     public Device SelfDevice { get; private set; }
-    public IGameComponentFactory GameComponentFactory { get; private set; }
+    private NetworkVariable<ulong> RootNetworkObjectID = new NetworkVariable<ulong>(
+        readPerm: NetworkVariableReadPermission.Owner,
+        writePerm: NetworkVariableWritePermission.Server
+    );
+    public bool IsLoaded => isLoaded.Value;
+    private NetworkVariable<bool> isLoaded = new NetworkVariable<bool>(
+        false,
+        writePerm: NetworkVariableWritePermission.Server
+    );
+    private IGameComponentFactory GameComponentFactory;
 
     
 
     private AbilityRunner abilityRunner;
     private InputActionMap abilityActionMap;
-    public bool IsLoaded => SelfDevice != null;
+
     [ServerRpc]
     private void LoadDeviceServerRpc(string json)
     {
         SelfDevice = new Device(GameComponentFactory);
         SelfDevice.Load(DeviceInfo.CreateFromJson(json));
         abilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager);
+        isLoaded.Value = true;
+        RootNetworkObjectID.Value = SelfDevice.RootGameComponent.BodyNetworkObject.NetworkObjectId;
     }
     [ServerRpc]
     private void StartAbility_ServerRPC(int abilityNumber)
@@ -61,13 +72,9 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     }
 
     public Transform GetTracedTransform(){
-        throw new NotImplementedException();
-    }
-    [ServerRpc]
-    private void GetRootObjectID(){
         LoadCheck();
-        var rootObjectID = SelfDevice.RootGameComponent.BodyTransform.GetComponent<NetworkObject>().NetworkObjectId;
-        
+        NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(RootNetworkObjectID.Value, out var networkObject);
+        return networkObject.transform;
     }
     private void LoadCheck(){
         if (!IsLoaded) throw new InvalidOperationException("The device is not loaded");

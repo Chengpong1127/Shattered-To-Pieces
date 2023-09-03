@@ -11,12 +11,16 @@ public class LocalPlayerManager : NetworkBehaviour
     [ClientRpc]
     public void SetCameraOnPlayer_ClientRpc()
     {
-        Debug.Log("SetCameraOnPlayer_ClientRpc");
         if(Player == null){
             SetPlayer();
         }
-        VirtualCamera.Follow = Player.GetTracedTransform();
+        StartCoroutine(WaitForLoadedAndSetCamera());
 
+    }
+
+    IEnumerator WaitForLoadedAndSetCamera(){
+        yield return new WaitUntil(() => Player.IsLoaded);
+        VirtualCamera.Follow = Player.GetTracedTransform();
     }
 
     private void SetPlayer(){

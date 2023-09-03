@@ -21,6 +21,9 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public Transform DraggableTransform => bodyTransform;
     public Animator BodyAnimator { get; private set;}
     public string ComponentName { get; set; }
+
+    public NetworkObject BodyNetworkObject => bodyNetworkObject;
+    private NetworkObject bodyNetworkObject;
     private float zRotation = 0;
 
     #region Inspector
@@ -144,7 +147,9 @@ public class GameComponent : MonoBehaviour, IGameComponent
         bodyCollider ??= GetComponent<Collider2D>() ?? throw new ArgumentNullException(nameof(bodyCollider));
         connector ??= GetComponentInChildren<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
         coreComponent ??= GetComponentInChildren<ICoreComponent>() ?? throw new ArgumentNullException(nameof(coreComponent));
+        bodyNetworkObject ??= GetComponent<NetworkObject>() ?? throw new ArgumentNullException(nameof(bodyNetworkObject));
         BodyAnimator ??= GetComponentInChildren<Animator>();
+
         coreComponent.OwnerGameComponent = this;
         
         DisconnectFromParent();
