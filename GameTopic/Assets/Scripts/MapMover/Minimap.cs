@@ -13,6 +13,7 @@ public class Minimap : MonoBehaviour
 
     void Update()
     {
+        if(player != null)
         this.transform.position =new Vector3( player.position.x,player.position.y,this.transform.position.z);
     }
 }

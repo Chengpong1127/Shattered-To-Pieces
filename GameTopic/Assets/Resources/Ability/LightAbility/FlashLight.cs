@@ -37,14 +37,12 @@ public class FlashLight : MonoBehaviour
         var ControlRoom = root.GetChild(0).GetComponent<BaseCoreComponent>();
         baseCoreComponents = ControlRoom.GetAllChildren();
         yield return null;
-
     }
     private void OnTriggerStay2D(Collider2D other)
     {
         StartCoroutine(Set());
         foreach (BaseCoreComponent bs in baseCoreComponents)
         {
-
             if (other.gameObject == bs.gameObject) return;
         }
         monitor_Clear = false;
