@@ -59,7 +59,7 @@ public class LocalPlayerManager : NetworkBehaviour
 
     private void SetCamera(){
         VirtualCamera.Follow = Player.GetTracedTransform();
-        Minimap.player = Player.GetTracedTransform();
+        if (Minimap != null) Minimap.player = Player.GetTracedTransform();
     }
 
     private void SetPlayer(){
