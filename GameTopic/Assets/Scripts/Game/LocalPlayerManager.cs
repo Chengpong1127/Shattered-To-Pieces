@@ -12,6 +12,7 @@ public class LocalPlayerManager : NetworkBehaviour
     public IPlayer Player { get; private set; }
     public InputActionAsset inputActionsMap;
     public float AssemblyRange = 30f;
+    public Minimap Minimap;
     private AssemblyController assemblyController;
 
 
@@ -58,6 +59,7 @@ public class LocalPlayerManager : NetworkBehaviour
 
     private void SetCamera(){
         VirtualCamera.Follow = Player.GetTracedTransform();
+        Minimap.player = Player.GetTracedTransform();
     }
 
     private void SetPlayer(){
