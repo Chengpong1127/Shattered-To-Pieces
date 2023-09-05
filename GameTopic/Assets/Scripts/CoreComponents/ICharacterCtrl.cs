@@ -4,7 +4,8 @@ using UnityEngine;
 
 public interface ICharacterCtrl {
     public bool Landing { get; }
-    public void Move(Vector3 Motion, ForceMode2D Mode);
-    public void Push(Vector3 Motion);
+    public void Move(Vector2 Motion);
+    public void Fly(Vector2 Motion);
+    public void Push(Vector2 Motion);
     public void Bondage();
 }

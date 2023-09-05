@@ -41,11 +41,13 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
 
         if (Moving <= 0 && Pushing <= 0 && Landing) {
             Bondage();
+            Moving = 0;
+            Pushing = 0;
         }
         Moving--;
     }
 
-    public void Move(Vector3 Motion, ForceMode2D Mode) {
+    public void Move(Vector2 Motion) {
         if(Pushing > 0) { return; }
         Moving = 20;
         // this.BodyRigidbody.AddForce(Motion, Mode);
@@ -53,7 +55,14 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
         replaceVec.y += BodyRigidbody.velocity.y;
         BodyRigidbody.velocity = replaceVec;
     }
-    public void Push(Vector3 Motion) {
+
+    public void Fly(Vector2 Motion) {
+        if (Pushing > 0) { return; }
+        Moving = 20;
+        BodyRigidbody.velocity = Motion;
+    }
+
+    public void Push(Vector2 Motion) {
         Bondage();
         Pushing = 20;
         this.BodyRigidbody.AddForce(Motion, ForceMode2D.Impulse);

@@ -56,7 +56,7 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
                     addConfirm = true;
                 }
                 while (Active && Character.Landing) {
-                    Character.Move(Body.BodyTransform.TransformDirection(Direction) * Speed, ForceMode2D.Force);
+                    Character.Move(Body.BodyTransform.TransformDirection(Direction) * Speed);
                     yield return null;
                 }
 

@@ -46,7 +46,7 @@ public class JumpAbility : AbstractAbilityScriptableObject {
         protected override IEnumerator ActivateAbility() {
 
             if (Character != null && Character.Landing) {
-                Character.Move(Body.BodyTransform.TransformDirection(Direction) * Power,ForceMode2D.Impulse);
+                Character.Move(Body.BodyTransform.TransformDirection(Direction) * Power);
             }
             yield return null;
         }
