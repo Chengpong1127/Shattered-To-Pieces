@@ -31,11 +31,6 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
                     Landing = true;
                     Pushing--;
                 }
-
-                // if (obj == null || !obj.HasTheSameRootWith(this)) {
-                //     Landing = true;
-                //     Pushing--;
-                // } // Need a Tag to confirm landable Object
             });
         }
 
@@ -50,16 +45,26 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
     public void Move(Vector2 Motion) {
         if(Pushing > 0) { return; }
         Moving = 20;
-        // this.BodyRigidbody.AddForce(Motion, Mode);
-        replaceVec = Motion;
-        replaceVec.y += BodyRigidbody.velocity.y;
-        BodyRigidbody.velocity = replaceVec;
+        BodyRigidbody.velocity = Motion;
     }
 
-    public void Fly(Vector2 Motion) {
+    public void VerticalMove(float Motion) {
         if (Pushing > 0) { return; }
         Moving = 20;
-        BodyRigidbody.velocity = Motion;
+        replaceVec.x = BodyRigidbody.velocity.x;
+        replaceVec.y = Motion;
+        BodyRigidbody.velocity = replaceVec;
+    }
+    public void HorizontalMove(float Motion) {
+        if (Pushing > 0) { return; }
+        Moving = 20;
+        replaceVec.x = Motion;
+        replaceVec.y = BodyRigidbody.velocity.y;
+        BodyRigidbody.velocity = replaceVec;
+    }
+    public void AddForce(Vector2 Motion, ForceMode2D Mode) {
+        Moving = 20;
+        BodyRigidbody.AddForce(Motion, Mode);
     }
 
     public void Push(Vector2 Motion) {
