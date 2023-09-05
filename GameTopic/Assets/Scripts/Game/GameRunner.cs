@@ -10,17 +10,12 @@ public class GameRunner: MonoBehaviour{
     private Dictionary<ulong, IPlayer> Players;
     public LocalPlayerManager localPlayerManager;
     private GameEffectManager gameEffectManager;
-    public Minimap minimap;
     void Start()
     {
         connectionManager.OnAllPlayerConnected += async () => {
             GameSetup();
             await PlayerSetup();
             GameStart();
-            if(minimap != null)
-            {
-                minimap.player = Players[0].SelfDevice.RootGameComponent.BodyTransform;
-            }
         };
     }
 
