@@ -12,8 +12,9 @@ public class GameRunner: MonoBehaviour{
     private GameEffectManager gameEffectManager;
     void Start()
     {
+        GameSetup();
         connectionManager.OnAllPlayerConnected += async () => {
-            GameSetup();
+            
             await PlayerSetup();
             GameStart();
         };
@@ -21,6 +22,7 @@ public class GameRunner: MonoBehaviour{
 
     private void GameSetup(){
         gameEffectManager = new GameEffectManager();
+        gameEffectManager.Enable();
     }
 
     private async UniTask PlayerSetup(){
@@ -44,6 +46,6 @@ public class GameRunner: MonoBehaviour{
 
     private void GameStart(){
         Debug.Log("Game Start");
-        gameEffectManager.Enable();
+        
     }
 }
