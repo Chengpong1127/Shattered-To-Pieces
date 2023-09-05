@@ -1,5 +1,7 @@
+using AbilitySystem.Authoring;
 using System.Collections.Generic;
 using UnityEngine;
+using AbilitySystem;
 
 public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
     public bool Landing { get; private set; }
@@ -9,11 +11,14 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
     Vector2 replaceVec = Vector2.zero;
 
     [SerializeField] Collider2D LandCheckCollider;
+    [SerializeField] GameplayEffectScriptableObject LandCheckGE;
+    GameplayEffectSpec LandCheckGESpec;
     static ContactFilter2D filter = new();
     List<Collider2D> collisionResult = new();
     protected override void Awake() {
         base.Awake();
         Bondage();
+        LandCheckGESpec = this.AbilitySystemCharacter.MakeOutgoingSpec(LandCheckGE);
     }
 
     private void Update() {
@@ -21,10 +26,16 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
         if (LandCheckCollider.OverlapCollider(filter, collisionResult) != 0) {
             collisionResult.ForEach(collider => {
                 var obj = collider.gameObject.GetComponent<BaseCoreComponent>();
-                if (obj == null || !obj.HasTheSameRootWith(this)) {
+                
+                if(obj != null && obj.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(LandCheckGESpec)) {
                     Landing = true;
                     Pushing--;
-                } // Need a Tag to confirm landable Object
+                }
+
+                // if (obj == null || !obj.HasTheSameRootWith(this)) {
+                //     Landing = true;
+                //     Pushing--;
+                // } // Need a Tag to confirm landable Object
             });
         }
 

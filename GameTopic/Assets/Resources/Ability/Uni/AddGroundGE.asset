@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf820fdcd5f674001848a14a8b1b20c2, type: 3}
-  m_Name: GroundAbility
+  m_Script: {fileID: 11500000, guid: 3ce4d71ddb5d5614cb05a46a2265f44d, type: 3}
+  m_Name: AddGroundGE
   m_EditorClassIdentifier: 
   AbilityName: 
   AbilityTags:
@@ -29,4 +29,4 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  InitialisationGE: []
+  gameEffect: {fileID: 11400000, guid: fc2847719b5b71941a9824e1955dec42, type: 2}

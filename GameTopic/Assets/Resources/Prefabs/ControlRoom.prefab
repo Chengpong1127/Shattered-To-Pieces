@@ -453,6 +453,7 @@ MonoBehaviour:
   InitializationAbilities: []
   Abilities: []
   LandCheckCollider: {fileID: 3851937024220445991}
+  LandCheckGE: {fileID: 11400000, guid: 0943c1d519ba5d34db8ca32803e91846, type: 2}
 --- !u!61 &3851937024220445991
 BoxCollider2D:
   m_ObjectHideFlags: 0

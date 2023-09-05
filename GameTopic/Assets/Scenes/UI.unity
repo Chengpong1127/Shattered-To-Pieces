@@ -6044,6 +6044,9 @@ GameObject:
   - component: {fileID: 1439023370}
   - component: {fileID: 1439023371}
   - component: {fileID: 1439023372}
+  - component: {fileID: 1439023375}
+  - component: {fileID: 1439023374}
+  - component: {fileID: 1439023373}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -6163,6 +6166,52 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1439023373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439023369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da149c2f6ddef204f8ada53f29ac82e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttributeSystemComponent: {fileID: 1439023375}
+  AbilitySystemCharacter: {fileID: 1439023374}
+  InitializationAbilities:
+  - {fileID: 11400000, guid: 441d7b8164891ac4b991ac423b51dd6e, type: 2}
+  Abilities: []
+--- !u!114 &1439023374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439023369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 174b4c691442c4c7fab309adaf4cdfe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attributeSystem: {fileID: 0}
+  Level: 0
+--- !u!114 &1439023375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439023369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84cd0cb271574403ebdc2ee5fba2e363, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttributeSystemEvents: []
+  Attributes: []
+  AttributeValues: []
 --- !u!1 &1480054144
 GameObject:
   m_ObjectHideFlags: 0
