@@ -25,7 +25,7 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
         Landing = false;
         if (LandCheckCollider.OverlapCollider(filter, collisionResult) != 0) {
             collisionResult.ForEach(collider => {
-                var obj = collider.gameObject.GetComponent<BaseCoreComponent>();
+                var obj = collider.gameObject.GetComponent<Entity>();
                 
                 if(obj != null && obj.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(LandCheckGESpec)) {
                     Landing = true;

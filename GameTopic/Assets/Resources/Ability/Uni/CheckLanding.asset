@@ -25,7 +25,8 @@ MonoBehaviour:
       RequireTags: []
       IgnoreTags: []
     ApplicationTagRequirements:
-      RequireTags: []
+      RequireTags:
+      - {fileID: 11400000, guid: f8b02541872494b4e9f0893f63e0278f, type: 2}
       IgnoreTags: []
     RemovalTagRequirements:
       RequireTags: []
