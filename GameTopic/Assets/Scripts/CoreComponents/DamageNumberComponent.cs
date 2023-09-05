@@ -59,7 +59,6 @@ public class DamageNumberComponent : MonoBehaviour
         var position = transform.position;
         position.y = startYPosition + yOffset;
         transform.position = position;
-        Debug.Log(colour.a);
         if (colour.a <= 0)
         {
             Destroy(this.gameObject);
