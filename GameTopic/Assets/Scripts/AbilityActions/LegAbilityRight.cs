@@ -1,13 +1,8 @@
 using AbilitySystem;
 using AbilitySystem.Authoring;
-using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "LegAbilityRight", menuName = "Ability/LegAbilityRight")]
 public class LegAbilityRight : AbstractAbilityScriptableObject {
@@ -56,7 +51,8 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
                     addConfirm = true;
                 }
                 while (Active && Character.Landing) {
-                    Character.Move(Body.BodyTransform.TransformDirection(Direction) * Speed);
+                    // Character.Move(Body.BodyTransform.TransformDirection(Direction) * Speed);
+                    Character.HorizontalMove(Body.BodyTransform.TransformDirection(Direction).x * Speed);
                     yield return null;
                 }
 
@@ -67,25 +63,6 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
                 }
                 yield return null;
             }
-
-
-            // if(Active && Character.Landing) {
-            //     animator.SetBool("Move", true);
-            //     animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") + 1);
-            //     addConfirm = true;
-            // }
-            // 
-            // while (Active && Character.Landing) {
-            //     Character.Move(Body.BodyTransform.TransformDirection(Direction) * Speed, ForceMode2D.Force);
-            //     yield return null;
-            // }
-            // 
-            // 
-            // if (addConfirm) {
-            //     animator.SetBool("Move", false);
-            //     animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") - 1);
-            // }
-            // yield return null;
         }
         protected override IEnumerator PreActivate() {
             Character = Body.Root as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");

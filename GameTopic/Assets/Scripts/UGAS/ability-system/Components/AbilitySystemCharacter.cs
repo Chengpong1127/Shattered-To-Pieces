@@ -43,7 +43,7 @@ namespace AbilitySystem
             if (geSpec == null) return true;
             bool tagRequirementsOK = CheckTagRequirementsMet(geSpec);
 
-            if (tagRequirementsOK == false) return false;
+            if (tagRequirementsOK == false)  return false; 
 
 
             switch (geSpec.GameplayEffect.gameplayEffect.DurationPolicy)
