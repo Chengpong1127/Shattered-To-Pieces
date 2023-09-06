@@ -611,10 +611,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Portal yellow Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 3936738487775043061, guid: a6b11e60e96093946aa3ea6742fc671f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5185480140033270994, guid: a6b11e60e96093946aa3ea6742fc671f, type: 3}
       propertyPath: destination
       value: 
       objectReference: {fileID: 1914183976}
+    - target: {fileID: 7327039788653672286, guid: a6b11e60e96093946aa3ea6742fc671f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10000
+      objectReference: {fileID: 0}
     - target: {fileID: 9182079989479465814, guid: a6b11e60e96093946aa3ea6742fc671f, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1796496503
