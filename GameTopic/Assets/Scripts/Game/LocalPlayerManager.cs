@@ -15,7 +15,6 @@ public class LocalPlayerManager : NetworkBehaviour
     public Minimap Minimap;
     private AssemblyController assemblyController;
     [SerializeField]
-    private LocalPlayerInputManager localPlayerInputManager;
 
 
 
@@ -28,17 +27,20 @@ public class LocalPlayerManager : NetworkBehaviour
         SetPlayer();
         await UniTask.WaitUntil(() => Player.IsLoaded);
         SetCamera();
-        localPlayerInputManager.AbilityActionMap = Player.AbilityActionMap;
-        assemblyController = AssemblyController.CreateInstance(gameObject, GetConnectableGameObjects, localPlayerInputManager.DragComponentAction, localPlayerInputManager.FlipComponentAction);
+        LocalPlayerInputManager.Instance.AbilityActionMap = Player.AbilityActionMap;
+        assemblyController = AssemblyController.CreateInstance(
+            gameObject, GetConnectableGameObjects, 
+            LocalPlayerInputManager.Instance.DragComponentAction, 
+            LocalPlayerInputManager.Instance.FlipComponentAction);
         assemblyController.enabled = false;
-        localPlayerInputManager.AssemblyToggleAction.started += OnAssemblyToggle;
-        localPlayerInputManager.GameActionMap.Enable();
-        localPlayerInputManager.AbilityActionMap.Enable();
+        LocalPlayerInputManager.Instance.AssemblyToggleAction.started += OnAssemblyToggle;
+        LocalPlayerInputManager.Instance.GameActionMap.Enable();
+        LocalPlayerInputManager.Instance.AbilityActionMap.Enable();
     }
     private void OnAssemblyToggle(InputAction.CallbackContext _){
         assemblyController.enabled = !assemblyController.enabled;
-        if (assemblyController.enabled) localPlayerInputManager.AbilityActionMap.Disable();
-        else localPlayerInputManager.AbilityActionMap.Enable();
+        if (assemblyController.enabled) LocalPlayerInputManager.Instance.AbilityActionMap.Disable();
+        else LocalPlayerInputManager.Instance.AbilityActionMap.Enable();
         Debug.Log($"AssemblyController enabled: {assemblyController.enabled}");
     }
 

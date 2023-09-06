@@ -79,11 +79,17 @@ public static class GameEvents{
         /// <summary>
         /// Used to request giving a game effect to an entity.
         /// </summary>
-        public static Action<Entity, Entity, AbilitySystem.Authoring.GameplayEffectScriptableObject> RequestGiveGameEffect = delegate { };
+        public static Action<Entity, Entity, GameplayEffectScriptableObject> RequestGiveGameEffect = delegate { };
+        /// <summary>
+        /// Used to request removing a game effect from an entity.
+        /// </summary>
+        public static Action<Entity, GameplayEffectScriptableObject> RequestRemoveGameEffect = delegate { };
         /// <summary>
         /// Used to request simply modifying an attribute of an entity.
         /// </summary>
         public static Action<Entity, Entity, GameplayEffectModifier> RequestModifyAttribute = delegate { };
+
+
     }
     public static class LobbyEvents{
         /// <summary>

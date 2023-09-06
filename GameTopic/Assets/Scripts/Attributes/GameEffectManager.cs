@@ -10,10 +10,12 @@ public class GameEffectManager{
     public void Enable(){
         GameEvents.GameEffectManagerEvents.RequestModifyAttribute += ModifyAttribute;
         GameEvents.GameEffectManagerEvents.RequestGiveGameEffect += ApplyGameplayEffect;
+        GameEvents.GameEffectManagerEvents.RequestRemoveGameEffect += RemoveGameplayEffect;
     }
     public void Disable(){
         GameEvents.GameEffectManagerEvents.RequestModifyAttribute -= ModifyAttribute;
         GameEvents.GameEffectManagerEvents.RequestGiveGameEffect -= ApplyGameplayEffect;
+        GameEvents.GameEffectManagerEvents.RequestRemoveGameEffect -= RemoveGameplayEffect;
     }
     private void ModifyAttribute(Entity sender, Entity receiver, GameplayEffectModifier modifier){
         var effect = ResourceManager.Instance.LoadEmptyGameplayEffect();
@@ -24,5 +26,8 @@ public class GameEffectManager{
     private void ApplyGameplayEffect(Entity sender, Entity receiver, GameplayEffectScriptableObject gameplayEffect){
         var spec = sender.AbilitySystemCharacter.MakeOutgoingSpec(gameplayEffect);
         receiver.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(spec);
+    }
+    private void RemoveGameplayEffect(Entity receiver, GameplayEffectScriptableObject gameplayEffect){
+        receiver.AbilitySystemCharacter.RemoveGameplayEffect(gameplayEffect);
     }
 }
