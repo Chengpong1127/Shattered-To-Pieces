@@ -29,7 +29,4 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  RotationValue: 90
-  DurationTime: 0.5
-  RotateMode: 3
-  EaseMode: 1
+  Speed: 1

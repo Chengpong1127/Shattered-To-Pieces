@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class ChickenGun : BaseCoreComponent, ISummonable {
@@ -13,6 +14,8 @@ public class ChickenGun : BaseCoreComponent, ISummonable {
         var summonObj = summon.GetComponentInChildren<BaseCoreComponent>() ?? throw new System.ArgumentNullException("This object should have BaseCoreComponent.");
         var summonSetting = (summonObj as ICreated) ?? throw new System.ArgumentNullException("The entity should have ICreated interface.");
         summonSetting.Owner = this;
+
+        summon.GetComponent<NetworkObject>()?.Spawn();
 
         summonObj.BodyRigidbody.AddForce(
             SpwanPoint.TransformDirection(Vector3.right) * Power,

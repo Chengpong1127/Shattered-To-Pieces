@@ -8,11 +8,13 @@ using UnityEngine;
 public class LegAbilityRight : AbstractAbilityScriptableObject {
     [SerializeField] Vector3 Direction;
     [SerializeField] float Speed;
+    [SerializeField] string AnimationName;
 
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner) {
         var spec = new LegAbilityRightSpec(this, owner) {
             Direction = Direction,
-            Speed = Speed
+            Speed = Speed,
+            AnimationName = AnimationName
         };
 
         return spec;
@@ -21,6 +23,8 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
     public class LegAbilityRightSpec : RunnerAbilitySpec {
         public Vector3 Direction;
         public float Speed;
+        public string AnimationName;
+
         bool Active;
 
         BaseCoreComponent Body;
@@ -46,8 +50,9 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
 
             while(Active) {
                 if (Character.Landing) {
-                    animator.SetBool("Move", true);
-                    animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") + 1);
+                    // animator.SetBool("Move", true);
+                    animator.SetBool(AnimationName, true);
+                    // animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") + 1);
                     addConfirm = true;
                 }
                 while (Active && Character.Landing) {
@@ -57,8 +62,9 @@ public class LegAbilityRight : AbstractAbilityScriptableObject {
                 }
 
                 if(addConfirm) {
-                    animator.SetBool("Move", false);
-                    animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") - 1);
+                    // animator.SetBool("Move", false);
+                    // animator.SetInteger("MoveRecord", animator.GetInteger("MoveRecord") - 1);
+                    animator.SetBool(AnimationName, false);
                     addConfirm = false;
                 }
                 yield return null;
