@@ -81,10 +81,6 @@ public static class GameEvents{
         /// </summary>
         public static Action<Entity, Entity, GameplayEffectScriptableObject> RequestGiveGameEffect = delegate { };
         /// <summary>
-        /// Used to request removing a game effect from an entity.
-        /// </summary>
-        public static Action<Entity, GameplayEffectScriptableObject> RequestRemoveGameEffect = delegate { };
-        /// <summary>
         /// Used to request simply modifying an attribute of an entity.
         /// </summary>
         public static Action<Entity, Entity, GameplayEffectModifier> RequestModifyAttribute = delegate { };

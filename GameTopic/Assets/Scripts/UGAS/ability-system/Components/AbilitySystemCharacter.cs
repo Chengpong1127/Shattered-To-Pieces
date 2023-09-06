@@ -67,16 +67,6 @@ namespace AbilitySystem
                 Source: this,
                 Level: level.GetValueOrDefault(1));
         }
-
-        public void RemoveGameplayEffectSpec(GameplayEffectSpec spec)
-        {
-            AppliedGameplayEffects.RemoveAll(x => x.spec == spec);
-        }
-
-        public void RemoveGameplayEffect(GameplayEffectScriptableObject GameplayEffect)
-        {
-            AppliedGameplayEffects.RemoveAll(x => x.spec.GameplayEffect == GameplayEffect);
-        }
         bool CheckTagRequirementsMet(GameplayEffectSpec geSpec)
         {
             /// Build temporary list of all gametags currently applied
