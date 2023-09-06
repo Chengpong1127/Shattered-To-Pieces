@@ -26,7 +26,7 @@ public class PropellerFly : AbstractAbilityScriptableObject {
         Animator animator;
         bool addConfirm = false;
         public PropellerFlySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner) {
-            // animator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
+            animator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
             var obj = SelfEntity as IBodyControlable ?? throw new System.ArgumentNullException("SelfEntity");
             Body = obj.body;
             Active = false;
@@ -40,11 +40,13 @@ public class PropellerFly : AbstractAbilityScriptableObject {
             return true;
         }
         protected override IEnumerator ActivateAbility() {
+            if(Active) { animator.SetBool("Fly",true); }
             while (Active) {
                 // Character.AddForce(Body.BodyTransform.TransformDirection(Vector3.up) * Power,ForceMode2D.Force);
                 Character.Move(Body.BodyTransform.TransformDirection(Vector3.up) * Power);
                 yield return null;
             }
+            animator.SetBool("Fly", false);
         }
         protected override IEnumerator PreActivate() {
             Character = Body.Root as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
