@@ -28,6 +28,16 @@ public class DraggableController: MonoBehaviour
         instance.GetDraggableObjects = GetDraggableObjects ?? throw new ArgumentNullException(nameof(GetDraggableObjects));
         return instance;
     }
+    public GameObject GetGameObjectUnderMouse()
+    {
+        Vector2 mousePosition = Mouse.current.position.ReadValue();
+        return GetGameObjectUnderMouse(mousePosition);
+    }
+    public IDraggable GetDraggableUnderMouse()
+    {
+        Vector2 mousePosition = Mouse.current.position.ReadValue();
+        return GetDraggableUnderMouse(mousePosition);
+    }
     protected void Start() {
         DragAction.started += DragStarted;
         DragAction.canceled += DragCanceled;
@@ -52,7 +62,7 @@ public class DraggableController: MonoBehaviour
     private void DragStarted(InputAction.CallbackContext ctx)
     {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
-        DraggedComponent = GetDraggableUnderMouse(mousePosition);
+        DraggedComponent = GetDraggableUnderMouse();
         var worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
         if (DraggedComponent != null && GetDraggableObjects().Contains(DraggedComponent))
         {

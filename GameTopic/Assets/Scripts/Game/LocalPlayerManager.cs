@@ -5,15 +5,17 @@ using System.Collections;
 using Cysharp.Threading.Tasks;
 using UnityEngine.InputSystem;
 using System.Linq;
+using AbilitySystem.Authoring;
 
 public class LocalPlayerManager : NetworkBehaviour
 {
     public CinemachineVirtualCamera VirtualCamera;
     public IPlayer Player { get; private set; }
-    public InputActionAsset inputActionsMap;
     public float AssemblyRange = 30f;
     public Minimap Minimap;
     private AssemblyController assemblyController;
+    [SerializeField]
+    private LocalPlayerInputManager localPlayerInputManager;
 
 
 
@@ -26,17 +28,20 @@ public class LocalPlayerManager : NetworkBehaviour
         SetPlayer();
         await UniTask.WaitUntil(() => Player.IsLoaded);
         SetCamera();
-        assemblyController = AssemblyController.CreateInstance(gameObject, GetConnectableGameObjects, inputActionsMap["Drag"], inputActionsMap["FlipComponent"]);
+        localPlayerInputManager.AbilityActionMap = Player.AbilityActionMap;
+        assemblyController = AssemblyController.CreateInstance(gameObject, GetConnectableGameObjects, localPlayerInputManager.DragComponentAction, localPlayerInputManager.FlipComponentAction);
         assemblyController.enabled = false;
-        inputActionsMap["AssemblyToggle"].started += _ => {
-            assemblyController.enabled = !assemblyController.enabled;
-            if (assemblyController.enabled) Player.DisableAbilityInput();
-            else Player.EnableAbilityInput();
-            Debug.Log($"AssemblyController enabled: {assemblyController.enabled}");
-        };
-        inputActionsMap["AssemblyToggle"].Enable();
-        Player.EnableAbilityInput();
+        localPlayerInputManager.AssemblyToggleAction.started += OnAssemblyToggle;
+        localPlayerInputManager.GameActionMap.Enable();
+        localPlayerInputManager.AbilityActionMap.Enable();
     }
+    private void OnAssemblyToggle(InputAction.CallbackContext _){
+        assemblyController.enabled = !assemblyController.enabled;
+        if (assemblyController.enabled) localPlayerInputManager.AbilityActionMap.Disable();
+        else localPlayerInputManager.AbilityActionMap.Enable();
+        Debug.Log($"AssemblyController enabled: {assemblyController.enabled}");
+    }
+
 
     private IGameComponent[] GetConnectableGameObjects(){
         var colliders = Physics2D.OverlapCircleAll(Player.SelfDevice.RootGameComponent.BodyTransform.position, AssemblyRange);

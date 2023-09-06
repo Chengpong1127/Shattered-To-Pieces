@@ -19,7 +19,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public IConnector Connector => connector;
     public ICoreComponent CoreComponent => coreComponent;
     public Transform DraggableTransform => bodyTransform;
-    public Animator BodyAnimator { get; private set;}
+    public Animator BodyAnimator => bodyAnimator;
     public string ComponentName { get; set; }
 
     public NetworkObject BodyNetworkObject => bodyNetworkObject;
@@ -44,6 +44,9 @@ public class GameComponent : MonoBehaviour, IGameComponent
     [Tooltip("The core component of the game component.")]
     [SerializeField]
     private ICoreComponent coreComponent;
+    [Tooltip("The animator of the game component.")]
+    [SerializeField]
+    private Animator bodyAnimator;
 
     #endregion
 
@@ -148,7 +151,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
         connector ??= GetComponentInChildren<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
         coreComponent ??= GetComponentInChildren<ICoreComponent>() ?? throw new ArgumentNullException(nameof(coreComponent));
         bodyNetworkObject ??= GetComponent<NetworkObject>() ?? throw new ArgumentNullException(nameof(bodyNetworkObject));
-        BodyAnimator ??= GetComponentInChildren<Animator>();
+        bodyAnimator ??= GetComponent<Animator>();
 
         coreComponent.OwnerGameComponent = this;
         
