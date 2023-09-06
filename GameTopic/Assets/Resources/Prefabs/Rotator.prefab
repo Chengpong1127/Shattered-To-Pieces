@@ -40,6 +40,14 @@ PrefabInstance:
       propertyPath: _attributeSystem
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: bodyAnimator
+      value: 
+      objectReference: {fileID: 2787966095307734018}
+    - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: coreComponent
+      value: 
+      objectReference: {fileID: 8346728082515019336}
     - target: {fileID: 5695733424141944505, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalScale.x
       value: 1

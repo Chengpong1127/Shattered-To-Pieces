@@ -54,6 +54,8 @@ MonoBehaviour:
   bodyTransform: {fileID: 83278328107055668}
   bodyRigidbody: {fileID: 8325037317396394130}
   bodyCollider: {fileID: 8307455547210596111}
+  coreComponent: {fileID: 317137341013168542}
+  bodyAnimator: {fileID: 0}
 --- !u!50 &8325037317396394130
 Rigidbody2D:
   serializedVersion: 4
