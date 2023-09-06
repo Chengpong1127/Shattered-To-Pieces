@@ -54,7 +54,7 @@ public class BatRotation : AbstractAbilityScriptableObject
 
         protected override IEnumerator PreActivate()
         {
-            yield return null;
+            yield return base.PreActivate();
         }
     }
 }
