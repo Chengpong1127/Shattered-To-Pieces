@@ -18,22 +18,32 @@ public class WindAbility : AbstractAbilityScriptableObject
 
     public class WindAbilitySpec : RunnerAbilitySpec
     {
-        public SpriteRenderer fan;
-        public ICharacterCtrl Character;
-        public BaseCoreComponent body;
+        ICharacterCtrl Character;
+        BaseCoreComponent body;
+        Animator animator;
+
         bool Active;
+
         public WindAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
-            
-            fan=SelfEntity.gameObject.GetComponent<SpriteRenderer>();
             var obj = SelfEntity as IBodyControlable ?? throw new System.ArgumentNullException("SelfEntity");
             body = obj.body;
+            animator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
+            var child = SelfEntity.transform.parent.GetChild(2);
+
+            for(int i = 0; i < child.childCount; i++)
+            {
+
+            }
+            Debug.Log(animator.name);
             Active = false;
         }
 
         public override void CancelAbility()
         {
+            animator.SetBool("Blow", false);
             Active = false;
+
             return;
         }
 
@@ -44,15 +54,17 @@ public class WindAbility : AbstractAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
+
             while (Active)
             {
-                if (fan.flipX)
+                animator.SetBool("Blow", true);
+                if (SelfEntity.transform.parent.localScale.x>0)
                 {
-                    Character.HorizontalMove(-3f);
+                    Character.HorizontalMove(3f);
                 }
                 else
                 {
-                    Character.HorizontalMove(3f);
+                    Character.HorizontalMove(-3f);
                 }
                 yield return null;
             }
@@ -65,6 +77,7 @@ public class WindAbility : AbstractAbilityScriptableObject
         {
             Character = body.Root as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl"); 
             Active = true;
+
             yield return null;
         }
     }

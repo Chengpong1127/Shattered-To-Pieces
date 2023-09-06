@@ -8,8 +8,6 @@ public class Fan : BaseCoreComponent, IBodyControlable
     protected override void Awake()
     {
         body = this;
-
-
         base.Awake();
     }
 }
