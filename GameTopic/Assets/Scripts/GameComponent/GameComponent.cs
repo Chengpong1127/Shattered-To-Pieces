@@ -151,7 +151,7 @@ public class GameComponent : MonoBehaviour, IGameComponent
         connector ??= GetComponentInChildren<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
         coreComponent ??= GetComponentInChildren<BaseCoreComponent>() ?? throw new ArgumentNullException(nameof(coreComponent));
         bodyNetworkObject ??= GetComponent<NetworkObject>() ?? throw new ArgumentNullException(nameof(bodyNetworkObject));
-        bodyAnimator ??= GetComponent<Animator>();
+        bodyAnimator ??= GetComponentInChildren<Animator>();
 
         coreComponent.OwnerGameComponent = this;
         

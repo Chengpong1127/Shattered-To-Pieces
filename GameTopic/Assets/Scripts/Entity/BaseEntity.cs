@@ -10,7 +10,6 @@ public abstract class BaseEntity : NetworkBehaviour
     public virtual Collider2D BodyCollider { get; protected set; }
     protected virtual void Awake()
     {
-        if (!IsServer) return;
         BodyTransform = transform;
         BodyRigidbody = GetComponent<Rigidbody2D>();
         BodyCollider = GetComponent<Collider2D>();

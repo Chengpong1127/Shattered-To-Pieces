@@ -17,7 +17,6 @@ public class Entity: BaseEntity{
     [SerializeField]
     protected AbstractAbilityScriptableObject[] InitializationAbilities;
     protected override void Awake() {
-        if (!IsServer) return;
         base.Awake();
         AttributeSystemComponent ??= GetComponent<AttributeSystemComponent>();
         AbilitySystemCharacter ??= GetComponent<AbilitySystemCharacter>();

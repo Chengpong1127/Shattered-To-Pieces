@@ -149,9 +149,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3866586033599401151}
     - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: bodyAnimator
+      value: 
+      objectReference: {fileID: 7913336177616231855}
+    - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: bodyCollider
       value: 
       objectReference: {fileID: 4188707942884288980}
+    - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: coreComponent
+      value: 
+      objectReference: {fileID: 5712121747296150700}
     - target: {fileID: 5957387579149278726, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_IsActive
       value: 1

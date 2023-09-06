@@ -43,15 +43,15 @@ public class RegenerationAbility : AbstractAbilityScriptableObject
             if (component == null) yield break;
             var baseCoreComponent = component.CoreComponent;
             if (baseCoreComponent == null) yield break;
-
+            Debug.Log("Start Regeneration");
             
             yield return new WaitForSeconds(RegenerationTime);
-            GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(SelfEntity, baseCoreComponent as Entity, RegenerationEffect);
+            GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(SelfEntity, baseCoreComponent, RegenerationEffect);
         }
 
         protected override IEnumerator PreActivate()
         {
-            yield return null;
+            yield return base.PreActivate();
         }
     }
 }
