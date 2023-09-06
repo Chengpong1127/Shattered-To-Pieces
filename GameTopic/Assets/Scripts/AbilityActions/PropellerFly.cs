@@ -42,7 +42,8 @@ public class PropellerFly : AbstractAbilityScriptableObject {
         protected override IEnumerator ActivateAbility() {
             while (Active) {
                 Debug.Log(Power);
-                Character.AddForce(Body.BodyTransform.TransformDirection(Vector3.up) * Power,ForceMode2D.Force);
+                // Character.AddForce(Body.BodyTransform.TransformDirection(Vector3.up) * Power,ForceMode2D.Force);
+                Character.Move(Body.BodyTransform.TransformDirection(Vector3.up) * Power);
                 yield return null;
             }
         }
