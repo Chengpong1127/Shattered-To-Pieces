@@ -36,7 +36,6 @@ public class AbilityRebinder : IAbilityRebinder
         actionEnabled = action.enabled;
         action.Disable();
         rebindingOperation = action.PerformInteractiveRebinding()
-            .WithControlsExcluding("Mouse")
             .OnComplete(operation => RebindingComplete(abilityButtonID, operation))
             .Start();
 

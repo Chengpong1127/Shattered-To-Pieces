@@ -66,7 +66,6 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     public AbilityRunner AbilityRunner { get; private set; }
 
     public int CurrentLoadedDeviceID { get; private set; } = 0;
-    private PlayerInput playerInput;
     private InputActionMap AbilityInputActionMap;
     private GameEffectManager gameEffectManager;
 
@@ -75,12 +74,14 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     protected void Awake() {
         NetworkManager.Singleton.StartServer();
         _gameComponentFactory = new NetworkGameComponentFactory();
-        playerInput = GetComponent<PlayerInput>();
         ControlledDevice = new Device(_gameComponentFactory);
         LoadDevice(CurrentLoadedDeviceID);
         AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager);
-
-        AssemblySystemManager = AssemblyController.CreateInstance(gameObject, () => SpawnedGameComponents.ToArray(), playerInput.currentActionMap.FindAction("Drag"), playerInput.currentActionMap.FindAction("FlipComponent"), 45f);
+        AssemblySystemManager = AssemblyController.CreateInstance(
+            gameObject, () => SpawnedGameComponents.ToArray(), 
+            LocalPlayerInputManager.Instance.DragComponentAction,
+            LocalPlayerInputManager.Instance.FlipComponentAction, 
+            45f);
 
         SetEventHandler();
         gameEffectManager = new GameEffectManager();

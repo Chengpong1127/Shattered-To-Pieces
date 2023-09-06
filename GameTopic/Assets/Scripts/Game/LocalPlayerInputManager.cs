@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class LocalPlayerInputManager: SingletonMonoBehavior<LocalPlayerInputManager>{
     public PlayerInput playerInput;
-    public InputActionMap GameActionMap { get; set;}
+    public InputActionMap GameActionMap => playerInput.currentActionMap;
     public InputActionMap AbilityActionMap { get; set;}
     public InputAction FlipComponentAction => GameActionMap.FindAction("FlipComponent");
     public InputAction DragComponentAction => GameActionMap.FindAction("Drag");
@@ -31,7 +31,6 @@ public class LocalPlayerInputManager: SingletonMonoBehavior<LocalPlayerInputMana
     public void Awake()
     {
         Debug.Assert(playerInput != null, "playerInput != null");
-        GameActionMap = playerInput.actions.FindActionMap("Game");
 
     }
 

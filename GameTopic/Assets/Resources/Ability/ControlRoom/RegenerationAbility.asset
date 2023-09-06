@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e708be194774b4f2a86cbd6315b56120, type: 3}
   m_Name: RegenerationAbility
   m_EditorClassIdentifier: 
-  AbilityName: 
+  AbilityName: Regenerate
   AbilityTags:
     AssetTag: {fileID: 0}
     CancelAbilitiesWithTags: []
@@ -29,5 +29,5 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  RegenerationEffect: {fileID: 0}
-  RegenerationTime: 0
+  RegenerationEffect: {fileID: 11400000, guid: 0749517008d1942f99340f5270d965d7, type: 2}
+  RegenerationTime: 2
