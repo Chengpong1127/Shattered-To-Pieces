@@ -1,55 +1,31 @@
 using AbilitySystem;
 using AbilitySystem.Authoring;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
-using UnityEngine.UIElements;
-using DG.Tweening;
 
 [CreateAssetMenu(fileName = "RotatorAbility", menuName = "Ability/RotatorAbility")]
 public class RotatorAbility : AbstractAbilityScriptableObject {
 
-    [SerializeField] protected float RotationValue;
-    [SerializeField] protected float DurationTime;
-    [SerializeField] protected RotateMode RotateMode;
-    [SerializeField] protected Ease EaseMode;
+    [SerializeField] float Speed;
 
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner) {
         var spec = new RotatorAbilitySpec(this, owner) {
-            angle = RotationValue,
-            duration = DurationTime,
-            rotateMode = RotateMode,
-            easeMode = EaseMode
+            Speed = Speed
         };
-
-        spec.SetValues();
         return spec;
     }
 
     public class RotatorAbilitySpec : RunnerAbilitySpec {
-        public float angle;
-        public float duration;
-        public Transform RotationTransform;
-        public Transform RotateCenter;
-        public RotateMode rotateMode;
-        public Ease easeMode;
 
-        Sequence abilitySequence;
-        Vector3 angleVec;
-
+        public float Speed;
+        Animator animator;
+        bool Active;
         public RotatorAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner) {
-            var rotatable = SelfEntity as IRotatable ?? throw new System.ArgumentNullException("SelfEntity");
-            RotationTransform = rotatable.RotateBody;
-            RotateCenter = rotatable.RotateCenter;
-            abilitySequence = DOTween.Sequence();
-            abilitySequence.SetLoops(-1,LoopType.Yoyo);
-            
+            animator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
         }
 
         public override void CancelAbility() {
-            abilitySequence.Restart();
-            abilitySequence.Pause();
+            Active = false;
             return;
         }
 
@@ -58,20 +34,16 @@ public class RotatorAbility : AbstractAbilityScriptableObject {
         }
 
         protected override IEnumerator ActivateAbility() {
-            abilitySequence.Play();
+            animator.SetBool("Rotate", true);
+            yield return new WaitUntil(() =>  !Active );
+            animator.SetBool("Rotate", false);
             yield return null;
         }
 
         protected override IEnumerator PreActivate() {
+            Active = true;
+            animator.SetFloat("Speed", Speed);
             yield return null;
-        }
-
-        public void SetValues() {
-            angleVec.z = angle;
-            abilitySequence.Append(
-                RotationTransform.DOLocalRotate(RotationTransform.localPosition + angleVec, duration, rotateMode)
-                    .SetEase(easeMode));
-            abilitySequence.Pause();
         }
     }
 }
