@@ -298,6 +298,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Leg
       objectReference: {fileID: 0}
+    - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: bodyAnimator
+      value: 
+      objectReference: {fileID: 6170520522624279152}
+    - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: coreComponent
+      value: 
+      objectReference: {fileID: 3105740328297993806}
     - target: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

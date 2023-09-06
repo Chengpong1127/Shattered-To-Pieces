@@ -49,6 +49,12 @@ public class AssemblyController : MonoBehaviour
     {
         DraggableController.enabled = false;
     }
+    public GameComponent GetGameComponentUnderMouse()
+    {
+        var draggable = DraggableController.GetDraggableUnderMouse();
+        if (draggable == null) return null;
+        return draggable as GameComponent;
+    }
 
     private void FlipHandler(InputAction.CallbackContext context){
         DraggableController.DraggedComponent?.ToggleXScale();

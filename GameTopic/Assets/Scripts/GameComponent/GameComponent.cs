@@ -17,9 +17,9 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public IList<ITreeNode> Children { get; private set; } = new List<ITreeNode>();
 
     public IConnector Connector => connector;
-    public ICoreComponent CoreComponent => coreComponent;
+    public BaseCoreComponent CoreComponent => coreComponent;
     public Transform DraggableTransform => bodyTransform;
-    public Animator BodyAnimator { get; private set;}
+    public Animator BodyAnimator => bodyAnimator;
     public string ComponentName { get; set; }
 
     public NetworkObject BodyNetworkObject => bodyNetworkObject;
@@ -43,7 +43,10 @@ public class GameComponent : MonoBehaviour, IGameComponent
     private IConnector connector;
     [Tooltip("The core component of the game component.")]
     [SerializeField]
-    private ICoreComponent coreComponent;
+    private BaseCoreComponent coreComponent;
+    [Tooltip("The animator of the game component.")]
+    [SerializeField]
+    private Animator bodyAnimator;
 
     #endregion
 
@@ -146,9 +149,9 @@ public class GameComponent : MonoBehaviour, IGameComponent
         bodyRigidbody ??= GetComponent<Rigidbody2D>() ?? throw new ArgumentNullException(nameof(bodyRigidbody));
         bodyCollider ??= GetComponent<Collider2D>() ?? throw new ArgumentNullException(nameof(bodyCollider));
         connector ??= GetComponentInChildren<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
-        coreComponent ??= GetComponentInChildren<ICoreComponent>() ?? throw new ArgumentNullException(nameof(coreComponent));
+        coreComponent ??= GetComponentInChildren<BaseCoreComponent>() ?? throw new ArgumentNullException(nameof(coreComponent));
         bodyNetworkObject ??= GetComponent<NetworkObject>() ?? throw new ArgumentNullException(nameof(bodyNetworkObject));
-        BodyAnimator ??= GetComponentInChildren<Animator>();
+        bodyAnimator ??= GetComponentInChildren<Animator>();
 
         coreComponent.OwnerGameComponent = this;
         

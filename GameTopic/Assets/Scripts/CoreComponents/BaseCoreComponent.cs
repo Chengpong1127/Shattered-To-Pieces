@@ -20,12 +20,12 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
     /// <summary>
     /// Get the controllable collider of the game component.
     /// </summary>
-    public override Collider2D BodyCollider => OwnerGameComponent.BodyCollider;
+    public override Collider2D BodyCollider => OwnerGameComponent?.BodyCollider;
     /// <summary>
     /// Get the camera of the game component.
     /// </summary> 
     public Camera PlayerCamera => Camera.main;
-    public Animator BodyAnimator => OwnerGameComponent?.BodyAnimator;
+    public Animator BodyAnimator => OwnerGameComponent.BodyAnimator;
 
     /// <summary>
     /// Get the root core component of the game component in the device.
@@ -107,6 +107,7 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
 
     protected override void Awake() {
         base.Awake();
+        OwnerGameComponent = GetComponentInParent<IGameComponent>();
     }
 
     public override void Repel(Vector2 force){

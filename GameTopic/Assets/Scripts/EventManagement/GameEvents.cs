@@ -1,6 +1,12 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
+using AbilitySystem;
+using AttributeSystem.Components;
+using AttributeSystem.Authoring;
+using AbilitySystem.Authoring;
+
 
 public static class GameEvents{
 
@@ -73,17 +79,29 @@ public static class GameEvents{
         /// <summary>
         /// Used to request giving a game effect to an entity.
         /// </summary>
-        public static Action<Entity, Entity, AbilitySystem.Authoring.GameplayEffectScriptableObject> RequestGiveGameEffect = delegate { };
+        public static Action<Entity, Entity, GameplayEffectScriptableObject> RequestGiveGameEffect = delegate { };
         /// <summary>
         /// Used to request simply modifying an attribute of an entity.
         /// </summary>
-        public static Action<Entity, Entity, AbilitySystem.GameplayEffectModifier> RequestModifyAttribute = delegate { };
+        public static Action<Entity, Entity, GameplayEffectModifier> RequestModifyAttribute = delegate { };
+
+
     }
     public static class LobbyEvents{
         /// <summary>
         /// Triggered after the lobby data is changed.
         /// </summary>
-        public static Action<System.Collections.Generic.Dictionary<string, string>> OnLobbyDataChanged = delegate { };
+        public static Action<Dictionary<string, string>> OnLobbyDataChanged = delegate { };
+    }
+
+    public static class AttributeEvents{
+        /// <summary>
+        /// Triggered after the attribute is changed.
+        /// Parameters: (entity, attribute, old value, new value)
+        /// </summary>
+        public static Action<Entity, AttributeScriptableObject, float, float> OnEntityAttributeChanged = delegate { };
+
+        public static Action<Entity, float, float> OnEntityHealthChanged = delegate { };
     }
 
 }

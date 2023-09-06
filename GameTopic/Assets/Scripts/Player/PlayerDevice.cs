@@ -21,7 +21,7 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     private IGameComponentFactory GameComponentFactory;
 
     private AbilityRunner abilityRunner;
-    private InputActionMap abilityActionMap;
+    public InputActionMap AbilityActionMap { get; private set; }
 
     [ServerRpc]
     private void LoadDeviceServerRpc(string json)
@@ -52,17 +52,10 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
         if (IsOwner){
             DeviceInfo info = GetLocalDeviceInfo();
             LoadDeviceServerRpc(info.ToJson());
-            abilityActionMap = info.AbilityManagerInfo.GetAbilityInputActionMap();
-            abilityActionMap.Enable();
+            AbilityActionMap = info.AbilityManagerInfo.GetAbilityInputActionMap();
             GameEvents.AbilityRunnerEvents.OnLocalStartAbility += StartAbility_ServerRPC;
             GameEvents.AbilityRunnerEvents.OnLocalCancelAbility += CancelAbility_ServerRPC;
         }
-    }
-    public void EnableAbilityInput(){
-        abilityActionMap.Enable();
-    }
-    public void DisableAbilityInput(){
-        abilityActionMap.Disable();
     }
 
     private DeviceInfo GetLocalDeviceInfo(){

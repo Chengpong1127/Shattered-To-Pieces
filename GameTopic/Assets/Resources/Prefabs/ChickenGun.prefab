@@ -160,6 +160,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChickenGun
       objectReference: {fileID: 0}
+    - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: bodyAnimator
+      value: 
+      objectReference: {fileID: 7124424278595661063}
+    - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: coreComponent
+      value: 
+      objectReference: {fileID: 4784244132975923383}
     - target: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

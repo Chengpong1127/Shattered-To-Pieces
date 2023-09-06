@@ -375,6 +375,10 @@ PrefabInstance:
       propertyPath: AttributeSystemEvents.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3949341022062034961, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: _attributeSystem
+      value: 
+      objectReference: {fileID: 4087407509902413755}
     - target: {fileID: 4234352918938833372, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_Mass
       value: 2
@@ -538,7 +542,8 @@ MonoBehaviour:
   AttributeSystemComponent: {fileID: 4087407509902413755}
   AbilitySystemCharacter: {fileID: 5886781672900552304}
   InitializationAbilities: []
-  Abilities: []
+  Abilities:
+  - {fileID: 11400000, guid: 7ff9a5176798b43eb8bbbe6667a82be6, type: 2}
   LandCheckCollider: {fileID: 3851937024220445991}
   LandCheckGE: {fileID: 11400000, guid: 0943c1d519ba5d34db8ca32803e91846, type: 2}
 --- !u!61 &3851937024220445991

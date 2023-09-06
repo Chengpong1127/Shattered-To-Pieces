@@ -173,7 +173,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 6508652183922362645}
   bodyRigidbody: {fileID: 4234352918938833372}
-  bodyCollider: {fileID: 0}
+  bodyCollider: {fileID: 7388634133129272788}
+  coreComponent: {fileID: 0}
+  bodyAnimator: {fileID: 0}
 --- !u!50 &4234352918938833372
 Rigidbody2D:
   serializedVersion: 4

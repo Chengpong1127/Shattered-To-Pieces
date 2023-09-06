@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using AbilitySystem.Authoring;
 
 /// <summary>
 /// Device of the game. Must assign GameComponentFactory after Initialize.

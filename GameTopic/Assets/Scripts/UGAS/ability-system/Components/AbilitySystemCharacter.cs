@@ -67,7 +67,6 @@ namespace AbilitySystem
                 Source: this,
                 Level: level.GetValueOrDefault(1));
         }
-
         bool CheckTagRequirementsMet(GameplayEffectSpec geSpec)
         {
             /// Build temporary list of all gametags currently applied

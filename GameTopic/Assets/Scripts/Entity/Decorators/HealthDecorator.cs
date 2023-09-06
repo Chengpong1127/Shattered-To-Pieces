@@ -11,16 +11,14 @@ public class HealthEntityDecorator : Singleton<HealthEntityDecorator>, IMonoDeco
     protected GameplayEffectScriptableObject HealInitialEffect;
     protected AbstractAttributeEventHandler ShowDamageNumbers;
 
-    public HealthEntityDecorator(){
+    public Entity Decorate(Entity entity)
+    {
         HealthAttribute = ResourceManager.Instance.LoadAttribute("Health");
         MaxHealthAttribute = ResourceManager.Instance.LoadAttribute("MaxHealth");
         MinHealthAttribute = ResourceManager.Instance.LoadAttribute("MinHealth");
         HealthEventHandler = ResourceManager.Instance.LoadAttributeEventHandler("HealthEventHandler");
         HealInitialEffect = ResourceManager.Instance.LoadGameplayEffect("HealthInit");
         ShowDamageNumbers = ResourceManager.Instance.LoadAttributeEventHandler("Damage Numbers");
-    }
-    public Entity Decorate(Entity entity)
-    {
         entity.AttributeSystemComponent.AddAttributes(HealthAttribute, MaxHealthAttribute, MinHealthAttribute);
         entity.AttributeSystemComponent.AddAttributeEventHandlers(HealthEventHandler);
         entity.AttributeSystemComponent.AddAttributeEventHandlers(ShowDamageNumbers);

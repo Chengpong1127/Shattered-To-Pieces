@@ -21,7 +21,7 @@ public interface IGameComponent: ITreeNode, IUnit, IDraggable
     /// The core component of the game component.
     /// </summary>
     /// <value></value>
-    public ICoreComponent CoreComponent { get; }
+    public BaseCoreComponent CoreComponent { get; }
     /// <summary>
     /// Connect to a parent component.
     /// </summary>

@@ -25,7 +25,7 @@ public class BatRotation : AbstractAbilityScriptableObject
 
         public BatRotationSpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
-            entityAnimator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
+            entityAnimator = (SelfEntity as BaseCoreComponent)?.BodyAnimator;
             entityTriggerable = (SelfEntity as IEntityTriggerable) ?? throw new System.ArgumentNullException("The entity should have entity triggerable.");
         }
 
@@ -54,7 +54,7 @@ public class BatRotation : AbstractAbilityScriptableObject
 
         protected override IEnumerator PreActivate()
         {
-            yield return null;
+            yield return base.PreActivate();
         }
     }
 }
