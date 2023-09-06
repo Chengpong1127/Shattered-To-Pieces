@@ -28,5 +28,5 @@ MonoBehaviour:
       RequireTags: []
       IgnoreTags: []
   Cost: {fileID: 0}
-  Cooldown: {fileID: 0}
+  Cooldown: {fileID: 11400000, guid: 738306c016b184e2e80d97a860f4f571, type: 2}
   BatDamageEffect: {fileID: 11400000, guid: ab4c43a8c1dba40848af589d6164b174, type: 2}
