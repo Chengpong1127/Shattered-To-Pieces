@@ -6,7 +6,7 @@ using UnityEngine;
 using static LoaderPush;
 
 [CreateAssetMenu(fileName = "AddGE", menuName = "Ability/AddGE")]
-public class AddGE : AbstractAbilityScriptableObject {
+public class AddGE : DisplayableAbilityScriptableObject {
     public GameplayEffectScriptableObject gameEffect;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner) {
         var spec = new AddGESpec(this, owner) {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ChainsawAttack", menuName = "Ability/ChainsawAttack")]
-public class ChainsawAttack : AbstractAbilityScriptableObject {
+public class ChainsawAttack : DisplayableAbilityScriptableObject {
     public GameplayEffectScriptableObject BatDamageEffect;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner) {
         var spec = new ChainsawAttackSpec(this, owner) {

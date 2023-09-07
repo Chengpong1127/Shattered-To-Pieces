@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WindAbility", menuName = "Ability/WindAbility")]
-public class WindAbility : AbstractAbilityScriptableObject
+public class WindAbility : DisplayableAbilityScriptableObject
 {
 
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)

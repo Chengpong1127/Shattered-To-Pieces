@@ -5,7 +5,7 @@ using AbilitySystem.Authoring;
 using AbilitySystem;
 using DG.Tweening;
 [CreateAssetMenu(fileName = "InvisibleAbility", menuName = "Ability/InvisibleAbility")]
-public class InvisibleAbility : AbstractAbilityScriptableObject
+public class InvisibleAbility : DisplayableAbilityScriptableObject
 {
     [SerializeField]
     Material invisible;

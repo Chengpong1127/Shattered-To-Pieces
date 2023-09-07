@@ -5,7 +5,7 @@ using AbilitySystem.Authoring;
 using AbilitySystem;
 using DG.Tweening;
 [CreateAssetMenu(fileName = "RubbergunAbility", menuName = "Ability/RubbergunAbility")]
-public class RubbergunAbility : AbstractAbilityScriptableObject
+public class RubbergunAbility : DisplayableAbilityScriptableObject
 {
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {

@@ -7,7 +7,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "LoaderPush", menuName = "Ability/LoaderPush")]
-public class LoaderPush : AbstractAbilityScriptableObject {
+public class LoaderPush : DisplayableAbilityScriptableObject {
     [SerializeField] float Power;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner) {
         var spec = new LoaderPushSpec(this, owner) {

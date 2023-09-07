@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "RotatorAbility", menuName = "Ability/RotatorAbility")]
-public class RotatorAbility : AbstractAbilityScriptableObject {
+public class RotatorAbility : DisplayableAbilityScriptableObject {
 
     [SerializeField] float Speed;
 

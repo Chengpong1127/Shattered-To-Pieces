@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "PropellerFly", menuName = "Ability/PropellerFly")]
-public class PropellerFly : AbstractAbilityScriptableObject {
+public class PropellerFly : DisplayableAbilityScriptableObject {
 
     [SerializeField] float Power;
     

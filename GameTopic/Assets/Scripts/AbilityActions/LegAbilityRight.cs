@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LegAbilityRight", menuName = "Ability/LegAbilityRight")]
-public class LegAbilityRight : AbstractAbilityScriptableObject {
+public class LegAbilityRight : DisplayableAbilityScriptableObject {
     [SerializeField] Vector3 Direction;
     [SerializeField] float Speed;
     [SerializeField] string AnimationName;

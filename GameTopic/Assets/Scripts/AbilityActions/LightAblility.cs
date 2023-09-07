@@ -5,7 +5,7 @@ using AbilitySystem.Authoring;
 using AbilitySystem;
 using DG.Tweening;
 [CreateAssetMenu(fileName = "LightAbility", menuName = "Ability/LightAbility")]
-public class LightAbility : AbstractAbilityScriptableObject
+public class LightAbility : DisplayableAbilityScriptableObject
 {
     protected float DurationTime = 4.0f;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)

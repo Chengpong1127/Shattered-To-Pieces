@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "AimAbility", menuName = "Ability/AimAbility")]
-public class AimAbility: AbstractAbilityScriptableObject{
+public class AimAbility: DisplayableAbilityScriptableObject{
     [SerializeField]
     protected EndTriggerType endTriggerType;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)

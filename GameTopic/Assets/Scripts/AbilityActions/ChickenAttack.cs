@@ -6,7 +6,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "ChickenAttack", menuName = "Ability/ChickenAttack")]
-public class ChickenAttack : AbstractAbilityScriptableObject {
+public class ChickenAttack : DisplayableAbilityScriptableObject {
     public GameObject SummonPrefab;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner) {
         var spec = new ChickenAttackSpec(this, owner) {

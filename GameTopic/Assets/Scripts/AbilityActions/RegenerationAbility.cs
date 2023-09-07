@@ -6,7 +6,7 @@ using AbilitySystem;
 using AbilitySystem.ModifierMagnitude;
 
 [CreateAssetMenu(fileName = "RegenerationAbility", menuName = "Ability/RegenerationAbility")]
-public class RegenerationAbility : AbstractAbilityScriptableObject
+public class RegenerationAbility : DisplayableAbilityScriptableObject
 {
     public GameplayEffectScriptableObject RegenerationEffect;
     public float RegenerationTime;

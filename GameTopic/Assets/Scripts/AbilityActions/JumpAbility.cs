@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "JumpAbility", menuName = "Ability/JumpAbility")]
-public class JumpAbility : AbstractAbilityScriptableObject {
+public class JumpAbility : DisplayableAbilityScriptableObject {
 
     [SerializeField] float Power;
 

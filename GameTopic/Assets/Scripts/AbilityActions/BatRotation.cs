@@ -5,7 +5,7 @@ using AbilitySystem.Authoring;
 using AbilitySystem;
 using AbilitySystem.ModifierMagnitude;
 [CreateAssetMenu(fileName = "BatRotation", menuName = "Ability/BatRotation")]
-public class BatRotation : AbstractAbilityScriptableObject
+public class BatRotation : DisplayableAbilityScriptableObject
 {
     public GameplayEffectScriptableObject BatDamageEffect;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)

@@ -4,7 +4,7 @@ using AbilitySystem;
 using System.Collections;
 
 [CreateAssetMenu(fileName = "SummonAbility", menuName = "Ability/SummonAbility")]
-public class SummonAbility : AbstractAbilityScriptableObject
+public class SummonAbility : DisplayableAbilityScriptableObject
 {
     [SerializeField]
     protected GameObject SummonPrefab;
