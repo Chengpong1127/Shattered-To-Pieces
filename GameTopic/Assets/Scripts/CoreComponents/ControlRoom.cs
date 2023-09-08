@@ -12,6 +12,7 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
 
     [SerializeField] Collider2D LandCheckCollider;
     [SerializeField] GameplayEffectScriptableObject LandCheckGE;
+    [SerializeField] GameplayEffectScriptableObject VelocityInit;
     GameplayEffectSpec LandCheckGESpec;
     static ContactFilter2D filter = new();
     List<Collider2D> collisionResult = new();
@@ -19,6 +20,7 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
         base.Awake();
         Bondage();
         LandCheckGESpec = this.AbilitySystemCharacter.MakeOutgoingSpec(LandCheckGE);
+        this.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(this.AbilitySystemCharacter.MakeOutgoingSpec(VelocityInit));
     }
 
     private void Update() {
