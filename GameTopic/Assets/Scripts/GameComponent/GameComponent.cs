@@ -136,7 +136,6 @@ public class GameComponent : NetworkBehaviour, IGameComponent
     }
     [ClientRpc]
     public void SetAvailableForConnectionClientRpc(bool available){
-        Debug.Log("SetAvailableForConnectionClientRpc");
         switch(available){
             case true:
                 connector.SetNonConnectedTargetsDisplay(true);

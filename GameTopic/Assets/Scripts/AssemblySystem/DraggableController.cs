@@ -21,22 +21,13 @@ public class DraggableController: NetworkBehaviour
         NetworkVariableWritePermission.Owner
     );
     public void Initialize(Func<ulong[]> GetDraggableObjects, InputAction dragAction, Camera mainCamera){
-        DragAction = dragAction ?? throw new ArgumentNullException(nameof(dragAction));
-        MainCamera = mainCamera;
-        if (mainCamera == null)
-        {
-            Debug.LogWarning("Main camera is null");
+        if (IsOwner){
+            DragAction = dragAction ?? throw new ArgumentNullException(nameof(dragAction));
+            MainCamera = mainCamera;
+            this.GetDraggableObjects = GetDraggableObjects ?? throw new ArgumentNullException(nameof(GetDraggableObjects));
+            DragAction.started += DragStarted;
+            DragAction.canceled += DragCanceled;
         }
-        this.GetDraggableObjects = GetDraggableObjects ?? throw new ArgumentNullException(nameof(GetDraggableObjects));
-
-        DragAction.started += DragStarted;
-        DragAction.canceled += DragCanceled;
-        DragAction.Enable();
-    }
-    public ulong? GetDraggableIDUnderMouse()
-    {
-        var gameObject = Utils.GetGameObjectUnderMouse();
-        return gameObject?.GetComponentInParent<IDraggable>().NetworkObjectID;
     }
 
     protected void Update() {
@@ -49,38 +40,49 @@ public class DraggableController: NetworkBehaviour
         }
     }
     protected void OnEnable() {
-        DragAction?.Enable();
+        if (IsOwner){
+            DragAction?.Enable();
+        }
         
     }
     protected void OnDisable() {
-        DragAction?.Disable();
+        if (IsOwner){
+            DragAction?.Disable();
+        }
     }
     private void DragStarted(InputAction.CallbackContext ctx)
     {
-        Debug.Log("DragStarted");
-        Vector2 mousePosition = Mouse.current.position.ReadValue();
-        DraggedComponentID.Value = GetDraggableIDUnderMouse() ?? 0;
-        var worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
-        if (DraggedComponentID.Value != 0 && GetDraggableObjects().Contains(DraggedComponentID.Value))
-        {
-            OnDragStart?.Invoke(DraggedComponentID.Value, worldPoint);
-        }else{
+        if (IsOwner){
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            DraggedComponentID.Value = GetDraggableIDUnderMouse() ?? 0;
+            var worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
+            if (DraggedComponentID.Value != 0 && GetDraggableObjects().Contains(DraggedComponentID.Value))
+            {
+                OnDragStart?.Invoke(DraggedComponentID.Value, worldPoint);
+            }else{
+                DraggedComponentID.Value = 0;
+            }
+        }
+    }
+    private void DragCanceled(InputAction.CallbackContext ctx)
+    {
+        if (IsOwner){
+            if (DraggedComponentID.Value == 0)
+            {
+                return;
+            }
+            var mousePosition = Mouse.current.position.ReadValue();
+            var targetPosition = MainCamera.ScreenToWorldPoint(mousePosition);
+            Vector2 targetPosition2D = new(targetPosition.x, targetPosition.y);
+            OnDragEnd?.Invoke(DraggedComponentID.Value, targetPosition2D);
             DraggedComponentID.Value = 0;
         }
         
     }
-    private void DragCanceled(InputAction.CallbackContext ctx)
+    private ulong? GetDraggableIDUnderMouse()
     {
-        Debug.Log("DragCanceled");
-        if (DraggedComponentID.Value == 0)
-        {
-            return;
-        }
-        var mousePosition = Mouse.current.position.ReadValue();
-        var targetPosition = MainCamera.ScreenToWorldPoint(mousePosition);
-        Vector2 targetPosition2D = new(targetPosition.x, targetPosition.y);
-        OnDragEnd?.Invoke(DraggedComponentID.Value, targetPosition2D);
-        DraggedComponentID.Value = 0;
+        var gameObject = Utils.GetGameObjectUnderMouse();
+        return gameObject?.GetComponentInParent<IDraggable>()?.NetworkObjectID;
     }
     [ServerRpc]
     private void SetDraggablePositionServerRpc(ulong draggableID, Vector2 targetPosition)
@@ -90,7 +92,9 @@ public class DraggableController: NetworkBehaviour
     }
     public override void OnDestroy() {
         base.OnDestroy();
-        DragAction.started -= DragStarted;
-        DragAction.canceled -= DragCanceled;
+        if (IsOwner){
+            DragAction.started -= DragStarted;
+            DragAction.canceled -= DragCanceled;
+        }
     }
 }

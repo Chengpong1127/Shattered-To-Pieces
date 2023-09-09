@@ -55,8 +55,8 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
         GameComponentFactory = new NetworkGameComponentFactory();
     }
     void Start(){
+        playerInput = GetComponent<PlayerInput>();
         if (IsOwner){
-            playerInput = GetComponent<PlayerInput>();
             DeviceInfo info = GetLocalDeviceInfo();
             LoadDeviceServerRpc(info.ToJson());
             AbilityActionMap = info.AbilityManagerInfo.GetAbilityInputActionMap();
@@ -69,8 +69,16 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     private void InitAssemblyControl(){
         AssemblyController = GetComponent<AssemblyController>();
         Debug.Assert(AssemblyController != null, "AssemblyController is null");
-        AssemblyController.Initialize(GetDraggableNetworkIDs, GetConnectableNetworkIDs, playerInput.currentActionMap.FindAction("DragComponent"), playerInput.currentActionMap.FindAction("FlipComponent"), 45f);
-        AssemblyController.enabled = false;
+        if (IsOwner || IsServer){
+            AssemblyController.Initialize(GetDraggableNetworkIDs, GetConnectableNetworkIDs, playerInput.currentActionMap.FindAction("DragComponent"), playerInput.currentActionMap.FindAction("FlipComponent"), 45f);
+        }
+    }
+    [ClientRpc]
+    public void ToggleAssemblyClientRpc(){
+        if (IsOwner){
+            AssemblyController.enabled = !AssemblyController.enabled;
+        }
+
     }
 
     private ulong[] GetConnectableNetworkIDs()

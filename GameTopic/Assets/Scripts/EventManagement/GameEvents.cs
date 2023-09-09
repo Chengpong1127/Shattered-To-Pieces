@@ -52,7 +52,9 @@ public static class GameEvents{
         public static Action<int> OnLocalCancelAbility = delegate { };
     }
 
-    public static class AssemblySystemManagerEvents{
+    public static class AssemblyControlEvents{
+        public static Action OnLocalAssemblyControlEnabled = delegate { };
+        public static Action OnLocalAssemblyControlDisabled = delegate { };
         /// <summary>
         /// Triggered after the game component is dragged. 
         /// </summary>

@@ -41,10 +41,7 @@ public class AssemblyController : NetworkBehaviour
     }
     void OnEnable()
     {
-        if (DraggableController != null)
-        {
-            DraggableController.enabled = true;
-        }
+        DraggableController.enabled = true;
     }
     void OnDisable()
     {
@@ -56,9 +53,11 @@ public class AssemblyController : NetworkBehaviour
     }
 
     protected void Start() {
-        DraggableController.OnDragStart += HandleComponentDraggedStartServerRpc;
-        DraggableController.OnDragEnd += HandleComponentDraggedEndServerRpc;
-        DraggableController.OnScrollWhenDragging += HandleScrollWhenDragging;
+        if (IsOwner){
+            DraggableController.OnDragStart += HandleComponentDraggedStartServerRpc;
+            DraggableController.OnDragEnd += HandleComponentDraggedEndServerRpc;
+            DraggableController.OnScrollWhenDragging += HandleScrollWhenDragging;
+        }
     }
     [ServerRpc]
     private void HandleComponentDraggedStartServerRpc(ulong draggableID, Vector2 targetPosition)

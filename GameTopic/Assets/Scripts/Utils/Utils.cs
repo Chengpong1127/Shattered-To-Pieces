@@ -18,6 +18,14 @@ public static class Utils{
         }
         return localPlayerDevice;
     }
+    public static PlayerDevice ServerGetPlayerDevice(ulong playerID){
+        Debug.Assert(NetworkManager.Singleton.IsServer, "ServerGetPlayerDevice can only be called on server");
+        if(NetworkManager.Singleton.ConnectedClients.TryGetValue(playerID, out var networkClient)){
+            return networkClient.PlayerObject.GetComponent<PlayerDevice>();
+        }else{
+            throw new System.ArgumentException("Player with id " + playerID + " not found");
+        }
+    }
     public static GameObject GetLocalGameObjectByNetworkID(ulong networkID){
         if(NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkID, out var networkObject)){
             return networkObject.gameObject;

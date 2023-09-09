@@ -84,17 +84,7 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
 
 
     public void ToggleAssembly(ulong playerID){
-        var parameters = new ClientRpcParams{
-            Send = new ClientRpcSendParams{
-                TargetClientIds = new List<ulong>{playerID}
-            }
-        };
-        ToggleAssembly_ClientRpc(parameters);
-    }
-
-    [ClientRpc]
-    private void ToggleAssembly_ClientRpc(ClientRpcParams clientRpcParams = default){
-        var device = Utils.GetLocalPlayerDevice();
-        device.AssemblyController.enabled = !device.AssemblyController.enabled;
+        var player = Utils.ServerGetPlayerDevice(playerID);
+        player.ToggleAssemblyClientRpc();
     }
 }
