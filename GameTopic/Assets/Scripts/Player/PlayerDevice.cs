@@ -27,6 +27,8 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     public InputActionMap AbilityActionMap { get; private set; }
     public AssemblyController AssemblyController;
     private PlayerInput playerInput;
+    private GameObject assemblyCurtain;
+    private GameObject assemblyCurtainInstance;
     
 
     [ServerRpc]
@@ -65,6 +67,7 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
             playerInput.SwitchCurrentActionMap("Game");
         }
         InitAssemblyControl();
+        assemblyCurtain = ResourceManager.Instance.LoadPrefab("AssemblyCurtain");
     }
     private void InitAssemblyControl(){
         AssemblyController = GetComponent<AssemblyController>();
@@ -77,6 +80,14 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     public void ToggleAssemblyClientRpc(){
         if (IsOwner){
             AssemblyController.enabled = !AssemblyController.enabled;
+            if (AssemblyController.enabled){
+                assemblyCurtainInstance = Instantiate(assemblyCurtain);
+            }
+            else{
+                if (assemblyCurtainInstance != null){
+                    Destroy(assemblyCurtainInstance);
+                }
+            }
         }
 
     }
@@ -112,17 +123,5 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     
     private void LoadCheck(){
         if (!IsLoaded) throw new InvalidOperationException("The device is not loaded");
-    }
-
-    void OnDrawGizmos()
-    {
-        DrawCircleClientRpc();
-    }
-    [ClientRpc]
-    private void DrawCircleClientRpc(){
-        if (AssemblyController != null && AssemblyController.enabled){
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(Utils.GetLocalGameObjectByNetworkID(RootNetworkObjectID.Value).transform.position, AssemblyRange);
-        }
     }
 }
