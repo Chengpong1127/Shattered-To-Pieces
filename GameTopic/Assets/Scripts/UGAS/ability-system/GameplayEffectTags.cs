@@ -1,5 +1,5 @@
 using System;
-using GameplayTag.Authoring;
+using GameplayTagNamespace.Authoring;
 using UnityEngine;
 
 namespace AbilitySystem
@@ -10,12 +10,12 @@ namespace AbilitySystem
         /// <summary>
         /// The tag that defines this gameplay effect
         /// </summary>
-        [SerializeField] public GameplayTagScriptableObject AssetTag;
+        [SerializeField] public GameplayTagNamespace.Authoring.GameplayTag AssetTag;
 
         /// <summary>
         /// The tags this GE grants to the ability system character
         /// </summary>
-        [SerializeField] public GameplayTagScriptableObject[] GrantedTags;
+        [SerializeField] public GameplayTagNamespace.Authoring.GameplayTag[] GrantedTags;
 
         /// <summary>
         /// These tags determine if the GE is considered 'on' or 'off'
@@ -35,7 +35,7 @@ namespace AbilitySystem
         /// <summary>
         /// Remove GE that match these tags
         /// </summary>
-        [SerializeField] public GameplayTagScriptableObject[] RemoveGameplayEffectsWithTag;
+        [SerializeField] public GameplayTagNamespace.Authoring.GameplayTag[] RemoveGameplayEffectsWithTag;
     }
 
 }

@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameplayTag.Authoring
+namespace GameplayTagNamespace.Authoring
 {
     [CreateAssetMenu(menuName = "Gameplay Ability System/Tag")]
-    public class GameplayTagScriptableObject : ScriptableObject
+    public class GameplayTag : ScriptableObject
     {
         [SerializeField]
-        private GameplayTagScriptableObject _parent;
-        public GameplayTagScriptableObject Parent { get { return _parent; } }
+        public string TagName;
+        [SerializeField]
+        private GameplayTag _parent;
+        public GameplayTag Parent { get { return _parent; } }
 
 
         /// <summary>
@@ -18,10 +20,10 @@ namespace GameplayTag.Authoring
         /// </summary>
         /// <param name="other">Ancestor gameplay tag</param>
         /// <returns>True if this gameplay tag is a descendant of the other gameplay tag</returns>
-        public bool IsDescendantOf(GameplayTagScriptableObject other, int nSearchLimit = 4)
+        public bool IsDescendantOf(GameplayTag other, int nSearchLimit = 4)
         {
             int i = 0;
-            GameplayTagScriptableObject tag = Parent;
+            GameplayTag tag = Parent;
             while (nSearchLimit > i++)
             {
                 // tag will be invalid once we are at the root ancestor

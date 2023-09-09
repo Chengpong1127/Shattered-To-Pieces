@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using AbilitySystem.Authoring;
 using AttributeSystem.Authoring;
 using AttributeSystem.Components;
-using GameplayTag.Authoring;
+using GameplayTagNamespace.Authoring;
 using UnityEngine;
 using Unity.Netcode;
 public class Rubber :MonoBehaviour
