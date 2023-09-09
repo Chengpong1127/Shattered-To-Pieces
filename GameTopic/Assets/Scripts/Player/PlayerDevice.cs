@@ -78,8 +78,7 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
                 GetConnectableNetworkIDs, 
                 playerInput.currentActionMap.FindAction("DragComponent"), 
                 playerInput.currentActionMap.FindAction("FlipComponent"), 
-                playerInput.currentActionMap.FindAction("RotateComponent"),
-                45f);
+                playerInput.currentActionMap.FindAction("RotateComponent"));
         }
     }
     [ClientRpc]

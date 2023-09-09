@@ -1,14 +1,8 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
 using System;
-using System.Threading.Tasks;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using Unity.Netcode;
-using UnityEngine.Animations;
-using UnityEngine.InputSystem.Controls;
 
 public class AssemblyController : NetworkBehaviour
 {
@@ -30,6 +24,8 @@ public class AssemblyController : NetworkBehaviour
     /// This event will be invoked after a game component is connected to another game component.
     /// </summary>
     public event Action<IGameComponent> AfterGameComponentConnected;
+    private InputAction flipAction;
+    private InputAction rotateAction;
 
     public void Initialize(
         Func<ulong[]> getDraggableGameObjectIDs, 
@@ -37,36 +33,64 @@ public class AssemblyController : NetworkBehaviour
         InputAction dragAction, 
         InputAction flipAction, 
         InputAction rotateAction,
-        float rotationUnit = 10f
+        float rotationUnit = 0.3f
     ){
         DraggableController = gameObject.GetComponent<DraggableController>();
         Debug.Assert(DraggableController != null, "DraggableController is null");
         DraggableController.Initialize(getDraggableGameObjectIDs, dragAction, Camera.main);
+        DraggableController.OnDragStart += HandleComponentDraggedStartServerRpc;
+        DraggableController.OnDragEnd += HandleComponentDraggedEndServerRpc;
         GetConnectableGameObject = getConnectableGameObjectIDs;
         RotationUnit = rotationUnit;
-        if (flipAction != null) flipAction.started += FlipHandler;
-        if (rotateAction != null) rotateAction.started += RotateHandler;
-        else Debug.LogWarning("flipAction is null");
+        if (IsOwner){
+            this.flipAction = flipAction;
+            this.rotateAction = rotateAction;
+            this.flipAction.started += FlipHandler;
+            this.rotateAction.started += RotateHandler;
+        }
+        this.flipAction.Disable();
+        this.rotateAction.Disable();
     }
     void OnEnable()
     {
         DraggableController.enabled = true;
+        if(IsOwner){
+            flipAction.Enable();
+            rotateAction.Enable();
+        }
     }
     void OnDisable()
     {
         DraggableController.enabled = false;
+        if(IsOwner){
+            flipAction.Disable();
+            rotateAction.Disable();
+        }
     }
 
     private void FlipHandler(InputAction.CallbackContext context){
-        //DraggableController.DraggedComponentID?.ToggleXScale();
+        if (IsOwner){
+            if (DraggableController.IsDragging.Value == true){
+                var componentID = DraggableController.DraggedComponentID.Value;
+                FlipServerRpc(componentID);
+            }
+        }
+
+    }
+    [ServerRpc]
+    private void FlipServerRpc(ulong componentID){
+        var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IGameComponent>();
+        Debug.Assert(component != null, "component is null");
+        component.ToggleXScale();
     }
     private void RotateHandler(InputAction.CallbackContext context){
-        var value = context.ReadValue<float>();
-        if (value != 0){
-            if (DraggableController.DraggedComponentID.HasValue){
+        if (IsOwner){
+            var value = context.ReadValue<float>();
+            if (DraggableController.IsDragging.Value == true){
                 var componentID = DraggableController.DraggedComponentID.Value;
                 AddRotationServerRpc(componentID, value * RotationUnit);
             }
+            
         }
     }
     [ServerRpc]
@@ -74,13 +98,6 @@ public class AssemblyController : NetworkBehaviour
         var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IGameComponent>();
         Debug.Assert(component != null, "component is null");
         component.AddZRotation(rotation);
-    }
-
-    protected void Start() {
-        if (IsOwner){
-            DraggableController.OnDragStart += HandleComponentDraggedStartServerRpc;
-            DraggableController.OnDragEnd += HandleComponentDraggedEndServerRpc;
-        }
     }
     [ServerRpc]
     private void HandleComponentDraggedStartServerRpc(ulong draggableID, Vector2 targetPosition)
