@@ -11,11 +11,11 @@ using Unity.Netcode;
 public class AssemblyController : NetworkBehaviour
 {
     private DraggableController DraggableController;
-    private Func<IGameComponent[]> GetConnectableGameObject { get; set; }
+    private Func<ulong[]> GetConnectableGameObject { get; set; }
     public float SingleRotationAngle { get; private set; }
 
     private bool _scrollAvailable = true;
-    private IGameComponent[] connectableComponents;
+    private ulong[] connectableComponentIDs;
 
     /// <summary>
     /// This event will be invoked when a game component is started to drag.
@@ -30,7 +30,7 @@ public class AssemblyController : NetworkBehaviour
     /// </summary>
     public event Action<IGameComponent> AfterGameComponentConnected;
 
-    public void Initialize(Func<IGameComponent[]> getConnectableGameObject, InputAction dragAction, InputAction flipAction, float SingleRotationAngle = 45f){
+    public void Initialize(Func<ulong[]> getConnectableGameObject, InputAction dragAction, InputAction flipAction, float SingleRotationAngle = 45f){
         DraggableController = gameObject.GetComponent<DraggableController>();
         Debug.Assert(DraggableController != null, "DraggableController is null");
         DraggableController.Initialize(getConnectableGameObject, dragAction, Camera.main);
@@ -56,31 +56,27 @@ public class AssemblyController : NetworkBehaviour
     }
 
     protected void Start() {
-        DraggableController.OnDragStart += HandleComponentDraggedStart;
-        DraggableController.OnDragEnd += HandleComponentDraggedEnd;
+        DraggableController.OnDragStart += HandleComponentDraggedStartServerRpc;
+        DraggableController.OnDragEnd += HandleComponentDraggedEndServerRpc;
         DraggableController.OnScrollWhenDragging += HandleScrollWhenDragging;
     }
-    private void HandleComponentDraggedStart(IDraggable draggedComponent, Vector2 targetPosition)
+    [ServerRpc]
+    private void HandleComponentDraggedStartServerRpc(ulong draggableID, Vector2 targetPosition)
     {
-        Debug.Assert(draggedComponent != null, "draggedComponent is null");
-        if(draggedComponent is not IGameComponent){
-            return;
-        }
-        var component = draggedComponent as IGameComponent;
+        var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
         Debug.Assert(component != null, "component is null");
         component.DisconnectFromParent();
         component.SetDragging(true);
-        connectableComponents = GetConnectableGameObject();
-        connectableComponents.ToList().Remove(component);
-        SetAvailableForConnection(connectableComponents, true);
+        connectableComponentIDs = GetConnectableGameObject();
+        SetAvailableForConnection(connectableComponentIDs, true);
         OnGameComponentDraggedStart?.Invoke(component);
     }
 
-
-    private void HandleComponentDraggedEnd(IDraggable draggedComponent, Vector2 targetPosition)
+    [ServerRpc]
+    private void HandleComponentDraggedEndServerRpc(ulong draggableID, Vector2 targetPosition)
     {
-        Debug.Assert(draggedComponent != null, "draggedComponent is null");
-        var component = draggedComponent as IGameComponent;
+
+        var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
         Debug.Assert(component != null, "component is null");
         component.SetDragging(false);
         var (availableParent, connectorInfo) = component.GetAvailableConnection();
@@ -88,20 +84,21 @@ public class AssemblyController : NetworkBehaviour
             component.ConnectToParent(availableParent, connectorInfo);
             AfterGameComponentConnected?.Invoke(component);
         }
-        SetAvailableForConnection(connectableComponents, false);
-        connectableComponents = null;
+        SetAvailableForConnection(connectableComponentIDs, false);
+        connectableComponentIDs = null;
         OnGameComponentDraggedEnd?.Invoke(component);
     }
-    private void SetAvailableForConnection(ICollection<IGameComponent> components, bool available){
-        foreach (var component in components)
+    private void SetAvailableForConnection(ICollection<ulong> componentIDs, bool available){
+        foreach (var componentID in componentIDs)
         {
+            var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IGameComponent>();
+            Debug.Assert(component != null, "component is null");
             component.SetAvailableForConnection(available);
         }
     }
 
-    private void HandleScrollWhenDragging(IDraggable draggedComponent, Vector2 scrollValue){
-        Debug.Assert(draggedComponent != null, "draggedComponent is null");
-        var component = draggedComponent as IGameComponent;
+    private void HandleScrollWhenDragging(ulong draggableID, Vector2 scrollValue){
+        var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
         Debug.Assert(component != null, "component is null");
         if (scrollValue.y != 0 && _scrollAvailable){
             var rotateAngle = scrollValue.y > 0 ? SingleRotationAngle : -SingleRotationAngle;
@@ -114,10 +111,6 @@ public class AssemblyController : NetworkBehaviour
         _scrollAvailable = false;
         await Task.Delay(300);
         _scrollAvailable = true;
-    }
-
-    protected void OnDestroy() {
-        Destroy(DraggableController);
     }
 
 }

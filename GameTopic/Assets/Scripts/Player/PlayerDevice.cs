@@ -69,13 +69,16 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     private void InitAssemblyControl(){
         AssemblyController = GetComponent<AssemblyController>();
         Debug.Assert(AssemblyController != null, "AssemblyController is null");
-        AssemblyController.Initialize(GetConnectableGameObjects, playerInput.currentActionMap.FindAction("DragComponent"), playerInput.currentActionMap.FindAction("FlipComponent"), 45f);
+        AssemblyController.Initialize(GetConnectableNetworkIDs, playerInput.currentActionMap.FindAction("DragComponent"), playerInput.currentActionMap.FindAction("FlipComponent"), 45f);
     }
 
-    private IGameComponent[] GetConnectableGameObjects(){
+    private ulong[] GetConnectableNetworkIDs()
+    {
         var colliders = Physics2D.OverlapCircleAll(GetLocalRootGameObject().transform.position, AssemblyRange);
         return colliders.Select(collider => collider.GetComponentInParent<IGameComponent>())
             .Where(component => component != null)
+            .Select(component => component.NetworkObjectID)
+            .Where(id => id != RootNetworkObjectID.Value)
             .ToArray();
     }
     private GameObject GetLocalRootGameObject(){
