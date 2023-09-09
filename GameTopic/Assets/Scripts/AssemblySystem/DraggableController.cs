@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 using System;
 using UnityEngine.EventSystems;
 using System.Linq;
-
-public class DraggableController: MonoBehaviour
+using Unity.Netcode;
+public class DraggableController: NetworkBehaviour
 {
     public InputAction DragAction { get; private set; }
     public Camera MainCamera { get; private set; }
@@ -15,41 +15,37 @@ public class DraggableController: MonoBehaviour
     public event Action<IDraggable, Vector2> OnScrollWhenDragging;
     private Func<IDraggable[]> GetDraggableObjects;
 
-    public IDraggable DraggedComponent = null;
-    private bool isDragging = false;
-    public static DraggableController CreateInstance(GameObject where, Func<IDraggable[]> GetDraggableObjects, InputAction dragAction, Camera mainCamera){
-        var instance = where.AddComponent<DraggableController>();
-        instance.DragAction = dragAction ?? throw new ArgumentNullException(nameof(dragAction));
-        instance.MainCamera = mainCamera;
+    private NetworkVariable<ulong> DraggedComponentID = new NetworkVariable<ulong>(
+        0,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Owner
+    );
+    public void Initialize(Func<IDraggable[]> GetDraggableObjects, InputAction dragAction, Camera mainCamera){
+        DragAction = dragAction ?? throw new ArgumentNullException(nameof(dragAction));
+        MainCamera = mainCamera;
         if (mainCamera == null)
         {
             Debug.LogWarning("Main camera is null");
         }
-        instance.GetDraggableObjects = GetDraggableObjects ?? throw new ArgumentNullException(nameof(GetDraggableObjects));
-        return instance;
-    }
-    public GameObject GetGameObjectUnderMouse()
-    {
-        Vector2 mousePosition = Mouse.current.position.ReadValue();
-        return GetGameObjectUnderMouse(mousePosition);
-    }
-    public IDraggable GetDraggableUnderMouse()
-    {
-        Vector2 mousePosition = Mouse.current.position.ReadValue();
-        return GetDraggableUnderMouse(mousePosition);
-    }
-    protected void Start() {
+        this.GetDraggableObjects = GetDraggableObjects ?? throw new ArgumentNullException(nameof(GetDraggableObjects));
+
         DragAction.started += DragStarted;
         DragAction.canceled += DragCanceled;
         DragAction.Enable();
     }
+    public ulong? GetDraggableIDUnderMouse()
+    {
+        var gameObject = Utils.GetGameObjectUnderMouse();
+        return gameObject?.GetComponentInParent<IDraggable>().NetworkObjectID;
+    }
+
     protected void Update() {
-        if (isDragging)
+        if (IsOwner && DraggedComponentID.Value != 0)
         {
-            Debug.Assert(DraggedComponent != null, "draggedComponent is null");
             Vector2 mousePosition = Mouse.current.position.ReadValue();
-            SetDraggablePosition(mousePosition);
-            OnScrollWhenDragging?.Invoke(DraggedComponent, Mouse.current.scroll.ReadValue());
+            Vector2 worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
+            SetDraggablePositionServerRpc(DraggedComponentID.Value, worldPoint);
+            //OnScrollWhenDragging?.Invoke(DraggedComponentID.Value, Mouse.current.scroll.ReadValue());
         }
     }
     protected void OnEnable() {
@@ -61,70 +57,34 @@ public class DraggableController: MonoBehaviour
     }
     private void DragStarted(InputAction.CallbackContext ctx)
     {
+        Debug.Log("DragStarted");
         Vector2 mousePosition = Mouse.current.position.ReadValue();
-        DraggedComponent = GetDraggableUnderMouse();
+        DraggedComponentID.Value = GetDraggableIDUnderMouse() ?? 0;
         var worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
-        if (DraggedComponent != null && GetDraggableObjects().Contains(DraggedComponent))
+        if (DraggedComponentID.Value != 0/* && GetDraggableObjects().Contains(DraggedComponentID)*/)
         {
-            isDragging = true;
-            Vector2 worldPoint2D = new Vector2(worldPoint.x, worldPoint.y);
-            OnDragStart?.Invoke(DraggedComponent, worldPoint2D);
+            //OnDragStart?.Invoke(DraggedComponentID, worldPoint);
         }else{
-            DraggedComponent = null;
         }
         
     }
     private void DragCanceled(InputAction.CallbackContext ctx)
     {
-        isDragging = false;
-        if (DraggedComponent == null)
+        if (DraggedComponentID.Value == 0)
         {
             return;
         }
         var mousePosition = Mouse.current.position.ReadValue();
         var targetPosition = MainCamera.ScreenToWorldPoint(mousePosition);
         Vector2 targetPosition2D = new(targetPosition.x, targetPosition.y);
-        OnDragEnd?.Invoke(DraggedComponent, targetPosition2D);
-        DraggedComponent = null;
+        //OnDragEnd?.Invoke(DraggedComponentID, targetPosition2D);
+        DraggedComponentID.Value = 0;
     }
-
-    private IDraggable GetDraggableUnderMouse(Vector2 mousePosition)
+    [ServerRpc]
+    private void SetDraggablePositionServerRpc(ulong draggableID, Vector2 targetPosition)
     {
-        var gameObject = GetGameObjectUnderMouse(mousePosition);
-        if (gameObject != null)
-        {
-            return gameObject.GetComponentInParent<IDraggable>();
-        }
-        else{
-            return null;
-        }
-    }
-
-
-    private GameObject GetGameObjectUnderMouse(Vector2 mousePosition)
-    {
-        Vector3 worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
-
-        RaycastHit2D hit;
-        hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-        if (hit.collider != null)
-        {
-            return hit.collider.gameObject;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    private void SetDraggablePosition(Vector2 mousePosition)
-    {
-        var newPosition = MainCamera.ScreenToWorldPoint(mousePosition);
-        newPosition.z = 0;
-        if (DraggedComponent != null)
-        {
-            DraggedComponent.DraggableTransform.position = newPosition;
-        }
+        Debug.Assert(draggableID != 0, "draggableID is 0");
+        Utils.GetLocalGameObjectByNetworkID(draggableID).transform.position = targetPosition;
     }
     private void OnDestroy() {
         DragAction.started -= DragStarted;

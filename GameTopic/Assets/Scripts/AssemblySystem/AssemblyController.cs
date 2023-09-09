@@ -6,8 +6,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Unity.Netcode;
 
-public class AssemblyController : MonoBehaviour
+public class AssemblyController : NetworkBehaviour
 {
     private DraggableController DraggableController;
     private Func<IGameComponent[]> GetConnectableGameObject { get; set; }
@@ -29,14 +30,14 @@ public class AssemblyController : MonoBehaviour
     /// </summary>
     public event Action<IGameComponent> AfterGameComponentConnected;
 
-    public static AssemblyController CreateInstance(GameObject where, Func<IGameComponent[]> getConnectableGameObject, InputAction dragAction, InputAction flipAction, float SingleRotationAngle = 45f){
-        var instance = where.AddComponent<AssemblyController>();
-        instance.DraggableController = DraggableController.CreateInstance(where, getConnectableGameObject, dragAction, Camera.main);
-        instance.GetConnectableGameObject = getConnectableGameObject;
-        instance.SingleRotationAngle = SingleRotationAngle > 0 && SingleRotationAngle < 360 ? SingleRotationAngle : throw new ArgumentException(nameof(SingleRotationAngle));
-        if (flipAction != null) flipAction.started += instance.FlipHandler;
+    public void Initialize(Func<IGameComponent[]> getConnectableGameObject, InputAction dragAction, InputAction flipAction, float SingleRotationAngle = 45f){
+        DraggableController = gameObject.GetComponent<DraggableController>();
+        Debug.Assert(DraggableController != null, "DraggableController is null");
+        DraggableController.Initialize(getConnectableGameObject, dragAction, Camera.main);
+        GetConnectableGameObject = getConnectableGameObject;
+        this.SingleRotationAngle = SingleRotationAngle > 0 && SingleRotationAngle < 360 ? SingleRotationAngle : throw new ArgumentException(nameof(SingleRotationAngle));
+        if (flipAction != null) flipAction.started += FlipHandler;
         else Debug.LogWarning("flipAction is null");
-        return instance;
     }
     void OnEnable()
     {
@@ -49,15 +50,9 @@ public class AssemblyController : MonoBehaviour
     {
         DraggableController.enabled = false;
     }
-    public GameComponent GetGameComponentUnderMouse()
-    {
-        var draggable = DraggableController.GetDraggableUnderMouse();
-        if (draggable == null) return null;
-        return draggable as GameComponent;
-    }
 
     private void FlipHandler(InputAction.CallbackContext context){
-        DraggableController.DraggedComponent?.ToggleXScale();
+        //DraggableController.DraggedComponentID?.ToggleXScale();
     }
 
     protected void Start() {

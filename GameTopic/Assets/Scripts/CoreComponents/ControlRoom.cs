@@ -2,6 +2,7 @@ using AbilitySystem.Authoring;
 using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem;
+using Unity.Netcode;
 
 public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
     public bool Landing { get; private set; }
@@ -79,5 +80,21 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
         replaceVec.x = 0;
         this.BodyRigidbody.velocity = replaceVec;
         this.BodyRigidbody.angularVelocity = 0;
+    }
+
+
+    public void ToggleAssembly(ulong playerID){
+        var parameters = new ClientRpcParams{
+            Send = new ClientRpcSendParams{
+                TargetClientIds = new List<ulong>{playerID}
+            }
+        };
+        ToggleAssembly_ClientRpc(parameters);
+    }
+
+    [ClientRpc]
+    private void ToggleAssembly_ClientRpc(ClientRpcParams clientRpcParams = default){
+        var device = Utils.GetLocalPlayerDevice();
+        device.AssemblyController.enabled = !device.AssemblyController.enabled;
     }
 }

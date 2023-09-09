@@ -5,10 +5,13 @@ using Unity.Netcode;
 using Newtonsoft.Json;
 using UnityEngine.InputSystem;
 using System;
+using System.Linq;
 
 public class PlayerDevice : NetworkBehaviour, IPlayer
 {
     public Device SelfDevice { get; private set; }
+    [SerializeField]
+    private float AssemblyRange = 5;
     private NetworkVariable<ulong> RootNetworkObjectID = new NetworkVariable<ulong>(
         readPerm: NetworkVariableReadPermission.Owner,
         writePerm: NetworkVariableWritePermission.Server
@@ -22,13 +25,16 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
 
     private AbilityRunner abilityRunner;
     public InputActionMap AbilityActionMap { get; private set; }
+    public AssemblyController AssemblyController;
+    private PlayerInput playerInput;
+    
 
     [ServerRpc]
     private void LoadDeviceServerRpc(string json)
     {
         SelfDevice = new Device(GameComponentFactory);
         SelfDevice.Load(DeviceInfo.CreateFromJson(json));
-        abilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager);
+        abilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager, OwnerClientId);
         isLoaded.Value = true;
         RootNetworkObjectID.Value = SelfDevice.RootGameComponent.BodyNetworkObject.NetworkObjectId;
     }
@@ -50,12 +56,31 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     }
     void Start(){
         if (IsOwner){
+            playerInput = GetComponent<PlayerInput>();
             DeviceInfo info = GetLocalDeviceInfo();
             LoadDeviceServerRpc(info.ToJson());
             AbilityActionMap = info.AbilityManagerInfo.GetAbilityInputActionMap();
             GameEvents.AbilityRunnerEvents.OnLocalStartAbility += StartAbility_ServerRPC;
             GameEvents.AbilityRunnerEvents.OnLocalCancelAbility += CancelAbility_ServerRPC;
+            playerInput.SwitchCurrentActionMap("Game");
         }
+        InitAssemblyControl();
+    }
+    private void InitAssemblyControl(){
+        AssemblyController = GetComponent<AssemblyController>();
+        Debug.Assert(AssemblyController != null, "AssemblyController is null");
+        AssemblyController.Initialize(GetConnectableGameObjects, playerInput.currentActionMap.FindAction("DragComponent"), playerInput.currentActionMap.FindAction("FlipComponent"), 45f);
+    }
+
+    private IGameComponent[] GetConnectableGameObjects(){
+        var colliders = Physics2D.OverlapCircleAll(GetLocalRootGameObject().transform.position, AssemblyRange);
+        return colliders.Select(collider => collider.GetComponentInParent<IGameComponent>())
+            .Where(component => component != null)
+            .ToArray();
+    }
+    private GameObject GetLocalRootGameObject(){
+        NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(RootNetworkObjectID.Value, out var networkObject);
+        return networkObject.gameObject;
     }
 
     private DeviceInfo GetLocalDeviceInfo(){
@@ -73,7 +98,16 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
         NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(RootNetworkObjectID.Value, out var networkObject);
         return networkObject.transform;
     }
+    
     private void LoadCheck(){
         if (!IsLoaded) throw new InvalidOperationException("The device is not loaded");
+    }
+
+    void OnDrawGizmos()
+    {
+        if (AssemblyController != null && AssemblyController.enabled){
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(GetLocalRootGameObject().transform.position, AssemblyRange);
+        }
     }
 }

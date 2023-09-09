@@ -6,7 +6,7 @@
             "id": "12770697-a6a7-41a0-9ea7-56be72fce1b0",
             "actions": [
                 {
-                    "name": "Drag",
+                    "name": "DragComponent",
                     "type": "Button",
                     "id": "e7ebee42-b76f-4ed3-81ec-f7e1bcfba742",
                     "expectedControlType": "Button",
@@ -22,15 +22,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "AssemblyToggle",
-                    "type": "Button",
-                    "id": "9372565f-9ddd-4850-b82e-e9eab1c6d891",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -41,7 +32,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse",
-                    "action": "Drag",
+                    "action": "DragComponent",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -53,17 +44,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "FlipComponent",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ca610fb5-ce1f-4e2c-a516-cdcffdd25067",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "AssemblyToggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

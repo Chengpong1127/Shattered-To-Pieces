@@ -23,6 +23,9 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public string ComponentName { get; set; }
 
     public NetworkObject BodyNetworkObject => bodyNetworkObject;
+
+    public ulong NetworkObjectID => bodyNetworkObject.NetworkObjectId;
+
     private NetworkObject bodyNetworkObject;
     private float zRotation = 0;
 

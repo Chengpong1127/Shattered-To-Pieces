@@ -395,6 +395,10 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: coreComponent
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5957387579149278727, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.336
@@ -543,6 +547,7 @@ MonoBehaviour:
   AbilitySystemCharacter: {fileID: 5886781672900552304}
   InitializationAbilities: []
   Abilities:
+  - {fileID: 11400000, guid: 31f9dc9e81759497894eac5fbb7f5084, type: 2}
   - {fileID: 11400000, guid: 7ff9a5176798b43eb8bbbe6667a82be6, type: 2}
   LandCheckCollider: {fileID: 3851937024220445991}
   LandCheckGE: {fileID: 11400000, guid: 0943c1d519ba5d34db8ca32803e91846, type: 2}
