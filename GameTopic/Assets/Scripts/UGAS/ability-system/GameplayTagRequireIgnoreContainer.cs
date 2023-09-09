@@ -1,5 +1,5 @@
 using System;
-using GameplayTag.Authoring;
+using GameplayTagNamespace.Authoring;
 
 namespace AbilitySystem
 {
@@ -9,12 +9,12 @@ namespace AbilitySystem
         /// <summary>
         /// All of these tags must be present
         /// </summary>
-        public GameplayTagScriptableObject[] RequireTags;
+        public GameplayTagNamespace.Authoring.GameplayTag[] RequireTags;
 
         /// <summary>
         /// None of these tags can be present
         /// </summary>
-        public GameplayTagScriptableObject[] IgnoreTags;
+        public GameplayTagNamespace.Authoring.GameplayTag[] IgnoreTags;
     }
 
 }

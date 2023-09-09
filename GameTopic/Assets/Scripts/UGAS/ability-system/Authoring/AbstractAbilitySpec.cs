@@ -1,5 +1,5 @@
 using System.Collections;
-using GameplayTag.Authoring;
+using GameplayTagNamespace.Authoring;
 
 namespace AbilitySystem.Authoring
 {
@@ -186,7 +186,7 @@ namespace AbilitySystem.Authoring
         /// <param name="asc">Ability System Character</param>
         /// <param name="tags">List of tags to check</param>
         /// <returns>True, if the Ability System Character has all tags</returns>
-        protected virtual bool AscHasAllTags(AbilitySystemCharacter asc, GameplayTagScriptableObject[] tags)
+        protected virtual bool AscHasAllTags(AbilitySystemCharacter asc, GameplayTagNamespace.Authoring.GameplayTag[] tags)
         {
             // If the input ASC is not valid, assume check passed
             if (!asc) return true;
@@ -198,7 +198,7 @@ namespace AbilitySystem.Authoring
                 bool requirementPassed = false;
                 for (var iAsc = 0; iAsc < asc.AppliedGameplayEffects.Count; iAsc++)
                 {
-                    GameplayTagScriptableObject[] ascGrantedTags = asc.AppliedGameplayEffects[iAsc].spec.GameplayEffect.gameplayEffectTags.GrantedTags;
+                    GameplayTagNamespace.Authoring.GameplayTag[] ascGrantedTags = asc.AppliedGameplayEffects[iAsc].spec.GameplayEffect.gameplayEffectTags.GrantedTags;
                     for (var iAscTag = 0; iAscTag < ascGrantedTags.Length; iAscTag++)
                     {
                         if (ascGrantedTags[iAscTag] == abilityTag)
@@ -219,7 +219,7 @@ namespace AbilitySystem.Authoring
         /// <param name="asc">Ability System Character</param>
         /// <param name="tags">List of tags to check</param>
         /// <returns>True, if the Ability System Character has none of the tags</returns>
-        protected virtual bool AscHasNoneTags(AbilitySystemCharacter asc, GameplayTagScriptableObject[] tags)
+        protected virtual bool AscHasNoneTags(AbilitySystemCharacter asc, GameplayTagNamespace.Authoring.GameplayTag[] tags)
         {
             // If the input ASC is not valid, assume check passed
             if (!asc) return true;
@@ -231,7 +231,7 @@ namespace AbilitySystem.Authoring
                 bool requirementPassed = true;
                 for (var iAsc = 0; iAsc < asc.AppliedGameplayEffects.Count; iAsc++)
                 {
-                    GameplayTagScriptableObject[] ascGrantedTags = asc.AppliedGameplayEffects[iAsc].spec.GameplayEffect.gameplayEffectTags.GrantedTags;
+                    GameplayTagNamespace.Authoring.GameplayTag[] ascGrantedTags = asc.AppliedGameplayEffects[iAsc].spec.GameplayEffect.gameplayEffectTags.GrantedTags;
                     for (var iAscTag = 0; iAscTag < ascGrantedTags.Length; iAscTag++)
                     {
                         if (ascGrantedTags[iAscTag] == abilityTag)

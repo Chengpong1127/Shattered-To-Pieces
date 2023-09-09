@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using AbilitySystem.Authoring;
 using AttributeSystem.Authoring;
 using AttributeSystem.Components;
-using GameplayTag.Authoring;
+using GameplayTagNamespace.Authoring;
 using UnityEngine;
 
 
@@ -22,7 +22,7 @@ namespace AbilitySystem
             this.GrantedAbilities.Add(spec);
         }
 
-        public void RemoveAbilitiesWithTag(GameplayTagScriptableObject tag)
+        public void RemoveAbilitiesWithTag(GameplayTagNamespace.Authoring.GameplayTag tag)
         {
             for (var i = GrantedAbilities.Count - 1; i >= 0; i--)
             {
@@ -70,7 +70,7 @@ namespace AbilitySystem
         bool CheckTagRequirementsMet(GameplayEffectSpec geSpec)
         {
             /// Build temporary list of all gametags currently applied
-            var appliedTags = new List<GameplayTagScriptableObject>();
+            var appliedTags = new List<GameplayTagNamespace.Authoring.GameplayTag>();
             for (var i = 0; i < AppliedGameplayEffects.Count; i++)
             {
                 appliedTags.AddRange(AppliedGameplayEffects[i].spec.GameplayEffect.gameplayEffectTags.GrantedTags);

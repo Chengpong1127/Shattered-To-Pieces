@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Unity.Netcode;
 public class RubberBullet : MonoBehaviour
 {
     [SerializeField]
@@ -10,8 +10,10 @@ public class RubberBullet : MonoBehaviour
     {
         if(collision.gameObject.name == "Square")
         {
-            Instantiate(Rubber,this.transform.position,Rubber.transform.rotation);
+            var rubber=Instantiate(Rubber,this.transform.position,Rubber.transform.rotation);
+            rubber.GetComponent<NetworkObject>().Spawn();
             Destroy(this.gameObject);
+            this.transform.parent.GetComponent<NetworkObject>().Despawn();
         }
         else
         {

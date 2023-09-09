@@ -1,6 +1,6 @@
 using System;
 using AbilitySystem.Authoring;
-using GameplayTag.Authoring;
+using GameplayTagNamespace.Authoring;
 
 namespace AbilitySystem
 {
@@ -8,7 +8,7 @@ namespace AbilitySystem
     public struct ConditionalGameplayEffectContainer
     {
         public GameplayEffectScriptableObject GameplayEffect;
-        public GameplayTagScriptableObject[] RequiredSourceTags;
+        public GameplayTagNamespace.Authoring.GameplayTag[] RequiredSourceTags;
     }
 
 }

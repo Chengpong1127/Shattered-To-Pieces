@@ -2,7 +2,6 @@ using UnityEngine;
 using AbilitySystem.Authoring;
 using AbilitySystem;
 using System.Collections;
-
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "AimAbility", menuName = "Ability/AimAbility")]
@@ -17,7 +16,7 @@ public class AimAbility: DisplayableAbilityScriptableObject{
         };
         return spec;
     }
-    public class AimAbilitySpec : EntityAbilitySpec
+    public class AimAbilitySpec : RunnerAbilitySpec
     {
         public EndTriggerType triggerType;
         private IAimable Aimable;
