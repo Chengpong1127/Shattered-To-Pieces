@@ -7,14 +7,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Unity.Netcode;
+using UnityEngine.Animations;
+using UnityEngine.InputSystem.Controls;
 
 public class AssemblyController : NetworkBehaviour
 {
     private DraggableController DraggableController;
     private Func<ulong[]> GetConnectableGameObject { get; set; }
-    public float SingleRotationAngle { get; private set; }
+    public float RotationUnit { get; private set; }
 
-    private bool _scrollAvailable = true;
     private ulong[] connectableComponentIDs;
 
     /// <summary>
@@ -30,13 +31,21 @@ public class AssemblyController : NetworkBehaviour
     /// </summary>
     public event Action<IGameComponent> AfterGameComponentConnected;
 
-    public void Initialize(Func<ulong[]> getDraggableGameObjectIDs, Func<ulong[]> getConnectableGameObjectIDs, InputAction dragAction, InputAction flipAction, float SingleRotationAngle = 45f){
+    public void Initialize(
+        Func<ulong[]> getDraggableGameObjectIDs, 
+        Func<ulong[]> getConnectableGameObjectIDs, 
+        InputAction dragAction, 
+        InputAction flipAction, 
+        InputAction rotateAction,
+        float rotationUnit = 10f
+    ){
         DraggableController = gameObject.GetComponent<DraggableController>();
         Debug.Assert(DraggableController != null, "DraggableController is null");
         DraggableController.Initialize(getDraggableGameObjectIDs, dragAction, Camera.main);
         GetConnectableGameObject = getConnectableGameObjectIDs;
-        this.SingleRotationAngle = SingleRotationAngle > 0 && SingleRotationAngle < 360 ? SingleRotationAngle : throw new ArgumentException(nameof(SingleRotationAngle));
+        RotationUnit = rotationUnit;
         if (flipAction != null) flipAction.started += FlipHandler;
+        if (rotateAction != null) rotateAction.started += RotateHandler;
         else Debug.LogWarning("flipAction is null");
     }
     void OnEnable()
@@ -51,12 +60,26 @@ public class AssemblyController : NetworkBehaviour
     private void FlipHandler(InputAction.CallbackContext context){
         //DraggableController.DraggedComponentID?.ToggleXScale();
     }
+    private void RotateHandler(InputAction.CallbackContext context){
+        var value = context.ReadValue<float>();
+        if (value != 0){
+            if (DraggableController.DraggedComponentID.HasValue){
+                var componentID = DraggableController.DraggedComponentID.Value;
+                AddRotationServerRpc(componentID, value * RotationUnit);
+            }
+        }
+    }
+    [ServerRpc]
+    private void AddRotationServerRpc(ulong componentID, float rotation){
+        var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IGameComponent>();
+        Debug.Assert(component != null, "component is null");
+        component.AddZRotation(rotation);
+    }
 
     protected void Start() {
         if (IsOwner){
             DraggableController.OnDragStart += HandleComponentDraggedStartServerRpc;
             DraggableController.OnDragEnd += HandleComponentDraggedEndServerRpc;
-            DraggableController.OnScrollWhenDragging += HandleScrollWhenDragging;
         }
     }
     [ServerRpc]
@@ -94,22 +117,6 @@ public class AssemblyController : NetworkBehaviour
             Debug.Assert(component != null, "component is null");
             component.SetAvailableForConnectionClientRpc(available);
         }
-    }
-
-    private void HandleScrollWhenDragging(ulong draggableID, Vector2 scrollValue){
-        var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
-        Debug.Assert(component != null, "component is null");
-        if (scrollValue.y != 0 && _scrollAvailable){
-            var rotateAngle = scrollValue.y > 0 ? SingleRotationAngle : -SingleRotationAngle;
-            component.AddZRotation(rotateAngle);
-            WaitScrollCooldown();
-        }
-        
-    }
-    private async void WaitScrollCooldown(){
-        _scrollAvailable = false;
-        await Task.Delay(300);
-        _scrollAvailable = true;
     }
 
 }

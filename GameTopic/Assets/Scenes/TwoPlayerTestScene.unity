@@ -946,7 +946,7 @@ PrefabInstance:
       objectReference: {fileID: 1462674786}
     - target: {fileID: 8716239172512281000, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
       propertyPath: AllPlayerCount
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8836261767702269637, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
       propertyPath: GlobalObjectIdHash

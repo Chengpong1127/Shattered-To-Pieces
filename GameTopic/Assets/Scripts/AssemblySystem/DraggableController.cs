@@ -12,14 +12,15 @@ public class DraggableController: NetworkBehaviour
     public Camera MainCamera { get; private set; }
     public event Action<ulong, Vector2> OnDragStart;
     public event Action<ulong, Vector2> OnDragEnd;
-    public event Action<ulong, Vector2> OnScrollWhenDragging;
+    public ulong? DraggedComponentID => DraggedComponentID.Value == 0 ? null : DraggedComponentID.Value;
     private Func<ulong[]> GetDraggableObjects;
 
-    private NetworkVariable<ulong> DraggedComponentID = new NetworkVariable<ulong>(
+    private NetworkVariable<ulong> draggedComponentID = new NetworkVariable<ulong>(
         0,
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Owner
     );
+    
     public void Initialize(Func<ulong[]> GetDraggableObjects, InputAction dragAction, Camera mainCamera){
         if (IsOwner){
             DragAction = dragAction ?? throw new ArgumentNullException(nameof(dragAction));
@@ -31,12 +32,11 @@ public class DraggableController: NetworkBehaviour
     }
 
     protected void Update() {
-        if (IsOwner && DraggedComponentID.Value != 0)
+        if (IsOwner && draggedComponentID.Value != 0)
         {
             Vector2 mousePosition = Mouse.current.position.ReadValue();
             Vector2 worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
-            SetDraggablePositionServerRpc(DraggedComponentID.Value, worldPoint);
-            OnScrollWhenDragging?.Invoke(DraggedComponentID.Value, Mouse.current.scroll.ReadValue());
+            SetDraggablePositionServerRpc(draggedComponentID.Value, worldPoint);
         }
     }
     protected void OnEnable() {
@@ -54,28 +54,28 @@ public class DraggableController: NetworkBehaviour
     {
         if (IsOwner){
             Vector2 mousePosition = Mouse.current.position.ReadValue();
-            DraggedComponentID.Value = GetDraggableIDUnderMouse() ?? 0;
+            draggedComponentID.Value = GetDraggableIDUnderMouse() ?? 0;
             var worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
-            if (DraggedComponentID.Value != 0 && GetDraggableObjects().Contains(DraggedComponentID.Value))
+            if (draggedComponentID.Value != 0 && GetDraggableObjects().Contains(draggedComponentID.Value))
             {
-                OnDragStart?.Invoke(DraggedComponentID.Value, worldPoint);
+                OnDragStart?.Invoke(draggedComponentID.Value, worldPoint);
             }else{
-                DraggedComponentID.Value = 0;
+                draggedComponentID.Value = 0;
             }
         }
     }
     private void DragCanceled(InputAction.CallbackContext ctx)
     {
         if (IsOwner){
-            if (DraggedComponentID.Value == 0)
+            if (draggedComponentID.Value == 0)
             {
                 return;
             }
             var mousePosition = Mouse.current.position.ReadValue();
             var targetPosition = MainCamera.ScreenToWorldPoint(mousePosition);
             Vector2 targetPosition2D = new(targetPosition.x, targetPosition.y);
-            OnDragEnd?.Invoke(DraggedComponentID.Value, targetPosition2D);
-            DraggedComponentID.Value = 0;
+            OnDragEnd?.Invoke(draggedComponentID.Value, targetPosition2D);
+            draggedComponentID.Value = 0;
         }
         
     }

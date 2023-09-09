@@ -73,7 +73,13 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
         AssemblyController = GetComponent<AssemblyController>();
         Debug.Assert(AssemblyController != null, "AssemblyController is null");
         if (IsOwner || IsServer){
-            AssemblyController.Initialize(GetDraggableNetworkIDs, GetConnectableNetworkIDs, playerInput.currentActionMap.FindAction("DragComponent"), playerInput.currentActionMap.FindAction("FlipComponent"), 45f);
+            AssemblyController.Initialize(
+                GetDraggableNetworkIDs, 
+                GetConnectableNetworkIDs, 
+                playerInput.currentActionMap.FindAction("DragComponent"), 
+                playerInput.currentActionMap.FindAction("FlipComponent"), 
+                playerInput.currentActionMap.FindAction("RotateComponent"),
+                45f);
         }
     }
     [ClientRpc]
