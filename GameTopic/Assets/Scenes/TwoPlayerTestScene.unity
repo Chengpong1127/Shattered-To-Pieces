@@ -616,7 +616,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 2147483767
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -946,7 +946,7 @@ PrefabInstance:
       objectReference: {fileID: 1462674786}
     - target: {fileID: 8716239172512281000, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
       propertyPath: AllPlayerCount
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8836261767702269637, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
       propertyPath: GlobalObjectIdHash

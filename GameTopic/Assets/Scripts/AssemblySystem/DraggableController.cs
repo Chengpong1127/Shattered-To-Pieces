@@ -65,11 +65,13 @@ public class DraggableController: NetworkBehaviour
         {
             OnDragStart?.Invoke(DraggedComponentID.Value, worldPoint);
         }else{
+            DraggedComponentID.Value = 0;
         }
         
     }
     private void DragCanceled(InputAction.CallbackContext ctx)
     {
+        Debug.Log("DragCanceled");
         if (DraggedComponentID.Value == 0)
         {
             return;

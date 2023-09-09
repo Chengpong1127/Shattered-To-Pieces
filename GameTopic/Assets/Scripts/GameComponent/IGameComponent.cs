@@ -41,8 +41,8 @@ public interface IGameComponent: ITreeNode, IUnit, IDraggable
     /// </summary>
     /// <returns> The first available connection. </returns>
     public (IGameComponent, ConnectionInfo) GetAvailableConnection();
-    public void SetDragging(bool assemblyMode);
-    public void SetAvailableForConnection(bool draggingMode);
+    public void SetDraggingClientRpc(bool assemblyMode);
+    public void SetAvailableForConnectionClientRpc(bool draggingMode);
 }
 
 

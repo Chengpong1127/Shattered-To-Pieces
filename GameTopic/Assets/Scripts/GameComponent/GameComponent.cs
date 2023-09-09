@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Unity.Netcode;
-using Unity.Netcode.Components;
 
-public class GameComponent : MonoBehaviour, IGameComponent
+public class GameComponent : NetworkBehaviour, IGameComponent
 {
     public Transform BodyTransform => bodyTransform;
 
@@ -117,7 +116,8 @@ public class GameComponent : MonoBehaviour, IGameComponent
         };
         return (availableParent.GameComponent, newInfo);
     }
-    public void SetDragging(bool dragging){
+    [ClientRpc]
+    public void SetDraggingClientRpc(bool dragging){
         
         switch (dragging){
             case true:
@@ -134,7 +134,9 @@ public class GameComponent : MonoBehaviour, IGameComponent
                 break;
         }
     }
-    public void SetAvailableForConnection(bool available){
+    [ClientRpc]
+    public void SetAvailableForConnectionClientRpc(bool available){
+        Debug.Log("SetAvailableForConnectionClientRpc");
         switch(available){
             case true:
                 connector.SetNonConnectedTargetsDisplay(true);

@@ -30,11 +30,11 @@ public class AssemblyController : NetworkBehaviour
     /// </summary>
     public event Action<IGameComponent> AfterGameComponentConnected;
 
-    public void Initialize(Func<ulong[]> getConnectableGameObject, InputAction dragAction, InputAction flipAction, float SingleRotationAngle = 45f){
+    public void Initialize(Func<ulong[]> getDraggableGameObjectIDs, Func<ulong[]> getConnectableGameObjectIDs, InputAction dragAction, InputAction flipAction, float SingleRotationAngle = 45f){
         DraggableController = gameObject.GetComponent<DraggableController>();
         Debug.Assert(DraggableController != null, "DraggableController is null");
-        DraggableController.Initialize(getConnectableGameObject, dragAction, Camera.main);
-        GetConnectableGameObject = getConnectableGameObject;
+        DraggableController.Initialize(getDraggableGameObjectIDs, dragAction, Camera.main);
+        GetConnectableGameObject = getConnectableGameObjectIDs;
         this.SingleRotationAngle = SingleRotationAngle > 0 && SingleRotationAngle < 360 ? SingleRotationAngle : throw new ArgumentException(nameof(SingleRotationAngle));
         if (flipAction != null) flipAction.started += FlipHandler;
         else Debug.LogWarning("flipAction is null");
@@ -66,7 +66,7 @@ public class AssemblyController : NetworkBehaviour
         var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
         Debug.Assert(component != null, "component is null");
         component.DisconnectFromParent();
-        component.SetDragging(true);
+        component.SetDraggingClientRpc(true);
         connectableComponentIDs = GetConnectableGameObject();
         SetAvailableForConnection(connectableComponentIDs, true);
         OnGameComponentDraggedStart?.Invoke(component);
@@ -78,7 +78,7 @@ public class AssemblyController : NetworkBehaviour
 
         var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
         Debug.Assert(component != null, "component is null");
-        component.SetDragging(false);
+        component.SetDraggingClientRpc(false);
         var (availableParent, connectorInfo) = component.GetAvailableConnection();
         if (availableParent != null){
             component.ConnectToParent(availableParent, connectorInfo);
@@ -93,7 +93,7 @@ public class AssemblyController : NetworkBehaviour
         {
             var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IGameComponent>();
             Debug.Assert(component != null, "component is null");
-            component.SetAvailableForConnection(available);
+            component.SetAvailableForConnectionClientRpc(available);
         }
     }
 

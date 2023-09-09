@@ -36,7 +36,7 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
         SelfDevice.Load(DeviceInfo.CreateFromJson(json));
         abilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager, OwnerClientId);
         isLoaded.Value = true;
-        RootNetworkObjectID.Value = SelfDevice.RootGameComponent.BodyNetworkObject.NetworkObjectId;
+        RootNetworkObjectID.Value = SelfDevice.RootGameComponent.NetworkObjectID;
     }
     [ServerRpc]
     private void StartAbility_ServerRPC(int abilityNumber)
@@ -69,21 +69,21 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     private void InitAssemblyControl(){
         AssemblyController = GetComponent<AssemblyController>();
         Debug.Assert(AssemblyController != null, "AssemblyController is null");
-        AssemblyController.Initialize(GetConnectableNetworkIDs, playerInput.currentActionMap.FindAction("DragComponent"), playerInput.currentActionMap.FindAction("FlipComponent"), 45f);
+        AssemblyController.Initialize(GetDraggableNetworkIDs, GetConnectableNetworkIDs, playerInput.currentActionMap.FindAction("DragComponent"), playerInput.currentActionMap.FindAction("FlipComponent"), 45f);
+        AssemblyController.enabled = false;
     }
 
     private ulong[] GetConnectableNetworkIDs()
     {
-        var colliders = Physics2D.OverlapCircleAll(GetLocalRootGameObject().transform.position, AssemblyRange);
+        var colliders = Physics2D.OverlapCircleAll(Utils.GetLocalGameObjectByNetworkID(RootNetworkObjectID.Value).transform.position, AssemblyRange);
         return colliders.Select(collider => collider.GetComponentInParent<IGameComponent>())
             .Where(component => component != null)
             .Select(component => component.NetworkObjectID)
-            .Where(id => id != RootNetworkObjectID.Value)
             .ToArray();
     }
-    private GameObject GetLocalRootGameObject(){
-        NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(RootNetworkObjectID.Value, out var networkObject);
-        return networkObject.gameObject;
+    public ulong[] GetDraggableNetworkIDs()
+    {
+        return GetConnectableNetworkIDs().Where(id => id != RootNetworkObjectID.Value).ToArray();
     }
 
     private DeviceInfo GetLocalDeviceInfo(){
@@ -108,9 +108,13 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
 
     void OnDrawGizmos()
     {
+        DrawCircleClientRpc();
+    }
+    [ClientRpc]
+    private void DrawCircleClientRpc(){
         if (AssemblyController != null && AssemblyController.enabled){
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(GetLocalRootGameObject().transform.position, AssemblyRange);
+            Gizmos.DrawWireSphere(Utils.GetLocalGameObjectByNetworkID(RootNetworkObjectID.Value).transform.position, AssemblyRange);
         }
     }
 }
