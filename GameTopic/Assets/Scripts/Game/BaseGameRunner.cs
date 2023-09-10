@@ -9,11 +9,14 @@ using Unity.Netcode;
 /// The game runner is responsible for running the game. It will be run on the server.
 /// </summary>
 public class BaseGameRunner: NetworkBehaviour{
-    public ConnectionManager connectionManager;
+    public INetworkConnector connectionManager;
     protected Dictionary<ulong, IPlayer> PlayerMap;
     public LocalPlayerManager localPlayerManager;
     async void Start()
     {
+        connectionManager = GetComponent<INetworkConnector>();
+        Debug.Assert(connectionManager != null, "connectionManager is null");
+        connectionManager.StartConnection();
         await UniTask.WaitUntil(() => IsServer || IsClient);
         if (IsServer){
             GameInitialize();
