@@ -2759,10 +2759,11 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 705953463}
-    PlayerPrefab: {fileID: 722861398309570409, guid: 2b406574088454f8eaaadb377109d3b6, type: 3}
+    PlayerPrefab: {fileID: 0}
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: de738f3f7757a4bae8367ea21cc243fe, type: 2}
+      - {fileID: 11400000, guid: a5a07db3a784a4852a2ceaf51d678c67, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -5378,13 +5379,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1281276206}
-  - component: {fileID: 1281276205}
   - component: {fileID: 1281276207}
-  - component: {fileID: 1281276209}
   - component: {fileID: 1281276208}
-  - component: {fileID: 1281276210}
-  - component: {fileID: 1281276212}
   - component: {fileID: 1281276211}
+  - component: {fileID: 1281276213}
+  - component: {fileID: 1281276214}
   m_Layer: 0
   m_Name: RoomManager
   m_TagString: Untagged
@@ -5392,18 +5391,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1281276205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1281276204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68fc3ac98aa384341b863b368f613000, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1281276206
 Transform:
   m_ObjectHideFlags: 0
@@ -5469,34 +5456,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &1281276209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1281276204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 999cffec79e474a64b6e91dc15da4c9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1281276210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1281276204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f82884bec931a42de8be39febc446a33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DraggedComponentID:
-    m_InternalValue: 0
-  IsDragging:
-    m_InternalValue: 0
 --- !u!114 &1281276211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5509,8 +5468,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a48627a33ce0d4bd794c785c7f106027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localPlayerManager: {fileID: 0}
---- !u!114 &1281276212
+  localPlayerManager: {fileID: 1281276213}
+--- !u!114 &1281276213
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5519,9 +5478,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1281276204}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 328ea63155a944f6ab0e6cfd92ff60de, type: 3}
+  m_Script: {fileID: 11500000, guid: 9687a1c82b42548f59158db100e03684, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnLocalPlayerLoaded:
+    m_PersistentCalls:
+      m_Calls: []
+  InitLoadDeviceName: 0
+--- !u!114 &1281276214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281276204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d118d56d00b54e5495a2c4b0ae74f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllPlayerCount: 1
 --- !u!1 &1306692363
 GameObject:
   m_ObjectHideFlags: 0

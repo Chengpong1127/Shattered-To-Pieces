@@ -89,12 +89,6 @@ public interface IAssemblyRoom
     /// </summary>
     /// <value></value>
     public AbilityManager AbilityManager { get; }
-    
-    /// <summary>
-    /// The AbilityRunner of the device.
-    /// </summary>
-    /// <value></value>
-    public AbilityRunner AbilityRunner { get; }
 
     /// <summary>
     /// The AbilityKeyChanger of the device.

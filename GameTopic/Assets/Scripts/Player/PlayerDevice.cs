@@ -22,7 +22,13 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
         writePerm: NetworkVariableWritePermission.Server
     );
 
-    private AbilityRunner abilityRunner;
+    /// <summary>
+    /// The ability runner on the server.
+    /// </summary>
+    private AbilityRunner ServerAbilityRunner;
+    /// <summary>
+    /// The ability input action map on the owner.
+    /// </summary>
     public InputActionMap LocalAbilityActionMap { get; private set; }
     public AssemblyController AssemblyController;
     private PlayerInput playerInput;
@@ -35,7 +41,7 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     {
         SelfDevice = new Device(new NetworkGameComponentFactory());
         SelfDevice.Load(DeviceInfo.CreateFromJson(json));
-        abilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager, OwnerClientId);
+        ServerAbilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager, OwnerClientId);
         isLoaded.Value = true;
         RootNetworkObjectID.Value = SelfDevice.RootGameComponent.NetworkObjectID;
     }
@@ -43,13 +49,13 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     private void StartAbility_ServerRPC(int abilityNumber)
     {
         Debug.Log("StartAbility_ServerRPC: " + abilityNumber);
-        abilityRunner.StartEntryAbility(abilityNumber);
+        ServerAbilityRunner.StartEntryAbility(abilityNumber);
     }
     [ServerRpc]
     private void CancelAbility_ServerRPC(int abilityNumber)
     {
         Debug.Log("CancelAbility_ServerRPC: " + abilityNumber);
-        abilityRunner.CancelEntryAbility(abilityNumber);
+        ServerAbilityRunner.CancelEntryAbility(abilityNumber);
     }
     void Start(){
         playerInput = GetComponent<PlayerInput>();

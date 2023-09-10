@@ -196,4 +196,10 @@ public class GameComponent : NetworkBehaviour, IGameComponent
             child.DisconnectFromParent();
         }
     }
+
+    public override void OnDestroy()
+    {
+        DisconnectAllChildren();
+        DisconnectFromParent();
+    }
 }

@@ -63,7 +63,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         }
     }
     private List<GameComponentData> _gameComponentDataList;
-    public AbilityRunner AbilityRunner { get; private set; }
+    private AbilityRunner AbilityRunner;
 
     public int CurrentLoadedDeviceID { get; private set; } = 0;
     private InputActionMap AbilityInputActionMap;
@@ -146,9 +146,6 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         AbilityInputActionMap = deviceInfo.AbilityManagerInfo.GetAbilityInputActionMap();
         AbilityInputActionMap.Enable();
         AbilityRebinder = new AbilityRebinder(ControlledDevice.AbilityManager, AbilityInputActionMap);
-        AbilityRebinder.OnFinishRebinding += _ => SaveCurrentDevice();
-        AbilityManager.OnSetAbilityOutOfEntry += _ => SaveCurrentDevice();
-        AbilityManager.OnSetAbilityToEntry += _ => SaveCurrentDevice();
 
         OnLoadedDevice?.Invoke();
         GameEvents.AssemblyRoomEvents.OnLoadedDevice.Invoke();

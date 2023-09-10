@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Cysharp.Threading.Tasks;
 
 public class WorkShop : MonoBehaviour
 {
@@ -26,8 +27,10 @@ public class WorkShop : MonoBehaviour
         shoppingBTN.onClick.AddListener(SwitchRoomMode);
     }
 
-    private void Start() {
+    private async void Start() {
         GameObject impRoom = GameObject.Find("RoomManager");
+        var room = impRoom.GetComponent<AssemblyRoomLocalPlayerManager>();
+        await UniTask.WaitUntil(() => room.IsLocalPlayerCompleteSetup);
         SetAssimblyRoom(impRoom.GetComponent<IAssemblyRoom>());
 
         shopDispatcher.setAbilityAction += room.AbilityManager.SetAbilityToEntry;

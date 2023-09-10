@@ -12,20 +12,19 @@ public class BaseGameRunner: NetworkBehaviour{
     public INetworkConnector connectionManager;
     protected Dictionary<ulong, IPlayer> PlayerMap;
     public BaseLocalPlayerManager localPlayerManager;
-    async void Start()
+    void Start()
     {
         connectionManager = GetComponent<INetworkConnector>();
         Debug.Assert(connectionManager != null, "connectionManager is null");
         connectionManager.StartConnection();
-        await UniTask.WaitUntil(() => IsServer || IsClient);
-        if (IsServer){
-            GameInitialize();
-            connectionManager.OnAllPlayerConnected += async () => {
+        connectionManager.OnAllPlayerConnected += async () => {
+            if (IsServer){
+                GameInitialize();
                 await LoadPlayer();
                 PreGameStart();
                 GameStart();
-            };
-        }
+            }
+        };
     }
     protected virtual void GameInitialize(){
         
