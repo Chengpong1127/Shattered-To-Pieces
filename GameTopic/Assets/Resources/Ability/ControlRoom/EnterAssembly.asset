@@ -31,8 +31,7 @@ MonoBehaviour:
     RemovalTagRequirements:
       RequireTags: []
       IgnoreTags: []
-    RemoveGameplayEffectsWithTag:
-    - {fileID: 0}
+    RemoveGameplayEffectsWithTag: []
   Period:
     Period: 0
     ExecuteOnApplication: 0

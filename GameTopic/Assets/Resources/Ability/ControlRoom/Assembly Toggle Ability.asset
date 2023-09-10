@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c286ba8a5588a43e8aa1e71a5d70b534, type: 3}
   m_Name: Assembly Toggle Ability
   m_EditorClassIdentifier: 
-  AbilityName: 
+  AbilityName: Assembly
   AbilityTags:
     AssetTag: {fileID: 0}
     CancelAbilitiesWithTags: []
@@ -32,3 +32,5 @@ MonoBehaviour:
   Image: {fileID: 0}
   Icon: {fileID: 0}
   Description: 
+  AssemblyEffect: {fileID: 11400000, guid: dfa20b9925abc4234bbf21e25c0cecbf, type: 2}
+  AssemblyCancelEffect: {fileID: 11400000, guid: dda4fa2b1ed2947019fcd00f069e352a, type: 2}

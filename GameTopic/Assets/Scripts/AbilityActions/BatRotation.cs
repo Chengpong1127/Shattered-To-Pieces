@@ -34,11 +34,6 @@ public class BatRotation : DisplayableAbilityScriptableObject
             return;
         }
 
-        public override bool CheckGameplayTags()
-        {
-            return true;
-        }
-
         protected override IEnumerator ActivateAbility()
         {
             entityAnimator.Play("Swing");
