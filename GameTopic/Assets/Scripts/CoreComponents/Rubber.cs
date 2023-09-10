@@ -41,7 +41,6 @@ public class Rubber :MonoBehaviour
         yield return new WaitForSeconds(3);
         //GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(this, entity, UpSpeed);
         entity.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(entity.AbilitySystemCharacter.MakeOutgoingSpec(UpSpeed));
-        Debug.Log(1);
         Destroy(this.gameObject);
         this.transform.parent.GetComponent<NetworkObject>().Despawn();
         yield return null;
