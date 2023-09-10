@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: RegenerationEffect
   m_EditorClassIdentifier: 
   gameplayEffect:
-    DurationPolicy: 0
-    DurationModifier: {fileID: 0}
-    DurationMultiplier: 0
+    DurationPolicy: 2
+    DurationModifier: {fileID: 11400000, guid: 5c69ab17e675944bcb250d5d684d897e, type: 2}
+    DurationMultiplier: 5.1
     Modifiers:
     - Attribute: {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
       ModifierOperator: 0
@@ -23,19 +23,21 @@ MonoBehaviour:
       Multiplier: 1
     ConditionalGameplayEffects: []
   gameplayEffectTags:
-    AssetTag: {fileID: 0}
-    GrantedTags: []
+    AssetTag: {fileID: 11400000, guid: 7e2bb5cb5ff5e4bb581d6ab5f576d607, type: 2}
+    GrantedTags:
+    - {fileID: 11400000, guid: 7e2bb5cb5ff5e4bb581d6ab5f576d607, type: 2}
     OngoingTagRequirements:
       RequireTags: []
       IgnoreTags: []
     ApplicationTagRequirements:
       RequireTags:
       - {fileID: 11400000, guid: 12bb00736f0924f138733a5c9893373f, type: 2}
-      IgnoreTags: []
+      IgnoreTags:
+      - {fileID: 11400000, guid: 7e2bb5cb5ff5e4bb581d6ab5f576d607, type: 2}
     RemovalTagRequirements:
       RequireTags: []
       IgnoreTags: []
     RemoveGameplayEffectsWithTag: []
   Period:
-    Period: 0
+    Period: 5
     ExecuteOnApplication: 0
