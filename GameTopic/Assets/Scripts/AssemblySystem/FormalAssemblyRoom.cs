@@ -39,7 +39,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// <summary>
     /// The manager for assembly system.
     /// </summary>
-    public AssemblyController AssemblySystemManager { get; private set;}
+    public AssemblyController assemblyController { get; private set;}
     /// <summary>
     /// The manager for recording game component units.
     /// </summary>
@@ -79,11 +79,14 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         ControlledDevice = new Device(_gameComponentFactory);
         LoadDevice(CurrentLoadedDeviceID);
         AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager, 0);
-        // AssemblySystemManager = AssemblyController.CreateInstance(
-        //     gameObject, () => SpawnedGameComponents.ToArray(), 
-        //     playerInput.currentActionMap.FindAction("DragComponent"),
-        //     playerInput.currentActionMap.FindAction("FlipComponent"), 
-        //     45f);
+        assemblyController = GetComponent<AssemblyController>();
+        assemblyController.Initialize(
+            () => SpawnedGameComponents.Select((component) => component.NetworkObjectID).ToArray(),
+            () => SpawnedGameComponents.Select((component) => component.NetworkObjectID).ToArray(),
+            playerInput.currentActionMap.FindAction("DragComponent"),
+            playerInput.currentActionMap.FindAction("FlipComponent"),
+            playerInput.currentActionMap.FindAction("RotateComponent")
+        );
 
         SetEventHandler();
         gameEffectManager = new GameEffectManager();
@@ -94,8 +97,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     private void SetEventHandler(){
         GameEvents.AbilityRunnerEvents.OnLocalStartAbility += AbilityRunner.StartEntryAbility;
         GameEvents.AbilityRunnerEvents.OnLocalCancelAbility += AbilityRunner.CancelEntryAbility;
-        AssemblySystemManager.OnGameComponentDraggedStart += _ => UpdateAbility();
-        AssemblySystemManager.OnGameComponentDraggedEnd += _ => UpdateAbility();
+        assemblyController.OnGameComponentDraggedStart += _ => UpdateAbility();
+        assemblyController.OnGameComponentDraggedEnd += _ => UpdateAbility();
 
     }
 
@@ -192,10 +195,10 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     {
         switch(mode){
             case AssemblyRoomMode.ConnectionMode:
-                AssemblySystemManager.enabled = true;
+                assemblyController.enabled = true;
                 break;
             case AssemblyRoomMode.PlayMode:
-                AssemblySystemManager.enabled = false;
+                assemblyController.enabled = false;
                 break;
         }
         OnSetRoomMode?.Invoke(mode);

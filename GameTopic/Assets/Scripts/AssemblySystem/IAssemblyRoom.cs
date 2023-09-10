@@ -35,7 +35,7 @@ public interface IAssemblyRoom
     /// The AssemblySystemManager of the assembly room.
     /// </summary>
     /// <value></value>
-    public AssemblyController AssemblySystemManager { get; }
+    public AssemblyController assemblyController { get; }
 
     #region Money
 

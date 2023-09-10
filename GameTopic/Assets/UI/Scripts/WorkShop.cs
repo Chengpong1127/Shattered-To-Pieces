@@ -49,11 +49,11 @@ public class WorkShop : MonoBehaviour
 
         if(room != null) {
             room.AbilityRebinder.OnFinishRebinding -= shopDispatcher.SetRebindKeyText;
-            room.AssemblySystemManager.OnGameComponentDraggedStart -= RefreshAllBoxAbilityAction;
-            room.AssemblySystemManager.OnGameComponentDraggedEnd -= RefreshAllBoxAbilityAction;
-            room.AssemblySystemManager.AfterGameComponentConnected -= RefreshAllBoxAbilityAction;
-            room.AssemblySystemManager.OnGameComponentDraggedStart -= UpdateUserCostRemain;
-            room.AssemblySystemManager.AfterGameComponentConnected -= UpdateUserCostRemain;
+            room.assemblyController.OnGameComponentDraggedStart -= RefreshAllBoxAbilityAction;
+            room.assemblyController.OnGameComponentDraggedEnd -= RefreshAllBoxAbilityAction;
+            room.assemblyController.AfterGameComponentConnected -= RefreshAllBoxAbilityAction;
+            room.assemblyController.OnGameComponentDraggedStart -= UpdateUserCostRemain;
+            room.assemblyController.AfterGameComponentConnected -= UpdateUserCostRemain;
 
             room.OnLoadedDevice -= shopDispatcher.RefreshAllBoxAbility;
             room.AbilityManager.OnSetBinding += RefreshSkillBoxDisplayText;
@@ -67,11 +67,11 @@ public class WorkShop : MonoBehaviour
         room = Iar;
         GameEvents.RebindEvents.OnFinishRebinding += (_, str) => shopDispatcher.SetRebindKeyText(str);
         //room.AbilityRebinder.OnFinishRebinding += shopDispatcher.SetRebindKeyText;
-        room.AssemblySystemManager.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
-        room.AssemblySystemManager.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
-        room.AssemblySystemManager.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
-        room.AssemblySystemManager.OnGameComponentDraggedStart += UpdateUserCostRemain;
-        room.AssemblySystemManager.AfterGameComponentConnected += UpdateUserCostRemain;
+        room.assemblyController.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
+        room.assemblyController.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
+        room.assemblyController.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
+        room.assemblyController.OnGameComponentDraggedStart += UpdateUserCostRemain;
+        room.assemblyController.AfterGameComponentConnected += UpdateUserCostRemain;
 
         room.OnLoadedDevice += shopDispatcher.RefreshAllBoxAbility;
         GameEvents.AbilityManagerEvents.OnSetBinding += RefreshSkillBoxDisplayText;

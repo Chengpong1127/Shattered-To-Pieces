@@ -128,7 +128,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4400892569633137509, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
   m_PrefabInstance: {fileID: 1430978858035979675}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &229481425
+--- !u!114 &229481426
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,39 +137,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 229481423}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Script: {fileID: 11500000, guid: 4028a190dc6ea43d5870b1c9da8a14bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 0f6d8288c6672eb4aa9bc55306e96776, type: 3}
-  m_NotificationBehavior: 3
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
+  OnLocalPlayerLoaded:
     m_PersistentCalls:
       m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: e7ebee42-b76f-4ed3-81ec-f7e1bcfba742
-    m_ActionName: Game/Drag[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 1ece06a6-4c85-4b30-937d-7a5aeffea8aa
-    m_ActionName: Game/FlipComponent[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9372565f-9ddd-4850-b82e-e9eab1c6d891
-    m_ActionName: Game/AssemblyToggle[/Keyboard/e]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Game
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  VirtualCamera: {fileID: 1957124926}
+  Minimap: {fileID: 0}
+--- !u!114 &229481427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 229481423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87ba23d47e50841b8a34669e2356da61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connectionManager: {fileID: 229481429}
+  localPlayerManager: {fileID: 229481426}
+  SpawnPoints:
+  - {fileID: 1720327777}
+  - {fileID: 1462674786}
+--- !u!114 &229481429 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8716239172512281000, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
+  m_PrefabInstance: {fileID: 1430978858035979675}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 229481423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d118d56d00b54e5495a2c4b0ae74f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &265543794
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,6 +940,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8063251714638195441, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
+      propertyPath: localPlayerManager
+      value: 
+      objectReference: {fileID: 229481426}
+    - target: {fileID: 8063251714638195441, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
       propertyPath: SpawnPoints.Array.data[0]
       value: 
       objectReference: {fileID: 1720327777}
@@ -946,19 +953,24 @@ PrefabInstance:
       objectReference: {fileID: 1462674786}
     - target: {fileID: 8716239172512281000, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
       propertyPath: AllPlayerCount
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8836261767702269637, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3608766332
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7189906740287106807, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
+    - {fileID: 8063251714638195441, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4400892569633137509, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 229481425}
+      addedObject: {fileID: 229481426}
+    - targetCorrespondingSourceObject: {fileID: 4400892569633137509, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 229481427}
   m_SourcePrefab: {fileID: 100100000, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
