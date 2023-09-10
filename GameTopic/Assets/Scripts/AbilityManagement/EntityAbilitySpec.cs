@@ -22,4 +22,11 @@ public abstract class EntityAbilitySpec: AbstractAbilitySpec{
         }
         yield return null;
     }
+    public override bool CheckGameplayTags(){
+        return AscHasAllTags(Owner, this.Ability.AbilityTags.OwnerTags.RequireTags)
+                && AscHasNoneTags(Owner, this.Ability.AbilityTags.OwnerTags.IgnoreTags)
+                && AscHasAllTags(Owner, this.Ability.AbilityTags.SourceTags.RequireTags)
+                && AscHasNoneTags(Owner, this.Ability.AbilityTags.SourceTags.IgnoreTags)
+                && AscHasNoneTags(Owner, this.Ability.AbilityTags.BlockAbilitiesWithTags);
+    }
 }

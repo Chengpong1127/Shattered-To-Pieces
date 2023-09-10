@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Unity.Netcode;
-using Unity.Netcode.Components;
 
-public class GameComponent : MonoBehaviour, IGameComponent
+public class GameComponent : NetworkBehaviour, IGameComponent
 {
     public Transform BodyTransform => bodyTransform;
 
@@ -23,6 +22,9 @@ public class GameComponent : MonoBehaviour, IGameComponent
     public string ComponentName { get; set; }
 
     public NetworkObject BodyNetworkObject => bodyNetworkObject;
+
+    public ulong NetworkObjectID => bodyNetworkObject.NetworkObjectId;
+
     private NetworkObject bodyNetworkObject;
     private float zRotation = 0;
 
@@ -114,7 +116,8 @@ public class GameComponent : MonoBehaviour, IGameComponent
         };
         return (availableParent.GameComponent, newInfo);
     }
-    public void SetDragging(bool dragging){
+    [ClientRpc]
+    public void SetDraggingClientRpc(bool dragging){
         
         switch (dragging){
             case true:
@@ -131,7 +134,8 @@ public class GameComponent : MonoBehaviour, IGameComponent
                 break;
         }
     }
-    public void SetAvailableForConnection(bool available){
+    [ClientRpc]
+    public void SetAvailableForConnectionClientRpc(bool available){
         switch(available){
             case true:
                 connector.SetNonConnectedTargetsDisplay(true);
@@ -191,5 +195,11 @@ public class GameComponent : MonoBehaviour, IGameComponent
             var child = Children[0] as GameComponent;
             child.DisconnectFromParent();
         }
+    }
+
+    public override void OnDestroy()
+    {
+        DisconnectAllChildren();
+        DisconnectFromParent();
     }
 }

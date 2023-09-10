@@ -4,12 +4,14 @@ using System.Collections.Generic;
 
 public class AbilityRunner: MonoBehaviour, IAbilityRunner{
     public AbilityManager AbilityManager { get; private set; }
-    public static AbilityRunner CreateInstance(GameObject where, AbilityManager abilityManager){
+    public ulong OwnerPlayerID { get; private set; }
+    public static AbilityRunner CreateInstance(GameObject where, AbilityManager abilityManager, ulong playerID){
         if (where == null){
             throw new ArgumentNullException(nameof(where));
         }
         var abilityRunner = where.AddComponent<AbilityRunner>();
         abilityRunner.AbilityManager = abilityManager ?? throw new ArgumentNullException(nameof(abilityManager));
+        abilityRunner.OwnerPlayerID = playerID;
         return abilityRunner;
     }
     public void StartSingleAbility(string abilityName, ICoreComponent specificOwner = null, bool all = false){

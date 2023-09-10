@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using AbilitySystem.Authoring;
 using AttributeSystem.Authoring;
 using AttributeSystem.Components;
@@ -32,6 +33,16 @@ namespace AbilitySystem
                 }
             }
         }
+        private void RemoveEffectsWithTags(GameplayEffectSpec geSpec)
+        {
+            if (CheckTagRequirementsMet(geSpec.GameplayEffect.gameplayEffectTags.RemovalTagRequirements)){
+                geSpec.GameplayEffect.gameplayEffectTags.RemoveGameplayEffectsWithTag.ToList().ForEach(x => RemoveGameplayEffectsWithTag(x));
+            }
+        }
+        private void RemoveGameplayEffectsWithTag(GameplayTag tag)
+        {
+            AppliedGameplayEffects.RemoveAll(x => x.spec.GameplayEffect.gameplayEffectTags.GrantedTags.Contains(tag));
+        }
 
 
         /// <summary>
@@ -41,11 +52,11 @@ namespace AbilitySystem
         public bool ApplyGameplayEffectSpecToSelf(GameplayEffectSpec geSpec)
         {
             if (geSpec == null) return true;
-            bool tagRequirementsOK = CheckTagRequirementsMet(geSpec);
+            bool tagRequirementsOK = CheckTagRequirementsMet(geSpec.GameplayEffect.gameplayEffectTags.ApplicationTagRequirements);
 
             if (tagRequirementsOK == false)  return false; 
 
-
+            RemoveEffectsWithTags(geSpec);
             switch (geSpec.GameplayEffect.gameplayEffect.DurationPolicy)
             {
                 case EDurationPolicy.HasDuration:
@@ -67,33 +78,16 @@ namespace AbilitySystem
                 Source: this,
                 Level: level.GetValueOrDefault(1));
         }
-        bool CheckTagRequirementsMet(GameplayEffectSpec geSpec)
-        {
-            /// Build temporary list of all gametags currently applied
-            var appliedTags = new List<GameplayTagNamespace.Authoring.GameplayTag>();
-            for (var i = 0; i < AppliedGameplayEffects.Count; i++)
-            {
-                appliedTags.AddRange(AppliedGameplayEffects[i].spec.GameplayEffect.gameplayEffectTags.GrantedTags);
-            }
 
-            // Every tag in the ApplicationTagRequirements.RequireTags needs to be in the character tags list
-            // In other words, if any tag in ApplicationTagRequirements.RequireTags is not present, requirement is not met
-            for (var i = 0; i < geSpec.GameplayEffect.gameplayEffectTags.ApplicationTagRequirements.RequireTags.Length; i++)
+        private bool CheckTagRequirementsMet(GameplayTagRequireIgnoreContainer container){
+            var appliedTags = AppliedGameplayEffects.SelectMany(x => x.spec.GameplayEffect.gameplayEffectTags.GrantedTags).ToList();
+            if (container.RequireTags.Any(x => !appliedTags.Contains(x)))
             {
-                if (!appliedTags.Contains(geSpec.GameplayEffect.gameplayEffectTags.ApplicationTagRequirements.RequireTags[i]))
-                {
-                    return false;
-                }
+                return false;
             }
-
-            // No tag in the ApplicationTagRequirements.IgnoreTags must in the character tags list
-            // In other words, if any tag in ApplicationTagRequirements.IgnoreTags is present, requirement is not met
-            for (var i = 0; i < geSpec.GameplayEffect.gameplayEffectTags.ApplicationTagRequirements.IgnoreTags.Length; i++)
+            if (container.IgnoreTags.Any(x => appliedTags.Contains(x)))
             {
-                if (appliedTags.Contains(geSpec.GameplayEffect.gameplayEffectTags.ApplicationTagRequirements.IgnoreTags[i]))
-                {
-                    return false;
-                }
+                return false;
             }
 
             return true;
@@ -151,17 +145,10 @@ namespace AbilitySystem
         void UpdateAttributeSystem()
         {
             // Set Current Value to Base Value (default position if there are no GE affecting that atribute)
-
-
-            for (var i = 0; i < this.AppliedGameplayEffects.Count; i++)
-            {
-                var modifiers = this.AppliedGameplayEffects[i].modifiers;
-                for (var m = 0; m < modifiers.Length; m++)
-                {
-                    var modifier = modifiers[m];
-                    AttributeSystem.UpdateAttributeModifiers(modifier.Attribute, modifier.Modifier, out _);
-                }
-            }
+            this.AppliedGameplayEffects
+                .ForEach(x => x.modifiers
+                    .ToList()
+                    .ForEach(y => AttributeSystem.UpdateAttributeModifiers(y.Attribute, y.Modifier, out _)));
         }
 
         void TickGameplayEffects()

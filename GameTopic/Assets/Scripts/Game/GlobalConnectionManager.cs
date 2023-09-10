@@ -4,35 +4,33 @@ using Unity.Netcode;
 using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
+using Unity.Netcode.Transports.UTP;
 
-public class ConnectionManager : MonoBehaviour {
-    private LobbyManager lobbyManager;
+public class GlobalConnectionManager : MonoBehaviour, INetworkConnector{
     public event Action OnAllPlayerConnected;
-    public int AllPlayerCount;
-    async void Start()
-    {
-        NetworkManager.Singleton.OnClientConnectedCallback += (clientId) => {
-            Debug.Log($"Client connected with id: {clientId}");
-        };
-        lobbyManager = new LobbyManager();
+    public int AllPlayerCount = 1;
+    public void StartConnection(){
+        GlobalConnection();
+    }
+
+    private async void GlobalConnection(){
+        var lobbyManager = new LobbyManager();
         await lobbyManager.SignIn();
-        Debug.Assert(lobbyManager != null, "Lobby Manager is null");
 
         var lobby = await lobbyManager.GetTheLastestLobby();
         if(lobby != null){
             bool success = await lobbyManager.JoinLobby(lobby);
             if(success){
-                Debug.Log("Joined Lobby");
                 return;
             }
         }
         await lobbyManager.CreateLobby("my lobby", AllPlayerCount);
-        await WaitForAllConnection();
+        await WaitAllPlayerConnected();
     }
 
-    private async UniTask WaitForAllConnection(){
+    private async UniTask WaitAllPlayerConnected(){
         await UniTask.WaitUntil(() => NetworkManager.Singleton.ConnectedClientsList.Count == AllPlayerCount);
         OnAllPlayerConnected?.Invoke();
-        Debug.Log("All Player Connected");
+        Debug.Log("ConnectionManager: All players connected");
     }
 }

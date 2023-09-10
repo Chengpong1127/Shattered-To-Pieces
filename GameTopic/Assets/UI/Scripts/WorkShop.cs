@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Cysharp.Threading.Tasks;
 
 public class WorkShop : MonoBehaviour
 {
@@ -26,8 +27,10 @@ public class WorkShop : MonoBehaviour
         shoppingBTN.onClick.AddListener(SwitchRoomMode);
     }
 
-    private void Start() {
+    private async void Start() {
         GameObject impRoom = GameObject.Find("RoomManager");
+        var room = impRoom.GetComponent<AssemblyRoomLocalPlayerManager>();
+        await UniTask.WaitUntil(() => room.IsLocalPlayerCompleteSetup);
         SetAssimblyRoom(impRoom.GetComponent<IAssemblyRoom>());
 
         shopDispatcher.setAbilityAction += room.AbilityManager.SetAbilityToEntry;
@@ -49,11 +52,11 @@ public class WorkShop : MonoBehaviour
 
         if(room != null) {
             room.AbilityRebinder.OnFinishRebinding -= shopDispatcher.SetRebindKeyText;
-            room.AssemblySystemManager.OnGameComponentDraggedStart -= RefreshAllBoxAbilityAction;
-            room.AssemblySystemManager.OnGameComponentDraggedEnd -= RefreshAllBoxAbilityAction;
-            room.AssemblySystemManager.AfterGameComponentConnected -= RefreshAllBoxAbilityAction;
-            room.AssemblySystemManager.OnGameComponentDraggedStart -= UpdateUserCostRemain;
-            room.AssemblySystemManager.AfterGameComponentConnected -= UpdateUserCostRemain;
+            room.assemblyController.OnGameComponentDraggedStart -= RefreshAllBoxAbilityAction;
+            room.assemblyController.OnGameComponentDraggedEnd -= RefreshAllBoxAbilityAction;
+            room.assemblyController.AfterGameComponentConnected -= RefreshAllBoxAbilityAction;
+            room.assemblyController.OnGameComponentDraggedStart -= UpdateUserCostRemain;
+            room.assemblyController.AfterGameComponentConnected -= UpdateUserCostRemain;
 
             room.OnLoadedDevice -= shopDispatcher.RefreshAllBoxAbility;
             room.AbilityManager.OnSetBinding += RefreshSkillBoxDisplayText;
@@ -67,11 +70,11 @@ public class WorkShop : MonoBehaviour
         room = Iar;
         GameEvents.RebindEvents.OnFinishRebinding += (_, str) => shopDispatcher.SetRebindKeyText(str);
         //room.AbilityRebinder.OnFinishRebinding += shopDispatcher.SetRebindKeyText;
-        room.AssemblySystemManager.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
-        room.AssemblySystemManager.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
-        room.AssemblySystemManager.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
-        room.AssemblySystemManager.OnGameComponentDraggedStart += UpdateUserCostRemain;
-        room.AssemblySystemManager.AfterGameComponentConnected += UpdateUserCostRemain;
+        room.assemblyController.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
+        room.assemblyController.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
+        room.assemblyController.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
+        room.assemblyController.OnGameComponentDraggedStart += UpdateUserCostRemain;
+        room.assemblyController.AfterGameComponentConnected += UpdateUserCostRemain;
 
         room.OnLoadedDevice += shopDispatcher.RefreshAllBoxAbility;
         GameEvents.AbilityManagerEvents.OnSetBinding += RefreshSkillBoxDisplayText;

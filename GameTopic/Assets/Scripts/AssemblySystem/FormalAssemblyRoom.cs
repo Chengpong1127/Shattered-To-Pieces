@@ -39,7 +39,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     /// <summary>
     /// The manager for assembly system.
     /// </summary>
-    public AssemblyController AssemblySystemManager { get; private set;}
+    public AssemblyController assemblyController { get; private set;}
     /// <summary>
     /// The manager for recording game component units.
     /// </summary>
@@ -63,25 +63,30 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         }
     }
     private List<GameComponentData> _gameComponentDataList;
-    public AbilityRunner AbilityRunner { get; private set; }
+    private AbilityRunner AbilityRunner;
 
     public int CurrentLoadedDeviceID { get; private set; } = 0;
     private InputActionMap AbilityInputActionMap;
     private GameEffectManager gameEffectManager;
+    private PlayerInput playerInput;
 
     #endregion
 
     protected void Awake() {
         NetworkManager.Singleton.StartServer();
+        playerInput = GetComponent<PlayerInput>();
         _gameComponentFactory = new NetworkGameComponentFactory();
         ControlledDevice = new Device(_gameComponentFactory);
         LoadDevice(CurrentLoadedDeviceID);
-        AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager);
-        AssemblySystemManager = AssemblyController.CreateInstance(
-            gameObject, () => SpawnedGameComponents.ToArray(), 
-            LocalPlayerInputManager.Instance.DragComponentAction,
-            LocalPlayerInputManager.Instance.FlipComponentAction, 
-            45f);
+        AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager, 0);
+        assemblyController = GetComponent<AssemblyController>();
+        assemblyController.Initialize(
+            () => SpawnedGameComponents.Select((component) => component.NetworkObjectID).ToArray(),
+            () => SpawnedGameComponents.Select((component) => component.NetworkObjectID).ToArray(),
+            playerInput.currentActionMap.FindAction("DragComponent"),
+            playerInput.currentActionMap.FindAction("FlipComponent"),
+            playerInput.currentActionMap.FindAction("RotateComponent")
+        );
 
         SetEventHandler();
         gameEffectManager = new GameEffectManager();
@@ -90,10 +95,10 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     }
 
     private void SetEventHandler(){
-        GameEvents.AbilityRunnerEvents.OnLocalStartAbility += AbilityRunner.StartEntryAbility;
-        GameEvents.AbilityRunnerEvents.OnLocalCancelAbility += AbilityRunner.CancelEntryAbility;
-        AssemblySystemManager.OnGameComponentDraggedStart += _ => UpdateAbility();
-        AssemblySystemManager.OnGameComponentDraggedEnd += _ => UpdateAbility();
+        GameEvents.AbilityRunnerEvents.OnLocalInputStartAbility += AbilityRunner.StartEntryAbility;
+        GameEvents.AbilityRunnerEvents.OnLocalInputCancelAbility += AbilityRunner.CancelEntryAbility;
+        assemblyController.OnGameComponentDraggedStart += _ => UpdateAbility();
+        assemblyController.OnGameComponentDraggedEnd += _ => UpdateAbility();
 
     }
 
@@ -141,9 +146,6 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         AbilityInputActionMap = deviceInfo.AbilityManagerInfo.GetAbilityInputActionMap();
         AbilityInputActionMap.Enable();
         AbilityRebinder = new AbilityRebinder(ControlledDevice.AbilityManager, AbilityInputActionMap);
-        AbilityRebinder.OnFinishRebinding += _ => SaveCurrentDevice();
-        AbilityManager.OnSetAbilityOutOfEntry += _ => SaveCurrentDevice();
-        AbilityManager.OnSetAbilityToEntry += _ => SaveCurrentDevice();
 
         OnLoadedDevice?.Invoke();
         GameEvents.AssemblyRoomEvents.OnLoadedDevice.Invoke();
@@ -190,10 +192,10 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     {
         switch(mode){
             case AssemblyRoomMode.ConnectionMode:
-                AssemblySystemManager.enabled = true;
+                assemblyController.enabled = true;
                 break;
             case AssemblyRoomMode.PlayMode:
-                AssemblySystemManager.enabled = false;
+                assemblyController.enabled = false;
                 break;
         }
         OnSetRoomMode?.Invoke(mode);

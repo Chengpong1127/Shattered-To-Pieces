@@ -2,6 +2,7 @@ using AbilitySystem.Authoring;
 using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem;
+using Unity.Netcode;
 using AttributeSystem.Authoring;
 using AttributeSystem.Components;
 public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
@@ -83,5 +84,11 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
         replaceVec.x = 0;
         this.BodyRigidbody.velocity = replaceVec;
         this.BodyRigidbody.angularVelocity = 0;
+    }
+
+
+    public void ToggleAssembly(ulong playerID){
+        var player = Utils.ServerGetPlayerDevice(playerID);
+        player.ToggleAssemblyClientRpc();
     }
 }

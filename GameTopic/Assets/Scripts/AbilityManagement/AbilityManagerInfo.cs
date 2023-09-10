@@ -34,10 +34,10 @@ public class AbilityManagerInfo: IInfo{
             InputAction action = map.AddAction(keyName);
             action.AddBinding(EntryPaths[abilityIndex]);
             action.started += (ctx) => {
-                GameEvents.AbilityRunnerEvents.OnLocalStartAbility.Invoke(abilityIndex);
+                GameEvents.AbilityRunnerEvents.OnLocalInputStartAbility.Invoke(abilityIndex);
             };
             action.canceled += (ctx) => {
-                GameEvents.AbilityRunnerEvents.OnLocalCancelAbility.Invoke(abilityIndex);
+                GameEvents.AbilityRunnerEvents.OnLocalInputCancelAbility.Invoke(abilityIndex);
             };
         }
         return map;

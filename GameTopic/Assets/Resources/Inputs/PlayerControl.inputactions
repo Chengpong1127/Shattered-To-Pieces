@@ -6,7 +6,7 @@
             "id": "12770697-a6a7-41a0-9ea7-56be72fce1b0",
             "actions": [
                 {
-                    "name": "Drag",
+                    "name": "DragComponent",
                     "type": "Button",
                     "id": "e7ebee42-b76f-4ed3-81ec-f7e1bcfba742",
                     "expectedControlType": "Button",
@@ -24,13 +24,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "AssemblyToggle",
-                    "type": "Button",
-                    "id": "9372565f-9ddd-4850-b82e-e9eab1c6d891",
-                    "expectedControlType": "Button",
+                    "name": "RotateComponent",
+                    "type": "Value",
+                    "id": "ac473751-acbd-4245-82cb-16b6b710441c",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -41,7 +41,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse",
-                    "action": "Drag",
+                    "action": "DragComponent",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -58,12 +58,12 @@
                 },
                 {
                     "name": "",
-                    "id": "ca610fb5-ce1f-4e2c-a516-cdcffdd25067",
-                    "path": "<Keyboard>/e",
+                    "id": "09c4c9c5-81d2-41ac-82bc-d2922e4763f9",
+                    "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AssemblyToggle",
+                    "action": "RotateComponent",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
