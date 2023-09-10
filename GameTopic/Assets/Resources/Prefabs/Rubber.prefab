@@ -64,6 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SlowDown: {fileID: 11400000, guid: 9108a27569e077b4086137e3123b1657, type: 2}
   UpSpeed: {fileID: 11400000, guid: 43a099410bda4d44ca7ef694e5c10ad7, type: 2}
+  MovingVelocity: {fileID: 11400000, guid: f50e3d22668b64514ace54053549b447, type: 2}
 --- !u!61 &4211252047044037040
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -16,7 +16,11 @@ MonoBehaviour:
     DurationPolicy: 0
     DurationModifier: {fileID: 0}
     DurationMultiplier: 0
-    Modifiers: []
+    Modifiers:
+    - Attribute: {fileID: 11400000, guid: f50e3d22668b64514ace54053549b447, type: 2}
+      ModifierOperator: 0
+      ModifierMagnitude: {fileID: 11400000, guid: 5c69ab17e675944bcb250d5d684d897e, type: 2}
+      Multiplier: 100
     ConditionalGameplayEffects: []
   gameplayEffectTags:
     AssetTag: {fileID: 0}

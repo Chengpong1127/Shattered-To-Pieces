@@ -2,17 +2,18 @@ using AbilitySystem.Authoring;
 using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem;
-
+using AttributeSystem.Authoring;
+using AttributeSystem.Components;
 public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
     public bool Landing { get; private set; }
     int Pushing;
     int Moving;
-
     Vector2 replaceVec = Vector2.zero;
 
     [SerializeField] Collider2D LandCheckCollider;
     [SerializeField] GameplayEffectScriptableObject LandCheckGE;
     [SerializeField] GameplayEffectScriptableObject VelocityInit;
+    [SerializeField] AttributeScriptableObject MovingVelocity;
     GameplayEffectSpec LandCheckGESpec;
     static ContactFilter2D filter = new();
     List<Collider2D> collisionResult = new();
@@ -20,6 +21,7 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
         base.Awake();
         Bondage();
         LandCheckGESpec = this.AbilitySystemCharacter.MakeOutgoingSpec(LandCheckGE);
+        this.AttributeSystemComponent.AddAttributes(MovingVelocity);
         this.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(this.AbilitySystemCharacter.MakeOutgoingSpec(VelocityInit));
     }
 

@@ -453,7 +453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6901079752671095258, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: Attributes.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6901079752671095258, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: Attributes.Array.data[0]
@@ -461,7 +461,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: f50e3d22668b64514ace54053549b447, type: 2}
     - target: {fileID: 6901079752671095258, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: AttributeValues.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6901079752671095258, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: AttributeValues.Array.data[0].Attribute
@@ -469,11 +469,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: f50e3d22668b64514ace54053549b447, type: 2}
     - target: {fileID: 6901079752671095258, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: AttributeValues.Array.data[0].BaseValue
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6901079752671095258, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: AttributeValues.Array.data[0].CurrentValue
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7388634133129272788, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_Size.x
@@ -575,6 +575,7 @@ MonoBehaviour:
   LandCheckCollider: {fileID: 3851937024220445991}
   LandCheckGE: {fileID: 11400000, guid: 0943c1d519ba5d34db8ca32803e91846, type: 2}
   VelocityInit: {fileID: 11400000, guid: 2b3b3f1414c63de49b06485740e8973f, type: 2}
+  MovingVelocity: {fileID: 11400000, guid: f50e3d22668b64514ace54053549b447, type: 2}
 --- !u!61 &3851937024220445991
 BoxCollider2D:
   m_ObjectHideFlags: 0
