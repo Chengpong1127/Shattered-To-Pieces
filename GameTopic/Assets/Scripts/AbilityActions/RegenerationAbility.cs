@@ -9,20 +9,17 @@ using AbilitySystem.ModifierMagnitude;
 public class RegenerationAbility : DisplayableAbilityScriptableObject
 {
     public GameplayEffectScriptableObject RegenerationEffect;
-    public float RegenerationTime;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
         var spec = new RegenerationAbilitySpec(this, owner)
         {
-            RegenerationEffect = RegenerationEffect,
-            RegenerationTime = RegenerationTime
+            RegenerationEffect = RegenerationEffect
         };
         return spec;
     }
     public class RegenerationAbilitySpec : RunnerAbilitySpec
     {
         public GameplayEffectScriptableObject RegenerationEffect;
-        public float RegenerationTime;
         public RegenerationAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
         }
@@ -44,8 +41,6 @@ public class RegenerationAbility : DisplayableAbilityScriptableObject
             var baseCoreComponent = component.CoreComponent;
             if (baseCoreComponent == null) yield break;
             Debug.Log("Start Regeneration");
-            
-            yield return new WaitForSeconds(RegenerationTime);
             GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(SelfEntity, baseCoreComponent, RegenerationEffect);
         }
 

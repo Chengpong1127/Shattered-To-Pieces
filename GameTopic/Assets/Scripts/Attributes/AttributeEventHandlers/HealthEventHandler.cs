@@ -7,13 +7,16 @@ using UnityEngine;
 public class HealthEventHandler : ClampAttributeEventHandler
 {
     public override void PreAttributeChange(AttributeSystemComponent attributeSystem, List<AttributeValue> prevAttributeValues, ref List<AttributeValue> currentAttributeValues){
+        bool changed = false;
         if (attributeSystem.mAttributeIndexCache.TryGetValue(PrimaryAttribute, out var healthIndex)){
             if (currentAttributeValues[healthIndex].CurrentValue != prevAttributeValues[healthIndex].CurrentValue){
-                GameEvents.AttributeEvents.OnEntityHealthChanged.Invoke(attributeSystem.GetComponent<Entity>(), prevAttributeValues[healthIndex].CurrentValue, currentAttributeValues[healthIndex].CurrentValue);
+                changed = true;
             }
         }
         base.PreAttributeChange(attributeSystem, prevAttributeValues, ref currentAttributeValues);
-
+        if (changed && attributeSystem.mAttributeIndexCache.TryGetValue(PrimaryAttribute, out healthIndex)){
+            GameEvents.AttributeEvents.OnEntityHealthChanged.Invoke(attributeSystem.GetComponent<Entity>(), prevAttributeValues[healthIndex].CurrentValue, currentAttributeValues[healthIndex].CurrentValue);
+        }
 
 
 
