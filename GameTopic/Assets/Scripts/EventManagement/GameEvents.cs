@@ -45,11 +45,11 @@ public static class GameEvents{
         /// <summary>
         ///	Triggered after the ability button is pressed.
         /// </summary>
-        public static Action<int> OnLocalStartAbility = delegate { };
+        public static Action<int> OnLocalInputStartAbility = delegate { };
         /// <summary>
         ///	Triggered after the ability button is released.
         /// </summary>
-        public static Action<int> OnLocalCancelAbility = delegate { };
+        public static Action<int> OnLocalInputCancelAbility = delegate { };
     }
 
     public static class AssemblyControlEvents{

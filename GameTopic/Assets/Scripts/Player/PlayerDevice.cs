@@ -21,10 +21,9 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
         false,
         writePerm: NetworkVariableWritePermission.Server
     );
-    private IGameComponentFactory GameComponentFactory;
 
     private AbilityRunner abilityRunner;
-    public InputActionMap AbilityActionMap { get; private set; }
+    public InputActionMap LocalAbilityActionMap { get; private set; }
     public AssemblyController AssemblyController;
     private PlayerInput playerInput;
     private GameObject assemblyCurtain;
@@ -34,7 +33,7 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     [ServerRpc]
     private void LoadDeviceServerRpc(string json)
     {
-        SelfDevice = new Device(GameComponentFactory);
+        SelfDevice = new Device(new NetworkGameComponentFactory());
         SelfDevice.Load(DeviceInfo.CreateFromJson(json));
         abilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager, OwnerClientId);
         isLoaded.Value = true;
@@ -52,22 +51,36 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
         Debug.Log("CancelAbility_ServerRPC: " + abilityNumber);
         abilityRunner.CancelEntryAbility(abilityNumber);
     }
-    void Awake()
-    {
-        GameComponentFactory = new NetworkGameComponentFactory();
-    }
     void Start(){
         playerInput = GetComponent<PlayerInput>();
         if (IsOwner){
-            DeviceInfo info = GetLocalDeviceInfo();
-            LoadDeviceServerRpc(info.ToJson());
-            AbilityActionMap = info.AbilityManagerInfo.GetAbilityInputActionMap();
-            GameEvents.AbilityRunnerEvents.OnLocalStartAbility += StartAbility_ServerRPC;
-            GameEvents.AbilityRunnerEvents.OnLocalCancelAbility += CancelAbility_ServerRPC;
-            playerInput.SwitchCurrentActionMap("Game");
+            GameEvents.AbilityRunnerEvents.OnLocalInputStartAbility += StartAbility_ServerRPC;
+            GameEvents.AbilityRunnerEvents.OnLocalInputCancelAbility += CancelAbility_ServerRPC;
         }
         InitAssemblyControl();
         assemblyCurtain = ResourceManager.Instance.LoadPrefab("AssemblyCurtain");
+    }
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        if (IsOwner){
+            GameEvents.AbilityRunnerEvents.OnLocalInputStartAbility -= StartAbility_ServerRPC;
+            GameEvents.AbilityRunnerEvents.OnLocalInputCancelAbility -= CancelAbility_ServerRPC;
+        }
+    }
+    public void LoadLocalDevice(string filename){
+        if (IsOwner){
+            var info = GetLocalDeviceInfo(filename);
+            LoadDeviceServerRpc(info.ToJson());
+            LocalAbilityActionMap?.Dispose();
+            LocalAbilityActionMap = info.AbilityManagerInfo.GetAbilityInputActionMap();
+        }else{
+            throw new InvalidOperationException("Only the owner can load device");
+        }
+    }
+
+    private DeviceInfo GetLocalDeviceInfo(string filename){
+        return ResourceManager.Instance.LoadLocalDeviceInfo(filename) ?? ResourceManager.Instance.LoadDefaultDeviceInfo();
     }
     private void InitAssemblyControl(){
         AssemblyController = GetComponent<AssemblyController>();
@@ -108,10 +121,6 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     public ulong[] GetDraggableNetworkIDs()
     {
         return GetConnectableNetworkIDs().Where(id => id != RootNetworkObjectID.Value).ToArray();
-    }
-
-    private DeviceInfo GetLocalDeviceInfo(){
-        return ResourceManager.Instance.LoadLocalDeviceInfo("0") ?? ResourceManager.Instance.LoadDefaultDeviceInfo();
     }
 
     public void SetPlayerPoint(Transform transform)

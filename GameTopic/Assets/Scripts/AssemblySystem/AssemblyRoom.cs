@@ -1,6 +1,6 @@
 using UnityEngine;
 
 
-public class AssemblyRoom{
+public class AssemblyRoomRunner: BaseGameRunner{
 
 }

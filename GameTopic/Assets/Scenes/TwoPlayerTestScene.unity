@@ -157,22 +157,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ba23d47e50841b8a34669e2356da61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionManager: {fileID: 229481429}
   localPlayerManager: {fileID: 229481426}
   SpawnPoints:
   - {fileID: 1720327777}
   - {fileID: 1462674786}
---- !u!114 &229481429 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8716239172512281000, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
-  m_PrefabInstance: {fileID: 1430978858035979675}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 229481423}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d118d56d00b54e5495a2c4b0ae74f44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &265543794
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,7 +941,7 @@ PrefabInstance:
       objectReference: {fileID: 1462674786}
     - target: {fileID: 8716239172512281000, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
       propertyPath: Global
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8716239172512281000, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
       propertyPath: AllPlayerCount
@@ -970,11 +958,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4400892569633137509, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 229481426}
+      insertIndex: 1
+      addedObject: {fileID: 229481427}
     - targetCorrespondingSourceObject: {fileID: 4400892569633137509, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 229481427}
+      addedObject: {fileID: 229481426}
   m_SourcePrefab: {fileID: 100100000, guid: 88b1a2cee30834931a973ff9b173338c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

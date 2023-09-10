@@ -11,7 +11,7 @@ using Unity.Netcode;
 public class BaseGameRunner: NetworkBehaviour{
     public INetworkConnector connectionManager;
     protected Dictionary<ulong, IPlayer> PlayerMap;
-    public LocalPlayerManager localPlayerManager;
+    public BaseLocalPlayerManager localPlayerManager;
     async void Start()
     {
         connectionManager = GetComponent<INetworkConnector>();

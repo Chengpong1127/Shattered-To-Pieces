@@ -1,7 +1,8 @@
 using Unity.Netcode;
 using Cinemachine;
+using UnityEngine;
 
-public class GameLocalPlayerManager: LocalPlayerManager{
+public class GameLocalPlayerManager: BaseLocalPlayerManager{
     public CinemachineVirtualCamera VirtualCamera;
     public Minimap Minimap;
     private void SetCamera(){
@@ -10,7 +11,8 @@ public class GameLocalPlayerManager: LocalPlayerManager{
     }
 
     protected override void PlayerSetup(){
+        Debug.Log("PlayerSetup");
         SetCamera();
-        Player.AbilityActionMap.Enable();
+        Player.LocalAbilityActionMap.Enable();
     }
 }

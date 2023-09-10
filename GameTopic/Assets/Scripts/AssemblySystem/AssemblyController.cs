@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
-
+[RequireComponent(typeof(DraggableController))]
 public class AssemblyController : NetworkBehaviour
 {
     private DraggableController DraggableController;
@@ -36,7 +36,6 @@ public class AssemblyController : NetworkBehaviour
         float rotationUnit = 0.3f
     ){
         DraggableController = gameObject.GetComponent<DraggableController>();
-        Debug.Assert(DraggableController != null, "DraggableController is null");
         DraggableController.Initialize(getDraggableGameObjectIDs, dragAction, Camera.main);
         DraggableController.OnDragStart += HandleComponentDraggedStartServerRpc;
         DraggableController.OnDragEnd += HandleComponentDraggedEndServerRpc;
