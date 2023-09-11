@@ -36,12 +36,10 @@ public class RegenerationAbility : DisplayableAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
-            var component = Utils.GetGameObjectUnderMouse()?.GetComponentInParent<GameComponent>();
+            var component = Utils.GetGameObjectUnderMouse()?.GetComponentInParent<BaseCoreComponent>();
             if (component == null) yield break;
-            var baseCoreComponent = component.CoreComponent;
-            if (baseCoreComponent == null) yield break;
             Debug.Log("Start Regeneration");
-            GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(SelfEntity, baseCoreComponent, RegenerationEffect);
+            GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(SelfEntity, component, RegenerationEffect);
         }
 
         protected override IEnumerator PreActivate()

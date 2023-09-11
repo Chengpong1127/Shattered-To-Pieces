@@ -128,7 +128,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
             component.DisconnectFromParent();
         });
         SpawnedGameComponents.ForEach((component) => {
-            component.BodyNetworkObject?.Despawn();
+            (component as Entity)?.Die();
         });
 
         SpawnedGameComponents.Clear();

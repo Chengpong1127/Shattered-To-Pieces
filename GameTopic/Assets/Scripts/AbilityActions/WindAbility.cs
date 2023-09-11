@@ -75,7 +75,7 @@ public class WindAbility : DisplayableAbilityScriptableObject
 
         protected override IEnumerator PreActivate()
         {
-            Character = body.Root as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl"); 
+            Character = body.GetRoot() as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl"); 
             Active = true;
 
             yield return null;

@@ -48,9 +48,9 @@ public class AbilityManager: IEnumerable<GameComponentAbility>
         if (info != null && info.EntryPaths.Count() != info.EntryAbilities.Count()) throw new ArgumentException("The number of entry paths and entry abilities should be the same");
 
         GameComponentAbility getAbility(int componentID, int abilityIndex){
-            var component = componentMap[componentID];
+            var component = componentMap[componentID] as BaseCoreComponent;
             Debug.Assert(component != null, "The component should not be null");
-            var ability = component.CoreComponent.GameComponentAbilities[abilityIndex];
+            var ability = component.GameComponentAbilities[abilityIndex];
             
             Debug.Assert(ability != null, "The ability should not be null");
             return ability;

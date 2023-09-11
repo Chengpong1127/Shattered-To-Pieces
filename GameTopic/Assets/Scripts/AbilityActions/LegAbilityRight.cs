@@ -60,7 +60,7 @@ public class LegAbilityRight : DisplayableAbilityScriptableObject {
                     addConfirm = true;
                 }
                 while (Active && Character.Landing) {
-                    if (Body.Root.AttributeSystemComponent.GetAttributeValue(MovingVelocity, out var s))
+                    if ((Body.GetRoot() as Entity).AttributeSystemComponent.GetAttributeValue(MovingVelocity, out var s))
                     {
                         Speed = s.CurrentValue / 25;
                     }
@@ -79,7 +79,7 @@ public class LegAbilityRight : DisplayableAbilityScriptableObject {
             }
         }
         protected override IEnumerator PreActivate() {
-            Character = Body.Root as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
+            Character = Body.GetRoot() as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
             //Debug.Log(Body.Root.AttributeSystemComponent.Attributes.Count);
             Active = Character != null;
             addConfirm = false;

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using AbilitySystem.Authoring;
-public interface ICoreComponent
+public interface ICoreComponent: IGameComponent
 {
     /// <summary>
     /// Get all of the ability list from this core component. 
@@ -8,5 +8,4 @@ public interface ICoreComponent
     /// </summary>
     /// <value> The ability list. Ability name: Ability</value>
     public GameComponentAbility[] GameComponentAbilities { get; }
-    public IGameComponent OwnerGameComponent { get; set; }
 }

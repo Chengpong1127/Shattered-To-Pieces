@@ -92,9 +92,9 @@ public class Device: IDevice
         tree.TraverseBFS((node) => {
             var component = node as IGameComponent;
             Debug.Assert(component != null);
-            if(component.CoreComponent == null)
+            if(component == null)
                 return;
-            abilityList.AddRange(component.CoreComponent.GameComponentAbilities);
+            abilityList.AddRange((component as BaseCoreComponent).GameComponentAbilities);
         });
         return abilityList.ToArray();
     }

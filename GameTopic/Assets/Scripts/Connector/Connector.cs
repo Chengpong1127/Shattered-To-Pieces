@@ -9,7 +9,7 @@ using System.Linq;
 public class Connector : MonoBehaviour, IConnector
 {
     public IGameComponent GameComponent { get; private set; }
-    private Collider2D SelfCollider => GameComponent.BodyCollider;
+    private Collider2D SelfCollider => GameComponent.BodyColliders.First();
 
     [Tooltip("The anchor of the connection point to attach to targets, should be a transform. If null, use the center of the connector as the anchor.")]
     [SerializeField] Transform ConnectionAnchor;

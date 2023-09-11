@@ -17,12 +17,12 @@ public class AbilityManagerInfo: IInfo{
             EntryPaths[i] = manager.AbilityInputEntries[i].InputPath;
             EntryAbilities[i] = new();
             foreach(var ability in manager.AbilityInputEntries[i].Abilities){
-                EntryAbilities[i].Add((componentIDMap[ability.OwnerGameComponent.OwnerGameComponent], ability.AbilityIndex));
+                EntryAbilities[i].Add((componentIDMap[ability.OwnerGameComponent], ability.AbilityIndex));
             }
         }
         
         foreach(var ability in manager.GetAbilitiesOutOfEntry()){
-            OutOfEntryAbilities.Add((componentIDMap[ability.OwnerGameComponent.OwnerGameComponent], ability.AbilityIndex));
+            OutOfEntryAbilities.Add((componentIDMap[ability.OwnerGameComponent], ability.AbilityIndex));
         }
 
     }

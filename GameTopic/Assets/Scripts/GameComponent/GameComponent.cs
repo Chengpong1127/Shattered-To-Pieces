@@ -1,54 +1,38 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Unity.Netcode;
 
-public class GameComponent : NetworkBehaviour, IGameComponent
+public class GameComponent : AbilityEntity, IGameComponent
 {
-    public Transform BodyTransform => bodyTransform;
-
-    public Rigidbody2D BodyRigidbody => bodyRigidbody;
-
-    public Collider2D BodyCollider => bodyCollider;
-    public int UnitID { get; set; }
     public ITreeNode Parent { get; private set; } = null;
     public IList<ITreeNode> Children { get; private set; } = new List<ITreeNode>();
 
     public IConnector Connector => connector;
-    public BaseCoreComponent CoreComponent => coreComponent;
-    public Transform DraggableTransform => bodyTransform;
-    public Animator BodyAnimator => bodyAnimator;
+    public Transform DraggableTransform => BodyTransform;
     public string ComponentName { get; set; }
 
-    public NetworkObject BodyNetworkObject => bodyNetworkObject;
 
-    public ulong NetworkObjectID => bodyNetworkObject.NetworkObjectId;
+    public ulong NetworkObjectID => NetworkObject.NetworkObjectId;
 
-    private NetworkObject bodyNetworkObject;
+    public Transform FlipTransform => flipTransform;
+
+    public Transform RotationTransform => rotationTransform;
+
     private float zRotation = 0;
 
     #region Inspector
 
-    [Header("References Setting")]
-    [Tooltip("The main transform of the body of the game component.")]
     [SerializeField]
-    private Transform bodyTransform;
-    [Tooltip("The main rigidbody of the body of the game component.")]
+    private Transform flipTransform;
     [SerializeField]
-    private Rigidbody2D bodyRigidbody;
-    [Tooltip("The main collider of the body of the game component.")]
-    [SerializeField]
-    private Collider2D bodyCollider;
+    private Transform rotationTransform;
     [Tooltip("The connector of the game component.")]
     [SerializeField]
     private IConnector connector;
-    [Tooltip("The core component of the game component.")]
-    [SerializeField]
-    private BaseCoreComponent coreComponent;
-    [Tooltip("The animator of the game component.")]
-    [SerializeField]
-    private Animator bodyAnimator;
+    
 
     #endregion
 
@@ -60,7 +44,7 @@ public class GameComponent : NetworkBehaviour, IGameComponent
         Parent = parentComponent;
         Parent.Children.Add(this);
         BodyRigidbody.isKinematic = true;
-        BodyCollider.isTrigger = true;
+        BodyColliders.ToList().ForEach((collider) => collider.isTrigger = true);
     }
 
     public void DisconnectFromParent()
@@ -70,7 +54,7 @@ public class GameComponent : NetworkBehaviour, IGameComponent
         Parent = null;
         connector.Disconnect();
         BodyRigidbody.isKinematic = false;
-        BodyCollider.isTrigger = false;
+        BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
     }
 
     public IInfo Dump(){
@@ -123,12 +107,12 @@ public class GameComponent : NetworkBehaviour, IGameComponent
             case true:
                 connector.SetNonConnectedTargetsDisplay(false);
                 BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
-                BodyCollider.enabled = false;
+                BodyColliders.ToList().ForEach((collider) => collider.enabled = false);
                 break;
             case false:
                 connector.SetNonConnectedTargetsDisplay(true);
                 BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
-                BodyCollider.enabled = true;
+                BodyColliders.ToList().ForEach((collider) => collider.enabled = true);
                 BodyRigidbody.angularVelocity = 0;
                 BodyRigidbody.velocity = Vector2.zero;
                 break;
@@ -147,17 +131,14 @@ public class GameComponent : NetworkBehaviour, IGameComponent
         
     }
 
-    private void Awake()
+    protected override void Awake()
     {
-        bodyTransform ??= transform ?? throw new ArgumentNullException(nameof(bodyTransform));
-        bodyRigidbody ??= GetComponent<Rigidbody2D>() ?? throw new ArgumentNullException(nameof(bodyRigidbody));
-        bodyCollider ??= GetComponent<Collider2D>() ?? throw new ArgumentNullException(nameof(bodyCollider));
+        base.Awake();
         connector ??= GetComponentInChildren<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
-        coreComponent ??= GetComponentInChildren<BaseCoreComponent>() ?? throw new ArgumentNullException(nameof(coreComponent));
-        bodyNetworkObject ??= GetComponent<NetworkObject>() ?? throw new ArgumentNullException(nameof(bodyNetworkObject));
-        bodyAnimator ??= GetComponentInChildren<Animator>();
+        if (flipTransform == null) Debug.LogWarning("The flip transform is not set.");
+        if (rotationTransform == null) Debug.LogWarning("The rotation transform is not set.");
 
-        coreComponent.OwnerGameComponent = this;
+
         
         DisconnectFromParent();
 
@@ -165,7 +146,7 @@ public class GameComponent : NetworkBehaviour, IGameComponent
     public void SetZRotation(float newZRotation)
     {
         zRotation = newZRotation;
-        bodyTransform.rotation = Quaternion.Euler(0, 0, zRotation);
+        rotationTransform.rotation = Quaternion.Euler(0, 0, zRotation);
     }
 
     public void AddZRotation(float newZRotation)
@@ -176,7 +157,7 @@ public class GameComponent : NetworkBehaviour, IGameComponent
 
     public void ToggleXScale()
     {
-        bodyTransform.localScale = new Vector3(-bodyTransform.localScale.x, bodyTransform.localScale.y, bodyTransform.localScale.z);
+        flipTransform.localScale = new Vector3(-flipTransform.localScale.x, flipTransform.localScale.y, flipTransform.localScale.z);
     }
     
 

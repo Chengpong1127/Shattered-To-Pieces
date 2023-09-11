@@ -49,7 +49,7 @@ public class PropellerFly : DisplayableAbilityScriptableObject {
             animator.SetBool("Fly", false);
         }
         protected override IEnumerator PreActivate() {
-            Character = Body.Root as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
+            Character = Body.GetRoot() as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
             Active = Character != null;
             addConfirm = false;
 

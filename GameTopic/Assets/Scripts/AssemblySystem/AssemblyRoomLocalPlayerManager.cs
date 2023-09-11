@@ -93,14 +93,14 @@ public class AssemblyRoomLocalPlayerManager: BaseLocalPlayerManager, IAssemblyRo
     }
     private void CleanAllGameComponents(){
         Player.SelfDevice.ForEachGameComponent((component) => {
-            component.BodyNetworkObject.Despawn(true);
+            component.Die();
         });
         NetworkManager.Singleton.SpawnManager.SpawnedObjectsList
             .Select((obj) => obj.GetComponentInParent<IGameComponent>())
             .Where((component) => component != null)
             .ToList()
             .ForEach((component) => {
-                component.BodyNetworkObject.Despawn(true);
+                component.Die();
             });
     }
     private void OnApplicationQuit() {

@@ -87,7 +87,7 @@ public class DraggableController: NetworkBehaviour
     private ulong? GetDraggableIDUnderMouse()
     {
         var gameObject = Utils.GetGameObjectUnderMouse();
-        return gameObject?.GetComponentInParent<IDraggable>()?.NetworkObjectID;
+        return gameObject?.GetComponentInParent<IAssemblyable>()?.NetworkObjectID;
     }
     [ServerRpc]
     private void SetDraggablePositionServerRpc(ulong draggableID, Vector2 targetPosition)

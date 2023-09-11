@@ -51,7 +51,7 @@ public class JumpAbility : DisplayableAbilityScriptableObject {
         }
 
         protected override IEnumerator PreActivate() {
-            Character = Body.Root as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
+            Character = Body.GetRoot() as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
 
             yield return null;
         }

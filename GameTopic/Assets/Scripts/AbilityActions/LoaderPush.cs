@@ -51,12 +51,12 @@ public class LoaderPush : DisplayableAbilityScriptableObject {
         private void TriggerAction(Entity other) {
             var core = other as BaseCoreComponent;
             if(core == null) { return; }
-            var rootCore = core.Root as ICharacterCtrl;
+            var rootCore = core.GetRoot() as ICharacterCtrl;
             if(rootCore == null) { return; }
 
             rootCore.Push(
-                (other.BodyCollider.transform.position -
-                SelfEntity.BodyCollider.transform.position)
+                (other.BodyColliders[0].transform.position -
+                SelfEntity.BodyColliders[0].transform.position)
                 .normalized * Power
                 );
 
