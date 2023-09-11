@@ -5,6 +5,8 @@ using AbilitySystem;
 using Unity.Netcode;
 using AttributeSystem.Authoring;
 using AttributeSystem.Components;
+using GameplayTagNamespace.Authoring;
+
 public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
     public bool Landing { get; private set; }
     int Pushing;
@@ -13,6 +15,7 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
 
     [SerializeField] Collider2D LandCheckCollider;
     [SerializeField] GameplayEffectScriptableObject LandCheckGE;
+    [SerializeField] GameplayTag LandCheckTag;
     [SerializeField] GameplayEffectScriptableObject VelocityInit;
     [SerializeField] AttributeScriptableObject MovingVelocity;
     GameplayEffectSpec LandCheckGESpec;
@@ -30,9 +33,11 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
         Landing = false;
         if (LandCheckCollider.OverlapCollider(filter, collisionResult) != 0) {
             collisionResult.ForEach(collider => {
-                var obj = collider.gameObject.GetComponent<Entity>();
+                // var obj = collider.gameObject.GetComponent<Entity>();
+                var obj = collider.gameObject.GetComponent<Taggable>();
                 
-                if(obj != null && obj.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(LandCheckGESpec)) {
+                // if(obj != null && obj.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(LandCheckGESpec)) {
+                if(obj != null && obj.HasTag(LandCheckTag)) {
                     Landing = true;
                     Pushing--;
                 }
