@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 /// <summary>
 /// Device of the game. Must assign GameComponentFactory after Initialize.
@@ -42,21 +43,13 @@ public class Device: IDevice
         var deviceInfo = info as DeviceInfo;
 
         var tempDictionary = CreateAllComponents(deviceInfo.TreeInfo.NodeInfoMap);
-        foreach (var (key, value) in deviceInfo.TreeInfo.NodeInfoMap){
-            var componentInfo = value;
-            var component = tempDictionary[key];
-            component.Load(componentInfo);
-        }
-        RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID];
         
+        deviceInfo.TreeInfo.NodeInfoMap.ToList().ForEach((pair) => {
+            var component = tempDictionary[pair.Key];
+            component.Load(pair.Value);
+        });
+        RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID];
         ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList);
-        foreach (var (key, componentInfo) in deviceInfo.TreeInfo.NodeInfoMap){
-            var component = tempDictionary[key];
-            component.SetZRotation(componentInfo.ConnectionZRotation);
-            if (componentInfo.ToggleXScale){
-                component.ToggleXScale();
-            }
-        }
         AbilityManager.Load(this, deviceInfo.AbilityManagerInfo, tempDictionary);
     }
 

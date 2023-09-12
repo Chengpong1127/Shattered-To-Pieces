@@ -21,8 +21,6 @@ public class GameComponent : AbilityEntity, IGameComponent
 
     public Transform RotationTransform => rotationTransform;
 
-    private float zRotation = 0;
-
     #region Inspector
 
     [SerializeField]
@@ -62,8 +60,8 @@ public class GameComponent : AbilityEntity, IGameComponent
         {
             ComponentName = ComponentName,
             ConnectionInfo = connector.Dump() as ConnectionInfo,
-            ConnectionZRotation = BodyTransform.rotation.eulerAngles.z,
-            ToggleXScale = BodyTransform.localScale.x < 0,
+            ConnectionZRotation = RotationTransform.rotation.eulerAngles.z,
+            ToggleXScale = FlipTransform.localScale.x < 0,
         };
         return info;
     }
@@ -73,8 +71,10 @@ public class GameComponent : AbilityEntity, IGameComponent
             throw new ArgumentException("info is not GameComponentInfo");
         }
         var componentInfo = info as GameComponentInfo;
+
         ComponentName = componentInfo.ComponentName;
-        zRotation = componentInfo.ConnectionZRotation;
+        RotationTransform.rotation = Quaternion.Euler(0, 0, componentInfo.ConnectionZRotation);
+        FlipTransform.localScale = new Vector3(componentInfo.ToggleXScale ? -1 : 1, 1, 1);
     }
 
     public (IGameComponent, ConnectionInfo) GetAvailableConnection(){
@@ -138,26 +138,7 @@ public class GameComponent : AbilityEntity, IGameComponent
         if (flipTransform == null) Debug.LogWarning("The flip transform is not set.");
         if (rotationTransform == null) Debug.LogWarning("The rotation transform is not set.");
 
-
-        
         DisconnectFromParent();
-
-    }
-    public void SetZRotation(float newZRotation)
-    {
-        zRotation = newZRotation;
-        rotationTransform.rotation = Quaternion.Euler(0, 0, zRotation);
-    }
-
-    public void AddZRotation(float newZRotation)
-    {
-        zRotation += newZRotation;
-        SetZRotation(zRotation);
-    }
-
-    public void ToggleXScale()
-    {
-        flipTransform.localScale = new Vector3(-flipTransform.localScale.x, flipTransform.localScale.y, flipTransform.localScale.z);
     }
     
 

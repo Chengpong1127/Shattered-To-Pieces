@@ -4,15 +4,8 @@ using System.Collections.Generic;
 using AttributeSystem.Authoring;
 using UnityEngine;
 
-public class Bat : BaseCoreComponent, IRotatable, IEntityTriggerable
+public class Bat : BaseCoreComponent, IEntityTriggerable
 {
-    [SerializeField]
-    private AttributeScriptableObject AttackPointAttribute; 
-    [SerializeField]
-    private Transform Handle;
-    public Transform RotateBody => BodyTransform;
-    public Transform RotateCenter => Handle;
-
     public event Action<Entity> OnTriggerEntity;
 
     private void OnTriggerEnter2D(Collider2D other) {

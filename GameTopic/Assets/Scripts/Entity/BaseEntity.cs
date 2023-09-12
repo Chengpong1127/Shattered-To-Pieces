@@ -25,10 +25,10 @@ public abstract class BaseEntity : NetworkBehaviour
         BodyColliders = bodyColliders;
         BodyAnimator = bodyAnimator;
 
-        if (BodyTransform == null) Debug.LogWarning("BodyTransform is not set.");
-        if (BodyRigidbody == null) Debug.LogWarning("BodyRigidbody is not set.");
-        if (BodyColliders == null) Debug.LogWarning("BodyColliders is not set.");
-        if (BodyAnimator == null) Debug.LogWarning("BodyAnimator is not set.");
+        if (BodyTransform == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyTransform.");
+        if (BodyRigidbody == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyRigidbody.");
+        if (BodyColliders == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyColliders.");
+        if (BodyAnimator == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyAnimator.");
     }
 
     protected virtual void Start()
