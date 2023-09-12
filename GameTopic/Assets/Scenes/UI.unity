@@ -6446,6 +6446,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92b2d2b97adb8445eba76826655f98d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyTransform: {fileID: 0}
+  bodyRigidbody: {fileID: 0}
+  bodyColliders: []
+  bodyAnimator: {fileID: 0}
   AttributeSystemComponent: {fileID: 1480054147}
   AbilitySystemCharacter: {fileID: 1480054146}
   InitializationAbilities:

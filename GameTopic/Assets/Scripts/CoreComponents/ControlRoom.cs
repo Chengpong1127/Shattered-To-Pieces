@@ -24,9 +24,9 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
     protected override void Awake() {
         base.Awake();
         Bondage();
-        LandCheckGESpec = this.AbilitySystemCharacter.MakeOutgoingSpec(LandCheckGE);
-        this.AttributeSystemComponent.AddAttributes(MovingVelocity);
-        this.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(this.AbilitySystemCharacter.MakeOutgoingSpec(VelocityInit));
+        //LandCheckGESpec = this.AbilitySystemCharacter.MakeOutgoingSpec(LandCheckGE);
+        //this.AttributeSystemComponent.AddAttributes(MovingVelocity);
+        //this.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(this.AbilitySystemCharacter.MakeOutgoingSpec(VelocityInit));
     }
 
     private void Update() {

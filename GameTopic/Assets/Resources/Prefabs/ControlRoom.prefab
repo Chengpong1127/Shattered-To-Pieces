@@ -158,6 +158,34 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 951099334
       objectReference: {fileID: 0}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Attributes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Attributes.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: e0d843f15ad51485c8b6d6f25aa2554f, type: 2}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Attributes.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Attributes.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: f15e7b9836f3b4d6695b01461a2d5da0, type: 2}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AttributeSystemEvents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AttributeSystemEvents.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f4cdc7090ecd448f859aae79c310302, type: 2}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AttributeSystemEvents.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f4cdc7090ecd448f859aae79c310302, type: 2}
     - target: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_Name
       value: ControlRoom
@@ -360,7 +388,8 @@ MonoBehaviour:
   bodyAnimator: {fileID: 2944568697830509218}
   AttributeSystemComponent: {fileID: 8187615772520921709}
   AbilitySystemCharacter: {fileID: 4120888074827841385}
-  InitializationAbilities: []
+  InitializationAbilities:
+  - {fileID: 11400000, guid: 1fa5b200971aa48578672c8fe6e7cc4e, type: 2}
   Abilities:
   - {fileID: 11400000, guid: 31f9dc9e81759497894eac5fbb7f5084, type: 2}
   - {fileID: 11400000, guid: 7ff9a5176798b43eb8bbbe6667a82be6, type: 2}

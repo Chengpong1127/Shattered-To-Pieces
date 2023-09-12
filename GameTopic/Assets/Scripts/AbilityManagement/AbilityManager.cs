@@ -61,28 +61,18 @@ public class AbilityManager: IEnumerable<GameComponentAbility>
             AbilityInputEntryNumber = info.EntryPaths.Count();
             CreateAbilityInputEntries(AbilityInputEntryNumber);
             abilityInEntryStatus.Clear();
-            for (int i = 0; i < AbilityInputEntryNumber; i++)
-            {
-                SetBinding(i, info.EntryPaths[i]);
-            }
-            foreach (var ability in GetDeviceCurrentAbilityList())
-            {
-                abilityInEntryStatus.Add(ability, true);
-            }
-            foreach (var (componentID, abilityIndex) in info.OutOfEntryAbilities)
-            {
-                var ability = getAbility(componentID, abilityIndex);
-                abilityInEntryStatus[ability] = false;
-            }
-
-            for (int i = 0; i < AbilityInputEntryNumber; i++)
-            {
-                foreach (var (componentID, abilityIndex) in info.EntryAbilities[i])
-                {
-                    var ability = getAbility(componentID, abilityIndex);
-                    SetAbilityToEntry(i, ability);
-                }
-            }
+            // Set the binding
+            info.EntryPaths.Select((path, index) => (path, index)).ToList().ForEach(x => SetBinding(x.index, x.path));
+            // Set the abilities to the entries
+            GetDeviceCurrentAbilityList().ToList().ForEach(x => abilityInEntryStatus.Add(x, true));
+            // Set the abilities out of the entries
+            info.OutOfEntryAbilities.ToList().ForEach(x => abilityInEntryStatus[getAbility(x.Item1, x.Item2)] = false);
+            // Set each ability to the entry
+            info.EntryAbilities
+                .Select((abilities, index) => (abilities, index))
+                .ToList()
+                .ForEach(x => x.abilities
+                    .ForEach(y => SetAbilityToEntry(x.index, getAbility(y.Item1, y.Item2))));
         }
         else{
             ReloadDeviceAbilities();
