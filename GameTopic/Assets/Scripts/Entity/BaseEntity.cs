@@ -4,10 +4,10 @@ using Unity.Netcode;
 public abstract class BaseEntity : NetworkBehaviour
 {
 
-    public virtual Transform BodyTransform { get; protected set; }
-    public virtual Rigidbody2D BodyRigidbody { get; protected set; }
-    public virtual Collider2D[] BodyColliders { get; protected set; }
-    public virtual Animator BodyAnimator { get; protected set; }
+    public virtual Transform BodyTransform => bodyTransform;
+    public virtual Rigidbody2D BodyRigidbody => bodyRigidbody;
+    public virtual Collider2D[] BodyColliders => bodyColliders;
+    public virtual Animator BodyAnimator => bodyAnimator;
 
     [Header("BaseEntity Setting")]
     [SerializeField]
@@ -20,11 +20,6 @@ public abstract class BaseEntity : NetworkBehaviour
     private Animator bodyAnimator;
     protected virtual void Awake()
     {
-        BodyTransform = bodyTransform;
-        BodyRigidbody = bodyRigidbody;
-        BodyColliders = bodyColliders;
-        BodyAnimator = bodyAnimator;
-
         if (BodyTransform == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyTransform.");
         if (BodyRigidbody == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyRigidbody.");
         if (BodyColliders == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyColliders.");
