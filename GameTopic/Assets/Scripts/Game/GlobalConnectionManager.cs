@@ -15,10 +15,11 @@ public class GlobalConnectionManager : MonoBehaviour, INetworkConnector{
         RelayTransport = transports.First(t => t.Protocol == UnityTransport.ProtocolType.RelayUnityTransport);
         LocalTransport = transports.First(t => t.Protocol == UnityTransport.ProtocolType.UnityTransport);
     }
-    public event Action OnAllPlayerConnected;
-    public int AllPlayerCount = 1;
-    public void StartConnection(){
-        if(AllPlayerCount == 1){
+    public event Action OnAllDeviceConnected;
+    public int PlayerCount = 1;
+    public void StartConnection(int playerCount){
+        PlayerCount = playerCount;
+        if(PlayerCount == 1){
             SingleConnection();
         }else{
             GlobalConnection();
@@ -37,7 +38,7 @@ public class GlobalConnectionManager : MonoBehaviour, INetworkConnector{
                 return;
             }
         }
-        await lobbyManager.CreateLobby("my lobby", AllPlayerCount);
+        await lobbyManager.CreateLobby("my lobby", PlayerCount);
         await WaitAllPlayerConnected();
     }
 
@@ -48,8 +49,13 @@ public class GlobalConnectionManager : MonoBehaviour, INetworkConnector{
     }
 
     private async UniTask WaitAllPlayerConnected(){
-        await UniTask.WaitUntil(() => NetworkManager.Singleton.ConnectedClientsList.Count == AllPlayerCount);
-        OnAllPlayerConnected?.Invoke();
+        await UniTask.WaitUntil(() => NetworkManager.Singleton.ConnectedClientsList.Count == PlayerCount);
+        OnAllDeviceConnected?.Invoke();
         Debug.Log("ConnectionManager: All players connected");
+    }
+
+    public void StopConnection()
+    {
+        NetworkManager.Singleton.Shutdown();
     }
 }

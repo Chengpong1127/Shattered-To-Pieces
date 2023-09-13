@@ -49,7 +49,10 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
             GameStateMachine.ChangeState(GameState.AssemblyRoom);
         };
     }
-
+    private void Home_Enter(){
+        Debug.Log("Enter Home");
+        SceneManager.LoadSceneAsync("StartScene");
+    }
 
     private void AssemblyRoom_Enter(){
         Debug.Log("Enter Assembly Room");
@@ -58,9 +61,13 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     }
 
     private void EnterRoom(){
-        var connectionManager = FindFirstObjectByType<GlobalConnectionManager>();
+        var gameRunner = FindObjectOfType<BaseLocalPlayerManager>();
+        gameRunner.StartPlayerSetup(1);
 
-        connectionManager.StartConnection();
+    }
+
+    public void RequestExitRoom(){
+        GameStateMachine.ChangeState(GameState.Home);
     }
     
 }

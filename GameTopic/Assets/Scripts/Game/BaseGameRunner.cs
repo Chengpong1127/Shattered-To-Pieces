@@ -4,40 +4,43 @@ using System.Linq;
 using System.Collections;
 using Cysharp.Threading.Tasks;
 using Unity.Netcode;
+using MonsterLove.StateMachine;
+using System;
 
 /// <summary>
 /// The game runner is responsible for running the game. It will be run on the server.
 /// </summary>
 public class BaseGameRunner: NetworkBehaviour{
-    public INetworkConnector connectionManager;
     protected Dictionary<ulong, IPlayer> PlayerMap;
     public BaseLocalPlayerManager localPlayerManager;
-    void Start()
+    public event Action OnAllPlayerSpawned;
+    void Awake()
     {
-        connectionManager = GetComponent<INetworkConnector>();
-        Debug.Assert(connectionManager != null, "connectionManager is null");
-        connectionManager.StartConnection();
-        connectionManager.OnAllPlayerConnected += async () => {
-            if (IsServer){
-                GameInitialize();
-                await LoadPlayer();
-                PreGameStart();
-                GameStart();
-            }
-        };
     }
+    public async void RunGame(){
+        if (IsServer){
+            GameInitialize();
+            await LoadPlayer();
+
+            PreGameStart();
+            GameStart();
+        }
+    } 
+    /// <summary>
+    /// Initialize the game. This method will be invoked on the server. Runs before all players are loaded.
+    /// </summary>
     protected virtual void GameInitialize(){
         
     }
-
+    /// <summary>
+    /// Server loads all players.
+    /// </summary>
+    /// <returns></returns>
     private async UniTask LoadPlayer(){
         var playerSpawner = new PlayerSpawner();
         PlayerMap = playerSpawner.SpawnAllPlayers();
-        LocalPlayerSetup();
+        OnAllPlayerSpawned?.Invoke();
         await UniTask.WaitUntil(() => PlayerMap.Values.All(player => player.IsLoaded));
-    }
-    private void LocalPlayerSetup(){
-        localPlayerManager.LocalPlayerSetup_ClientRpc();
     }
 
     protected virtual void PreGameStart(){

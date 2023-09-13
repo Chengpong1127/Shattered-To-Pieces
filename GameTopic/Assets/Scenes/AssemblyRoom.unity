@@ -5285,7 +5285,6 @@ GameObject:
   - component: {fileID: 1281276208}
   - component: {fileID: 1281276211}
   - component: {fileID: 1281276213}
-  - component: {fileID: 1281276214}
   m_Layer: 0
   m_Name: RoomManager
   m_TagString: Untagged
@@ -5387,19 +5386,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   InitLoadDeviceName: 0
---- !u!114 &1281276214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1281276204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d118d56d00b54e5495a2c4b0ae74f44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AllPlayerCount: 1
+  GameRunner: {fileID: 0}
 --- !u!1 &1306692363
 GameObject:
   m_ObjectHideFlags: 0
@@ -6352,63 +6339,6 @@ MonoBehaviour:
   AbilitySystemCharacter: {fileID: 1480054146}
   InitializationAbilities:
   - {fileID: 11400000, guid: a2452141b3a134589879a70b0bf113ef, type: 2}
---- !u!1001 &1556545550
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2742576077602279435, guid: b51391143787144c68081c1ccea0a601, type: 3}
-      propertyPath: m_Name
-      value: NetworkManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 3846991642439745827, guid: b51391143787144c68081c1ccea0a601, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3846991642439745827, guid: b51391143787144c68081c1ccea0a601, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3846991642439745827, guid: b51391143787144c68081c1ccea0a601, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3846991642439745827, guid: b51391143787144c68081c1ccea0a601, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3846991642439745827, guid: b51391143787144c68081c1ccea0a601, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3846991642439745827, guid: b51391143787144c68081c1ccea0a601, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3846991642439745827, guid: b51391143787144c68081c1ccea0a601, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3846991642439745827, guid: b51391143787144c68081c1ccea0a601, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3846991642439745827, guid: b51391143787144c68081c1ccea0a601, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3846991642439745827, guid: b51391143787144c68081c1ccea0a601, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b51391143787144c68081c1ccea0a601, type: 3}
 --- !u!1 &1593539954
 GameObject:
   m_ObjectHideFlags: 0
@@ -9252,6 +9182,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1281276213}
+        m_TargetAssemblyTypeName: BaseLocalPlayerManager, Scripts
+        m_MethodName: RequestExitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2139259994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10026,4 +9968,3 @@ SceneRoots:
   - {fileID: 1684141419}
   - {fileID: 441699570}
   - {fileID: 1480054149}
-  - {fileID: 1556545550}
