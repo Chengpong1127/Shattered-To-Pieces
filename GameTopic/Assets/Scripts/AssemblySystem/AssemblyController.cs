@@ -80,7 +80,7 @@ public class AssemblyController : NetworkBehaviour
     private void FlipServerRpc(ulong componentID){
         var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IAssemblyable>();
         Debug.Assert(component != null, "component is null");
-        component.FlipTransform.localScale = new Vector3(-component.FlipTransform.localScale.x, component.FlipTransform.localScale.y, component.FlipTransform.localScale.z);
+        component.AssemblyTransform.localScale = new Vector3(-component.AssemblyTransform.localScale.x, component.AssemblyTransform.localScale.y, component.AssemblyTransform.localScale.z);
     }
     private void RotateHandler(InputAction.CallbackContext context){
         if (IsOwner){
@@ -96,7 +96,7 @@ public class AssemblyController : NetworkBehaviour
     private void AddRotationServerRpc(ulong componentID, float rotation){
         var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IAssemblyable>();
         Debug.Assert(component != null, "component is null");
-        component.RotationTransform.Rotate(new Vector3(0, 0, rotation));
+        component.AssemblyTransform.Rotate(new Vector3(0, 0, rotation));
     }
     [ServerRpc]
     private void HandleComponentDraggedStartServerRpc(ulong draggableID, Vector2 targetPosition)

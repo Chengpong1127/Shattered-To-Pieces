@@ -17,16 +17,13 @@ public class GameComponent : AbilityEntity, IGameComponent
 
     public ulong NetworkObjectID => NetworkObject.NetworkObjectId;
 
-    public Transform FlipTransform => flipTransform;
+    public Transform AssemblyTransform => assemblyTransform;
 
-    public Transform RotationTransform => rotationTransform;
 
     #region Inspector
 
     [SerializeField]
-    private Transform flipTransform;
-    [SerializeField]
-    private Transform rotationTransform;
+    private Transform assemblyTransform;
     [Tooltip("The connector of the game component.")]
     [SerializeField]
     private IConnector connector;
@@ -60,8 +57,8 @@ public class GameComponent : AbilityEntity, IGameComponent
         {
             ComponentName = ComponentName,
             ConnectionInfo = connector.Dump() as ConnectionInfo,
-            ConnectionZRotation = RotationTransform.rotation.eulerAngles.z,
-            ToggleXScale = FlipTransform.localScale.x < 0,
+            ConnectionZRotation = AssemblyTransform.rotation.eulerAngles.z,
+            ToggleXScale = AssemblyTransform.localScale.x < 0,
         };
         return info;
     }
@@ -73,8 +70,8 @@ public class GameComponent : AbilityEntity, IGameComponent
         var componentInfo = info as GameComponentInfo;
 
         ComponentName = componentInfo.ComponentName;
-        RotationTransform.rotation = Quaternion.Euler(0, 0, componentInfo.ConnectionZRotation);
-        FlipTransform.localScale = new Vector3(componentInfo.ToggleXScale ? -1 : 1, 1, 1);
+        AssemblyTransform.rotation = Quaternion.Euler(0, 0, componentInfo.ConnectionZRotation);
+        AssemblyTransform.localScale = new Vector3(componentInfo.ToggleXScale ? -1 : 1, 1, 1);
     }
 
     public (IGameComponent, ConnectionInfo) GetAvailableConnection(){
@@ -135,8 +132,7 @@ public class GameComponent : AbilityEntity, IGameComponent
     {
         base.Awake();
         connector ??= GetComponentInChildren<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
-        if (flipTransform == null) Debug.LogWarning("The flip transform is not set.");
-        if (rotationTransform == null) Debug.LogWarning("The rotation transform is not set.");
+        if (assemblyTransform == null) Debug.LogWarning("The assemblyTransform is not set.");
 
         DisconnectFromParent();
     }
