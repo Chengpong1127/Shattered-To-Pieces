@@ -8,7 +8,7 @@ public class RubberBullet : MonoBehaviour
     public GameObject Rubber;
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.name == "Square")
+        if(collision.gameObject.name == "Square"||collision.gameObject.tag=="Ground")
         {
             var rubber=Instantiate(Rubber,this.transform.position,Rubber.transform.rotation);
             rubber.GetComponent<NetworkObject>().Spawn();

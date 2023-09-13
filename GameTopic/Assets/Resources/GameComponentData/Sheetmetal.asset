@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sheetmetal
   m_EditorClassIdentifier: 
   DisplayName: Sheelmetel
-  DisplayImage: {fileID: 21300000, guid: 03bae4cd9393e4d84aa494eae7de7e23, type: 3}
+  DisplayImage: {fileID: 21300000, guid: ffb44cec49ed9fb4ea0f94e878c5d4c3, type: 3}
   Description: "\u9211\u91D1\u662F\u80FD\u8B93\u88DD\u7F6E\u88DD\u914D\u5176\u4ED6\u5143\u4EF6\u7684\u5DE5\u5177
     \u901A\u5E38\u9211\u91D1\u6703\u9023\u63A5\u5230\u652F\u67B6\u4E0A"
   Price: 5

@@ -144,4 +144,10 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     private void LoadCheck(){
         if (!IsLoaded) throw new InvalidOperationException("The device is not loaded");
     }
+    [ServerRpc]
+    public void CleanDevice_ServerRpc(){
+        SelfDevice.ForEachGameComponent(component =>
+                component.CoreComponent.Die()
+        );
+    }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 
 public static class Utils{
     public static GameObject GetGameObjectUnderMouse(){
@@ -32,5 +33,8 @@ public static class Utils{
         }else{
             throw new System.ArgumentException("NetworkObject with id " + networkID + " not found");
         }
+    }
+    public static NetworkTransport GetGlobalTransport(){
+        return NetworkManager.Singleton.NetworkConfig.NetworkTransport;
     }
 }

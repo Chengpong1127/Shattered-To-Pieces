@@ -114,4 +114,9 @@ public class AssemblyRoomLocalPlayerManager: BaseLocalPlayerManager, IAssemblyRo
         assemblyController.OnGameComponentDraggedStart += _ => UpdateAbility();
         assemblyController.AfterGameComponentConnected += _ => UpdateAbility();
     }
+
+    protected override void PreExitGame(){
+        SaveCurrentDevice();
+        CleanAllGameComponents();
+    }
 }

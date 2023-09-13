@@ -29,4 +29,9 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  Power: 12
+  Image: {fileID: 0}
+  Icon: {fileID: 0}
+  Description: 
+  Power: 2
+  JumpTime: 0.2
+  JumpMultipiler: 3
