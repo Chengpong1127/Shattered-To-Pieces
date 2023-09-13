@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 646425904242467134, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.33
+      value: 0.552
       objectReference: {fileID: 0}
     - target: {fileID: 646425904242467134, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.16
+      value: 0.004
       objectReference: {fileID: 0}
     - target: {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: AbilitySystemCharacter
