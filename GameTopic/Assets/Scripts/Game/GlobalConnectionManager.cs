@@ -5,15 +5,28 @@ using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
 using Unity.Netcode.Transports.UTP;
+using System.Linq;
 
 public class GlobalConnectionManager : MonoBehaviour, INetworkConnector{
+    private UnityTransport RelayTransport;
+    private UnityTransport LocalTransport;
+    private void Awake(){
+        var transports = NetworkManager.Singleton.GetComponents<UnityTransport>();
+        RelayTransport = transports.First(t => t.Protocol == UnityTransport.ProtocolType.RelayUnityTransport);
+        LocalTransport = transports.First(t => t.Protocol == UnityTransport.ProtocolType.UnityTransport);
+    }
     public event Action OnAllPlayerConnected;
     public int AllPlayerCount = 1;
     public void StartConnection(){
-        GlobalConnection();
+        if(AllPlayerCount == 1){
+            SingleConnection();
+        }else{
+            GlobalConnection();
+        }
     }
 
     private async void GlobalConnection(){
+        NetworkManager.Singleton.NetworkConfig.NetworkTransport = RelayTransport;
         var lobbyManager = new LobbyManager();
         await lobbyManager.SignIn();
 
@@ -25,6 +38,12 @@ public class GlobalConnectionManager : MonoBehaviour, INetworkConnector{
             }
         }
         await lobbyManager.CreateLobby("my lobby", AllPlayerCount);
+        await WaitAllPlayerConnected();
+    }
+
+    private async void SingleConnection(){
+        NetworkManager.Singleton.NetworkConfig.NetworkTransport = LocalTransport;
+        NetworkManager.Singleton.StartHost();
         await WaitAllPlayerConnected();
     }
 
