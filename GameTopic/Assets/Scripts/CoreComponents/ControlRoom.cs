@@ -54,32 +54,32 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
 
     public void Move(Vector2 Motion) {
         if(Pushing > 0) { return; }
-        Moving = 20;
+        Moving = 2;
         BodyRigidbody.velocity = Motion;
     }
 
     public void VerticalMove(float Motion) {
         if (Pushing > 0) { return; }
-        Moving = 20;
+        Moving = 2;
         replaceVec.x = BodyRigidbody.velocity.x;
         replaceVec.y = Motion;
         BodyRigidbody.velocity = replaceVec;
     }
     public void HorizontalMove(float Motion) {
         if (Pushing > 0) { return; }
-        Moving = 20;
+        Moving = 2;
         replaceVec.x = Motion;
         replaceVec.y = BodyRigidbody.velocity.y;
         BodyRigidbody.velocity = replaceVec;
     }
     public void AddForce(Vector2 Motion, ForceMode2D Mode) {
-        Moving = 20;
+        Moving = 2;
         BodyRigidbody.AddForce(Motion, Mode);
     }
 
     public void Push(Vector2 Motion) {
         Bondage();
-        Pushing = 20;
+        Pushing = 2;
         this.BodyRigidbody.AddForce(Motion, ForceMode2D.Impulse);
     }
     public void Bondage() {
