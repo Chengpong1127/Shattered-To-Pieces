@@ -4,14 +4,12 @@ using Unity.Netcode;
 public abstract class BaseEntity : NetworkBehaviour
 {
 
-    public virtual Transform BodyTransform => bodyTransform;
+    public virtual Transform BodyTransform => transform;
     public virtual Rigidbody2D BodyRigidbody => bodyRigidbody;
     public virtual Collider2D[] BodyColliders => bodyColliders;
     public virtual Animator BodyAnimator => bodyAnimator;
 
     [Header("BaseEntity Setting")]
-    [SerializeField]
-    private Transform bodyTransform;
     [SerializeField]
     private Rigidbody2D bodyRigidbody;
     [SerializeField]

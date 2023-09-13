@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using Unity.Netcode;
 
+[RequireComponent(typeof(Connector))]
 public class GameComponent : AbilityEntity, IGameComponent
 {
     public ITreeNode Parent { get; private set; } = null;
@@ -131,7 +132,7 @@ public class GameComponent : AbilityEntity, IGameComponent
     protected override void Awake()
     {
         base.Awake();
-        connector ??= GetComponentInChildren<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
+        connector ??= GetComponent<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
         if (assemblyTransform == null) Debug.LogWarning("The assemblyTransform is not set.");
 
         DisconnectFromParent();

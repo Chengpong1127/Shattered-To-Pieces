@@ -11,7 +11,9 @@ using System.Linq;
 /// </summary>
 [RequireComponent(typeof(AttributeSystemComponent)), RequireComponent(typeof(AbilitySystemCharacter))]
 public class Entity: BaseEntity{
+    [HideInInspector]
     public AttributeSystemComponent AttributeSystemComponent;
+    [HideInInspector]
     public AbilitySystemCharacter AbilitySystemCharacter;
     public bool IsInitialized { get; private set;}
     [SerializeField]

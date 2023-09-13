@@ -12,7 +12,6 @@ public class Connector : MonoBehaviour, IConnector
     private Collider2D SelfCollider => GameComponent.BodyColliders.First();
 
     [Tooltip("The anchor of the connection point to attach to targets, should be a transform. If null, use the center of the connector as the anchor.")]
-    [SerializeField] Transform ConnectionAnchor;
     [SerializeField] List<Target> targetList;
 
     Target _currentLinkedTarget = null;
@@ -121,10 +120,5 @@ public class Connector : MonoBehaviour, IConnector
         GameComponent.BodyTransform.SetParent(newParent.GameComponent.BodyTransform);
         GameComponent.BodyTransform.position = _currentLinkedTarget.ConnectionPosition;
         _currentLinkedTarget.LinkedBy(this);
-        if (ConnectionAnchor != null)
-        {
-            Vector3 positionOffset = _currentLinkedTarget.transform.position - ConnectionAnchor.position;
-            GameComponent.BodyTransform.position += positionOffset;
-        }
     }
 }
