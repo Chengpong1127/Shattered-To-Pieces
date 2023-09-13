@@ -10,14 +10,12 @@ using System.Linq;
 public class GlobalConnectionManager : MonoBehaviour, INetworkConnector{
     private UnityTransport RelayTransport;
     private UnityTransport LocalTransport;
-    private void Awake(){
+    public event Action OnAllDeviceConnected;
+    private int PlayerCount = 1;
+    public void StartConnection(int playerCount){
         var transports = NetworkManager.Singleton.GetComponents<UnityTransport>();
         RelayTransport = transports.First(t => t.Protocol == UnityTransport.ProtocolType.RelayUnityTransport);
         LocalTransport = transports.First(t => t.Protocol == UnityTransport.ProtocolType.UnityTransport);
-    }
-    public event Action OnAllDeviceConnected;
-    public int PlayerCount = 1;
-    public void StartConnection(int playerCount){
         PlayerCount = playerCount;
         if(PlayerCount == 1){
             SingleConnection();
@@ -35,10 +33,13 @@ public class GlobalConnectionManager : MonoBehaviour, INetworkConnector{
         if(lobby != null){
             bool success = await lobbyManager.JoinLobby(lobby);
             if(success){
+                NetworkManager.Singleton.StartClient();
+                await WaitAllPlayerConnected();
                 return;
             }
         }
         await lobbyManager.CreateLobby("my lobby", PlayerCount);
+        NetworkManager.Singleton.StartHost();
         await WaitAllPlayerConnected();
     }
 
@@ -49,9 +50,12 @@ public class GlobalConnectionManager : MonoBehaviour, INetworkConnector{
     }
 
     private async UniTask WaitAllPlayerConnected(){
-        await UniTask.WaitUntil(() => NetworkManager.Singleton.ConnectedClientsList.Count == PlayerCount);
-        OnAllDeviceConnected?.Invoke();
-        Debug.Log("ConnectionManager: All players connected");
+        if (NetworkManager.Singleton.IsServer)
+        {
+            await UniTask.WaitUntil(() => NetworkManager.Singleton.ConnectedClientsList.Count == PlayerCount);
+            OnAllDeviceConnected?.Invoke();
+            Debug.Log("ConnectionManager: All players connected");
+        }
     }
 
     public void StopConnection()

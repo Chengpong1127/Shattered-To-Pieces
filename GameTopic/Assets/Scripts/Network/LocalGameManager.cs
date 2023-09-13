@@ -61,8 +61,9 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     }
 
     private void EnterRoom(){
-        var gameRunner = FindObjectOfType<BaseLocalPlayerManager>();
-        gameRunner.StartPlayerSetup(1);
+        var playerManager = FindObjectOfType<BaseLocalPlayerManager>();
+        if (!playerManager.RunAtStart)
+            playerManager.StartPlayerSetup();
 
     }
 

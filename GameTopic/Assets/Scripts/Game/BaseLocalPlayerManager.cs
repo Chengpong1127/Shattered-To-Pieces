@@ -6,20 +6,31 @@ using System;
 
 public class BaseLocalPlayerManager : NetworkBehaviour
 {
+    public int PlayerCount = 1;
+    public bool RunAtStart = false;
     public PlayerDevice Player { get; private set; }
     public bool IsLocalPlayerCompleteSetup { get; private set; } = false;
-    public UnityEvent OnLocalPlayerLoaded;
     public string InitLoadDeviceName = "0";
-    public event Action OnPlayerRequestExitGame;
     protected INetworkConnector connectionManager;
     public BaseGameRunner GameRunner;
+    
     public void Awake()
     {
+        Application.targetFrameRate = 30;
         connectionManager = gameObject.AddComponent<GlobalConnectionManager>();
-        GameRunner = GetComponent<BaseGameRunner>();
+        GameRunner ??= FindObjectOfType<BaseGameRunner>() ?? throw new Exception("GameRunner is null");
+
     }
-    public void StartPlayerSetup(int playerCount){
-        connectionManager.StartConnection(playerCount);
+    public void Start(){
+        if(RunAtStart){
+            StartPlayerSetup();
+        }
+    }
+    /// <summary>
+    /// Start the player setup. This method need to be invoked after enter a scene.
+    /// </summary>
+    public void StartPlayerSetup(){
+        connectionManager.StartConnection(PlayerCount);
         connectionManager.OnAllDeviceConnected += () => {
             if(IsServer){
                 SetRunner();
@@ -43,7 +54,6 @@ public class BaseLocalPlayerManager : NetworkBehaviour
             await UniTask.WaitUntil(() => Player.IsLoaded);
             PlayerSetup();
             IsLocalPlayerCompleteSetup = true;
-            OnLocalPlayerLoaded?.Invoke();
         }
 
     }
@@ -55,7 +65,6 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     public void RequestExitGame(){
         if(IsOwner){
             PreExitGame();
-            OnPlayerRequestExitGame?.Invoke();
             connectionManager.StopConnection();
             LocalGameManager.Instance.RequestExitRoom();
         }

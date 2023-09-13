@@ -41,7 +41,6 @@ public class LobbyManager
             string relayCode = await CreateRelay(maxPlayers);
             Debug.Log("Relay Code: " + relayCode);
             await AddRelayCodeAsync(relayCode);
-            NetworkManager.Singleton.StartHost();
         }
     }
 
@@ -85,7 +84,6 @@ public class LobbyManager
             if (TryGetLobbyRelayCode(out string relayCode))
             {
                 await JoinRelay(relayCode);
-                NetworkManager.Singleton.StartClient();
             }
             else
             {
