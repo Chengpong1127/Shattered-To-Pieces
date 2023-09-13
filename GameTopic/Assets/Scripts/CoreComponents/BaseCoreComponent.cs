@@ -4,6 +4,9 @@ using AbilitySystem.Authoring;
 
 public class BaseCoreComponent : GameComponent, ICoreComponent
 {
+
+    public BaseCoreComponent Root => GetRoot() as BaseCoreComponent;
+
     /// <summary>
     /// Get the children core components of the game component in the device.
     /// </summary>

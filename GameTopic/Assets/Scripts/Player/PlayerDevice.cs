@@ -147,7 +147,7 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     [ServerRpc]
     public void CleanDevice_ServerRpc(){
         SelfDevice.ForEachGameComponent(component =>
-                component.CoreComponent.Die()
+                component.Die()
         );
     }
 }
