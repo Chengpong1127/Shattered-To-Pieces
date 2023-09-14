@@ -47,8 +47,8 @@ public class AssemblyController : NetworkBehaviour
             this.flipAction.started += FlipHandler;
             this.rotateAction.started += RotateHandler;
         }
-        this.flipAction.Disable();
-        this.rotateAction.Disable();
+        this.flipAction?.Disable();
+        this.rotateAction?.Disable();
     }
     void OnEnable()
     {
