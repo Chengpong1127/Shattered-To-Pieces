@@ -12,7 +12,6 @@ using System;
 /// </summary>
 public class BaseGameRunner: NetworkBehaviour{
     protected Dictionary<ulong, IPlayer> PlayerMap;
-    public BaseLocalPlayerManager localPlayerManager;
     public event Action OnAllPlayerSpawned;
     void Awake()
     {
@@ -24,6 +23,9 @@ public class BaseGameRunner: NetworkBehaviour{
 
             PreGameStart();
             GameStart();
+        }
+        else{
+            Debug.LogError("GameRunner is not running on server");
         }
     } 
     /// <summary>

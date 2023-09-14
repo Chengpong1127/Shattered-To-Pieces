@@ -428,7 +428,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ba23d47e50841b8a34669e2356da61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localPlayerManager: {fileID: 751570061}
   SpawnPoints:
   - {fileID: 1720327777}
   - {fileID: 1462674786}
@@ -462,7 +461,7 @@ MonoBehaviour:
   PlayerCount: 2
   RunAtStart: 1
   InitLoadDeviceName: 0
-  GameRunner: {fileID: 0}
+  GameRunner: {fileID: 751570058}
   VirtualCamera: {fileID: 1957124926}
   Minimap: {fileID: 0}
 --- !u!1 &1340381914

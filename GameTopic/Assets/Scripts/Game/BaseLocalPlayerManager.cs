@@ -47,14 +47,12 @@ public class BaseLocalPlayerManager : NetworkBehaviour
         WaitPlayerLoaded();
     }
     private async void WaitPlayerLoaded(){
-        if(IsOwner){
-            Player = Utils.GetLocalPlayerDevice();
-            Debug.Assert(Player != null, "Player is null");
-            Player.LoadLocalDevice(InitLoadDeviceName);
-            await UniTask.WaitUntil(() => Player.IsLoaded);
-            PlayerSetup();
-            IsLocalPlayerCompleteSetup = true;
-        }
+        Player = Utils.GetLocalPlayerDevice();
+        Debug.Assert(Player != null, "Player is null");
+        Player.LoadLocalDevice(InitLoadDeviceName);
+        await UniTask.WaitUntil(() => Player.IsLoaded);
+        PlayerSetup();
+        IsLocalPlayerCompleteSetup = true;
 
     }
     /// <summary>

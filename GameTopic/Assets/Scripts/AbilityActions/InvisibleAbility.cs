@@ -58,47 +58,10 @@ public class InvisibleAbility : DisplayableAbilityScriptableObject
             //Debug.Log(SelfEntity.transform.root.name);
             ControlRoom = root.GetChild(0).GetComponent<BaseCoreComponent>();
             baseCoreComponents = ControlRoom.GetAllChildren();
-            foreach (var baseComponent in baseCoreComponents)
-            {
-                SpriteRenderer s = baseComponent?.GetComponent<SpriteRenderer>();
-                if(s != null)
-                    s.material = invisible;
-                else
-                {
-                    for(var i = 1; i < baseComponent.transform.parent.childCount; i++)
-                    {
-                        var anotherChild=baseComponent.transform.parent.GetChild(i);
-                        for(var j = 0; j < anotherChild.childCount; j++)
-                        {
-                            var anotherChild_Renderer=anotherChild.GetChild(j);
-                            SpriteRenderer cs=anotherChild_Renderer.gameObject?.GetComponent<SpriteRenderer>();
-                            if (cs != null)
-                                cs.material = invisible;
-                        }
-                    }
-                }
-            }
+            var player = Utils.GetLocalPlayerDevice();
+            player.Invisible_ClientRpc(true);
             yield return new WaitForSeconds(DurationTime);
-            foreach (var baseComponent in baseCoreComponents)
-            {
-                SpriteRenderer s = baseComponent?.GetComponent<SpriteRenderer>();
-                if (s != null)
-                    s.material = m_default;
-                else
-                {
-                    for (var i = 1; i < baseComponent.transform.parent.childCount; i++)
-                    {
-                        var anotherChild = baseComponent.transform.parent.GetChild(i);
-                        for (var j = 0; j < anotherChild.childCount; j++)
-                        {
-                            var anotherChild_Renderer = anotherChild.GetChild(j);
-                            SpriteRenderer cs = anotherChild_Renderer.gameObject?.GetComponent<SpriteRenderer>();
-                            if (cs != null)
-                                cs.material = m_default;
-                        }
-                    }
-                }
-            }
+            player.Invisible_ClientRpc(false);
             yield return null;
         }
 

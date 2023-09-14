@@ -11,6 +11,7 @@ public class BaseCoreComponent : GameComponent, ICoreComponent
     /// Get the children core components of the game component in the device.
     /// </summary>
     /// <returns></returns>
+    /// 
     public BaseCoreComponent[] GetAllChildren(){
         var children = new List<BaseCoreComponent>();
         var tree = new Tree(this);
@@ -58,4 +59,7 @@ public class BaseCoreComponent : GameComponent, ICoreComponent
         DisconnectAllChildren();
         base.Die();
     }
+
+    
+
 }
