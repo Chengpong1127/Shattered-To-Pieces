@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem.Authoring;
+using Unity.Netcode;
 
 public class BaseCoreComponent : GameComponent, ICoreComponent
 {
@@ -58,6 +59,16 @@ public class BaseCoreComponent : GameComponent, ICoreComponent
         DisconnectFromParent();
         DisconnectAllChildren();
         base.Die();
+    }
+
+    [ClientRpc]
+    public void SetVisible_ClientRpc(bool visible)
+    {
+        var renderers = GetComponentsInChildren<Renderer>();
+        foreach (var renderer in renderers)
+        {
+            renderer.enabled = visible;
+        }
     }
 
     

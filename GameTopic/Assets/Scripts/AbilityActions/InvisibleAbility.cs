@@ -4,6 +4,7 @@ using UnityEngine;
 using AbilitySystem.Authoring;
 using AbilitySystem;
 using DG.Tweening;
+using System.Linq;
 [CreateAssetMenu(fileName = "InvisibleAbility", menuName = "Ability/InvisibleAbility")]
 public class InvisibleAbility : DisplayableAbilityScriptableObject
 {
@@ -49,19 +50,17 @@ public class InvisibleAbility : DisplayableAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
-            var root = SelfEntity.transform.root;
-            while (root.parent != null)
-            {
-                Debug.Log(root.name);
-                root = root.transform.root;
-            }
-            //Debug.Log(SelfEntity.transform.root.name);
-            ControlRoom = root.GetChild(0).GetComponent<BaseCoreComponent>();
+            ControlRoom = (SelfEntity as BaseCoreComponent).Root as ControlRoom;
             baseCoreComponents = ControlRoom.GetAllChildren();
-            var player = Utils.GetLocalPlayerDevice();
-            player.Invisible_ClientRpc(true);
+            baseCoreComponents.ToList().ForEach(baseCoreComponent =>
+            {
+                baseCoreComponent.SetVisible_ClientRpc(false);
+            });
             yield return new WaitForSeconds(DurationTime);
-            player.Invisible_ClientRpc(false);
+            baseCoreComponents.ToList().ForEach(baseCoreComponent =>
+            {
+                baseCoreComponent.SetVisible_ClientRpc(true);
+            });
             yield return null;
         }
 
