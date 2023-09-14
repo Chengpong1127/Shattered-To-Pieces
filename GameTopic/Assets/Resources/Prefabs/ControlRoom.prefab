@@ -573,6 +573,8 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 31f9dc9e81759497894eac5fbb7f5084, type: 2}
   - {fileID: 11400000, guid: 7ff9a5176798b43eb8bbbe6667a82be6, type: 2}
+  m_Default: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_Invisible: {fileID: 10758, guid: 0000000000000000f000000000000000, type: 0}
   LandCheckCollider: {fileID: 3851937024220445991}
   LandCheckGE: {fileID: 11400000, guid: 0943c1d519ba5d34db8ca32803e91846, type: 2}
   LandCheckTag: {fileID: 11400000, guid: f8b02541872494b4e9f0893f63e0278f, type: 2}

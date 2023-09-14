@@ -41,6 +41,7 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
     /// Get the children core components of the game component in the device.
     /// </summary>
     /// <returns></returns>
+    /// 
     public BaseCoreComponent[] GetAllChildren(){
         var children = new List<BaseCoreComponent>();
         var tree = new Tree(OwnerGameComponent);
@@ -125,4 +126,7 @@ public class BaseCoreComponent : AbilityEntity, ICoreComponent
         OwnerGameComponent.DisconnectAllChildren();
         base.Die();
     }
+
+    
+
 }
