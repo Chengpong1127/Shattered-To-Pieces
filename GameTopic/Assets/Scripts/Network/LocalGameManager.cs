@@ -22,7 +22,6 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     private enum GameState{
         Init,
         Home,
-        AssemblyRoom,
         GameRoom,
     }
     private StateMachine<GameState> GameStateMachine;
@@ -43,29 +42,24 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         SelfPlayer = new Player(AuthenticationService.Instance.PlayerId);
         GameStateMachine.ChangeState(GameState.Home);
     }
-    public void EnterAssemblyRoom(){
-        var operation = SceneManager.LoadSceneAsync("AssemblyRoom");
-        operation.completed += (AsyncOperation op) => {
-            GameStateMachine.ChangeState(GameState.AssemblyRoom);
-        };
-    }
     private void Home_Enter(){
         Debug.Log("Enter Home");
         SceneManager.LoadSceneAsync("StartScene");
     }
 
-    private void AssemblyRoom_Enter(){
-        Debug.Log("Enter Assembly Room");
-        EnterRoom();
-
+    public void EnterRoom(string roomName){
+        GameStateMachine.ChangeState(GameState.GameRoom);
+        var operation = SceneManager.LoadSceneAsync(roomName);
+        operation.completed += _ => OnEnterRoom();
     }
 
-    private void EnterRoom(){
+    private void OnEnterRoom(){
         var playerManager = FindObjectOfType<BaseLocalPlayerManager>();
         if (!playerManager.RunAtStart)
             playerManager.StartPlayerSetup();
-
     }
+
+
 
     public void RequestExitRoom(){
         GameStateMachine.ChangeState(GameState.Home);

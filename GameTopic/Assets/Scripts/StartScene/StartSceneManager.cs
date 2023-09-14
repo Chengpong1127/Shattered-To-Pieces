@@ -14,9 +14,9 @@ public class StartSceneManager: MonoBehaviour{
 
 
     public void EnterAssemblyRoom(){
-        LocalGameManager.Instance.EnterAssemblyRoom();
+        LocalGameManager.Instance.EnterRoom("AssemblyRoom");
     }
-    public void EnterGameRoom(int roomID){
-
+    public void EnterGameRoom(string roomName){
+        LocalGameManager.Instance.EnterRoom(roomName);
     }
 }
