@@ -1,5 +1,35 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:GroupBox name="Bar" style="position: absolute; bottom: 0; width: 600px; height: 60px; max-width: 1200px; max-height: 120px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; align-items: center; align-self: center;">
-        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="SkillBox" style="width: 60px; height: 60px; max-width: 120px; max-height: 120px; min-width: 60px; min-height: 60px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+    <Style src="project://database/Assets/UI%20Toolkit/CSS/SkillBox.uss?fileID=7433441132597879392&amp;guid=e2d3d7ddc4290cd459befa693814b7a1&amp;type=3#SkillBox" />
+    <ui:GroupBox name="Bar" style="position: absolute; bottom: 0; width: 40%; height: 10%; margin-top: 1%; margin-right: 1%; margin-bottom: 1%; margin-left: 1%; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; align-items: center; align-self: center; background-image: url(&apos;project://database/Assets/UI%20Toolkit/Imgs/%E5%BA%95%E5%9C%96.PNG?fileID=2800000&amp;guid=285ee3286ddccb64089dc3a890ecb37b&amp;type=3#底圖&apos;); -unity-background-scale-mode: scale-and-crop; overflow: visible; flex-direction: row; justify-content: center;">
+        <ui:VisualElement name="BoxBG" style="height: 100%; width: auto;">
+            <ui:Button name="SkillBox" text="Space" class="SkillBox" style="font-size: 100%;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="BoxBG" style="height: 100%; width: auto;">
+            <ui:Button name="SkillBox" text="R" class="SkillBox" />
+        </ui:VisualElement>
+        <ui:VisualElement name="BoxBG" style="height: 100%; width: auto;">
+            <ui:Button name="SkillBox" text="R" class="SkillBox" />
+        </ui:VisualElement>
+        <ui:VisualElement name="BoxBG" style="height: 100%; width: auto;">
+            <ui:Button name="SkillBox" text="R" class="SkillBox" />
+        </ui:VisualElement>
+        <ui:VisualElement name="BoxBG" style="height: 100%; width: auto;">
+            <ui:Button name="SkillBox" text="R" class="SkillBox" />
+        </ui:VisualElement>
+        <ui:VisualElement name="BoxBG" style="height: 100%; width: auto;">
+            <ui:Button name="SkillBox" text="R" class="SkillBox" />
+        </ui:VisualElement>
+        <ui:VisualElement name="BoxBG" style="height: 100%; width: auto;">
+            <ui:Button name="SkillBox" text="R" class="SkillBox" />
+        </ui:VisualElement>
+        <ui:VisualElement name="BoxBG" style="height: 100%; width: auto;">
+            <ui:Button name="SkillBox" text="R" class="SkillBox" />
+        </ui:VisualElement>
+        <ui:VisualElement name="BoxBG" style="height: 100%; width: auto;">
+            <ui:Button name="SkillBox" text="R" class="SkillBox" />
+        </ui:VisualElement>
+        <ui:VisualElement name="BoxBG" style="height: 100%; width: auto;">
+            <ui:Button name="SkillBox" text="R" class="SkillBox" />
+        </ui:VisualElement>
     </ui:GroupBox>
 </ui:UXML>

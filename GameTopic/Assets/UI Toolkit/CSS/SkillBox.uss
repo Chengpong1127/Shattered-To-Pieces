@@ -1,0 +1,21 @@
+.SkillBox {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-image: url('project://database/Assets/UI%20Toolkit/Imgs/%E9%85%8D%E7%BD%AE%E6%A1%86.png?fileID=2800000&guid=6161e11cbe50fc4459207096572f2186&type=3#配置框');
+    background-color: rgba(255, 255, 255, 0);
+    padding-top: 10%;
+    padding-right: 10%;
+    padding-bottom: 10%;
+    padding-left: 10%;
+    font-size: 100%;
+    -unity-text-align: middle-center;
+    -unity-background-scale-mode: scale-to-fit;
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+}
