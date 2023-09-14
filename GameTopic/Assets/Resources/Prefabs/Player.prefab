@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 63953245571955760}
   - component: {fileID: 8273857838861744500}
-  - component: {fileID: 5051464605005589416}
+  - component: {fileID: 3146671023145171492}
   - component: {fileID: 8576677473317996624}
   - component: {fileID: -2651073880981813705}
   - component: {fileID: -2878997102083916542}
@@ -56,7 +56,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &5051464605005589416
+--- !u!114 &3146671023145171492
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,11 +65,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 722861398309570409}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea02bdcb26a56462a99ad3fe93611824, type: 3}
+  m_Script: {fileID: 11500000, guid: 5172b97858b044fbf9d2752c7db7a5f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsLoaded:
+    m_InternalValue: 0
   AssemblyRange: 5
-  AssemblyController: {fileID: 0}
+  AssemblyController: {fileID: -2651073880981813705}
 --- !u!114 &8576677473317996624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,3 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f82884bec931a42de8be39febc446a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DraggedComponentID:
+    m_InternalValue: 0
+  IsDragging:
+    m_InternalValue: 0

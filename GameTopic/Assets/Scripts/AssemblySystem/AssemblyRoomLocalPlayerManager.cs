@@ -8,7 +8,7 @@ using System.Linq;
 using Unity.Netcode;
 
 public class AssemblyRoomLocalPlayerManager: BaseLocalPlayerManager, IAssemblyRoom{
-    public AssemblyController assemblyController => Player != null ? Player.AssemblyController : null;
+    public AssemblyController assemblyController => (Player as GamePlayer)?.AssemblyController;
 
     public int PlayerInitMoney { get; set; } = 1000;
 

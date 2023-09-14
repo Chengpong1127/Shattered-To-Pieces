@@ -11,7 +11,7 @@ using System;
 /// The game runner is responsible for running the game. It will be run on the server.
 /// </summary>
 public class BaseGameRunner: NetworkBehaviour{
-    protected Dictionary<ulong, IPlayer> PlayerMap;
+    protected Dictionary<ulong, BasePlayer> PlayerMap;
     public event Action OnAllPlayerSpawned;
     void Awake()
     {
@@ -42,7 +42,7 @@ public class BaseGameRunner: NetworkBehaviour{
         var playerSpawner = new PlayerSpawner();
         PlayerMap = playerSpawner.SpawnAllPlayers();
         OnAllPlayerSpawned?.Invoke();
-        await UniTask.WaitUntil(() => PlayerMap.Values.All(player => player.IsLoaded));
+        await UniTask.WaitUntil(() => PlayerMap.Values.All(player => player.IsLoaded.Value));
     }
 
     protected virtual void PreGameStart(){

@@ -8,7 +8,7 @@ public class BaseLocalPlayerManager : NetworkBehaviour
 {
     public int PlayerCount = 1;
     public bool RunAtStart = false;
-    public PlayerDevice Player { get; private set; }
+    public BasePlayer Player { get; private set; }
     public bool IsLocalPlayerCompleteSetup { get; private set; } = false;
     public string InitLoadDeviceName = "0";
     protected INetworkConnector connectionManager;
@@ -50,7 +50,7 @@ public class BaseLocalPlayerManager : NetworkBehaviour
         Player = Utils.GetLocalPlayerDevice();
         Debug.Assert(Player != null, "Player is null");
         Player.LoadLocalDevice(InitLoadDeviceName);
-        await UniTask.WaitUntil(() => Player.IsLoaded);
+        await UniTask.WaitUntil(() => Player.IsLoaded.Value);
         PlayerSetup();
         IsLocalPlayerCompleteSetup = true;
 

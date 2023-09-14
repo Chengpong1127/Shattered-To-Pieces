@@ -8,13 +8,13 @@ public class PlayerSpawner{
     }
 
 
-    public Dictionary<ulong, IPlayer> SpawnAllPlayers()
+    public Dictionary<ulong, BasePlayer> SpawnAllPlayers()
     {
-        Dictionary<ulong, IPlayer> Players = new();
+        Dictionary<ulong, BasePlayer> Players = new();
         foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
         {
             var player = SpawnPlayer(client.ClientId);
-            Players.Add(client.ClientId, player.GetComponent<IPlayer>());
+            Players.Add(client.ClientId, player.GetComponent<BasePlayer>());
         }
         return Players;
     }
