@@ -34,16 +34,6 @@ public class PlayerDevice : NetworkBehaviour, IPlayer
     private PlayerInput playerInput;
     private GameObject assemblyCurtain;
     private GameObject assemblyCurtainInstance;
-    
-    [ClientRpc]
-    public void Invisible_ClientRpc(bool isInvisible)
-    {
-        if (IsOwner)
-        {
-            var ControlRoom=SelfDevice.RootGameComponent.CoreComponent.GetComponent<ControlRoom>();
-            ControlRoom.Invisible(isInvisible);
-        }
-    }
     [ServerRpc]
     private void LoadDeviceServerRpc(string json)
     {

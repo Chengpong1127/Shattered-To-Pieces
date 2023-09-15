@@ -56,12 +56,10 @@ public class InvisibleAbility : DisplayableAbilityScriptableObject
                 root = root.transform.root;
             }
             //Debug.Log(SelfEntity.transform.root.name);
-            ControlRoom = root.GetChild(0).GetComponent<BaseCoreComponent>();
-            baseCoreComponents = ControlRoom.GetAllChildren();
-            var player = Utils.GetLocalPlayerDevice();
-            player.Invisible_ClientRpc(true);
+            var CR = (SelfEntity as BaseCoreComponent).Root as ControlRoom ?? throw new System.ArgumentNullException("err.");
+            CR.Invisible_ClientRpc(true);
             yield return new WaitForSeconds(DurationTime);
-            player.Invisible_ClientRpc(false);
+            CR.Invisible_ClientRpc(false);
             yield return null;
         }
 
