@@ -9,12 +9,19 @@ using System.Linq;
 /// </summary>
 public class Device: IDevice
 {
+    public event Action OnDeviceConnectionChanged;
+    public event Action OnDeviceDied;
     public IGameComponentFactory GameComponentFactory { get; private set; }
     public IGameComponent RootGameComponent { get; private set; }
     public AbilityManager AbilityManager { get; private set; }
     public Device(IGameComponentFactory gameComponentFactory){
         GameComponentFactory = gameComponentFactory;
         AbilityManager = new AbilityManager(this);
+        GameEvents.AttributeEvents.OnEntityDied += entity => {
+            if (entity.Equals(RootGameComponent)){
+                OnDeviceDied?.Invoke();
+            }
+        };
     }
     public IInfo Dump()
     {
@@ -51,6 +58,10 @@ public class Device: IDevice
         RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID];
         ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList);
         AbilityManager.Load(this, deviceInfo.AbilityManagerInfo, tempDictionary);
+        RootGameComponent.OnRootConnectionChanged += () => {
+            AbilityManager.UpdateDeviceAbilities();
+            OnDeviceConnectionChanged?.Invoke();
+        };
     }
 
     private Dictionary<int, IGameComponent> CreateAllComponents(Dictionary<int, GameComponentInfo> nodes){

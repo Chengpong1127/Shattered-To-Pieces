@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
+using System;
 // Description: Defines the basic interfaces for the game components.
 public interface IGameComponent: ITreeNode, IAssemblyable
 {
@@ -10,6 +11,7 @@ public interface IGameComponent: ITreeNode, IAssemblyable
     public Collider2D[] BodyColliders { get; }
 
     public Animator BodyAnimator { get; }
+    public event Action OnRootConnectionChanged;
     public string ComponentName { get; set; }
     /// <summary>
     /// The Connector of the game component.

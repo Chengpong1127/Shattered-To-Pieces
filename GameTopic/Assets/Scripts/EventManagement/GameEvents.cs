@@ -104,6 +104,7 @@ public static class GameEvents{
         public static Action<Entity, AttributeScriptableObject, float, float> OnEntityAttributeChanged = delegate { };
 
         public static Action<Entity, float, float> OnEntityHealthChanged = delegate { };
+        public static Action<Entity> OnEntityDied = delegate { };
     }
 
 }

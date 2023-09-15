@@ -52,9 +52,10 @@ public class WorkShop : MonoBehaviour
 
         if(room != null) {
             room.AbilityRebinder.OnFinishRebinding -= shopDispatcher.SetRebindKeyText;
-            room.assemblyController.OnGameComponentDraggedStart -= RefreshAllBoxAbilityAction;
-            room.assemblyController.OnGameComponentDraggedEnd -= RefreshAllBoxAbilityAction;
-            room.assemblyController.AfterGameComponentConnected -= RefreshAllBoxAbilityAction;
+            room.ControlledDevice.OnDeviceConnectionChanged -= shopDispatcher.RefreshAllBoxAbility;
+            // room.assemblyController.OnGameComponentDraggedStart -= RefreshAllBoxAbilityAction;
+            // room.assemblyController.OnGameComponentDraggedEnd -= RefreshAllBoxAbilityAction;
+            // room.assemblyController.AfterGameComponentConnected -= RefreshAllBoxAbilityAction;
             room.assemblyController.OnGameComponentDraggedStart -= UpdateUserCostRemain;
             room.assemblyController.AfterGameComponentConnected -= UpdateUserCostRemain;
 
@@ -70,9 +71,10 @@ public class WorkShop : MonoBehaviour
         room = Iar;
         GameEvents.RebindEvents.OnFinishRebinding += (_, str) => shopDispatcher.SetRebindKeyText(str);
         //room.AbilityRebinder.OnFinishRebinding += shopDispatcher.SetRebindKeyText;
-        room.assemblyController.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
-        room.assemblyController.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
-        room.assemblyController.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
+        room.ControlledDevice.OnDeviceConnectionChanged += shopDispatcher.RefreshAllBoxAbility;
+        // room.assemblyController.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
+        // room.assemblyController.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
+        // room.assemblyController.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
         room.assemblyController.OnGameComponentDraggedStart += UpdateUserCostRemain;
         room.assemblyController.AfterGameComponentConnected += UpdateUserCostRemain;
 

@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem.Authoring;
 using Unity.Netcode;
+using System;
 
 public class BaseCoreComponent : GameComponent, ICoreComponent
 {
-
     public BaseCoreComponent Root => GetRoot() as BaseCoreComponent;
 
     /// <summary>
@@ -53,9 +53,8 @@ public class BaseCoreComponent : GameComponent, ICoreComponent
         }
     }
 
-    public override void Die()
+    public override void  Die()
     {
-        Debug.Log("Core component die: " + gameObject.name + "");
         DisconnectFromParent();
         DisconnectAllChildren();
         base.Die();

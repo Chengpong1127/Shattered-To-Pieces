@@ -26,6 +26,9 @@ public class AssemblyRoomLocalPlayerManager: BaseLocalPlayerManager, IAssemblyRo
             return _gameComponentDataList;
         }
     }
+
+    public Device ControlledDevice => Player.SelfDevice;
+
     private List<GameComponentData> _gameComponentDataList;
     private IGameComponentFactory _gameComponentFactory;
 
@@ -68,9 +71,6 @@ public class AssemblyRoomLocalPlayerManager: BaseLocalPlayerManager, IAssemblyRo
         OnLoadedDevice?.Invoke();
         GameEvents.AssemblyRoomEvents.OnLoadedDevice.Invoke();
     }
-    private void UpdateAbility(){
-        Player.SelfDevice.AbilityManager.UpdateDeviceAbilities();
-    }
 
     public void SaveCurrentDevice()
     {
@@ -111,8 +111,6 @@ public class AssemblyRoomLocalPlayerManager: BaseLocalPlayerManager, IAssemblyRo
         Player.LocalAbilityActionMap.Enable();
         _gameComponentFactory = new NetworkGameComponentFactory();
         LoadDevice(CurrentDeviceID);
-        assemblyController.OnGameComponentDraggedStart += _ => UpdateAbility();
-        assemblyController.AfterGameComponentConnected += _ => UpdateAbility();
     }
 
     protected override void PreExitGame(){

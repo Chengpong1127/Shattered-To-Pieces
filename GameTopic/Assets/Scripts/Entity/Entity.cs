@@ -5,6 +5,7 @@ using AbilitySystem.Authoring;
 using System;
 using System.Collections;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 /// <summary>
 /// Entity is the base class for all entities in the game. An entity has attributes and the init abilities to set up the init state of the entity.
@@ -23,9 +24,9 @@ public class Entity: BaseEntity{
         AttributeSystemComponent ??= GetComponent<AttributeSystemComponent>();
         AbilitySystemCharacter ??= GetComponent<AbilitySystemCharacter>();
         AbilitySystemCharacter.AttributeSystem = AttributeSystemComponent;
-        StartCoroutine(ActivateInitializationAbilities());
+        ActivateInitializationAbilities();
     }
-    private IEnumerator ActivateInitializationAbilities()
+    private async void ActivateInitializationAbilities()
     {
         AbstractAbilitySpec[] specs = new AbstractAbilitySpec[InitializationAbilities.Length];
         for (int i = 0; i < InitializationAbilities.Length; i++)
@@ -35,7 +36,8 @@ public class Entity: BaseEntity{
             AbilitySystemCharacter.GrantAbility(specs[i]);
             StartCoroutine(specs[i].TryActivateAbility());
         }
-        yield return new WaitUntil(() => specs.All(spec => !spec.isActive));
+        await UniTask.WaitUntil(() => specs.Any(spec => spec.isActive));
+        await UniTask.WaitUntil(() => specs.All(spec => !spec.isActive));
         IsInitialized = true;
     }
 }

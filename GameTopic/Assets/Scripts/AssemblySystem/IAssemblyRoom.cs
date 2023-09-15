@@ -5,6 +5,7 @@ using System;
 
 public interface IAssemblyRoom
 {
+    public Device ControlledDevice { get; }
     /// <summary>
     /// Event that will be triggered after switching the assembly room mode.
     /// </summary>

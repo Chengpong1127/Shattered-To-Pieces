@@ -23,6 +23,7 @@ public class HealthEventHandler : ClampAttributeEventHandler
         if (attributeSystem.GetAttributeValue(PrimaryAttribute, out var primaryValue) && attributeSystem.GetAttributeValue(MinAttribute, out var minValue)){
             var owner = attributeSystem.GetComponent<Entity>();
             if (primaryValue.CurrentValue <= minValue.CurrentValue && owner.IsInitialized){
+                GameEvents.AttributeEvents.OnEntityDied.Invoke(owner);
                 owner.Die();
             }
         }

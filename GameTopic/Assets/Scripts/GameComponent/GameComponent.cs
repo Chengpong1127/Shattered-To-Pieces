@@ -8,6 +8,10 @@ using Unity.Netcode;
 [RequireComponent(typeof(Connector))]
 public class GameComponent : AbilityEntity, IGameComponent
 {
+    /// <summary>
+    /// This event will be invoked when the the children of a root game component is changed. Only root will invoke this event.
+    /// </summary>
+    public event Action OnRootConnectionChanged;
     public ITreeNode Parent { get; private set; } = null;
     public IList<ITreeNode> Children { get; private set; } = new List<ITreeNode>();
 
@@ -32,7 +36,7 @@ public class GameComponent : AbilityEntity, IGameComponent
 
     #endregion
 
-    public void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
+    public virtual void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
     {
         if (parentComponent == null) throw new ArgumentNullException("parentComponent");
         if (info == null) throw new ArgumentNullException("info");
@@ -41,16 +45,19 @@ public class GameComponent : AbilityEntity, IGameComponent
         Parent.Children.Add(this);
         BodyRigidbody.isKinematic = true;
         BodyColliders.ToList().ForEach((collider) => collider.isTrigger = true);
+        (GetRoot() as GameComponent)?.OnRootConnectionChanged?.Invoke();
     }
 
-    public void DisconnectFromParent()
+    public virtual void DisconnectFromParent()
     {
         if (Parent == null) return;
+        var root = GetRoot() as GameComponent;
         Parent.Children.Remove(this);
         Parent = null;
         connector.Disconnect();
         BodyRigidbody.isKinematic = false;
         BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
+        root?.OnRootConnectionChanged?.Invoke();
     }
 
     public IInfo Dump(){
