@@ -29,8 +29,8 @@ public class WorkShop : MonoBehaviour
 
     private async void Start() {
         GameObject impRoom = GameObject.Find("RoomManager");
-        var room = impRoom.GetComponent<AssemblyRoomLocalPlayerManager>();
-        await UniTask.WaitUntil(() => room.IsLocalPlayerCompleteSetup);
+        var room = impRoom.GetComponent<AssemblyRoomRunner>();
+        await UniTask.WaitUntil(() => room.StateMachine.State == AssemblyRoomRunner.GameStates.Gaming);
         SetAssimblyRoom(impRoom.GetComponent<IAssemblyRoom>());
 
         shopDispatcher.setAbilityAction += room.AbilityManager.SetAbilityToEntry;

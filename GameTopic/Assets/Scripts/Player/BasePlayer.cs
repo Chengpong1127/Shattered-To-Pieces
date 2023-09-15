@@ -9,12 +9,14 @@ using System.Linq;
 
 public class BasePlayer : NetworkBehaviour
 {
+    public event Action OnPlayerLoaded;
+    public event Action OnPlayerDied;
     public Device SelfDevice { get; private set; }
     protected NetworkVariable<ulong> RootNetworkObjectID = new NetworkVariable<ulong>(
         readPerm: NetworkVariableReadPermission.Owner,
         writePerm: NetworkVariableWritePermission.Server
     );
-    public NetworkVariable<bool> IsLoaded = new NetworkVariable<bool>(
+    public NetworkVariable<bool> IsAlive = new NetworkVariable<bool>(
         false,
         writePerm: NetworkVariableWritePermission.Server
     );
@@ -33,26 +35,28 @@ public class BasePlayer : NetworkBehaviour
     [ServerRpc]
     private void LoadDeviceServerRpc(string json)
     {
+        if (ServerAbilityRunner != null){
+            Destroy(ServerAbilityRunner);
+        }
         SelfDevice = new Device(new NetworkGameComponentFactory());
         SelfDevice.Load(DeviceInfo.CreateFromJson(json));
         ServerAbilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager, OwnerClientId);
-        IsLoaded.Value = true;
+        OnPlayerLoaded?.Invoke();
+        IsAlive.Value = true;
         RootNetworkObjectID.Value = SelfDevice.RootGameComponent.NetworkObjectID;
-        SelfDevice.OnDeviceDied += () => {
-            Debug.Log("Device died");
-        };
+        SelfDevice.OnDeviceDied += DeviceDiedHandler;
     }
     [ServerRpc]
     private void StartAbility_ServerRPC(int abilityNumber)
     {
         Debug.Log("StartAbility_ServerRPC: " + abilityNumber);
-        ServerAbilityRunner.StartEntryAbility(abilityNumber);
+        ServerAbilityRunner?.StartEntryAbility(abilityNumber);
     }
     [ServerRpc]
     private void CancelAbility_ServerRPC(int abilityNumber)
     {
         Debug.Log("CancelAbility_ServerRPC: " + abilityNumber);
-        ServerAbilityRunner.CancelEntryAbility(abilityNumber);
+        ServerAbilityRunner?.CancelEntryAbility(abilityNumber);
     }
     protected virtual void Start(){
         if (IsOwner){
@@ -68,14 +72,24 @@ public class BasePlayer : NetworkBehaviour
             GameEvents.AbilityRunnerEvents.OnLocalInputCancelAbility -= CancelAbility_ServerRPC;
         }
     }
-    public void LoadLocalDevice(string filename){
+    private void DeviceDiedHandler(){
+        SelfDevice.OnDeviceDied -= DeviceDiedHandler;
+        OnPlayerDied?.Invoke();
+        IsAlive.Value = false;
+        Destroy(ServerAbilityRunner);
+    }
+    public void ServerLoadDevice(string filename){
+        if (IsServer){
+            LoadLocalDeviceClientRpc(filename);
+        }
+    }
+    [ClientRpc]
+    private void LoadLocalDeviceClientRpc(string filename){
         if (IsOwner){
             var info = GetLocalDeviceInfo(filename);
             LoadDeviceServerRpc(info.ToJson());
             LocalAbilityActionMap?.Dispose();
             LocalAbilityActionMap = info.AbilityManagerInfo.GetAbilityInputActionMap();
-        }else{
-            throw new InvalidOperationException("Only the owner can load device");
         }
     }
 

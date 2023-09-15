@@ -19,7 +19,7 @@ public static class Utils{
         }
         return localPlayerDevice;
     }
-    public static BasePlayer ServerGetPlayerDevice(ulong playerID){
+    public static BasePlayer ServerGetBasePlayer(ulong playerID){
         Debug.Assert(NetworkManager.Singleton.IsServer, "ServerGetPlayerDevice can only be called on server");
         if(NetworkManager.Singleton.ConnectedClients.TryGetValue(playerID, out var networkClient)){
             return networkClient.PlayerObject.GetComponent<BasePlayer>();
@@ -33,8 +33,5 @@ public static class Utils{
         }else{
             throw new System.ArgumentException("NetworkObject with id " + networkID + " not found");
         }
-    }
-    public static NetworkTransport GetGlobalTransport(){
-        return NetworkManager.Singleton.NetworkConfig.NetworkTransport;
     }
 }

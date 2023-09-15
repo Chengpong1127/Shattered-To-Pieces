@@ -10,7 +10,7 @@ public class GameLocalPlayerManager: BaseLocalPlayerManager{
         if (Minimap != null) Minimap.player = Player.GetTracedTransform();
     }
 
-    protected override void PlayerSetup(){
+    protected override void PlayerSpawnSetup(){
         Debug.Log("PlayerSetup");
         SetCamera();
         Player.LocalAbilityActionMap.Enable();

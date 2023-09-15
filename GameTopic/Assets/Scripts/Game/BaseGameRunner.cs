@@ -11,17 +11,28 @@ using System;
 /// The game runner is responsible for running the game. It will be run on the server.
 /// </summary>
 public class BaseGameRunner: NetworkBehaviour{
+    public StateMachine<GameStates> StateMachine;
+    public enum GameStates{
+        Initialize,
+        Gaming,
+        GameEnd
+    }
     protected Dictionary<ulong, BasePlayer> PlayerMap;
-    public event Action OnAllPlayerSpawned;
+    /// <summary>
+    /// This event will be invoked when a player is spawned. The parameter is the player's network object id.
+    /// </summary>
+    public event Action<ulong> OnPlayerSpawned;
     void Awake()
     {
+        StateMachine = new StateMachine<GameStates>(this);
+        StateMachine.ChangeState(GameStates.Initialize);
     }
     public async void RunGame(){
         if (IsServer){
             GameInitialize();
-            await LoadPlayer();
-
+            await CreatePlayer();
             PreGameStart();
+            StateMachine.ChangeState(GameStates.Gaming);
             GameStart();
         }
         else{
@@ -38,11 +49,23 @@ public class BaseGameRunner: NetworkBehaviour{
     /// Server loads all players.
     /// </summary>
     /// <returns></returns>
-    private async UniTask LoadPlayer(){
+    private async UniTask CreatePlayer(){
         var playerSpawner = new PlayerSpawner();
         PlayerMap = playerSpawner.SpawnAllPlayers();
-        OnAllPlayerSpawned?.Invoke();
-        await UniTask.WaitUntil(() => PlayerMap.Values.All(player => player.IsLoaded.Value));
+        PlayerMap.Values.ToList().ForEach(player => player.OnPlayerDied += () => PlayerDiedHandler(player));
+        PlayerMap.Values.ToList().ForEach(player => SpawnDevice(player, "0"));
+        await UniTask.WaitUntil(() => PlayerMap.Values.All(player => player.IsAlive.Value));
+    }
+
+    public virtual void SpawnDevice(BasePlayer player, string filename){
+        player.ServerLoadDevice(filename);
+        OnPlayerSpawned?.Invoke(player.OwnerClientId);
+    }
+
+    protected virtual async void PlayerDiedHandler(BasePlayer player){
+        Debug.Log("PlayerDiedHandler");
+        await UniTask.WaitForSeconds(3);
+        SpawnDevice(player, "0");
     }
 
     protected virtual void PreGameStart(){

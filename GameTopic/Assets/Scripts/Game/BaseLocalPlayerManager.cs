@@ -38,27 +38,21 @@ public class BaseLocalPlayerManager : NetworkBehaviour
         };
     }
     private void SetRunner(){
-        GameRunner.OnAllPlayerSpawned += LocalPlayerSetup_ClientRpc;
+        GameRunner.OnPlayerSpawned += PlayerSpawnedHandlerClientRpc;
         GameRunner.RunGame();
     }
     [ClientRpc]
-    public void LocalPlayerSetup_ClientRpc()
-    {
-        WaitPlayerLoaded();
-    }
-    private async void WaitPlayerLoaded(){
-        Player = Utils.GetLocalPlayerDevice();
-        Debug.Assert(Player != null, "Player is null");
-        Player.LoadLocalDevice(InitLoadDeviceName);
-        await UniTask.WaitUntil(() => Player.IsLoaded.Value);
-        PlayerSetup();
-        IsLocalPlayerCompleteSetup = true;
-
+    private void PlayerSpawnedHandlerClientRpc(ulong playerID){
+        if(playerID == OwnerClientId){
+            Player = Utils.GetLocalPlayerDevice();
+            PlayerSpawnSetup();
+            IsLocalPlayerCompleteSetup = true;
+        }
     }
     /// <summary>
     /// This method will be invoked after the local player is loaded.
     /// </summary>
-    protected virtual void PlayerSetup(){
+    protected virtual void PlayerSpawnSetup(){
     }
     public void RequestExitGame(){
         if(IsOwner){

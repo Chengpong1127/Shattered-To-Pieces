@@ -94,7 +94,7 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
 
 
     public void ToggleAssembly(ulong playerID){
-        var player = Utils.ServerGetPlayerDevice(playerID) as GamePlayer;
+        var player = Utils.ServerGetBasePlayer(playerID) as GamePlayer;
         player.ToggleAssemblyClientRpc();
     }
     public void Invisible(bool isInvisible)
