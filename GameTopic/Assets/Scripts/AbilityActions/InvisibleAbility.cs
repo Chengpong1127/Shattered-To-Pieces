@@ -5,6 +5,7 @@ using AbilitySystem.Authoring;
 using AbilitySystem;
 using DG.Tweening;
 using System.Linq;
+using Unity.Netcode;
 [CreateAssetMenu(fileName = "InvisibleAbility", menuName = "Ability/InvisibleAbility")]
 public class InvisibleAbility : DisplayableAbilityScriptableObject
 {
@@ -52,9 +53,18 @@ public class InvisibleAbility : DisplayableAbilityScriptableObject
         {
             ControlRoom = (SelfEntity as BaseCoreComponent).Root as ControlRoom;
             baseCoreComponents = ControlRoom.GetAllChildren();
+            ClientRpcParams clientRpcParams = new ClientRpcParams(){
+                Send = new ClientRpcSendParams(){
+                    TargetClientIds = new List<ulong>() { Runner.OwnerPlayerID }
+                }
+            };
             baseCoreComponents.ToList().ForEach(baseCoreComponent =>
             {
                 baseCoreComponent.SetVisible_ClientRpc(false);
+            });
+            baseCoreComponents.ToList().ForEach(baseCoreComponent =>
+            {
+                baseCoreComponent.SetVisible_ClientRpc(true, clientRpcParams);
             });
             yield return new WaitForSeconds(DurationTime);
             baseCoreComponents.ToList().ForEach(baseCoreComponent =>

@@ -61,7 +61,7 @@ public class BaseCoreComponent : GameComponent, ICoreComponent
     }
 
     [ClientRpc]
-    public void SetVisible_ClientRpc(bool visible)
+    public void SetVisible_ClientRpc(bool visible, ClientRpcParams clientRpcParams = default)
     {
         var renderers = GetComponentsInChildren<Renderer>();
         foreach (var renderer in renderers)
