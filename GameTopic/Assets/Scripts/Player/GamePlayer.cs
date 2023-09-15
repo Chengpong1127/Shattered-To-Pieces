@@ -32,6 +32,14 @@ public class GamePlayer: BasePlayer{
         }
 
     }
+
+    protected override void DeviceDiedHandler()
+    {
+        if (assemblyCurtainInstance != null){
+            ToggleAssemblyClientRpc();
+        }
+        base.DeviceDiedHandler();
+    }
     private void InitAssemblyControl(){
         AssemblyController = GetComponent<AssemblyController>();
         Debug.Assert(AssemblyController != null, "AssemblyController is null");

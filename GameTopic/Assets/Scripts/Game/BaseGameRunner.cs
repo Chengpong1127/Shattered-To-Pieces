@@ -63,8 +63,9 @@ public class BaseGameRunner: NetworkBehaviour{
     }
 
     protected virtual async void PlayerDiedHandler(BasePlayer player){
-        Debug.Log("PlayerDiedHandler");
         await UniTask.WaitForSeconds(3);
+        if (player.IsAlive.Value)
+            return;
         SpawnDevice(player, "0");
     }
 

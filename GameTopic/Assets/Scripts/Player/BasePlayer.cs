@@ -72,10 +72,10 @@ public class BasePlayer : NetworkBehaviour
             GameEvents.AbilityRunnerEvents.OnLocalInputCancelAbility -= CancelAbility_ServerRPC;
         }
     }
-    private void DeviceDiedHandler(){
+    protected virtual void DeviceDiedHandler(){
         SelfDevice.OnDeviceDied -= DeviceDiedHandler;
-        OnPlayerDied?.Invoke();
         IsAlive.Value = false;
+        OnPlayerDied?.Invoke();
         Destroy(ServerAbilityRunner);
     }
     public void ServerLoadDevice(string filename){
