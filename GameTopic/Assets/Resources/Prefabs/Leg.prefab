@@ -411,10 +411,7 @@ MonoBehaviour:
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
   InitializationAbilities: []
-  Abilities:
-  - {fileID: 11400000, guid: 3e92ee7ce1680524bbdc946bc047c0ce, type: 2}
-  - {fileID: 11400000, guid: bfc2d420d8c90be4bb5aa48b5bbe25ee, type: 2}
-  - {fileID: 11400000, guid: 14a5b25d8b5ac62458dee70f4b03154a, type: 2}
+  Abilities: []
   assemblyTransform: {fileID: 7745750759575869621}
 --- !u!95 &6170520522624279152
 Animator:
