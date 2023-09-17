@@ -11,14 +11,13 @@ public class ChickenGun : BaseCoreComponent, ISummonable {
         if( _object == null) { return; }
 
         var summon = Instantiate(_object, SpwanPoint.position, SpwanPoint.rotation);
-        var summonObj = summon.GetComponentInChildren<BaseCoreComponent>() ?? throw new System.ArgumentNullException("This object should have BaseCoreComponent.");
+        var summonObj = summon.GetComponentInChildren<BaseEntity>() ?? throw new System.ArgumentNullException("This object should have Entity.");
         var summonSetting = (summonObj as ICreated) ?? throw new System.ArgumentNullException("The entity should have ICreated interface.");
         summonSetting.Owner = this;
-
-        summon.GetComponent<NetworkObject>()?.Spawn();
+        summonObj.NetworkObject.Spawn();
 
         summonObj.BodyRigidbody.AddForce(
-            SpwanPoint.TransformDirection(Vector3.right) * Power,
+            SpwanPoint.TransformDirection(Vector3.forward) * Power,
             ForceMode2D.Impulse
         );
     }

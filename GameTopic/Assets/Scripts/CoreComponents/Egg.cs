@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class Egg : NetworkBehaviour, ICreated {
+public class Egg : BaseEntity, ICreated {
     public BaseCoreComponent Owner { get; set; } = null;
 
     [SerializeField] public GameplayEffectScriptableObject DamageEffect;
