@@ -17,7 +17,7 @@ public class ChickenGun : BaseCoreComponent, ISummonable {
         summonObj.NetworkObject.Spawn();
 
         summonObj.BodyRigidbody.AddForce(
-            SpwanPoint.TransformDirection(Vector3.forward) * Power,
+            SpwanPoint.TransformDirection(Vector3.right) * Power,
             ForceMode2D.Impulse
         );
     }

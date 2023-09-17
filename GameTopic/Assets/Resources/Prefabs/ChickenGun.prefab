@@ -459,7 +459,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 36c3d4c272a4f884289894bd5088f535, type: 2}
   assemblyTransform: {fileID: 4469932153802063128}
   SpwanPoint: {fileID: 1155119543493593414}
-  Power: 1
+  Power: 5
 --- !u!114 &2119985156775471083
 MonoBehaviour:
   m_ObjectHideFlags: 0
