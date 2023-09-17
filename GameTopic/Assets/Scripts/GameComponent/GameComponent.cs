@@ -40,11 +40,13 @@ public class GameComponent : AbilityEntity, IGameComponent
     {
         if (parentComponent == null) throw new ArgumentNullException("parentComponent");
         if (info == null) throw new ArgumentNullException("info");
-        connector.ConnectToComponent(parentComponent.Connector, info);
         Parent = parentComponent;
         Parent.Children.Add(this);
         BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
+        BodyRigidbody.angularVelocity = 0;
+        BodyRigidbody.velocity = Vector2.zero;
         BodyColliders.ToList().ForEach((collider) => collider.isTrigger = true);
+        connector.ConnectToComponent(parentComponent.Connector, info);
         (GetRoot() as GameComponent)?.OnRootConnectionChanged?.Invoke();
     }
 

@@ -21,7 +21,6 @@ public abstract class BaseEntity : NetworkBehaviour
         if (BodyTransform == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyTransform.");
         if (BodyRigidbody == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyRigidbody.");
         if (BodyColliders == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyColliders.");
-        if (BodyAnimator == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyAnimator.");
     }
 
     protected virtual void Start()

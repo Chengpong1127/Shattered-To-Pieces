@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 /// <summary>
 /// Device of the game. Must assign GameComponentFactory after Initialize.
@@ -39,8 +40,11 @@ public class Device: IDevice
         return deviceInfo;
     }
 
-    public void Load(IInfo info)
+    public async void Load(IInfo info)
     {
+        await LoadAsync(info);
+    }
+    public async UniTask LoadAsync(IInfo info){
         if (info is not DeviceInfo){
             throw new ArgumentException("The info should be DeviceInfo");
         }
@@ -55,6 +59,7 @@ public class Device: IDevice
             var component = tempDictionary[pair.Key];
             component.Load(pair.Value);
         });
+        await UniTask.WaitForFixedUpdate();
         RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID];
         ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList);
         AbilityManager.Load(this, deviceInfo.AbilityManagerInfo, tempDictionary);

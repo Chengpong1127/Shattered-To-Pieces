@@ -284,10 +284,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 3c6d4323b2fa742e5b2417e6b068e15a, type: 3}
     - target: {fileID: 6045977369764336406, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-      propertyPath: bodyAnimator
-      value: 
-      objectReference: {fileID: 2944568697830509218}
-    - target: {fileID: 6045977369764336406, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: flipTransform
       value: 
       objectReference: {fileID: 645163673252733542}
@@ -401,6 +397,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8211648019079314832, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+    - {fileID: 3355642140565985668, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+    - {fileID: 5738106685450005699, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8890015344360057443, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -430,11 +428,6 @@ Transform:
 --- !u!4 &2027536667832536066 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8890015344360057443, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-  m_PrefabInstance: {fileID: 7457094575805867617}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &2944568697830509218 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5738106685450005699, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
   m_PrefabInstance: {fileID: 7457094575805867617}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &4120888074827841385 stripped
@@ -468,7 +461,7 @@ MonoBehaviour:
   bodyRigidbody: {fileID: 6755291183412049853}
   bodyColliders:
   - {fileID: 141124074856889269}
-  bodyAnimator: {fileID: 2944568697830509218}
+  bodyAnimator: {fileID: 0}
   AttributeSystemComponent: {fileID: 8187615772520921709}
   AbilitySystemCharacter: {fileID: 4120888074827841385}
   InitializationAbilities:
@@ -477,6 +470,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 31f9dc9e81759497894eac5fbb7f5084, type: 2}
   - {fileID: 11400000, guid: 7ff9a5176798b43eb8bbbe6667a82be6, type: 2}
   assemblyTransform: {fileID: 645163673252733542}
+  m_Default: {fileID: 0}
+  m_Invisible: {fileID: 0}
   LandCheckCollider: {fileID: 141124074856889269}
   LandCheckGE: {fileID: 11400000, guid: 0943c1d519ba5d34db8ca32803e91846, type: 2}
   LandCheckTag: {fileID: 11400000, guid: f8b02541872494b4e9f0893f63e0278f, type: 2}

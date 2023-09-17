@@ -35,11 +35,14 @@ public class BasePlayer : NetworkBehaviour
     [ServerRpc]
     private void LoadDeviceServerRpc(string json)
     {
+        loadDevice(json);
+    }
+    private async void loadDevice(string json){
         if (ServerAbilityRunner != null){
             Destroy(ServerAbilityRunner);
         }
         SelfDevice = new Device(new NetworkGameComponentFactory());
-        SelfDevice.Load(DeviceInfo.CreateFromJson(json));
+        await SelfDevice.LoadAsync(DeviceInfo.CreateFromJson(json));
         ServerAbilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager, OwnerClientId);
         OnPlayerLoaded?.Invoke();
         IsAlive.Value = true;
