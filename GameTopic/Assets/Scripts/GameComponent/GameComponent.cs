@@ -43,7 +43,7 @@ public class GameComponent : AbilityEntity, IGameComponent
         connector.ConnectToComponent(parentComponent.Connector, info);
         Parent = parentComponent;
         Parent.Children.Add(this);
-        BodyRigidbody.isKinematic = true;
+        BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
         BodyColliders.ToList().ForEach((collider) => collider.isTrigger = true);
         (GetRoot() as GameComponent)?.OnRootConnectionChanged?.Invoke();
     }
@@ -55,7 +55,7 @@ public class GameComponent : AbilityEntity, IGameComponent
         Parent.Children.Remove(this);
         Parent = null;
         connector.Disconnect();
-        BodyRigidbody.isKinematic = false;
+        BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
         BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
         root?.OnRootConnectionChanged?.Invoke();
     }

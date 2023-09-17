@@ -29,4 +29,7 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  SummonPrefab: {fileID: 1598628848454977730, guid: 6c65d4a5b9140144fbfe090c6be6d412, type: 3}
+  Image: {fileID: 0}
+  Icon: {fileID: 0}
+  Description: 
+  SummonPrefab: {fileID: 5346167607756816510, guid: 78614bf13556f415897075210584148b, type: 3}

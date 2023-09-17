@@ -55,7 +55,8 @@ public class JumpAbility : DisplayableAbilityScriptableObject {
             if (Character != null && Character.Landing) {
                 // Character.Move(Body.BodyTransform.TransformDirection(Direction) * Power);
                 // Character.VerticalMove(Power);
-                Body.Root.BodyRigidbody.velocity = new Vector2(Body.Root.BodyRigidbody.velocity.x, Power);
+                SelfEntity.BodyRigidbody.AddForce(Body.BodyTransform.TransformDirection(Vector3.up) * Power, ForceMode2D.Impulse);
+                //Body.Root.BodyRigidbody.velocity = new Vector2(Body.Root.BodyRigidbody.velocity.x, Power);
                 while (isJumping&& Body.Root.BodyRigidbody.velocity.y>0)
                 {
                     JumpCounter+=Time.deltaTime;
