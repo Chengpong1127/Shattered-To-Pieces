@@ -2,8 +2,9 @@ using AbilitySystem.Authoring;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class Egg : BaseCoreComponent, ICreated {
+public class Egg : NetworkBehaviour, ICreated {
     public BaseCoreComponent Owner { get; set; } = null;
 
     [SerializeField] public GameplayEffectScriptableObject DamageEffect;
