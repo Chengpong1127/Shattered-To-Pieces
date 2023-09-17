@@ -12,7 +12,7 @@ public class Connector : MonoBehaviour, IConnector
     private Collider2D SelfCollider => GameComponent.BodyColliders.First();
 
     [Tooltip("The anchor of the connection point to attach to targets, should be a transform. If null, use the center of the connector as the anchor.")]
-    [SerializeField] List<Target> targetList;
+    List<Target> targetList;
 
     Target _currentLinkedTarget = null;
 
@@ -24,7 +24,7 @@ public class Connector : MonoBehaviour, IConnector
 
 
     private void Awake() {
-
+        targetList = GetComponentsInChildren<Target>().ToList();
         GameComponent = GetComponentInParent<IGameComponent>();
 
         targetLayerFilter.useLayerMask = true;
