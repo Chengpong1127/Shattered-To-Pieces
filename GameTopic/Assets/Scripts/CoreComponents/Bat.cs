@@ -19,6 +19,5 @@ public class Bat : BaseCoreComponent, IEntityTriggerable
     protected override void Awake()
     {
         base.Awake();
-        AttackDecorator.Instance.Decorate(this);
     }
 }
