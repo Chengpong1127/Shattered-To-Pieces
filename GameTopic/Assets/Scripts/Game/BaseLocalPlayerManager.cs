@@ -43,8 +43,12 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     }
     [ClientRpc]
     private void PlayerSpawnedHandlerClientRpc(ulong playerID){
+        PlayerSpawnedHandler(playerID);
+    }
+    private async void PlayerSpawnedHandler(ulong playerID){
         if(playerID == OwnerClientId){
             Player = Utils.GetLocalPlayerDevice();
+            await UniTask.WaitUntil(() => Player.IsAlive.Value);
             PlayerSpawnSetup();
             IsLocalPlayerCompleteSetup = true;
         }
