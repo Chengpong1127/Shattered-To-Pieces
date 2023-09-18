@@ -37,7 +37,7 @@ public interface IGameComponent: ITreeNode, IAssemblyable
     /// </summary>
     /// <returns> The first available connection. </returns>
     public (IGameComponent, ConnectionInfo) GetAvailableConnection();
-    public void SetDraggingClientRpc(bool assemblyMode);
+    public void SetDragging(bool assemblyMode);
     public void SetAvailableForConnectionClientRpc(bool draggingMode);
     public void Die();
 }

@@ -57,7 +57,6 @@ public class GameComponent : AbilityEntity, IGameComponent
         Parent.Children.Remove(this);
         Parent = null;
         connector.Disconnect();
-        BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
         BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
         root?.OnRootConnectionChanged?.Invoke();
     }
@@ -107,21 +106,30 @@ public class GameComponent : AbilityEntity, IGameComponent
         };
         return (availableParent.GameComponent, newInfo);
     }
-    [ClientRpc]
-    public void SetDraggingClientRpc(bool dragging){
-        
+    public void SetDragging(bool dragging){
         switch (dragging){
             case true:
-                connector.SetNonConnectedTargetsDisplay(false);
+                SetDraggingClientRpc(true);
                 BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
                 BodyColliders.ToList().ForEach((collider) => collider.enabled = false);
                 break;
             case false:
-                connector.SetNonConnectedTargetsDisplay(true);
+                SetDraggingClientRpc(false);
                 BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
                 BodyColliders.ToList().ForEach((collider) => collider.enabled = true);
                 BodyRigidbody.angularVelocity = 0;
                 BodyRigidbody.velocity = Vector2.zero;
+                break;
+        }
+    }
+    [ClientRpc]
+    private void SetDraggingClientRpc(bool dragging){
+        switch (dragging){
+            case true:
+                connector.SetNonConnectedTargetsDisplay(false);
+                break;
+            case false:
+                connector.SetNonConnectedTargetsDisplay(true);
                 break;
         }
     }
@@ -143,8 +151,6 @@ public class GameComponent : AbilityEntity, IGameComponent
         base.Awake();
         connector ??= GetComponent<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
         if (assemblyTransform == null) Debug.LogWarning("The assemblyTransform is not set.");
-
-        DisconnectFromParent();
     }
     
 

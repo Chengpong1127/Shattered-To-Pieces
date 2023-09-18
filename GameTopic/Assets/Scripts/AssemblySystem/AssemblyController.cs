@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Cysharp.Threading.Tasks;
 [RequireComponent(typeof(DraggableController))]
 public class AssemblyController : NetworkBehaviour
 {
@@ -96,32 +97,40 @@ public class AssemblyController : NetworkBehaviour
         Debug.Assert(component != null, "component is null");
         component.AssemblyTransform.Rotate(new Vector3(0, 0, rotation));
     }
-    private void HandleComponentDraggedStart(ulong draggableID)
+    private async void HandleComponentDraggedStart(ulong draggableID)
     {
-        ChangeOwnership_ServerRpc(draggableID);
-        HandleComponentDraggedStartServerRpc(draggableID);
+        if(IsOwner){
+            HandleComponentDraggedStartServerRpc(draggableID);
+            await UniTask.NextFrame();
+            ChangeOwnership_ServerRpc(draggableID);
+        }
     }
     [ServerRpc]
     private void HandleComponentDraggedStartServerRpc(ulong draggableID){
         var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
-        Debug.Assert(component != null, "component is null");
         component.DisconnectFromParent();
-        component.SetDraggingClientRpc(true);
+        component.SetDragging(true);
         connectableComponentIDs = GetConnectableGameObject();
         SetAvailableForConnection(connectableComponentIDs, true);
         OnGameComponentDraggedStart?.Invoke(component);
+
+
     }
 
-    private void HandleComponentDraggedEnd(ulong draggableID)
+    private async void HandleComponentDraggedEnd(ulong draggableID)
     {
-        RemoveOwnership_ServerRpc(draggableID);
-        HandleComponentDraggedEndServerRpc(draggableID);
+        if(IsOwner){
+            RemoveOwnership_ServerRpc(draggableID);
+            await UniTask.WaitForSeconds(0.1f);
+            HandleComponentDraggedEndServerRpc(draggableID);
+        }
     }
     [ServerRpc]
     private void HandleComponentDraggedEndServerRpc(ulong draggableID){
+        
+
         var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
-        Debug.Assert(component != null, "component is null");
-        component.SetDraggingClientRpc(false);
+        component.SetDragging(false);
         var (availableParent, connectorInfo) = component.GetAvailableConnection();
         if (availableParent != null){
             component.ConnectToParent(availableParent, connectorInfo);
@@ -139,7 +148,6 @@ public class AssemblyController : NetworkBehaviour
             component.SetAvailableForConnectionClientRpc(available);
         }
     }
-
     [ServerRpc]
     private void ChangeOwnership_ServerRpc(ulong componentID)
     {

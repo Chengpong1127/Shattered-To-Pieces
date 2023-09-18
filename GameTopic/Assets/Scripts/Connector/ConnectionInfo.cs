@@ -1,3 +1,6 @@
+using Newtonsoft.Json;
+
+
 public class ConnectionInfo: IInfo
 {
     public int linkedTargetID;
@@ -15,6 +18,14 @@ public class ConnectionInfo: IInfo
     public override int GetHashCode()
     {
         return linkedTargetID.GetHashCode();
+    }
+
+    public string ToJson(){
+        return JsonConvert.SerializeObject(this);
+    }
+
+    public static ConnectionInfo CreateFromJson(string json){
+        return JsonConvert.DeserializeObject<ConnectionInfo>(json);
     }
 
 }

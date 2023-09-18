@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 321598573330694155}
   - component: {fileID: 4234352918938833372}
   - component: {fileID: 3810947567054918325}
-  - component: {fileID: 5384756254343453952}
+  - component: {fileID: 757597780983039759}
   m_Layer: 0
   m_Name: GameComponentTemplate
   m_TagString: Untagged
@@ -179,7 +179,7 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 1
---- !u!114 &5384756254343453952
+--- !u!114 &757597780983039759
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -251,7 +251,7 @@ MonoBehaviour:
   UseQuaternionSynchronization: 1
   UseQuaternionCompression: 1
   UseHalfFloatPrecision: 0
-  InLocalSpace: 0
+  InLocalSpace: 1
   Interpolate: 1
   SlerpPosition: 0
 --- !u!1 &6948558256880769377
