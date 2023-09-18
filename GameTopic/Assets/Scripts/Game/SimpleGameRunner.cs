@@ -13,6 +13,7 @@ public class SimpleGameRunner: BaseGameRunner{
     }
     protected override void GameStart(){
         Debug.Log("GameStart");
+        StartCoroutine(this.GetComponent<PortalSpawner>().SpawnPortal());
     }
 
     private void SetPlayerSpawnPoints(){

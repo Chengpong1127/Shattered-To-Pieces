@@ -396,6 +396,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: bodyCollider
+      value: 
+      objectReference: {fileID: 8574156970341800944}
+    - target: {fileID: 4443644458778705711, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: coreComponent
       value: 
       objectReference: {fileID: 5535309405110643378}
@@ -519,6 +523,7 @@ PrefabInstance:
     - {fileID: 3908426105045055669, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
     - {fileID: 8933114590945976158, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
     - {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+    - {fileID: 7388634133129272788, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -548,7 +553,7 @@ PrefabInstance:
       addedObject: {fileID: 5535309405110643378}
     - targetCorrespondingSourceObject: {fileID: 6948558256880769377, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3851937024220445991}
+      addedObject: {fileID: 8574156970341800944}
   m_SourcePrefab: {fileID: 100100000, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
 --- !u!1 &509699414325657344 stripped
 GameObject:
@@ -575,13 +580,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7ff9a5176798b43eb8bbbe6667a82be6, type: 2}
   m_Default: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Invisible: {fileID: 10758, guid: 0000000000000000f000000000000000, type: 0}
-  LandCheckCollider: {fileID: 3851937024220445991}
+  LandCheckCollider: {fileID: 8574156970341800944}
   LandCheckGE: {fileID: 11400000, guid: 0943c1d519ba5d34db8ca32803e91846, type: 2}
   LandCheckTag: {fileID: 11400000, guid: f8b02541872494b4e9f0893f63e0278f, type: 2}
   VelocityInit: {fileID: 11400000, guid: 2b3b3f1414c63de49b06485740e8973f, type: 2}
   MovingVelocity: {fileID: 11400000, guid: f50e3d22668b64514ace54053549b447, type: 2}
---- !u!61 &3851937024220445991
-BoxCollider2D:
+--- !u!70 &8574156970341800944
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -609,22 +614,12 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -1.2}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.0742456, y: 2.353}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 0.1}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1.0742456, y: 2.353}
+  m_Direction: 0
 --- !u!4 &2915978911729475800 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5695733424141944505, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}

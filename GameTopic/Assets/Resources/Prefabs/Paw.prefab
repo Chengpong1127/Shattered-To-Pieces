@@ -134,6 +134,8 @@ GameObject:
   - component: {fileID: 2967421576073210734}
   - component: {fileID: 1305291235764444074}
   - component: {fileID: 2972149134516227498}
+  - component: {fileID: 5506209613567764901}
+  - component: {fileID: -2891606994946249026}
   m_Layer: 0
   m_Name: Paw
   m_TagString: Untagged
@@ -175,7 +177,7 @@ MonoBehaviour:
   bodyRigidbody: {fileID: 4234352918938833372}
   bodyCollider: {fileID: 7388634133129272788}
   coreComponent: {fileID: 0}
-  bodyAnimator: {fileID: 0}
+  bodyAnimator: {fileID: 5506209613567764901}
 --- !u!50 &4234352918938833372
 Rigidbody2D:
   serializedVersion: 4
@@ -284,6 +286,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &5506209613567764901
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2569851066582173084}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8a3ef4ff8d1019e4e89820163a4d71e8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-2891606994946249026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2569851066582173084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 5506209613567764901}
 --- !u!1 &5666808407508690345
 GameObject:
   m_ObjectHideFlags: 0
