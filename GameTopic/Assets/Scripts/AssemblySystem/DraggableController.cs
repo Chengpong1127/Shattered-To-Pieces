@@ -62,7 +62,6 @@ public class DraggableController: NetworkBehaviour
             {
                 IsDragging.Value = true;
                 DraggedComponentID.Value = componentID.Value;
-                ChangeOwnership_ServerRpc(componentID.Value);
                 OnDragStart?.Invoke(componentID.Value);
             }else{
                 IsDragging.Value = false;
@@ -70,18 +69,7 @@ public class DraggableController: NetworkBehaviour
             }
         }
     }
-    [ServerRpc]
-    private void ChangeOwnership_ServerRpc(ulong componentID)
-    {
-        var component = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<NetworkObject>();
-        component.ChangeOwnership(OwnerClientId);
-    }
-    [ServerRpc]
-    private void RemoveOwnership_ServerRpc(ulong componentID)
-    {
-        var component = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<NetworkObject>();
-        component.RemoveOwnership();
-    }
+    
     private void DragCanceled(InputAction.CallbackContext ctx)
     {
         if (IsOwner){
@@ -89,7 +77,6 @@ public class DraggableController: NetworkBehaviour
             {
                 return;
             }
-            RemoveOwnership_ServerRpc(DraggedComponentID.Value);
             OnDragEnd?.Invoke(DraggedComponentID.Value);
             IsDragging.Value = false;
         }

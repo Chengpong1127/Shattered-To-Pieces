@@ -37,8 +37,8 @@ public class AssemblyController : NetworkBehaviour
     ){
         DraggableController = gameObject.GetComponent<DraggableController>();
         DraggableController.Initialize(getDraggableGameObjectIDs, dragAction, Camera.main);
-        DraggableController.OnDragStart += HandleComponentDraggedStartServerRpc;
-        DraggableController.OnDragEnd += HandleComponentDraggedEndServerRpc;
+        DraggableController.OnDragStart += HandleComponentDraggedStart;
+        DraggableController.OnDragEnd += HandleComponentDraggedEnd;
         GetConnectableGameObject = getConnectableGameObjectIDs;
         RotationUnit = rotationUnit;
         if (IsOwner){
@@ -71,13 +71,12 @@ public class AssemblyController : NetworkBehaviour
         if (IsOwner){
             if (DraggableController.IsDragging.Value == true){
                 var componentID = DraggableController.DraggedComponentID.Value;
-                FlipServerRpc(componentID);
+                Flip(componentID);
             }
         }
 
     }
-    [ServerRpc]
-    private void FlipServerRpc(ulong componentID){
+    private void Flip(ulong componentID){
         var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IAssemblyable>();
         Debug.Assert(component != null, "component is null");
         component.AssemblyTransform.localScale = new Vector3(-component.AssemblyTransform.localScale.x, component.AssemblyTransform.localScale.y, component.AssemblyTransform.localScale.z);
@@ -87,20 +86,23 @@ public class AssemblyController : NetworkBehaviour
             var value = context.ReadValue<float>();
             if (DraggableController.IsDragging.Value == true){
                 var componentID = DraggableController.DraggedComponentID.Value;
-                AddRotationServerRpc(componentID, value * RotationUnit);
+                AddRotation(componentID, value * RotationUnit);
             }
             
         }
     }
-    [ServerRpc]
-    private void AddRotationServerRpc(ulong componentID, float rotation){
+    private void AddRotation(ulong componentID, float rotation){
         var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IAssemblyable>();
         Debug.Assert(component != null, "component is null");
         component.AssemblyTransform.Rotate(new Vector3(0, 0, rotation));
     }
-    [ServerRpc]
-    private void HandleComponentDraggedStartServerRpc(ulong draggableID)
+    private void HandleComponentDraggedStart(ulong draggableID)
     {
+        ChangeOwnership_ServerRpc(draggableID);
+        HandleComponentDraggedStartServerRpc(draggableID);
+    }
+    [ServerRpc]
+    private void HandleComponentDraggedStartServerRpc(ulong draggableID){
         var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
         Debug.Assert(component != null, "component is null");
         component.DisconnectFromParent();
@@ -110,10 +112,13 @@ public class AssemblyController : NetworkBehaviour
         OnGameComponentDraggedStart?.Invoke(component);
     }
 
-    [ServerRpc]
-    private void HandleComponentDraggedEndServerRpc(ulong draggableID)
+    private void HandleComponentDraggedEnd(ulong draggableID)
     {
-
+        RemoveOwnership_ServerRpc(draggableID);
+        HandleComponentDraggedEndServerRpc(draggableID);
+    }
+    [ServerRpc]
+    private void HandleComponentDraggedEndServerRpc(ulong draggableID){
         var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
         Debug.Assert(component != null, "component is null");
         component.SetDraggingClientRpc(false);
@@ -133,6 +138,19 @@ public class AssemblyController : NetworkBehaviour
             Debug.Assert(component != null, "component is null");
             component.SetAvailableForConnectionClientRpc(available);
         }
+    }
+
+    [ServerRpc]
+    private void ChangeOwnership_ServerRpc(ulong componentID)
+    {
+        var component = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<NetworkObject>();
+        component.ChangeOwnership(OwnerClientId);
+    }
+    [ServerRpc]
+    private void RemoveOwnership_ServerRpc(ulong componentID)
+    {
+        var component = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<NetworkObject>();
+        component.RemoveOwnership();
     }
 
 }
