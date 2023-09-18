@@ -9,8 +9,8 @@ using Unity.Netcode;
 public class DraggableController: NetworkBehaviour
 {
     public Camera MainCamera { get; private set; }
-    public event Action<ulong, Vector2> OnDragStart;
-    public event Action<ulong, Vector2> OnDragEnd;
+    public event Action<ulong> OnDragStart;
+    public event Action<ulong> OnDragEnd;
     private Func<ulong[]> GetDraggableObjects;
     private InputAction dragAction;
     public NetworkVariable<ulong> DraggedComponentID = new NetworkVariable<ulong>(
@@ -40,7 +40,7 @@ public class DraggableController: NetworkBehaviour
         {
             Vector2 mousePosition = Mouse.current.position.ReadValue();
             Vector2 worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
-            SetDraggablePositionServerRpc(DraggedComponentID.Value, worldPoint);
+            SetDraggablePosition(DraggedComponentID.Value, worldPoint);
         }
     }
     protected void OnEnable() {
@@ -61,15 +61,26 @@ public class DraggableController: NetworkBehaviour
             if (componentID.HasValue && GetDraggableObjects().Contains(componentID.Value))
             {
                 IsDragging.Value = true;
-                Vector2 mousePosition = Mouse.current.position.ReadValue();
-                var worldPoint = MainCamera.ScreenToWorldPoint(mousePosition);
                 DraggedComponentID.Value = componentID.Value;
-                OnDragStart?.Invoke(componentID.Value, worldPoint);
+                ChangeOwnership_ServerRpc(componentID.Value);
+                OnDragStart?.Invoke(componentID.Value);
             }else{
                 IsDragging.Value = false;
                 DraggedComponentID.Value = 0;
             }
         }
+    }
+    [ServerRpc]
+    private void ChangeOwnership_ServerRpc(ulong componentID)
+    {
+        var component = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<NetworkObject>();
+        component.ChangeOwnership(OwnerClientId);
+    }
+    [ServerRpc]
+    private void RemoveOwnership_ServerRpc(ulong componentID)
+    {
+        var component = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<NetworkObject>();
+        component.RemoveOwnership();
     }
     private void DragCanceled(InputAction.CallbackContext ctx)
     {
@@ -78,9 +89,8 @@ public class DraggableController: NetworkBehaviour
             {
                 return;
             }
-            var mousePosition = Mouse.current.position.ReadValue();
-            var targetPosition = MainCamera.ScreenToWorldPoint(mousePosition);
-            OnDragEnd?.Invoke(DraggedComponentID.Value, targetPosition);
+            RemoveOwnership_ServerRpc(DraggedComponentID.Value);
+            OnDragEnd?.Invoke(DraggedComponentID.Value);
             IsDragging.Value = false;
         }
     }
@@ -89,11 +99,10 @@ public class DraggableController: NetworkBehaviour
         var gameObject = Utils.GetGameObjectUnderMouse();
         return gameObject?.GetComponentInParent<IAssemblyable>()?.NetworkObjectID;
     }
-    [ServerRpc]
-    private void SetDraggablePositionServerRpc(ulong draggableID, Vector2 targetPosition)
+    private void SetDraggablePosition(ulong draggableID, Vector2 targetPosition)
     {
         Debug.Assert(draggableID != 0, "draggableID is 0");
-        Utils.GetLocalGameObjectByNetworkID(draggableID).transform.position = targetPosition;
+        Utils.GetLocalGameObjectByNetworkID(draggableID).GetComponent<IAssemblyable>().DraggableTransform.position = targetPosition;
     }
     public override void OnDestroy() {
         base.OnDestroy();

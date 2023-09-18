@@ -99,7 +99,7 @@ public class AssemblyController : NetworkBehaviour
         component.AssemblyTransform.Rotate(new Vector3(0, 0, rotation));
     }
     [ServerRpc]
-    private void HandleComponentDraggedStartServerRpc(ulong draggableID, Vector2 targetPosition)
+    private void HandleComponentDraggedStartServerRpc(ulong draggableID)
     {
         var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
         Debug.Assert(component != null, "component is null");
@@ -111,7 +111,7 @@ public class AssemblyController : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void HandleComponentDraggedEndServerRpc(ulong draggableID, Vector2 targetPosition)
+    private void HandleComponentDraggedEndServerRpc(ulong draggableID)
     {
 
         var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
