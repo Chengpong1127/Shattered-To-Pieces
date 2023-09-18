@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using UnityEngine.InputSystem;
 using System;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 public class BasePlayer : NetworkBehaviour
 {
@@ -81,9 +82,10 @@ public class BasePlayer : NetworkBehaviour
         OnPlayerDied?.Invoke();
         Destroy(ServerAbilityRunner);
     }
-    public void ServerLoadDevice(string filename){
+    public async UniTask ServerLoadDevice(string filename){
         if (IsServer){
             LoadLocalDeviceClientRpc(filename);
+            await UniTask.WaitUntil(() => IsAlive.Value == true);
         }
     }
     [ClientRpc]
@@ -106,7 +108,7 @@ public class BasePlayer : NetworkBehaviour
     }
 
     public Transform GetTracedTransform(){
-        NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(RootNetworkObjectID.Value, out var networkObject);
-        return networkObject.transform;
+        var obj = Utils.GetLocalGameObjectByNetworkID(RootNetworkObjectID.Value);
+        return obj.transform;
     }
 }

@@ -57,8 +57,8 @@ public class BaseGameRunner: NetworkBehaviour{
         await UniTask.WaitUntil(() => PlayerMap.Values.All(player => player.IsAlive.Value));
     }
 
-    public virtual void SpawnDevice(BasePlayer player, string filename){
-        player.ServerLoadDevice(filename);
+    public virtual async void SpawnDevice(BasePlayer player, string filename){
+        await player.ServerLoadDevice(filename);
         OnPlayerSpawned?.Invoke(player.OwnerClientId);
     }
 
