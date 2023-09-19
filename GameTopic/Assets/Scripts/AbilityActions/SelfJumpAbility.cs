@@ -38,6 +38,10 @@ public class SelfJumpAbility : DisplayableAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
+            if (SelfEntity is IGroundCheckable groundCheckable)
+            {
+                if (!groundCheckable.IsGrounded) yield break;
+            }
             if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, true);
             SelfEntity.BodyRigidbody.AddForce(SelfEntity.BodyTransform.up * Power, ForceMode2D.Impulse);
             yield return null;

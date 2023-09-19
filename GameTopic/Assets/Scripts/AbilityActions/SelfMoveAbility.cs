@@ -43,6 +43,10 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
+            if (SelfEntity is IGroundCheckable groundCheckable)
+            {
+                if (!groundCheckable.IsGrounded) yield break;
+            }
             var velocity = SelfEntity.BodyRigidbody.velocity;
             if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, true);
             switch (Direction)

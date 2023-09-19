@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2fba16d457a3478b980dfc1a6d18b14, type: 3}
   m_Name: IsGround
   m_EditorClassIdentifier: 
+  TagName: Ground
   _parent: {fileID: 0}
