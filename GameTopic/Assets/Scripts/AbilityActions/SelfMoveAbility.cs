@@ -47,8 +47,8 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
             {
                 if (!groundCheckable.IsGrounded) yield break;
             }
-            if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, true);
             while(isActive){
+                if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, true);
                 var velocity = SelfEntity.BodyRigidbody.velocity;
                 switch (Direction)
                 {
