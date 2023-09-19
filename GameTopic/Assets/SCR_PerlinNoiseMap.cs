@@ -15,8 +15,8 @@ public class SCR_PerlinNoiseMap : MonoBehaviour
     public GameObject prefab_plains;
     public GameObject prefab_forest;
 
-    int map_width = 80;
-    int map_height = 40;
+    int map_width = 30;
+    int map_height = 15;
 
     List<List<int>> noise_grid = new List<List<int>>();
     List<List<GameObject>> tile_grid = new List<List<GameObject>>();

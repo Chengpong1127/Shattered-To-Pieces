@@ -97,6 +97,23 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
         var player = Utils.ServerGetBasePlayer(playerID) as GamePlayer;
         player.ToggleAssemblyClientRpc();
     }
+
+    [ClientRpc]
+    public void Invisible_ClientRpc(bool isInvisible)
+    {
+        var player = Utils.GetLocalPlayerDevice();
+
+        //Debug.Assert(player);
+        //Debug.Assert(player.SelfDevice != null);
+        //Debug.Assert(player.SelfDevice.RootGameComponent != null);
+        //Debug.Assert(player.SelfDevice.RootGameComponent.CoreComponent != null);
+
+
+        //if (player.SelfDevice.RootGameComponent.CoreComponent.GetComponent<ControlRoom>() == this) { return; }
+
+        Invisible(isInvisible);
+    }
+
     public void Invisible(bool isInvisible)
     {
         var baseCoreComponents = this.GetAllChildren();

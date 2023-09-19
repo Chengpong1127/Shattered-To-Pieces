@@ -349,9 +349,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 749599190}
-  tileBase: {fileID: 11400000, guid: 9d55df0d95ae5214a9840628a7bd3a01, type: 2}
-  prefab_plains: {fileID: 2678314870115579159, guid: f8aa9f2ebfe82764e8b33569cae6482d, type: 3}
-  prefab_forest: {fileID: 7596826024447924285, guid: 20376e1bb44a3254ea33ba2597b2b270, type: 3}
+  tileBase: {fileID: 11400000, guid: e4d9fcbac9ce78e4f9bf955883d484af, type: 2}
+  prefab_plains: {fileID: 5235308971284393973, guid: 4d2523c3e60af40f89b9759e6944c4f1, type: 3}
+  prefab_forest: {fileID: 5235308971284393973, guid: ef45652350e3d3343ab601c41ee3551e, type: 3}
 --- !u!1 &2085880140
 GameObject:
   m_ObjectHideFlags: 0

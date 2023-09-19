@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1979503863162765700}
   - component: {fileID: 7327039788653672286}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Minimap dot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10000
   m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.04601282, g: 0.8867924, b: 0.12227045, a: 1}
   m_FlipX: 0

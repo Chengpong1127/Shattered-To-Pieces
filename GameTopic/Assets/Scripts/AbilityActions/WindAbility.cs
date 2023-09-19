@@ -29,13 +29,6 @@ public class WindAbility : DisplayableAbilityScriptableObject
             var obj = SelfEntity as IBodyControlable ?? throw new System.ArgumentNullException("SelfEntity");
             body = obj.body;
             animator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
-            var child = SelfEntity.transform.parent.GetChild(2);
-
-            for(int i = 0; i < child.childCount; i++)
-            {
-
-            }
-            Debug.Log(animator.name);
             Active = false;
         }
 
