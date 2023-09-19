@@ -47,7 +47,7 @@ public class Rubber :MonoBehaviour
     }
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        var entity = collision.gameObject.GetComponent<Entity>() as BaseCoreComponent;
+        var entity = collision.gameObject?.GetComponentInParent<BaseCoreComponent>()?.GetRoot() as BaseCoreComponent;
         if (entity != null&&!isTriggered&&entity.AttributeSystemComponent.GetAttributeValue(MovingVelocity,out var s))
         {
             isTriggered = true;

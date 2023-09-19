@@ -40,6 +40,10 @@ public class LightAbility : DisplayableAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
+            if (g_light?.GetComponent<Collider2D>() == null) {
+                BoxCollider2D boxCollider = g_light.AddComponent<BoxCollider2D>();
+                boxCollider.isTrigger = true;
+                yield return null; } 
             g_light.GetComponent<SpriteRenderer>().enabled=true;
             g_light.GetComponent<Collider2D>().enabled = true;
             yield return new WaitForSeconds(DurationTime);

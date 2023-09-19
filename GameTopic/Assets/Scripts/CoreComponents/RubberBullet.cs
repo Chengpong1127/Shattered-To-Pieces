@@ -12,7 +12,7 @@ public class RubberBullet : MonoBehaviour
         {
             var rubber=Instantiate(Rubber,this.transform.position,Rubber.transform.rotation);
             rubber.GetComponent<NetworkObject>().Spawn();
-            Destroy(this.gameObject);
+            Destroy(this.transform.parent.gameObject);
             this.transform.parent.GetComponent<NetworkObject>().Despawn();
         }
         else

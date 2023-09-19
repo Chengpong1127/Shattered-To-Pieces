@@ -13,11 +13,11 @@ public class FlashLight : MonoBehaviour
     public Action Clear;
     public bool monitor_Clear;
     private BaseCoreComponent[] baseCoreComponents;
+    private BaseCoreComponent controlRoom;
     private void Awake()
     {
-        this.gameObject.GetComponent<Collider2D>().enabled = false;
         this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        monitor_Clear = this.transform.parent.GetChild(0).GetComponent<LightScript>().clear;
+        monitor_Clear = this.GetComponentInParent<LightScript>().clear;
         if (Camera.main.GetComponentInChildren<Canvas>() == null)
         {
             var s=Instantiate(canvas);
@@ -28,23 +28,19 @@ public class FlashLight : MonoBehaviour
     }
     private IEnumerator Set()
     {
-        var root = this.transform.root;
-        while(root.parent != null)
-        {
-            root = root.parent;
-            yield return null;
-        }
-        var ControlRoom = root.GetChild(0).GetComponent<BaseCoreComponent>();
-        baseCoreComponents = ControlRoom.GetAllChildren();
+        this.gameObject.AddComponent<BoxCollider2D>().enabled=false;
+        var root = this.GetComponentInParent<BaseCoreComponent>();
+        controlRoom = root.GetRoot() as BaseCoreComponent;
+        var baseCoreComponents = controlRoom.GetComponentInChildren<BaseCoreComponent>();
         yield return null;
     }
     private void OnTriggerStay2D(Collider2D other)
     {
         StartCoroutine(Set());
-        foreach (BaseCoreComponent bs in baseCoreComponents)
-        {
-            if (other.gameObject == bs.gameObject) return;
-        }
+
+            if(other.gameObject.GetComponentInParent<BaseCoreComponent>()!=null)
+            if (other.gameObject.GetComponentInParent<BaseCoreComponent>().GetRoot() as BaseCoreComponent == controlRoom) return;
+
         monitor_Clear = false;
         StartCoroutine(FadeToWhite());
     }

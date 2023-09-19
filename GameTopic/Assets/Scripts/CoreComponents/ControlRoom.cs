@@ -27,7 +27,7 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
         Bondage();
         //LandCheckGESpec = this.AbilitySystemCharacter.MakeOutgoingSpec(LandCheckGE);
         //this.AttributeSystemComponent.AddAttributes(MovingVelocity);
-        //this.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(this.AbilitySystemCharacter.MakeOutgoingSpec(VelocityInit));
+        this.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(this.AbilitySystemCharacter.MakeOutgoingSpec(VelocityInit));
     }
 
     private void Update() {

@@ -305,6 +305,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da149c2f6ddef204f8ada53f29ac82e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyRigidbody: {fileID: 0}
+  bodyColliders: []
+  bodyAnimator: {fileID: 0}
   AttributeSystemComponent: {fileID: 174377279}
   AbilitySystemCharacter: {fileID: 174377278}
   InitializationAbilities:
@@ -30906,7 +30909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4028a190dc6ea43d5870b1c9da8a14bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerCount: 1
+  PlayerCount: 2
   RunAtStart: 1
   InitLoadDeviceName: 0
   GameRunner: {fileID: 1585596237}
@@ -31028,7 +31031,7 @@ Transform:
   m_GameObject: {fileID: 1899204884}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 121.8, y: 60.8, z: -10.336678}
+  m_LocalPosition: {x: 24.9, y: 16.1, z: -10.336678}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

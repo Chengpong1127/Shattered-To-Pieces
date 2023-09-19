@@ -66,6 +66,7 @@ public class BaseCoreComponent : GameComponent, ICoreComponent
         var renderers = GetComponentsInChildren<Renderer>();
         foreach (var renderer in renderers)
         {
+            if (renderer?.GetComponent<Target>() == null)
             renderer.enabled = visible;
         }
     }

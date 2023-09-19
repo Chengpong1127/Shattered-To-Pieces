@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2029541537721939873}
   - component: {fileID: 5081521119534702214}
-  - component: {fileID: 7325295908851349562}
   - component: {fileID: 4069215428026139534}
   m_Layer: 0
   m_Name: Light
@@ -86,51 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &7325295908851349562
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7679782485449668584}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.87905014, y: 0.021218538}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.47, y: 4.64}
-    newSize: {x: 3.47, y: 4.64}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.7119, y: 4.6824365}
-  m_EdgeRadius: 0
 --- !u!114 &4069215428026139534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,14 +297,14 @@ MonoBehaviour:
   bodyRigidbody: {fileID: 3663819237459685398}
   bodyColliders:
   - {fileID: 7967503516917120030}
-  - {fileID: 7325295908851349562}
   bodyAnimator: {fileID: 0}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
   InitializationAbilities: []
-  Abilities: []
+  Abilities:
+  - {fileID: 11400000, guid: 8fa6ff37f92d40a448795971caf2695f, type: 2}
   assemblyTransform: {fileID: 7463319265100932557}
-  g_light: {fileID: 3148579403918746710}
+  g_light: {fileID: 7679782485449668584}
   clear: 1
 --- !u!114 &7340248417000632777
 MonoBehaviour:
