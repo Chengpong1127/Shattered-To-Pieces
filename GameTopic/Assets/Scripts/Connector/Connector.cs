@@ -5,9 +5,10 @@ using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
-
+[RequireComponent(typeof(AnchoredJoint2D))]
 public class Connector : MonoBehaviour, IConnector
 {
+    public AnchoredJoint2D Joint { get; set; }
     public IGameComponent GameComponent { get; private set; }
     private Collider2D SelfCollider => GameComponent.BodyColliders.First();
 
@@ -18,12 +19,8 @@ public class Connector : MonoBehaviour, IConnector
 
     // target detect process
     static ContactFilter2D targetLayerFilter = new();
-    
-
-    //==================================functions==================================//
-
-
     private void Awake() {
+        Joint = GetComponent<AnchoredJoint2D>();
         targetList = GetComponentsInChildren<Target>().ToList();
         GameComponent = GetComponentInParent<IGameComponent>();
 
@@ -109,6 +106,8 @@ public class Connector : MonoBehaviour, IConnector
             _currentLinkedTarget.Unlink();
             _currentLinkedTarget = null;
         }
+        Joint.connectedBody = null;
+        Joint.enabled = false;
         
     }
 
@@ -117,8 +116,12 @@ public class Connector : MonoBehaviour, IConnector
         if (newParent == null) throw new ArgumentException("newParent is null");
         if (info == null) throw new ArgumentException("info is null");
         _currentLinkedTarget = newParent.GetTarget(info.linkedTargetID);
-        GameComponent.BodyTransform.SetParent(newParent.GameComponent.BodyTransform);
-        GameComponent.BodyTransform.position = _currentLinkedTarget.ConnectionPosition;
+        
+        //GameComponent.BodyTransform.SetParent(newParent.GameComponent.BodyTransform);
+        //GameComponent.BodyTransform.position = _currentLinkedTarget.ConnectionPosition;
+        Joint.connectedAnchor = _currentLinkedTarget.ConnectionPosition;
+        Joint.connectedBody = newParent.GameComponent.BodyRigidbody;
         _currentLinkedTarget.LinkedBy(this);
+        Joint.enabled = true;
     }
 }

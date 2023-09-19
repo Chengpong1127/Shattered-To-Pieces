@@ -11,7 +11,7 @@ public class Target : MonoBehaviour
 
     private Connector AimerConnector = null;
     private Renderer Renderer = null;
-    public Vector3 ConnectionPosition => transform.position;
+    public Vector3 ConnectionPosition => transform.localPosition;
 
     private void Awake() {
         Renderer = GetComponent<Renderer>();

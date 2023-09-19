@@ -42,10 +42,10 @@ public class GameComponent : AbilityEntity, IGameComponent
         if (info == null) throw new ArgumentNullException("info");
         Parent = parentComponent;
         Parent.Children.Add(this);
-        BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
+        BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
         BodyRigidbody.angularVelocity = 0;
         BodyRigidbody.velocity = Vector2.zero;
-        BodyColliders.ToList().ForEach((collider) => collider.isTrigger = true);
+        BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
         connector.ConnectToComponent(parentComponent.Connector, info);
         (GetRoot() as GameComponent)?.OnRootConnectionChanged?.Invoke();
     }
@@ -111,12 +111,12 @@ public class GameComponent : AbilityEntity, IGameComponent
             case true:
                 SetDraggingClientRpc(true);
                 BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
-                BodyColliders.ToList().ForEach((collider) => collider.enabled = false);
+                BodyColliders.ToList().ForEach((collider) => collider.isTrigger = true);
                 break;
             case false:
                 SetDraggingClientRpc(false);
                 BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
-                BodyColliders.ToList().ForEach((collider) => collider.enabled = true);
+                BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
                 BodyRigidbody.angularVelocity = 0;
                 BodyRigidbody.velocity = Vector2.zero;
                 break;
