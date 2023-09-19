@@ -47,19 +47,21 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
             {
                 if (!groundCheckable.IsGrounded) yield break;
             }
-            var velocity = SelfEntity.BodyRigidbody.velocity;
             if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, true);
-            switch (Direction)
-            {
-                case MoveDirection.Left:
-                    velocity.x = -Speed;
-                    break;
-                case MoveDirection.Right:
-                    velocity.x = Speed;
-                    break;
+            while(isActive){
+                var velocity = SelfEntity.BodyRigidbody.velocity;
+                switch (Direction)
+                {
+                    case MoveDirection.Left:
+                        velocity.x = -Speed;
+                        break;
+                    case MoveDirection.Right:
+                        velocity.x = Speed;
+                        break;
+                }
+                SelfEntity.BodyRigidbody.velocity = velocity;
+                yield return null;
             }
-            SelfEntity.BodyRigidbody.velocity = velocity;
-            yield return null;
         }
     }
     public enum MoveDirection

@@ -32,6 +32,6 @@ MonoBehaviour:
   Image: {fileID: 0}
   Icon: {fileID: 0}
   Description: 
-  Speed: 20
+  Speed: 3
   Direction: 0
   AnimationName: MoveLeft
