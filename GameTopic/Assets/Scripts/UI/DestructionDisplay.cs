@@ -65,7 +65,7 @@ public class DestructionDisplay : MonoBehaviour
         proportion = 1 - (currentVal / maximaVal);
 
         MaterialList.ForEach(m => {
-            m.SetFloat("Fade", proportion);
+            m.SetFloat("_Fade", proportion);
         });
     }
 }
