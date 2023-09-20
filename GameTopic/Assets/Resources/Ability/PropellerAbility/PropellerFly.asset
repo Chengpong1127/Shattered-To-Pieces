@@ -29,4 +29,7 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  Power: 3
+  Image: {fileID: 0}
+  Icon: {fileID: 0}
+  Description: 
+  Power: 100
