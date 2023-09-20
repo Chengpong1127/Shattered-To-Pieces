@@ -59,7 +59,8 @@ MonoBehaviour:
   bodyAnimator: {fileID: 0}
   AttributeSystemComponent: {fileID: 1647381966340234252}
   AbilitySystemCharacter: {fileID: 6795010306233276680}
-  InitializationAbilities: []
+  InitializationAbilities:
+  - {fileID: 11400000, guid: c4f25b21df2854a408a96dbd63f58a65, type: 2}
   Abilities: []
   assemblyTransform: {fileID: 8036947247156528135}
 --- !u!114 &1647381966340234252
@@ -74,8 +75,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84cd0cb271574403ebdc2ee5fba2e363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttributeSystemEvents: []
-  Attributes: []
+  AttributeSystemEvents:
+  - {fileID: 11400000, guid: 4f4cdc7090ecd448f859aae79c310302, type: 2}
+  Attributes:
+  - {fileID: 11400000, guid: e0d843f15ad51485c8b6d6f25aa2554f, type: 2}
+  - {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
+  - {fileID: 11400000, guid: f15e7b9836f3b4d6695b01461a2d5da0, type: 2}
   AttributeValues: []
 --- !u!114 &7963432778198175788
 MonoBehaviour:
