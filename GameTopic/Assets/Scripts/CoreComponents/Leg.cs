@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using System;
 
 public class Leg : BaseCoreComponent , IBodyControlable, IGroundCheckable {
     public BaseCoreComponent body { get; private set; }
@@ -19,9 +20,13 @@ public class Leg : BaseCoreComponent , IBodyControlable, IGroundCheckable {
     private async void GroundCheck() {
         var cancellationToken = this.GetCancellationTokenOnDestroy();
         while(cancellationToken.IsCancellationRequested == false){
-            await ListenGround(cancellationToken);
-            if (cancellationToken.IsCancellationRequested) break;
-            await ListenUnground(cancellationToken);
+            try{
+                await ListenGround(cancellationToken);
+                if (cancellationToken.IsCancellationRequested) break;
+                await ListenUnground(cancellationToken);
+            }catch(OperationCanceledException){
+                return;
+            }
         }
     }
     private async UniTask ListenGround(CancellationToken cancellationToken) {

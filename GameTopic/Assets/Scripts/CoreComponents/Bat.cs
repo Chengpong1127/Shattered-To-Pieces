@@ -4,20 +4,7 @@ using System.Collections.Generic;
 using AttributeSystem.Authoring;
 using UnityEngine;
 
-public class Bat : BaseCoreComponent, IEntityTriggerable
+public class Bat : EntityTriggerableComponent
 {
-    public event Action<Entity> OnTriggerEntity;
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        var entity = other.GetComponent<Entity>();
-        if (entity != null)
-        {
-            if (entity is BaseCoreComponent coreComponent && HasTheSameRootWith(coreComponent)) return;
-            OnTriggerEntity?.Invoke(entity);
-        }
-    }
-    protected override void Awake()
-    {
-        base.Awake();
-    }
 }

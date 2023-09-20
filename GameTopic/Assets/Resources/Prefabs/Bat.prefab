@@ -410,6 +410,7 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 667df11ad0ce8446ca762310a262fbb6, type: 2}
   assemblyTransform: {fileID: 3416100622568781474}
+  EntityTriggerCollider: {fileID: 6791638567251657035}
 --- !u!50 &8801128861675725689 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 4234352918938833372, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}

@@ -4,6 +4,7 @@ using UnityEngine;
 using AbilitySystem.Authoring;
 using AbilitySystem;
 using AbilitySystem.ModifierMagnitude;
+using System.Linq;
 [CreateAssetMenu(fileName = "BatRotation", menuName = "Ability/BatRotation")]
 public class BatRotation : DisplayableAbilityScriptableObject
 {
@@ -36,14 +37,17 @@ public class BatRotation : DisplayableAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
+            SelfEntity.BodyColliders.ToList().ForEach(collider => collider.isTrigger = true);
             entityAnimator.Play("Swing");
             entityTriggerable.OnTriggerEntity += TriggerAction;
             yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Swing"));
             yield return new WaitUntil(() => !entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Swing"));
             entityTriggerable.OnTriggerEntity -= TriggerAction;
+            SelfEntity.BodyColliders.ToList().ForEach(collider => collider.isTrigger = false);
         }
 
         private void TriggerAction(Entity other){
+            entityTriggerable.OnTriggerEntity -= TriggerAction;
             GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(SelfEntity, other, DamageEffect);
         }
 

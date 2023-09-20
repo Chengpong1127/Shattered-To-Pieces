@@ -1,3 +1,4 @@
+using System.Linq;
 using AbilitySystem;
 using AbilitySystem.Authoring;
 using System.Collections;
@@ -33,11 +34,13 @@ public class ChainsawAttack : DisplayableAbilityScriptableObject {
         }
 
         protected override IEnumerator ActivateAbility() {
+            SelfEntity.BodyColliders.ToList().ForEach(collider => collider.isTrigger = true);
             entityAnimator.SetTrigger("ATKTrigger");
             entityTriggerable.OnTriggerEntity += TriggerAction;
             yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"));
             yield return new WaitUntil(() => !entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"));
             entityTriggerable.OnTriggerEntity -= TriggerAction;
+            SelfEntity.BodyColliders.ToList().ForEach(collider => collider.isTrigger = false);
         }
 
         protected override IEnumerator PreActivate() {
