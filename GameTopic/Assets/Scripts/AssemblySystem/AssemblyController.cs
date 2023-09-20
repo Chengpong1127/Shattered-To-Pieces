@@ -101,7 +101,7 @@ public class AssemblyController : NetworkBehaviour
     {
         if(IsOwner){
             HandleComponentDraggedStartServerRpc(draggableID);
-            await UniTask.NextFrame();
+            //await UniTask.NextFrame();
             ChangeOwnership_ServerRpc(draggableID);
         }
     }
@@ -121,7 +121,7 @@ public class AssemblyController : NetworkBehaviour
     {
         if(IsOwner){
             RemoveOwnership_ServerRpc(draggableID);
-            await UniTask.WaitForSeconds(0.1f);
+            //await UniTask.WaitForSeconds(0.1f);
             HandleComponentDraggedEndServerRpc(draggableID);
         }
     }

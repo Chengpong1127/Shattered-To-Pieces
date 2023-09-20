@@ -275,7 +275,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c4f25b21df2854a408a96dbd63f58a65, type: 2}
   Abilities:
   - {fileID: 11400000, guid: 521235a91f9f0384dbcaf94e93e94fa6, type: 2}
-  assemblyTransform: {fileID: 7617518997779054369}
+  assemblyTransform: {fileID: 6660055799483216435}
 --- !u!114 &2528714835101031990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,6 +338,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
   m_Animator: {fileID: 2110575414034398442}
+--- !u!4 &6660055799483216435 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+  m_PrefabInstance: {fileID: 449838639023225638}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7617518997779054369 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8036947247156528135, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}

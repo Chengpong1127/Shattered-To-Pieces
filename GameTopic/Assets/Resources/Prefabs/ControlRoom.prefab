@@ -512,6 +512,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 174b4c691442c4c7fab309adaf4cdfe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &4408897233033228148 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+  m_PrefabInstance: {fileID: 7457094575805867617}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4959903464909743101 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -540,7 +545,7 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 31f9dc9e81759497894eac5fbb7f5084, type: 2}
   - {fileID: 11400000, guid: 7ff9a5176798b43eb8bbbe6667a82be6, type: 2}
-  assemblyTransform: {fileID: 645163673252733542}
+  assemblyTransform: {fileID: 4408897233033228148}
   m_Default: {fileID: 0}
   m_Invisible: {fileID: 0}
   LandCheckCollider: {fileID: 141124074856889269}
