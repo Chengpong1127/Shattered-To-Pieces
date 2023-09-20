@@ -496,7 +496,7 @@ PrefabInstance:
       objectReference: {fileID: 4919809954925681856}
     - target: {fileID: 8272447847809035679, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_Anchor.y
-      value: -0.22
+      value: -0.1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3355642140565985668, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}

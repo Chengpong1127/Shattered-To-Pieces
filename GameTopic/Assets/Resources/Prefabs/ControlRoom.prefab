@@ -327,6 +327,10 @@ PrefabInstance:
       propertyPath: m_Mass
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 4234352918938833372, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6045977369764336406, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: flipTransform
       value: 
