@@ -271,7 +271,8 @@ MonoBehaviour:
   bodyAnimator: {fileID: 2110575414034398442}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
-  InitializationAbilities: []
+  InitializationAbilities:
+  - {fileID: 11400000, guid: c4f25b21df2854a408a96dbd63f58a65, type: 2}
   Abilities:
   - {fileID: 11400000, guid: 521235a91f9f0384dbcaf94e93e94fa6, type: 2}
   assemblyTransform: {fileID: 7617518997779054369}
