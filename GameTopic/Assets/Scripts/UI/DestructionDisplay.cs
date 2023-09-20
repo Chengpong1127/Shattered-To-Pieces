@@ -17,6 +17,7 @@ public class DestructionDisplay : MonoBehaviour
 
     AttributeSystemComponent ASC;
     AttributeValue AttributeGetter;
+    Entity entity;
     float currentVal;
     float maximaVal;
     float proportion;
@@ -33,12 +34,26 @@ public class DestructionDisplay : MonoBehaviour
         UpdateDisplay();
     }
 
+    private void OnEnable() {
+        GameEvents.AttributeEvents.OnEntityHealthChanged += OnEntityHealthChanged;
+    }
+    private void OnDisable() {
+        GameEvents.AttributeEvents.OnEntityHealthChanged -= OnEntityHealthChanged;
+    }
+    private void OnEntityHealthChanged(Entity entity, float prevHealth, float currentHealth) {
+        if (entity.Equals(this.entity)) {
+            UpdateDisplay();
+        }
+    }
+
     void CheckDisplay() {
         ASC = GetComponent<AttributeSystemComponent>();
+        entity = GetComponent<Entity>();
         if (HealthAttribute == null ||
             MaxHealthAttribute == null ||
             RendererList == null ||
-            ASC == null) { isDisplay = false; return; }
+            ASC == null ||
+            entity == null) { isDisplay = false; return; }
     }
     private void UpdateDisplay() {
         if (!isDisplay) { return; }
@@ -47,7 +62,7 @@ public class DestructionDisplay : MonoBehaviour
         currentVal = AttributeGetter.CurrentValue;
         ASC.GetAttributeValue(MaxHealthAttribute, out AttributeGetter);
         maximaVal = AttributeGetter.CurrentValue;
-        proportion = currentVal / maximaVal;
+        proportion = 1 - (currentVal / maximaVal);
 
         MaterialList.ForEach(m => {
             m.SetFloat("Fade", proportion);
