@@ -5342,6 +5342,8 @@ GameObject:
   - component: {fileID: 1281276208}
   - component: {fileID: 1281276211}
   - component: {fileID: 1281276213}
+  - component: {fileID: 1281276215}
+  - component: {fileID: 1281276214}
   m_Layer: 0
   m_Name: RoomManager
   m_TagString: Untagged
@@ -5442,6 +5444,32 @@ MonoBehaviour:
   RunAtStart: 1
   InitLoadDeviceName: 0
   GameRunner: {fileID: 0}
+--- !u!114 &1281276214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281276204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42748494bc10b4f76947647e037c0931, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1281276215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281276204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ebaa13ef80e14213a6d9a30f39add16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Duration: 0.3
+  DamageColor: {r: 0.745283, g: 0.41834283, b: 0.41834283, a: 0.83137256}
 --- !u!1 &1306692363
 GameObject:
   m_ObjectHideFlags: 0

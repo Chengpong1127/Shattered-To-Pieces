@@ -6,12 +6,14 @@ using UnityEngine;
 using System;
 using UnityEngine.InputSystem.LowLevel;
 
-public class GameEffectManager{
-    public void Enable(){
+public class GameEffectManager: MonoBehaviour, IGameEventHandler{
+    void OnEnable()
+    {
         GameEvents.GameEffectManagerEvents.RequestModifyAttribute += ModifyAttribute;
         GameEvents.GameEffectManagerEvents.RequestGiveGameEffect += ApplyGameplayEffect;
     }
-    public void Disable(){
+    void OnDisable()
+    {
         GameEvents.GameEffectManagerEvents.RequestModifyAttribute -= ModifyAttribute;
         GameEvents.GameEffectManagerEvents.RequestGiveGameEffect -= ApplyGameplayEffect;
     }
