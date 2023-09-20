@@ -390,6 +390,34 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 951099334
       objectReference: {fileID: 0}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Attributes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Attributes.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: e0d843f15ad51485c8b6d6f25aa2554f, type: 2}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Attributes.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Attributes.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: f15e7b9836f3b4d6695b01461a2d5da0, type: 2}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AttributeSystemEvents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AttributeSystemEvents.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f4cdc7090ecd448f859aae79c310302, type: 2}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AttributeSystemEvents.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: d40f73b6b5fa846478145e93b376984d, type: 2}
     - target: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_Name
       value: Leg
@@ -466,6 +494,10 @@ PrefabInstance:
       propertyPath: bodyColliders.Array.data[1]
       value: 
       objectReference: {fileID: 4919809954925681856}
+    - target: {fileID: 8272447847809035679, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_Anchor.y
+      value: -0.22
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3355642140565985668, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
     - {fileID: 5738106685450005699, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -514,7 +546,8 @@ MonoBehaviour:
   bodyAnimator: {fileID: 6540674429720086562}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
-  InitializationAbilities: []
+  InitializationAbilities:
+  - {fileID: 11400000, guid: 7c6ff749d408d4aa1899bc696128b5bd, type: 2}
   Abilities:
   - {fileID: 11400000, guid: 9ec3e7a88c1c04d00bb6ff6285f2ba61, type: 2}
   - {fileID: 11400000, guid: c961840a329ca4129ac1bea657e4caf1, type: 2}
