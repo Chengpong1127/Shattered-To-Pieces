@@ -7,7 +7,8 @@ public class Wheel : BaseCoreComponent,IBodyControlable
 {
     [SerializeField]
     private AttributeScriptableObject MoveVelocityAttribute;
-
+    [SerializeField]
+    public WheelJoint2D WheelJoint;
     public BaseCoreComponent body { get; private set; }
 
     protected override void Awake()

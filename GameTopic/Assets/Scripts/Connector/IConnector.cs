@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public interface IConnector: IDumpable<IInfo>
 {
+    public AnchoredJoint2D Joint { get; }
     public IGameComponent GameComponent { get; }
     Target GetTarget(int targetID);
     public void SetNonConnectedTargetsDisplay(bool display);

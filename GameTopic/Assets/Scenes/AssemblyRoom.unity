@@ -6057,7 +6057,6 @@ GameObject:
   - component: {fileID: 1439023370}
   - component: {fileID: 1439023371}
   - component: {fileID: 1439023372}
-  - component: {fileID: 1439023376}
   - component: {fileID: 1439023377}
   m_Layer: 0
   m_Name: Square
@@ -6142,7 +6141,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1439023369}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 222a396c67c93494fbcf6fb4c3bd8491, type: 2}
+  m_Material: {fileID: 6200000, guid: ba3a5a9c39534400d9a41a9aa55663bd, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -6178,26 +6177,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1439023376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1439023369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3923238715
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!114 &1439023377
 MonoBehaviour:
   m_ObjectHideFlags: 0

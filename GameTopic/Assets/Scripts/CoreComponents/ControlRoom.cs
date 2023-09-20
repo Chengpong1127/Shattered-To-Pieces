@@ -31,26 +31,26 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
     }
 
     private void Update() {
-        Landing = false;
-        if (LandCheckCollider.OverlapCollider(filter, collisionResult) != 0) {
-            collisionResult.ForEach(collider => {
-                // var obj = collider.gameObject.GetComponent<Entity>();
-                var obj = collider.gameObject.GetComponent<Taggable>();
+        // Landing = false;
+        // if (LandCheckCollider.OverlapCollider(filter, collisionResult) != 0) {
+        //     collisionResult.ForEach(collider => {
+        //         // var obj = collider.gameObject.GetComponent<Entity>();
+        //         var obj = collider.gameObject.GetComponent<Taggable>();
                 
-                // if(obj != null && obj.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(LandCheckGESpec)) {
-                if(obj != null && obj.HasTag(LandCheckTag)) {
-                    Landing = true;
-                    Pushing--;
-                }
-            });
-        }
+        //         // if(obj != null && obj.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(LandCheckGESpec)) {
+        //         if(obj != null && obj.HasTag(LandCheckTag)) {
+        //             Landing = true;
+        //             Pushing--;
+        //         }
+        //     });
+        // }
 
-        if (Moving <= 0 && Pushing <= 0 && Landing) {
-            Bondage();
-            Moving = 0;
-            Pushing = 0;
-        }
-        Moving--;
+        // if (Moving <= 0 && Pushing <= 0 && Landing) {
+        //     Bondage();
+        //     Moving = 0;
+        //     Pushing = 0;
+        // }
+        // Moving--;
     }
 
     public void Move(Vector2 Motion) {
