@@ -32,5 +32,5 @@ MonoBehaviour:
   Image: {fileID: 0}
   Icon: {fileID: 0}
   Description: 
-  Speed: 500
+  Speed: 800
   Direction: 0
