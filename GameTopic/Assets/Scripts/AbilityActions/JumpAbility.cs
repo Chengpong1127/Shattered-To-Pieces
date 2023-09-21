@@ -52,26 +52,28 @@ public class JumpAbility : DisplayableAbilityScriptableObject {
 
         protected override IEnumerator ActivateAbility() {
 
-            if (Character != null && Character.Landing) {
-                // Character.Move(Body.BodyTransform.TransformDirection(Direction) * Power);
-                // Character.VerticalMove(Power);
-                Body.Root.BodyRigidbody.velocity = new Vector2(Body.Root.BodyRigidbody.velocity.x, Power);
-                while (isJumping&& Body.Root.BodyRigidbody.velocity.y>0)
-                {
-                    JumpCounter+=Time.deltaTime;
-                    if (JumpCounter > JumpTime) isJumping = false;
-                    float time = JumpCounter/JumpTime;
-                    float currentJumpM = JumpMultipiler;
-                    if (time < 0.5f)
-                    {
-                        currentJumpM = JumpMultipiler * (1 - time);
-                    }
-                    new Vector2(0, -Physics2D.gravity.y);
-                    Body.Root.BodyRigidbody.velocity+= new Vector2(0, -Physics2D.gravity.y)*currentJumpM*Time.deltaTime;
-                    yield return null;
-                }
-               // Character.AddForce(Body.BodyTransform.TransformDirection(Vector3.up) * Power, ForceMode2D.Impulse);
+            if (SelfEntity is IGroundCheckable groundCheckable)
+            {
+                if (!groundCheckable.IsGrounded) yield break;
             }
+            // Character.Move(Body.BodyTransform.TransformDirection(Direction) * Power);
+            // Character.VerticalMove(Power);
+            Body.Root.BodyRigidbody.velocity = new Vector2(Body.Root.BodyRigidbody.velocity.x, Power);
+            while (isJumping && Body.Root.BodyRigidbody.velocity.y > 0)
+            {
+                JumpCounter += Time.deltaTime;
+                if (JumpCounter > JumpTime) isJumping = false;
+                float time = JumpCounter / JumpTime;
+                float currentJumpM = JumpMultipiler;
+                if (time < 0.5f)
+                {
+                    currentJumpM = JumpMultipiler * (1 - time);
+                }
+                new Vector2(0, -Physics2D.gravity.y);
+                Body.Root.BodyRigidbody.velocity += new Vector2(0, -Physics2D.gravity.y) * currentJumpM * Time.deltaTime;
+                yield return null;
+            }
+            //Character.AddForce(Body.BodyTransform.TransformDirection(Vector3.up) * Power, ForceMode2D.Impulse);  
             yield return null;
         }
 

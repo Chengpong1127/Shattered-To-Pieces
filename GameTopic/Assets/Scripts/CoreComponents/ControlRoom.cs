@@ -39,6 +39,7 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
                 
                 // if(obj != null && obj.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(LandCheckGESpec)) {
                 if(obj != null && obj.HasTag(LandCheckTag)) {
+                    Debug.Log(1);
                     Landing = true;
                     Pushing--;
                 }
