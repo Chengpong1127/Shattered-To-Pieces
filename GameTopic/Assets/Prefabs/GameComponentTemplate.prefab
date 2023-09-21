@@ -209,7 +209,7 @@ FixedJoint2D:
   m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 0}
   m_BreakForce: 500
-  m_BreakTorque: 500
+  m_BreakTorque: 400
   m_BreakAction: 1
   m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
