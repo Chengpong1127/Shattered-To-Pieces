@@ -52,12 +52,12 @@ public class AbilityUISample : NetworkBehaviour
             SetAbilityToEntry_ServerRpc(entryID, entryAbilityIndex, newEntryID);
         }
     }
-
+    [ServerRpc]
     private void SetAbilityToEntry_ServerRpc(int entryID, int entryAbilityIndex, int newEntryID){
         var ability = abilityManager.AbilityInputEntries[entryID].Abilities[entryAbilityIndex];
         abilityManager.SetAbilityToEntry(newEntryID, ability);
     }
-
+    [ServerRpc]
     private void SetAbilityOutOfEntry_ServerRpc(int entryID, int entryAbilityIndex){
         var ability = abilityManager.AbilityInputEntries[entryID].Abilities[entryAbilityIndex];
         abilityManager.SetAbilityOutOfEntry(ability);
