@@ -15957,6 +15957,8 @@ GameObject:
   - component: {fileID: 1585596234}
   - component: {fileID: 1585596237}
   - component: {fileID: 1585596238}
+  - component: {fileID: 1585596240}
+  - component: {fileID: 1585596239}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -16047,6 +16049,32 @@ MonoBehaviour:
   Portal: {fileID: 396840357807001835, guid: a6b11e60e96093946aa3ea6742fc671f, type: 3}
   minPosition: {x: 0, y: 0}
   maxPosition: {x: 120, y: 60}
+--- !u!114 &1585596239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585596233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42748494bc10b4f76947647e037c0931, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1585596240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585596233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ebaa13ef80e14213a6d9a30f39add16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Duration: 0.5
+  DamageColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &1877068695
 GameObject:
   m_ObjectHideFlags: 0

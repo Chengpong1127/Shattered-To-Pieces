@@ -390,6 +390,8 @@ GameObject:
   - component: {fileID: 751570061}
   - component: {fileID: 751570057}
   - component: {fileID: 751570062}
+  - component: {fileID: 751570064}
+  - component: {fileID: 751570063}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -480,6 +482,32 @@ MonoBehaviour:
   Portal: {fileID: 396840357807001835, guid: a6b11e60e96093946aa3ea6742fc671f, type: 3}
   minPosition: {x: 0, y: 0}
   maxPosition: {x: 120, y: 60}
+--- !u!114 &751570063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751570056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ebaa13ef80e14213a6d9a30f39add16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Duration: 0.3
+  DamageColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &751570064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751570056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42748494bc10b4f76947647e037c0931, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1340381914
 GameObject:
   m_ObjectHideFlags: 0
