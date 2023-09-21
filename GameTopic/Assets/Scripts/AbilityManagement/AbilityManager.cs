@@ -9,7 +9,7 @@ public class AbilityManager: IEnumerable<GameComponentAbility>
     /// <summary>
     /// Triggered after the ability is set to an entry.
     /// </summary>
-    public event Action<GameComponentAbility> OnSetAbilityToEntry;
+    public event Action<GameComponentAbility, int> OnSetAbilityToEntry;
     /// <summary>
     /// Triggered after the ability is set to out of an entry.
     /// </summary>
@@ -146,8 +146,8 @@ public class AbilityManager: IEnumerable<GameComponentAbility>
         if(removed != null){
             abilityInEntryStatus[removed] = false;
         }
-        OnSetAbilityToEntry?.Invoke(ability);
-        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry.Invoke(ability);
+        OnSetAbilityToEntry?.Invoke(ability, entryID);
+        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry.Invoke(ability, entryID);
     }
     /// <summary>
     /// Remove the ability from the input entry;
