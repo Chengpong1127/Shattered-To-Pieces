@@ -108,13 +108,14 @@ public class GameComponent : AbilityEntity, IGameComponent
             case true:
                 SetDraggingClientRpc(true);
                 BodyColliders.ToList().ForEach((collider) => collider.isTrigger = true);
+                BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
                 BodyRigidbody.angularVelocity = 0;
                 BodyRigidbody.velocity = Vector2.zero;
-                DisconnectAllChildren();
                 break;
             case false:
                 SetDraggingClientRpc(false);
                 BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
+                BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
                 BodyRigidbody.angularVelocity = 0;
                 BodyRigidbody.velocity = Vector2.zero;
                 break;
@@ -125,9 +126,17 @@ public class GameComponent : AbilityEntity, IGameComponent
         switch (dragging){
             case true:
                 connector.SetNonConnectedTargetsDisplay(false);
+                BodyColliders.ToList().ForEach((collider) => collider.isTrigger = true);
+                BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
+                BodyRigidbody.angularVelocity = 0;
+                BodyRigidbody.velocity = Vector2.zero;
                 break;
             case false:
                 connector.SetNonConnectedTargetsDisplay(true);
+                BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
+                BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
+                BodyRigidbody.angularVelocity = 0;
+                BodyRigidbody.velocity = Vector2.zero;
                 break;
         }
     }
