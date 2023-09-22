@@ -90,7 +90,6 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
         SetEventHandler();
         gameEffectManager = new GameEffectManager();
-        gameEffectManager.Enable();
         
     }
 

@@ -59,7 +59,7 @@ public class Device: IDevice
             var component = tempDictionary[pair.Key];
             component.Load(pair.Value);
         });
-        await UniTask.WaitForFixedUpdate();
+        //await UniTask.WaitForFixedUpdate();
         RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID];
         ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList);
         AbilityManager.Load(this, deviceInfo.AbilityManagerInfo, tempDictionary);
@@ -67,6 +67,7 @@ public class Device: IDevice
             AbilityManager.UpdateDeviceAbilities();
             OnDeviceConnectionChanged?.Invoke();
         };
+        await UniTask.Yield();
     }
 
     private Dictionary<int, IGameComponent> CreateAllComponents(Dictionary<int, GameComponentInfo> nodes){

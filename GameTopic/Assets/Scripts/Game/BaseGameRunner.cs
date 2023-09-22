@@ -12,6 +12,7 @@ using System;
 /// </summary>
 public class BaseGameRunner: NetworkBehaviour{
     public StateMachine<GameStates> StateMachine;
+    public IGameEventHandler[] GameEventHandlers;
     public enum GameStates{
         Initialize,
         Gaming,
@@ -26,6 +27,8 @@ public class BaseGameRunner: NetworkBehaviour{
     {
         StateMachine = new StateMachine<GameStates>(this);
         StateMachine.ChangeState(GameStates.Initialize);
+        GameEventHandlers = GetComponents<IGameEventHandler>();
+        GameEventHandlers.ToList().ForEach(handler => handler.enabled = false);
     }
     public async void RunGame(){
         if (IsServer){
@@ -43,7 +46,9 @@ public class BaseGameRunner: NetworkBehaviour{
     /// Initialize the game. This method will be invoked on the server. Runs before all players are loaded.
     /// </summary>
     protected virtual void GameInitialize(){
-        
+        if(IsServer){
+            GameEventHandlers.ToList().ForEach(handler => handler.enabled = true);
+        }
     }
     /// <summary>
     /// Server loads all players.

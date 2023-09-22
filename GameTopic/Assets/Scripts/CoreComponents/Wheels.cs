@@ -15,7 +15,6 @@ public class Wheel : BaseCoreComponent,IBodyControlable
     {
         body = this;
         base.Awake();
-        MoveDecorator.Instance.Decorate(this);
     }
 }
 

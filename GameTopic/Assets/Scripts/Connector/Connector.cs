@@ -124,4 +124,9 @@ public class Connector : MonoBehaviour, IConnector
         _currentLinkedTarget.LinkedBy(this);
         Joint.enabled = true;
     }
+    void OnJointBreak2D(Joint2D brokenJoint)
+    {
+        Debug.Log("A joint has just been broken!, joint: " + brokenJoint);
+        GameComponent.DisconnectFromParent();
+    }
 }

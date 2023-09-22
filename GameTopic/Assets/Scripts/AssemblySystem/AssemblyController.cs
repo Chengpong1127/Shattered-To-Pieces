@@ -4,14 +4,16 @@ using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using Cysharp.Threading.Tasks;
+using System.Linq;
 [RequireComponent(typeof(DraggableController))]
 public class AssemblyController : NetworkBehaviour
 {
     private DraggableController DraggableController;
+    private Func<ulong[]> GetDraggableGameObject { get; set; }
     private Func<ulong[]> GetConnectableGameObject { get; set; }
     public float RotationUnit { get; private set; }
-
-    private ulong[] connectableComponentIDs;
+    private ulong[] tempDraggableComponentIDs;
+    private ulong[] tempConnectableComponentIDs;
 
     /// <summary>
     /// This event will be invoked when a game component is started to drag.
@@ -40,6 +42,7 @@ public class AssemblyController : NetworkBehaviour
         DraggableController.Initialize(getDraggableGameObjectIDs, dragAction, Camera.main);
         DraggableController.OnDragStart += HandleComponentDraggedStart;
         DraggableController.OnDragEnd += HandleComponentDraggedEnd;
+        GetDraggableGameObject = getDraggableGameObjectIDs;
         GetConnectableGameObject = getConnectableGameObjectIDs;
         RotationUnit = rotationUnit;
         if (IsOwner){
@@ -101,7 +104,7 @@ public class AssemblyController : NetworkBehaviour
     {
         if(IsOwner){
             HandleComponentDraggedStartServerRpc(draggableID);
-            await UniTask.NextFrame();
+            await UniTask.DelayFrame(2);
             ChangeOwnership_ServerRpc(draggableID);
         }
     }
@@ -109,9 +112,10 @@ public class AssemblyController : NetworkBehaviour
     private void HandleComponentDraggedStartServerRpc(ulong draggableID){
         var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
         component.DisconnectFromParent();
+        component.DisconnectAllChildren();
         component.SetDragging(true);
-        connectableComponentIDs = GetConnectableGameObject();
-        SetAvailableForConnection(connectableComponentIDs, true);
+        tempConnectableComponentIDs = GetConnectableGameObject();
+        SetAvailableForConnection(tempConnectableComponentIDs, true);
         OnGameComponentDraggedStart?.Invoke(component);
 
 
@@ -121,7 +125,7 @@ public class AssemblyController : NetworkBehaviour
     {
         if(IsOwner){
             RemoveOwnership_ServerRpc(draggableID);
-            await UniTask.WaitForSeconds(0.1f);
+            await UniTask.DelayFrame(2);
             HandleComponentDraggedEndServerRpc(draggableID);
         }
     }
@@ -136,8 +140,8 @@ public class AssemblyController : NetworkBehaviour
             component.ConnectToParent(availableParent, connectorInfo);
             AfterGameComponentConnected?.Invoke(component);
         }
-        SetAvailableForConnection(connectableComponentIDs, false);
-        connectableComponentIDs = null;
+        SetAvailableForConnection(tempConnectableComponentIDs, false);
+        tempConnectableComponentIDs = null;
         OnGameComponentDraggedEnd?.Invoke(component);
     }
     private void SetAvailableForConnection(ICollection<ulong> componentIDs, bool available){

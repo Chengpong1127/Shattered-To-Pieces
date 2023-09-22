@@ -36,16 +36,11 @@ public class LoaderPush : DisplayableAbilityScriptableObject {
 
         protected override IEnumerator ActivateAbility() {
             entityAnimator.SetTrigger("PushTrigger");
-            entityTriggerable.OnTriggerEntity += TriggerAction;
+            //entityTriggerable.OnTriggerEntity += TriggerAction;
             yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Push"));
-            yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("PullBack"));
-            entityTriggerable.OnTriggerEntity -= TriggerAction;
+            //entityTriggerable.OnTriggerEntity -= TriggerAction;
             // pull Loader back animation
             yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
-        }
-
-        protected override IEnumerator PreActivate() {
-            yield return null;
         }
 
         private void TriggerAction(Entity other) {

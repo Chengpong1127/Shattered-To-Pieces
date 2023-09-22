@@ -42,8 +42,9 @@ public class PropellerFly : DisplayableAbilityScriptableObject {
         protected override IEnumerator ActivateAbility() {
             if(Active) { animator.SetBool("Fly",true); }
             while (Active) {
-                // Character.AddForce(Body.BodyTransform.TransformDirection(Vector3.up) * Power,ForceMode2D.Force);
-                Character.Move(Body.BodyTransform.TransformDirection(Vector3.up) * Power);
+                var gameComponent = SelfEntity as GameComponent;
+                //SelfEntity.BodyRigidbody.velocity = gameComponent.AssemblyTransform.TransformDirection(Vector3.up) * Power;
+                SelfEntity.BodyRigidbody.AddForce(gameComponent.AssemblyTransform.TransformDirection(Vector3.up) * Power, ForceMode2D.Force);
                 yield return null;
             }
             animator.SetBool("Fly", false);

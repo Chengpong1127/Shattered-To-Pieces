@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2852ba9f3f0f34d2092c864bbab5e505, type: 3}
-  m_Name: MoveLeft
+  m_Script: {fileID: 11500000, guid: cf820fdcd5f674001848a14a8b1b20c2, type: 3}
+  m_Name: LegInit
   m_EditorClassIdentifier: 
-  AbilityName: MoveLeft
+  AbilityName: 
   AbilityTags:
     AssetTag: {fileID: 0}
     CancelAbilitiesWithTags: []
@@ -29,8 +29,5 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  Image: {fileID: 0}
-  Icon: {fileID: 0}
-  Description: 
-  Speed: 500
-  Direction: 0
+  InitialisationGE:
+  - {fileID: 11400000, guid: 1e4b37f45a3aa4db2b2b01991b354fd1, type: 2}

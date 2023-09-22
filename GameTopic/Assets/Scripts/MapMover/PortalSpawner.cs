@@ -2,13 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-public class PortalSpawner : MonoBehaviour
+public class PortalSpawner : SimpleGameRunner
 {
     // Start is called before the first frame update
     [SerializeField]
     public GameObject Portal;
     public Vector2 minPosition = new Vector2(0f, 0f);
     public Vector2 maxPosition = new Vector2(120f, 60f);
+    protected override void PreGameStart()
+    {
+        SetPlayerSpawnPoints();
+    }
+    protected override void GameStart()
+    {
+        StartCoroutine(SpawnPortal());
+        Debug.Log("GameStart");
+    }
+
+    private void SetPlayerSpawnPoints()
+    {
+        int i = 0;
+        foreach (var player in PlayerMap)
+        {
+            player.Value.SetPlayerPoint(SpawnPoints[i++]);
+        }
+    }
     public IEnumerator SpawnPortal()
     {
         while (true)

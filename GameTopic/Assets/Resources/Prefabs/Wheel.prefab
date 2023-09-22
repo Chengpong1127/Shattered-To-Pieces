@@ -16,6 +16,26 @@ PrefabInstance:
       propertyPath: AttributeSystemComponent
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Attributes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Attributes.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: e0d843f15ad51485c8b6d6f25aa2554f, type: 2}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Attributes.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: Attributes.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: f15e7b9836f3b4d6695b01461a2d5da0, type: 2}
+    - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: AttributeSystemEvents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_Name
       value: Wheel
@@ -37,9 +57,25 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2973098028539147263, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2973098028539147263, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2973098028539147263, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 392658167
+      objectReference: {fileID: 0}
+    - target: {fileID: 2973098028539147263, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2973098028539147263, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7bb6cc52b8e2e0b4b9f118a1d9e50807, type: 2}
     - target: {fileID: 4234352918938833372, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_Constraints
       value: 0
@@ -174,6 +210,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5313636121482982994}
+    - targetCorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4060598432790038826}
     - targetCorrespondingSourceObject: {fileID: 6948558256880769377, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4188707942884288980}
@@ -192,7 +231,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 721539186129665028}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fd2bf236949344d519563fad29fbb41b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -223,6 +262,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
   m_PrefabInstance: {fileID: 7668874776407188837}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &4841299359188997786 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2973098028539147263, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+  m_PrefabInstance: {fileID: 7668874776407188837}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5315550583178797305 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -246,7 +290,8 @@ MonoBehaviour:
   bodyAnimator: {fileID: 0}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
-  InitializationAbilities: []
+  InitializationAbilities:
+  - {fileID: 11400000, guid: c4f25b21df2854a408a96dbd63f58a65, type: 2}
   Abilities:
   - {fileID: 11400000, guid: 7c0d5ae35532c43aab8716cac78b6b6f, type: 2}
   - {fileID: 11400000, guid: 38363ccc59e45492caf807f664a2cc8a, type: 2}
@@ -322,24 +367,41 @@ WheelJoint2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5315550583178797305}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
+  m_BreakForce: 4000
+  m_BreakTorque: 4000
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_Suspension:
     m_DampingRatio: 0.7
-    m_Frequency: 100
+    m_Frequency: 10
     m_Angle: 90
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
     m_MaximumMotorForce: 10000
+--- !u!114 &4060598432790038826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5315550583178797305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a219fce194f85c46a593dec2a5072d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HealthAttribute: {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
+  MaxHealthAttribute: {fileID: 11400000, guid: e0d843f15ad51485c8b6d6f25aa2554f, type: 2}
+  isDisplay: 1
+  RendererList:
+  - {fileID: 4841299359188997786}
 --- !u!50 &5813620941825569977 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 4234352918938833372, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}

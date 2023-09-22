@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 920f4777f85cf4e408f581bebffbe6bb, type: 3}
-  m_Name: LeftMoveAbility
+  m_Script: {fileID: 11500000, guid: 2852ba9f3f0f34d2092c864bbab5e505, type: 3}
+  m_Name: MoveLeft
   m_EditorClassIdentifier: 
   AbilityName: MoveLeft
   AbilityTags:
@@ -32,6 +32,5 @@ MonoBehaviour:
   Image: {fileID: 0}
   Icon: {fileID: 0}
   Description: 
-  Speed: 3
+  Speed: 800
   Direction: 0
-  AnimationName: MoveLeft

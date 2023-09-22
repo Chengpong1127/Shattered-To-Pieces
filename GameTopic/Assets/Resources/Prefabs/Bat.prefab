@@ -53,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 7bb6cc52b8e2e0b4b9f118a1d9e50807, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -71,9 +71,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 392658167
+  m_SortingLayer: 1
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 7a90c7303de674406b115b613e2c8d66, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -164,7 +164,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: f15e7b9836f3b4d6695b01461a2d5da0, type: 2}
     - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: AttributeSystemEvents.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1647381966340234252, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: AttributeSystemEvents.Array.data[0]
@@ -303,6 +303,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       insertIndex: 1
       addedObject: {fileID: 4844111615441157401}
+    - targetCorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6318985712159059288}
     - targetCorrespondingSourceObject: {fileID: 6248433714480983650, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2491090600287931855}
@@ -350,6 +353,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
   m_Animator: {fileID: 2491090600287931855}
+--- !u!4 &1924151084018908080 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+  m_PrefabInstance: {fileID: 4674900902612726437}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2210190192269421485 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6795010306233276680, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -361,11 +369,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 174b4c691442c4c7fab309adaf4cdfe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &3416100622568781474 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8036947247156528135, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-  m_PrefabInstance: {fileID: 4674900902612726437}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4305221618805250246 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8890015344360057443, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -406,11 +409,28 @@ MonoBehaviour:
   AttributeSystemComponent: {fileID: 6213903921903726249}
   AbilitySystemCharacter: {fileID: 2210190192269421485}
   InitializationAbilities:
-  - {fileID: 11400000, guid: 814a688776b0f489d8571fc4542c860e, type: 2}
+  - {fileID: 11400000, guid: c4f25b21df2854a408a96dbd63f58a65, type: 2}
   Abilities:
   - {fileID: 11400000, guid: 667df11ad0ce8446ca762310a262fbb6, type: 2}
-  assemblyTransform: {fileID: 3416100622568781474}
+  assemblyTransform: {fileID: 1924151084018908080}
   EntityTriggerCollider: {fileID: 6791638567251657035}
+--- !u!114 &6318985712159059288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7154359948559284025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a219fce194f85c46a593dec2a5072d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HealthAttribute: {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
+  MaxHealthAttribute: {fileID: 11400000, guid: e0d843f15ad51485c8b6d6f25aa2554f, type: 2}
+  isDisplay: 1
+  RendererList:
+  - {fileID: 5471085482766566025}
 --- !u!50 &8801128861675725689 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 4234352918938833372, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}

@@ -27,7 +27,7 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
         Bondage();
         //LandCheckGESpec = this.AbilitySystemCharacter.MakeOutgoingSpec(LandCheckGE);
         //this.AttributeSystemComponent.AddAttributes(MovingVelocity);
-        this.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(this.AbilitySystemCharacter.MakeOutgoingSpec(VelocityInit));
+        //this.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(this.AbilitySystemCharacter.MakeOutgoingSpec(VelocityInit));
     }
 
     private void Update() {
@@ -39,6 +39,7 @@ public class ControlRoom : BaseCoreComponent, ICharacterCtrl {
                 
         //         // if(obj != null && obj.AbilitySystemCharacter.ApplyGameplayEffectSpecToSelf(LandCheckGESpec)) {
         //         if(obj != null && obj.HasTag(LandCheckTag)) {
+        //             Debug.Log(1);
         //             Landing = true;
         //             Pushing--;
         //         }

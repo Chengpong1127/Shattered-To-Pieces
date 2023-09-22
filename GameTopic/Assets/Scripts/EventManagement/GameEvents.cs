@@ -30,7 +30,7 @@ public static class GameEvents{
         /// <summary>
         /// Triggered after the ability is set to an entry. 
         /// </summary>
-        public static Action<GameComponentAbility> OnSetAbilityToEntry = delegate { };
+        public static Action<GameComponentAbility, int> OnSetAbilityToEntry = delegate { };
         /// <summary>
         /// Triggered after the ability is set to out of an entry. 
         /// </summary>

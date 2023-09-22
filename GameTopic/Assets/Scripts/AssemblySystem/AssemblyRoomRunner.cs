@@ -67,12 +67,8 @@ public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
         return filteredList;
     }
     public int CurrentDeviceID { get; private set; } = 0;
-    protected override void GameInitialize(){
-    }
 
     protected override void PreGameStart(){
-        var effectManager = new GameEffectManager();
-        effectManager.Enable();
         _gameComponentFactory = new NetworkGameComponentFactory();
         LoadDevice(CurrentDeviceID);
     }
