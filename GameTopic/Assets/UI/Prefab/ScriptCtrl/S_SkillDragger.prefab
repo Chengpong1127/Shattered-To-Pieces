@@ -118,3 +118,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasTransform: {fileID: 0}
+  displayText: {fileID: 0}

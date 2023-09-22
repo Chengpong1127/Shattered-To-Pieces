@@ -4,17 +4,22 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SkillDropper : MonoBehaviour, IDropHandler {
-    [SerializeField] GameObject RBDisplayer;
-    [SerializeField] List<SkillDragger> draggerList;
-    
+    [SerializeField] public GameObject RBDisplayer;
+    [SerializeField] public List<SkillDragger> draggerList;
+
+    public SkillBinder Binder;
+    public int BoxID { get; set; } = -1;
 
     private void Awake() {
         draggerList.ForEach(d => {
             d.OwnerDropper = this;
         });
-
-        RBDisplayer.SetActive(false);
     }
+
+    private void Start() {
+        // RBDisplayer.SetActive(false);
+    }
+
     public void OnDrop(PointerEventData eventData) {
         if (eventData.pointerDrag == null) { return; }
         SkillDragger dragger = eventData.pointerDrag.GetComponent<SkillDragger>();
@@ -22,11 +27,15 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
         dragger.Dropper = this;
     }
 
-    public void AddSkill(GameComponentAbility skillData) {
-        Debug.Log("Add.");
+    public void AddSkill(int originBoxID, GameComponentAbility skillData) {
+        Binder?.Bind(originBoxID, BoxID, skillData);
     }
 
-    public void RefreshDraggerDisplay() {
-        Debug.Log("Refresh.");
+    public void SetDisplay(List<GameComponentAbility> displayDatas) {
+        int sid = 0;
+        draggerList.ForEach(d => {
+            d.UpdateDisplay(displayDatas != null && displayDatas.Count > sid ? displayDatas[sid] : null);
+            sid++;
+        });
     }
 }

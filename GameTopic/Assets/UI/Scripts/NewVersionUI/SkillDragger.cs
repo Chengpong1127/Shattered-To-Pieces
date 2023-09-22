@@ -7,11 +7,11 @@ using UnityEngine.UI;
 
 public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler {
     
-    [SerializeField] Transform canvasTransform;
-    [SerializeField] TMP_Text displayText;
+    // [SerializeField] TMP_Text displayText;
     Image displayImg;
     RectTransform selfRectTransform;
     LayoutElement selfLayout;
+    public Transform DraggingParentTransform;
     public SkillDropper Dropper { get; set; } = null;
     public SkillDropper OwnerDropper { get; set; } = null;
     public SkillDropper NonSetDropper { get; set; } = null;
@@ -32,19 +32,29 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     }
 
     public void OnBeginDrag(PointerEventData eventData) {
-        displayImg.raycastTarget = false;
         Dropper = null;
-        // transform.SetParent(canvasTransform, false);
+        displayImg.raycastTarget = false;
         selfLayout.ignoreLayout = true;
     }
 
     public void OnEndDrag(PointerEventData eventData) {
         displayImg.raycastTarget = true;
 
-        if (Dropper != null) { Dropper.AddSkill(skillData); }
-        else { NonSetDropper.AddSkill(skillData); }
+        var data = skillData;
+        skillData = null; // clear skilldata avoid duplicate skill appear.
+
+        if (Dropper != null) { Dropper.AddSkill(OwnerDropper.BoxID, data); }
+        else { NonSetDropper?.AddSkill(OwnerDropper.BoxID, data); }
 
         selfLayout.ignoreLayout = false;
-        OwnerDropper.RefreshDraggerDisplay();
+    }
+
+    public void UpdateDisplay(GameComponentAbility newData) {
+        skillData = newData;
+        if (skillData == null) { gameObject.SetActive(false); return; }
+        var DASO = skillData.AbilityScriptableObject as DisplayableAbilityScriptableObject;
+
+        displayImg.sprite = DASO != null ? DASO.Image : null;
+        gameObject.SetActive(true);
     }
 }
