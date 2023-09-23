@@ -42,6 +42,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Component
+  - name: Target
+    uniqueID: 406211449
+    locked: 0
+  - name: GameComponent
     uniqueID: 392658167
     locked: 0

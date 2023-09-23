@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class Target : NetworkBehaviour
+public class Target : MonoBehaviour
 {
     public int TargetID { get; set; }
     public Connector OwnerConnector { get; set; } = null;

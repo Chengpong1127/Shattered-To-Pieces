@@ -122,7 +122,7 @@ public class AssemblyController : NetworkBehaviour
     private void SelectTargetHandler(Target target){
         if (IsOwner){
             if (SelectedComponentID.HasValue){
-                Connection_ServerRpc(SelectedComponentID.Value, target.NetworkObjectId, target.TargetID);
+                Connection_ServerRpc(SelectedComponentID.Value, target.OwnerConnector.GameComponent.NetworkObjectID, target.TargetID);
                 SetSelect_ServerRpc(SelectedComponentID.Value, false);
                 SelectedComponentID = null;
             }
