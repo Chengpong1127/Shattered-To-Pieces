@@ -17,12 +17,14 @@ public class SkillBinder : MonoBehaviour {
         NonDropper.draggerList.ForEach(d => {
             d.NonSetDropper = NonDropper;
             d.DraggingParentTransform = this.transform.parent;
+            d.UpdateDisplay(null);
         });
         int id = 0;
         Droppers.ForEach(d => {
             d.draggerList.ForEach(d => {
                 d.NonSetDropper = NonDropper;
                 d.DraggingParentTransform = this.transform.parent;
+                d.UpdateDisplay(null);
             });
             d.Binder = this;
             d.BoxID = id;

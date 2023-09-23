@@ -14,7 +14,7 @@ public class InGameUI : NetworkBehaviour {
 
     private async void Start() {
         // player = GetComponent<BasePlayer>();
-        player = FindFirstObjectByType<GamePlayer>();
+        player = Utils.GetLocalPlayerDevice();
         
         await UniTask.WaitUntil(() => player.IsAlive.Value == true);
         if (IsServer) {
