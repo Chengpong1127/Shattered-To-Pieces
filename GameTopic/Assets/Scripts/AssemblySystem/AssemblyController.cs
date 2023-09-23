@@ -5,15 +5,17 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using Cysharp.Threading.Tasks;
 using System.Linq;
-[RequireComponent(typeof(DraggableController))]
+using System.ComponentModel;
+using GameplayTagNamespace.Authoring;
 public class AssemblyController : NetworkBehaviour
 {
-    private DraggableController DraggableController;
-    private Func<ulong[]> GetDraggableGameObject { get; set; }
+    private Func<ulong[]> GetSelectableGameObject { get; set; }
     private Func<ulong[]> GetConnectableGameObject { get; set; }
     public float RotationUnit { get; private set; }
     private ulong[] tempDraggableComponentIDs;
     private ulong[] tempConnectableComponentIDs;
+
+    private ulong? SelectedComponentID { get; set; }
 
     /// <summary>
     /// This event will be invoked when a game component is started to drag.
@@ -27,70 +29,147 @@ public class AssemblyController : NetworkBehaviour
     /// This event will be invoked after a game component is connected to another game component.
     /// </summary>
     public event Action<IGameComponent> AfterGameComponentConnected;
+    private InputAction selectAction;
     private InputAction flipAction;
     private InputAction rotateAction;
 
-    public void Initialize(
-        Func<ulong[]> getDraggableGameObjectIDs, 
+    public void ServerInitialize(
+        Func<ulong[]> getSelectableGameObjectIDs, 
         Func<ulong[]> getConnectableGameObjectIDs, 
-        InputAction dragAction, 
-        InputAction flipAction, 
-        InputAction rotateAction,
         float rotationUnit = 0.3f
     ){
-        DraggableController = gameObject.GetComponent<DraggableController>();
-        DraggableController.Initialize(getDraggableGameObjectIDs, dragAction, Camera.main);
-        DraggableController.OnDragStart += HandleComponentDraggedStart;
-        DraggableController.OnDragEnd += HandleComponentDraggedEnd;
-        GetDraggableGameObject = getDraggableGameObjectIDs;
-        GetConnectableGameObject = getConnectableGameObjectIDs;
-        RotationUnit = rotationUnit;
+        if (IsServer){
+            GetSelectableGameObject = getSelectableGameObjectIDs;
+            GetConnectableGameObject = getConnectableGameObjectIDs;
+            RotationUnit = rotationUnit;
+        }
+    }
+    public void OwnerInitialize(
+        InputAction selectAction, 
+        InputAction flipAction, 
+        InputAction rotateAction
+        ){
         if (IsOwner){
+            this.selectAction = selectAction;
             this.flipAction = flipAction;
             this.rotateAction = rotateAction;
+            this.selectAction.started += SelectHandler;
             this.flipAction.started += FlipHandler;
             this.rotateAction.started += RotateHandler;
+            this.selectAction.Disable();
+            this.flipAction.Disable();
+            this.rotateAction.Disable();
         }
-        this.flipAction?.Disable();
-        this.rotateAction?.Disable();
     }
     void OnEnable()
     {
-        DraggableController.enabled = true;
         if(IsOwner){
+            selectAction.Enable();
             flipAction.Enable();
             rotateAction.Enable();
         }
     }
     void OnDisable()
     {
-        DraggableController.enabled = false;
         if(IsOwner){
+            selectAction.Disable();
             flipAction.Disable();
             rotateAction.Disable();
+            if (SelectedComponentID.HasValue){
+                SetSelect_ServerRpc(SelectedComponentID.Value, false);
+            }
+            SelectedComponentID = null;
+            if (tempConnectableComponentIDs != null){
+                SetAvailableForConnection(tempConnectableComponentIDs, false);
+                tempConnectableComponentIDs = null;
+            }
         }
     }
+    private void SelectHandler(InputAction.CallbackContext context){
+        if (IsOwner){
+            var targets = Utils.GetGameObjectsUnderMouse<Target>();
+            if (targets.Length > 0){
+                SelectTargetHandler(targets.First());
+                return;
+            }
+            var components = Utils.GetGameObjectsUnderMouse<IGameComponent>();
+            if (components.Length > 0){
+                var orderedComponents = components
+                    .Where(c => GetSelectableGameObject().Contains(c.NetworkObjectID))
+                    .OrderBy(c => c.BodyTransform.position.z);
+                if (orderedComponents.Count() > 0){
+                    SetConnectableConnection_ServerRpc(true);
+                    SelectComponentHandler(orderedComponents.First());
+                }
+            }
+        }
+    }
+    [ServerRpc]
+    private void SetConnectableConnection_ServerRpc(bool available){
+        tempConnectableComponentIDs = GetConnectableGameObject();
+        SetAvailableForConnection(tempConnectableComponentIDs, available);
+    }
+    private void SelectComponentHandler(IGameComponent gameComponent){
+        if (IsOwner){
+            if (SelectedComponentID.HasValue){
+                SetSelect_ServerRpc(SelectedComponentID.Value, false);
+            }
+            gameComponent.DisconnectFromParent();
+            SelectedComponentID = gameComponent.NetworkObjectID;
+            SetSelect_ServerRpc(SelectedComponentID.Value, true);
+        }
+    }
+    private void SelectTargetHandler(Target target){
+        if (IsOwner){
+            if (SelectedComponentID.HasValue){
+                Connection_ServerRpc(SelectedComponentID.Value, target.NetworkObjectId, target.TargetID);
+                SetSelect_ServerRpc(SelectedComponentID.Value, false);
+                SelectedComponentID = null;
+            }
+        }
+    }
+    [ServerRpc]
+    private void Connection_ServerRpc(ulong componentID, ulong parentComponentID,int targetID){
+        var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IGameComponent>();
+        var parentComponent = Utils.GetLocalGameObjectByNetworkID(parentComponentID)?.GetComponent<IGameComponent>();
+        var connectionInfo = new ConnectionInfo
+        {
+            linkedTargetID = targetID,
+        };
 
+        component.ConnectToParent(parentComponent, connectionInfo);
+        SetAvailableForConnection(tempConnectableComponentIDs, false);
+        tempConnectableComponentIDs = null;
+    }
+    [ServerRpc]
+    private void SetSelect_ServerRpc(ulong componentID, bool selected){
+        var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IGameComponent>();
+        Debug.Assert(component != null, "component is null");
+        component.SetSelected(selected);
+    }
+
+    #region Flip
     private void FlipHandler(InputAction.CallbackContext context){
         if (IsOwner){
-            if (DraggableController.IsDragging.Value == true){
-                var componentID = DraggableController.DraggedComponentID.Value;
-                Flip(componentID);
+            if (SelectedComponentID.HasValue){
+                Flip_ServerRpc(SelectedComponentID.Value);
             }
         }
 
     }
-    private void Flip(ulong componentID){
+    [ServerRpc]
+    private void Flip_ServerRpc(ulong componentID){
         var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IAssemblyable>();
         Debug.Assert(component != null, "component is null");
         component.AssemblyTransform.localScale = new Vector3(-component.AssemblyTransform.localScale.x, component.AssemblyTransform.localScale.y, component.AssemblyTransform.localScale.z);
     }
+    #endregion
+    #region Rotate
     private void RotateHandler(InputAction.CallbackContext context){
         if (IsOwner){
             var value = context.ReadValue<float>();
-            if (DraggableController.IsDragging.Value == true){
-                var componentID = DraggableController.DraggedComponentID.Value;
-                AddRotation(componentID, value * RotationUnit);
+            if (SelectedComponentID.HasValue){
+                AddRotation(SelectedComponentID.Value, value * RotationUnit);
             }
             
         }
@@ -100,6 +179,7 @@ public class AssemblyController : NetworkBehaviour
         Debug.Assert(component != null, "component is null");
         component.AssemblyTransform.Rotate(new Vector3(0, 0, rotation));
     }
+    #endregion
     private async void HandleComponentDraggedStart(ulong draggableID)
     {
         if(IsOwner){
@@ -113,7 +193,7 @@ public class AssemblyController : NetworkBehaviour
         var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
         component.DisconnectFromParent();
         component.DisconnectAllChildren();
-        component.SetDragging(true);
+        component.SetSelected(true);
         tempConnectableComponentIDs = GetConnectableGameObject();
         SetAvailableForConnection(tempConnectableComponentIDs, true);
         OnGameComponentDraggedStart?.Invoke(component);
@@ -134,7 +214,7 @@ public class AssemblyController : NetworkBehaviour
         
 
         var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
-        component.SetDragging(false);
+        component.SetSelected(false);
         var (availableParent, connectorInfo) = component.GetAvailableConnection();
         if (availableParent != null){
             component.ConnectToParent(availableParent, connectorInfo);

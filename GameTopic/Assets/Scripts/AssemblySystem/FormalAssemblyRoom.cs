@@ -80,13 +80,13 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
         LoadDevice(CurrentLoadedDeviceID);
         AbilityRunner = AbilityRunner.CreateInstance(gameObject, ControlledDevice.AbilityManager, 0);
         assemblyController = GetComponent<AssemblyController>();
-        assemblyController.Initialize(
-            () => SpawnedGameComponents.Select((component) => component.NetworkObjectID).ToArray(),
-            () => SpawnedGameComponents.Select((component) => component.NetworkObjectID).ToArray(),
-            playerInput.currentActionMap.FindAction("DragComponent"),
-            playerInput.currentActionMap.FindAction("FlipComponent"),
-            playerInput.currentActionMap.FindAction("RotateComponent")
-        );
+        // assemblyController.ServerInitialize(
+        //     () => SpawnedGameComponents.Select((component) => component.NetworkObjectID).ToArray(),
+        //     () => SpawnedGameComponents.Select((component) => component.NetworkObjectID).ToArray(),
+        //     playerInput.currentActionMap.FindAction("DragComponent"),
+        //     playerInput.currentActionMap.FindAction("FlipComponent"),
+        //     playerInput.currentActionMap.FindAction("RotateComponent")
+        // );
 
         SetEventHandler();
         gameEffectManager = new GameEffectManager();

@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class Target : MonoBehaviour
+public class Target : NetworkBehaviour
 {
     public int TargetID { get; set; }
     public Connector OwnerConnector { get; set; } = null;

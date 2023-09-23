@@ -43,11 +43,14 @@ public class GamePlayer: BasePlayer{
     private void InitAssemblyControl(){
         AssemblyController = GetComponent<AssemblyController>();
         Debug.Assert(AssemblyController != null, "AssemblyController is null");
-        if (IsOwner || IsServer){
-            AssemblyController.Initialize(
+        if (IsServer){
+            AssemblyController.ServerInitialize(
                 GetDraggableNetworkIDs, 
-                GetConnectableNetworkIDs, 
-                playerInput.currentActionMap.FindAction("DragComponent"), 
+                GetConnectableNetworkIDs);
+        }
+        if (IsOwner){
+            AssemblyController.OwnerInitialize(
+                playerInput.currentActionMap.FindAction("SelectComponent"), 
                 playerInput.currentActionMap.FindAction("FlipComponent"), 
                 playerInput.currentActionMap.FindAction("RotateComponent"));
         }

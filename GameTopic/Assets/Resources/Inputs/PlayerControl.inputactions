@@ -6,7 +6,7 @@
             "id": "12770697-a6a7-41a0-9ea7-56be72fce1b0",
             "actions": [
                 {
-                    "name": "DragComponent",
+                    "name": "SelectComponent",
                     "type": "Button",
                     "id": "e7ebee42-b76f-4ed3-81ec-f7e1bcfba742",
                     "expectedControlType": "Button",
@@ -41,7 +41,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse",
-                    "action": "DragComponent",
+                    "action": "SelectComponent",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

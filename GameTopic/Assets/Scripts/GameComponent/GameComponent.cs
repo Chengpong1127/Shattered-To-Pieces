@@ -103,17 +103,17 @@ public class GameComponent : AbilityEntity, IGameComponent
         };
         return (availableParent.GameComponent, newInfo);
     }
-    public void SetDragging(bool dragging){
-        switch (dragging){
+    public void SetSelected(bool selected){
+        switch (selected){
             case true:
-                SetDraggingClientRpc(true);
+                SetSelectedClientRpc(true);
                 BodyColliders.ToList().ForEach((collider) => collider.isTrigger = true);
                 BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
                 BodyRigidbody.angularVelocity = 0;
                 BodyRigidbody.velocity = Vector2.zero;
                 break;
             case false:
-                SetDraggingClientRpc(false);
+                SetSelectedClientRpc(false);
                 BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
                 BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
                 BodyRigidbody.angularVelocity = 0;
@@ -122,8 +122,8 @@ public class GameComponent : AbilityEntity, IGameComponent
         }
     }
     [ClientRpc]
-    private void SetDraggingClientRpc(bool dragging){
-        switch (dragging){
+    private void SetSelectedClientRpc(bool selected){
+        switch (selected){
             case true:
                 connector.SetNonConnectedTargetsDisplay(false);
                 BodyColliders.ToList().ForEach((collider) => collider.isTrigger = true);
