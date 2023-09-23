@@ -12,10 +12,11 @@ public class AssemblyController : NetworkBehaviour
     private Func<ulong[]> GetSelectableGameObject { get; set; }
     private Func<ulong[]> GetConnectableGameObject { get; set; }
     public float RotationUnit { get; private set; }
-    private ulong[] tempDraggableComponentIDs;
     private ulong[] tempConnectableComponentIDs;
 
     private ulong? SelectedComponentID { get; set; }
+    private ulong? tempSelectedParentComponentID { get; set; }
+    private int? tempSelectedTargetID { get; set; }
 
     /// <summary>
     /// This event will be invoked when a game component is started to drag.
@@ -113,7 +114,12 @@ public class AssemblyController : NetworkBehaviour
         if (IsOwner){
             if (SelectedComponentID.HasValue){
                 SetSelect_ServerRpc(SelectedComponentID.Value, false);
+                if (tempSelectedParentComponentID.HasValue){
+                    Connection_ServerRpc(SelectedComponentID.Value, tempSelectedParentComponentID.Value, 0);
+                    tempSelectedParentComponentID = null;
+                }
             }
+            tempSelectedParentComponentID = gameComponent.Parent == null ? gameComponent.NetworkObjectID : (gameComponent.Parent as IGameComponent).NetworkObjectID;
             gameComponent.DisconnectFromParent();
             SelectedComponentID = gameComponent.NetworkObjectID;
             SetSelect_ServerRpc(SelectedComponentID.Value, true);
@@ -129,7 +135,7 @@ public class AssemblyController : NetworkBehaviour
         }
     }
     [ServerRpc]
-    private void Connection_ServerRpc(ulong componentID, ulong parentComponentID,int targetID){
+    private void Connection_ServerRpc(ulong componentID, ulong parentComponentID, int targetID){
         var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IGameComponent>();
         var parentComponent = Utils.GetLocalGameObjectByNetworkID(parentComponentID)?.GetComponent<IGameComponent>();
         var connectionInfo = new ConnectionInfo
