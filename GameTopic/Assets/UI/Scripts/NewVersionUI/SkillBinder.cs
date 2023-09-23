@@ -34,11 +34,11 @@ public class SkillBinder : MonoBehaviour {
         setAbilityAction?.Invoke(origin, newID, ability);
     }
 
-    public void SetDisply(int id, List<GameComponentAbility> abilitys) {
+    public void SetDisply(int id, List<GameComponentAbility> abilities) {
         if(id == -1) {
-            NonDropper.SetDisplay(abilitys);
+            NonDropper.SetDisplay(abilities);
         } else if (Droppers.Count > id) {
-            Droppers[id].SetDisplay(abilitys);
+            Droppers[id].SetDisplay(abilities);
         }
     }
 }

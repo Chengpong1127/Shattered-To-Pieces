@@ -5,7 +5,6 @@ using Unity.Netcode;
 using UnityEngine;
 
 public class InGameUI : NetworkBehaviour {
-    IAssemblyRoom room;
     [SerializeField] SkillBinder Binder;
 
 
@@ -17,36 +16,52 @@ public class InGameUI : NetworkBehaviour {
         await UniTask.WaitUntil(() => player.IsAlive.Value == true);
         if (IsServer) {
             abilityManager = player.SelfDevice.AbilityManager;
-            GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += (_, _) => { };// put function at here
-            GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += _ => { };// put function at here
+            GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += (_, _) => RefreshAllSkillBox();
+            GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += _ => RefreshAllSkillBox();
+
+            RefreshAllSkillBox();
         }
     }
 
-    private async void Start() {
-        GameObject impRoom = GameObject.Find("RoomManager");
-        var roomRunner = impRoom.GetComponent<AssemblyRoomRunner>();
-        await UniTask.WaitUntil(() => roomRunner.StateMachine.State == AssemblyRoomRunner.GameStates.Gaming);
-        room = impRoom.GetComponent<IAssemblyRoom>();
-
+    private void Start() {
         // Bind Actions
         Binder.setAbilityAction += BindAbilityToEntry;
-
-        RefreshAllSkillBox();
     }
 
 
     void BindAbilityToEntry(int origin, int newID, GameComponentAbility ability) {
+        if(IsOwner) {
+            // BindAbilityToEntry_ServerRpc(origin,newID,ability);
+        }
 
-        if (newID == -1) { room.AbilityManager.SetAbilityOutOfEntry(ability); } else { room.AbilityManager.SetAbilityToEntry(newID, ability); }
-
-        Binder.SetDisply(origin, origin != -1 ? room.AbilityManager.AbilityInputEntries[origin].Abilities : room.AbilityManager.GetAbilitiesOutOfEntry());
-        Binder.SetDisply(newID, newID != -1 ? room.AbilityManager.AbilityInputEntries[newID].Abilities : room.AbilityManager.GetAbilitiesOutOfEntry());
+        // Local bind
+        // if (newID == -1) { abilityManager.SetAbilityOutOfEntry(ability); } else { abilityManager.SetAbilityToEntry(newID, ability); }
+        // 
+        // Binder.SetDisply(origin, origin != -1 ? abilityManager.AbilityInputEntries[origin].Abilities : abilityManager.GetAbilitiesOutOfEntry());
+        // Binder.SetDisply(newID, newID != -1 ? abilityManager.AbilityInputEntries[newID].Abilities : abilityManager.GetAbilitiesOutOfEntry());
     }
+
+    // [ServerRpc]
+    // void BindAbilityToEntry_ServerRpc(int origin, int newID, Sprite ability) {
+    //     if (newID == -1) { abilityManager.SetAbilityOutOfEntry(ability); } else { abilityManager.SetAbilityToEntry(newID, ability); }
+    // }
 
     void RefreshAllSkillBox() {
-        for (int i = 0; i < 10; ++i) {
-            Binder.SetDisply(i, room.AbilityManager.AbilityInputEntries[i].Abilities);
+        if (IsServer) {
+            for (int i = 0; i < 10; ++i) {
+                // RefreshSkillBox_ClientRpc(i, abilityManager.AbilityInputEntries[i].Abilities);
+            }
+            // RefreshSkillBox_ClientRpc(-1, abilityManager.GetAbilitiesOutOfEntry());
         }
-        Binder.SetDisply(-1, room.AbilityManager.GetAbilitiesOutOfEntry());
+        // Local Update
+        // for (int i = 0; i < 10; ++i) {
+        //     Binder.SetDisply(i, abilityManager.AbilityInputEntries[i].Abilities);
+        // }
+        // Binder.SetDisply(-1, abilityManager.GetAbilitiesOutOfEntry());
     }
+
+    // [ClientRpc]
+    // void RefreshSkillBox_ClientRpc(int BoxID, List<GameComponentAbility> abilities) {
+    //     Binder.SetDisply(BoxID, abilities);
+    // }
 }
