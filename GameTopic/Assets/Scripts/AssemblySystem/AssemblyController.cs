@@ -115,8 +115,9 @@ public class AssemblyController : NetworkBehaviour
             if (SelectedComponentID.HasValue){
                 SetSelect_ServerRpc(SelectedComponentID.Value, false);
                 if (tempSelectedParentComponentID.HasValue){
-                    Connection_ServerRpc(SelectedComponentID.Value, tempSelectedParentComponentID.Value, 0);
+                    Connection_ServerRpc(SelectedComponentID.Value, tempSelectedParentComponentID.Value, tempSelectedTargetID.Value);
                     tempSelectedParentComponentID = null;
+                    tempSelectedTargetID = null;
                 }
             }
             tempSelectedParentComponentID = gameComponent.Parent == null ? gameComponent.NetworkObjectID : (gameComponent.Parent as IGameComponent).NetworkObjectID;
