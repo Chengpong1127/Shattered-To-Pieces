@@ -11,13 +11,15 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
     public int BoxID { get; set; } = -1;
 
     private void Awake() {
+        int i = 0;
         draggerList.ForEach(d => {
             d.OwnerDropper = this;
+            d.draggerID = i;
+            i++;
         });
     }
 
     private void Start() {
-        // RBDisplayer.SetActive(false);
     }
 
     public void OnDrop(PointerEventData eventData) {
@@ -27,15 +29,19 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
         dragger.Dropper = this;
     }
 
-    public void AddSkill(int originBoxID, GameComponentAbility skillData) {
-        Binder?.Bind(originBoxID, BoxID, skillData);
+    public void AddSkill(int originBoxID, int skillIndex) {
+        Binder?.Bind(originBoxID, BoxID, skillIndex);
     }
 
-    public void SetDisplay(List<GameComponentAbility> displayDatas) {
+    public void SetDisplay(List<DisplayableAbilityScriptableObject> displayDatas) {
         int sid = 0;
         draggerList.ForEach(d => {
             d.UpdateDisplay(displayDatas != null && displayDatas.Count > sid ? displayDatas[sid] : null);
             sid++;
         });
+    }
+    public void SetDisplay(int draggerID, DisplayableAbilityScriptableObject displayData) {
+        if(draggerList.Count <= draggerID) { return; }
+        draggerList[draggerID].UpdateDisplay(displayData);
     }
 }

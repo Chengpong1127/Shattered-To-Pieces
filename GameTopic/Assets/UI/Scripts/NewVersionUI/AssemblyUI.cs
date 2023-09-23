@@ -1,6 +1,8 @@
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.UI.Image;
 
@@ -22,19 +24,30 @@ public class AssemblyUI : NetworkBehaviour {
         RefreshAllSkillBox();
     }
 
-    void BindAbilityToEntry(int origin, int newID, GameComponentAbility ability) {
+    void BindAbilityToEntry(int origin, int newID, int abilityID) {
+        var ability = origin != -1 ?
+            room.AbilityManager.AbilityInputEntries[origin].Abilities[abilityID] :
+            room.AbilityManager.GetAbilitiesOutOfEntry()[abilityID];
 
-        if(newID == -1) { room.AbilityManager.SetAbilityOutOfEntry(ability); }
+        if (newID == -1) { room.AbilityManager.SetAbilityOutOfEntry(ability); }
         else { room.AbilityManager.SetAbilityToEntry(newID, ability); }
         
-        Binder.SetDisply(origin, origin != -1 ? room.AbilityManager.AbilityInputEntries[origin].Abilities : room.AbilityManager.GetAbilitiesOutOfEntry());
-        Binder.SetDisply(newID, newID != -1 ? room.AbilityManager.AbilityInputEntries[newID].Abilities : room.AbilityManager.GetAbilitiesOutOfEntry());
+        List<DisplayableAbilityScriptableObject> DASOlst;
+        DASOlst = origin != -1 ?
+            room.AbilityManager.AbilityInputEntries[origin].Abilities.Where(a => true).Select(a => a.AbilityScriptableObject as DisplayableAbilityScriptableObject).ToList() :
+            room.AbilityManager.GetAbilitiesOutOfEntry().Where(a => true).Select(a => a.AbilityScriptableObject as DisplayableAbilityScriptableObject).ToList();
+        Binder.SetDisply(origin, DASOlst);
+
+        DASOlst = newID != -1 ?
+            room.AbilityManager.AbilityInputEntries[newID].Abilities.Where(a => true).Select(a => a.AbilityScriptableObject as DisplayableAbilityScriptableObject).ToList() :
+            room.AbilityManager.GetAbilitiesOutOfEntry().Where(a => true).Select(a => a.AbilityScriptableObject as DisplayableAbilityScriptableObject).ToList();
+        Binder.SetDisply(newID, DASOlst);
     }
 
     void RefreshAllSkillBox() {
         for (int i = 0; i < 10; ++i) {
-            Binder.SetDisply(i, room.AbilityManager.AbilityInputEntries[i].Abilities);
+            Binder.SetDisply(i, room.AbilityManager.AbilityInputEntries[i].Abilities.Where(a => true).Select(a => a.AbilityScriptableObject as DisplayableAbilityScriptableObject).ToList());
         }
-        Binder.SetDisply(-1, room.AbilityManager.GetAbilitiesOutOfEntry());
+        Binder.SetDisply(-1, room.AbilityManager.GetAbilitiesOutOfEntry().Where(a => true).Select(a => a.AbilityScriptableObject as DisplayableAbilityScriptableObject).ToList());
     }
 }

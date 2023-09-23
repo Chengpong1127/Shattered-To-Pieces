@@ -10,7 +10,7 @@ public class SkillBinder : MonoBehaviour {
     [SerializeField] SkillDropper NonDropper;
     [SerializeField] List<SkillDropper> Droppers;
 
-    public UnityAction<int, int, GameComponentAbility> setAbilityAction { get; set; }
+    public UnityAction<int, int, int> setAbilityAction { get; set; }
 
     private void Awake() {
         NonDropper.Binder = this;
@@ -30,15 +30,20 @@ public class SkillBinder : MonoBehaviour {
         });
     }
 
-    public void Bind(int origin, int newID, GameComponentAbility ability) {
-        setAbilityAction?.Invoke(origin, newID, ability);
+    public void Bind(int origin, int newID, int abilityID) {
+        setAbilityAction?.Invoke(origin, newID, abilityID);
     }
 
-    public void SetDisply(int id, List<GameComponentAbility> abilities) {
+    public void SetDisply(int id, List<DisplayableAbilityScriptableObject> abilities) {
         if(id == -1) {
             NonDropper.SetDisplay(abilities);
         } else if (Droppers.Count > id) {
             Droppers[id].SetDisplay(abilities);
         }
+    }
+
+    public void SetDisply(int boxID, int abilityID, DisplayableAbilityScriptableObject DASO) {
+        if (boxID == -1) { NonDropper.SetDisplay(abilityID, DASO); }
+        else { Droppers[boxID].SetDisplay(abilityID, DASO); }
     }
 }

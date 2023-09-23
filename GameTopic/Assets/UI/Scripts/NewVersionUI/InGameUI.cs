@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class InGameUI : NetworkBehaviour {
     [SerializeField] SkillBinder Binder;
@@ -11,8 +12,10 @@ public class InGameUI : NetworkBehaviour {
     private BasePlayer player;
     private AbilityManager abilityManager;
 
-    private async void Awake() {
-        player = GetComponent<BasePlayer>();
+    private async void Start() {
+        // player = GetComponent<BasePlayer>();
+        player = FindFirstObjectByType<GamePlayer>();
+        
         await UniTask.WaitUntil(() => player.IsAlive.Value == true);
         if (IsServer) {
             abilityManager = player.SelfDevice.AbilityManager;
@@ -21,47 +24,50 @@ public class InGameUI : NetworkBehaviour {
 
             RefreshAllSkillBox();
         }
-    }
 
-    private void Start() {
         // Bind Actions
         Binder.setAbilityAction += BindAbilityToEntry;
     }
 
 
-    void BindAbilityToEntry(int origin, int newID, GameComponentAbility ability) {
+    void BindAbilityToEntry(int origin, int newID, int abilityID) {
         if(IsOwner) {
-            // BindAbilityToEntry_ServerRpc(origin,newID,ability);
+            BindAbilityToEntry_ServerRpc(origin,newID,abilityID);
         }
-
-        // Local bind
-        // if (newID == -1) { abilityManager.SetAbilityOutOfEntry(ability); } else { abilityManager.SetAbilityToEntry(newID, ability); }
-        // 
-        // Binder.SetDisply(origin, origin != -1 ? abilityManager.AbilityInputEntries[origin].Abilities : abilityManager.GetAbilitiesOutOfEntry());
-        // Binder.SetDisply(newID, newID != -1 ? abilityManager.AbilityInputEntries[newID].Abilities : abilityManager.GetAbilitiesOutOfEntry());
     }
 
-    // [ServerRpc]
-    // void BindAbilityToEntry_ServerRpc(int origin, int newID, Sprite ability) {
-    //     if (newID == -1) { abilityManager.SetAbilityOutOfEntry(ability); } else { abilityManager.SetAbilityToEntry(newID, ability); }
-    // }
+    [ServerRpc]
+    void BindAbilityToEntry_ServerRpc(int origin, int newID, int abilityID) {
+        var ability = origin != -1 ? 
+            abilityManager.AbilityInputEntries[origin].Abilities[abilityID] :
+            abilityManager.GetAbilitiesOutOfEntry()[abilityID];
+        if (newID == -1) { abilityManager.SetAbilityOutOfEntry(ability); } else { abilityManager.SetAbilityToEntry(newID, ability); }
+    }
 
     void RefreshAllSkillBox() {
         if (IsServer) {
+            int abilityID = 0;
             for (int i = 0; i < 10; ++i) {
-                // RefreshSkillBox_ClientRpc(i, abilityManager.AbilityInputEntries[i].Abilities);
+                abilityID = 0;
+                abilityManager.AbilityInputEntries[i].Abilities.ForEach(a => {
+                    RefreshSkillBox_ClientRpc(i, abilityID, a.AbilityScriptableObject.AbilityName);
+                    abilityID++;
+                });
             }
-            // RefreshSkillBox_ClientRpc(-1, abilityManager.GetAbilitiesOutOfEntry());
+            
+            abilityID = 0;
+            abilityManager.GetAbilitiesOutOfEntry().ForEach(a => {
+                RefreshSkillBox_ClientRpc(-1, abilityID, a.AbilityScriptableObject.AbilityName);
+                abilityID++;
+            });
         }
-        // Local Update
-        // for (int i = 0; i < 10; ++i) {
-        //     Binder.SetDisply(i, abilityManager.AbilityInputEntries[i].Abilities);
-        // }
-        // Binder.SetDisply(-1, abilityManager.GetAbilitiesOutOfEntry());
     }
 
-    // [ClientRpc]
-    // void RefreshSkillBox_ClientRpc(int BoxID, List<GameComponentAbility> abilities) {
-    //     Binder.SetDisply(BoxID, abilities);
-    // }
+    [ClientRpc]
+    void RefreshSkillBox_ClientRpc(int BoxID, int abilityID, string abilityName) {
+        var ability = ResourceManager.Instance.GetAbilityScriptableObjectByName(abilityName);
+        var DASO = ability as DisplayableAbilityScriptableObject;
+
+        Binder.SetDisply(BoxID, abilityID,DASO);
+    }
 }
