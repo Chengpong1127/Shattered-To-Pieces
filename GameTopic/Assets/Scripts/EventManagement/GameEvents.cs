@@ -106,5 +106,8 @@ public static class GameEvents{
         public static Action<Entity, float, float> OnEntityHealthChanged = delegate { };
         public static Action<BaseEntity> OnEntityDied = delegate { };
     }
+    public static class GameComponentEvents{
+        public static Action<GameComponent, bool> OnGameComponentSelected = delegate { };
+    }
 
 }

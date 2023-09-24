@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Unity.Netcode;
+using Cysharp.Threading.Tasks;
 
 [RequireComponent(typeof(Connector))]
 public class GameComponent : AbilityEntity, IGameComponent
@@ -130,6 +131,7 @@ public class GameComponent : AbilityEntity, IGameComponent
                 BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
                 BodyRigidbody.angularVelocity = 0;
                 BodyRigidbody.velocity = Vector2.zero;
+                GameEvents.GameComponentEvents.OnGameComponentSelected.Invoke(this, true);
                 break;
             case false:
                 connector.SetNonConnectedTargetsDisplay(true);
@@ -137,6 +139,7 @@ public class GameComponent : AbilityEntity, IGameComponent
                 BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
                 BodyRigidbody.angularVelocity = 0;
                 BodyRigidbody.velocity = Vector2.zero;
+                GameEvents.GameComponentEvents.OnGameComponentSelected.Invoke(this, false);
                 break;
         }
     }

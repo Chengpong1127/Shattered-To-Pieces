@@ -396,6 +396,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: S_SkillDisplayUI
       objectReference: {fileID: 0}
+    - target: {fileID: 3518110650455000291, guid: 7c4d57297bf6439498059ad9e391f95b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3935880431405456791, guid: 7c4d57297bf6439498059ad9e391f95b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
