@@ -74,7 +74,7 @@ public class AssemblyController : NetworkBehaviour
             selectAction.Disable();
             flipAction.Disable();
             rotateAction.Disable();
-            CheckLastSelection();
+            CancelLastSelection();
         }
     }
     private void SelectHandler(InputAction.CallbackContext context){
@@ -90,29 +90,25 @@ public class AssemblyController : NetworkBehaviour
                     .Where(c => GetSelectableGameObject().Contains(c.NetworkObjectID))
                     .OrderBy(c => c.BodyTransform.position.z);
                 if (orderedComponents.Count() > 0){
-                    SetConnectableConnection_ServerRpc(true);
-                    SelectComponentHandler(orderedComponents.First());
+                    SelectComponentHandler_ServerRpc(orderedComponents.First().NetworkObjectID);
                 }
             }
         }
     }
     [ServerRpc]
-    private void SetConnectableConnection_ServerRpc(bool available){
+    private void SelectComponentHandler_ServerRpc(ulong componentID){
+        var gameComponent = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<IGameComponent>();
+        CancelLastSelection();
+        tempSelectedParentComponentID = gameComponent.Parent == null ? null : (gameComponent.Parent as IGameComponent).NetworkObjectID;
+        tempConnectionInfo = gameComponent.Parent == null ? null : (gameComponent.Connector.Dump() as ConnectionInfo);
+        gameComponent.DisconnectFromParent();
+        gameComponent.DisconnectAllChildren();
+        SelectedComponentID = gameComponent.NetworkObjectID;
+        SetSelect_ServerRpc(SelectedComponentID.Value, true);
         tempConnectableComponentIDs = GetConnectableGameObject();
-        SetAvailableForConnection(tempConnectableComponentIDs, available);
+        SetAvailableForConnection(tempConnectableComponentIDs, true);
     }
-    private void SelectComponentHandler(IGameComponent gameComponent){
-        if (IsOwner){
-            CheckLastSelection();
-            tempSelectedParentComponentID = gameComponent.Parent == null ? null : (gameComponent.Parent as IGameComponent).NetworkObjectID;
-            tempConnectionInfo = gameComponent.Parent == null ? null : (gameComponent.Connector.Dump() as ConnectionInfo);
-            gameComponent.DisconnectFromParent();
-            gameComponent.DisconnectAllChildren();
-            SelectedComponentID = gameComponent.NetworkObjectID;
-            SetSelect_ServerRpc(SelectedComponentID.Value, true);
-        }
-    }
-    private void CheckLastSelection(){
+    private void CancelLastSelection(){
         if (SelectedComponentID.HasValue){
             SetSelect_ServerRpc(SelectedComponentID.Value, false);
             if (tempSelectedParentComponentID.HasValue){
