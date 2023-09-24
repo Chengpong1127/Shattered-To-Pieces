@@ -17,6 +17,7 @@ public class BasePlayer : NetworkBehaviour
         readPerm: NetworkVariableReadPermission.Owner,
         writePerm: NetworkVariableWritePermission.Server
     );
+    [HideInInspector]
     public NetworkVariable<bool> IsAlive = new NetworkVariable<bool>(
         false,
         writePerm: NetworkVariableWritePermission.Server

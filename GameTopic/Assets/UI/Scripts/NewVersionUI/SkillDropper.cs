@@ -4,17 +4,24 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SkillDropper : MonoBehaviour, IDropHandler {
-    [SerializeField] GameObject RBDisplayer;
-    [SerializeField] List<SkillDragger> draggerList;
-    
+    [SerializeField] public GameObject RBDisplayer;
+    [SerializeField] public List<SkillDragger> draggerList;
+
+    public SkillBinder Binder;
+    public int BoxID { get; set; } = -1;
 
     private void Awake() {
+        int i = 0;
         draggerList.ForEach(d => {
             d.OwnerDropper = this;
+            d.draggerID = i;
+            i++;
         });
-
-        RBDisplayer.SetActive(false);
     }
+
+    private void Start() {
+    }
+
     public void OnDrop(PointerEventData eventData) {
         if (eventData.pointerDrag == null) { return; }
         SkillDragger dragger = eventData.pointerDrag.GetComponent<SkillDragger>();
@@ -22,11 +29,19 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
         dragger.Dropper = this;
     }
 
-    public void AddSkill(GameComponentAbility skillData) {
-        Debug.Log("Add.");
+    public void AddSkill(int originBoxID, int skillIndex) {
+        Binder?.Bind(originBoxID, BoxID, skillIndex);
     }
 
-    public void RefreshDraggerDisplay() {
-        Debug.Log("Refresh.");
+    public void SetDisplay(List<DisplayableAbilityScriptableObject> displayDatas) {
+        int sid = 0;
+        draggerList.ForEach(d => {
+            d.UpdateDisplay(displayDatas != null && displayDatas.Count > sid ? displayDatas[sid] : null);
+            sid++;
+        });
+    }
+    public void SetDisplay(int draggerID, DisplayableAbilityScriptableObject displayData) {
+        if(draggerList.Count <= draggerID) { return; }
+        draggerList[draggerID].UpdateDisplay(displayData);
     }
 }

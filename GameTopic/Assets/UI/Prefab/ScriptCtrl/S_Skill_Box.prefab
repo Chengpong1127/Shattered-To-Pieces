@@ -459,6 +459,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8842729217489599734, guid: 877e34ff21c13b4408037664f2f7ad1c, type: 3}
+      propertyPath: m_ReverseArrangement
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8938933120142979026, guid: 877e34ff21c13b4408037664f2f7ad1c, type: 3}
       propertyPath: m_Name
       value: S_Skill_Box

@@ -7,16 +7,16 @@ using UnityEngine.UI;
 
 public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler {
     
-    [SerializeField] Transform canvasTransform;
-    [SerializeField] TMP_Text displayText;
+    // [SerializeField] TMP_Text displayText;
     Image displayImg;
     RectTransform selfRectTransform;
     LayoutElement selfLayout;
+    public Transform DraggingParentTransform;
     public SkillDropper Dropper { get; set; } = null;
     public SkillDropper OwnerDropper { get; set; } = null;
     public SkillDropper NonSetDropper { get; set; } = null;
-    public GameComponentAbility skillData { get; set; } = null;
-
+    public DisplayableAbilityScriptableObject DASO { get;set; } = null;
+    public int draggerID { get; set; } = -1;
 
     private void Awake() {
         selfRectTransform = GetComponent<RectTransform>();
@@ -32,19 +32,28 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     }
 
     public void OnBeginDrag(PointerEventData eventData) {
-        displayImg.raycastTarget = false;
         Dropper = null;
-        // transform.SetParent(canvasTransform, false);
+        displayImg.raycastTarget = false;
         selfLayout.ignoreLayout = true;
     }
 
     public void OnEndDrag(PointerEventData eventData) {
         displayImg.raycastTarget = true;
 
-        if (Dropper != null) { Dropper.AddSkill(skillData); }
-        else { NonSetDropper.AddSkill(skillData); }
+        var data = DASO;
+        DASO = null; // clear skilldata avoid duplicate skill appear.
+
+        if (Dropper != null) { Dropper.AddSkill(OwnerDropper.BoxID, draggerID); }
+        else { NonSetDropper?.AddSkill(OwnerDropper.BoxID, draggerID); }
 
         selfLayout.ignoreLayout = false;
-        OwnerDropper.RefreshDraggerDisplay();
+    }
+
+    public void UpdateDisplay(DisplayableAbilityScriptableObject newData) {
+        DASO = newData;
+        if (DASO == null) { gameObject.SetActive(false); return; }
+
+        displayImg.sprite = DASO.Image;
+        gameObject.SetActive(true);
     }
 }

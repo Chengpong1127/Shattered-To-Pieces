@@ -5,40 +5,41 @@ using System.Linq;
 
 public class GamePlayer: BasePlayer{
     [SerializeField]
-    private float AssemblyRange = 5;
-    private GameObject assemblyCurtain;
-    private GameObject assemblyCurtainInstance;
+    public float AssemblyRange = 5;
     private PlayerInput playerInput;
     public AssemblyController AssemblyController;
+    public GameObject AssemblyUI;
+    public GameObject SkillUI;
     protected override void Start(){
         base.Start();
         playerInput = GetComponent<PlayerInput>();
         InitAssemblyControl();
-        assemblyCurtain = ResourceManager.Instance.LoadPrefab("AssemblyCurtain");
+        TurnOffAssembly_ClientRpc();
+        SkillUI = ResourceManager.Instance.LoadPrefab("S_SkillDisplayUI");
     }
 
     [ClientRpc]
     public void ToggleAssemblyClientRpc(){
         if (IsOwner){
             AssemblyController.enabled = !AssemblyController.enabled;
-            if (AssemblyController.enabled){
-                assemblyCurtainInstance = Instantiate(assemblyCurtain);
-            }
-            else{
-                if (assemblyCurtainInstance != null){
-                    Destroy(assemblyCurtainInstance);
-                }
-            }
+            AssemblyUI.SetActive(AssemblyController.enabled);
+            SkillUI.SetActive(SkillUI.activeSelf);
         }
 
     }
 
     protected override void DeviceDiedHandler()
     {
-        if (assemblyCurtainInstance != null){
-            ToggleAssemblyClientRpc();
-        }
+        TurnOffAssembly_ClientRpc();
         base.DeviceDiedHandler();
+    }
+    [ClientRpc]
+    private void TurnOffAssembly_ClientRpc(){
+        if (IsOwner){
+            AssemblyController.enabled = false;
+            AssemblyUI.SetActive(false);
+            SkillUI.SetActive(false);
+        }
     }
     private void InitAssemblyControl(){
         AssemblyController = GetComponent<AssemblyController>();

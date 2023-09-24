@@ -6,7 +6,7 @@ public class AssemblyCurtainControl : MonoBehaviour {
 
 
 
-    void Start()
+    void OnEnable()
     {
         SetTargetTransform();
     }
