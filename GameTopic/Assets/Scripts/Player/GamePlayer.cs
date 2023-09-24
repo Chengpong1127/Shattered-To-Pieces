@@ -10,11 +10,15 @@ public class GamePlayer: BasePlayer{
     private GameObject assemblyCurtainInstance;
     private PlayerInput playerInput;
     public AssemblyController AssemblyController;
+
+    private GameObject SkillUI;
+    private GameObject SkillUIInstance;
     protected override void Start(){
         base.Start();
         playerInput = GetComponent<PlayerInput>();
         InitAssemblyControl();
         assemblyCurtain = ResourceManager.Instance.LoadPrefab("AssemblyCurtain");
+        SkillUI = ResourceManager.Instance.LoadPrefab("S_SkillDisplayUI");
     }
 
     [ClientRpc]
@@ -23,10 +27,13 @@ public class GamePlayer: BasePlayer{
             AssemblyController.enabled = !AssemblyController.enabled;
             if (AssemblyController.enabled){
                 assemblyCurtainInstance = Instantiate(assemblyCurtain);
+                SkillUIInstance = Instantiate(SkillUI);
+                SkillUIInstance.transform.SetParent(this.gameObject.transform);
             }
             else{
                 if (assemblyCurtainInstance != null){
                     Destroy(assemblyCurtainInstance);
+                    Destroy(SkillUIInstance);
                 }
             }
         }
