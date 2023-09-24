@@ -211,50 +211,7 @@ public class AssemblyController : NetworkBehaviour
         component.AssemblyTransform.Rotate(new Vector3(0, 0, rotation));
     }
     #endregion
-    private async void HandleComponentDraggedStart(ulong draggableID)
-    {
-        if(IsOwner){
-            HandleComponentDraggedStartServerRpc(draggableID);
-            await UniTask.DelayFrame(2);
-            ChangeOwnership_ServerRpc(draggableID);
-        }
-    }
-    [ServerRpc]
-    private void HandleComponentDraggedStartServerRpc(ulong draggableID){
-        var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
-        component.DisconnectFromParent();
-        component.DisconnectAllChildren();
-        component.SetSelected(true);
-        tempConnectableComponentIDs = GetConnectableGameObject();
-        SetAvailableForConnection(tempConnectableComponentIDs, true);
-        OnGameComponentDraggedStart?.Invoke(component);
-
-
-    }
-
-    private async void HandleComponentDraggedEnd(ulong draggableID)
-    {
-        if(IsOwner){
-            RemoveOwnership_ServerRpc(draggableID);
-            await UniTask.DelayFrame(2);
-            HandleComponentDraggedEndServerRpc(draggableID);
-        }
-    }
-    [ServerRpc]
-    private void HandleComponentDraggedEndServerRpc(ulong draggableID){
-        
-
-        var component = Utils.GetLocalGameObjectByNetworkID(draggableID)?.GetComponent<IGameComponent>();
-        component.SetSelected(false);
-        var (availableParent, connectorInfo) = component.GetAvailableConnection();
-        if (availableParent != null){
-            component.ConnectToParent(availableParent, connectorInfo);
-            AfterGameComponentConnected?.Invoke(component);
-        }
-        SetAvailableForConnection(tempConnectableComponentIDs, false);
-        tempConnectableComponentIDs = null;
-        OnGameComponentDraggedEnd?.Invoke(component);
-    }
+    
     private void SetAvailableForConnection(ICollection<ulong> componentIDs, bool available){
         foreach (var componentID in componentIDs)
         {
@@ -263,17 +220,4 @@ public class AssemblyController : NetworkBehaviour
             component.SetAvailableForConnectionClientRpc(available);
         }
     }
-    [ServerRpc]
-    private void ChangeOwnership_ServerRpc(ulong componentID)
-    {
-        var component = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<NetworkObject>();
-        component.ChangeOwnership(OwnerClientId);
-    }
-    [ServerRpc]
-    private void RemoveOwnership_ServerRpc(ulong componentID)
-    {
-        var component = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<NetworkObject>();
-        component.RemoveOwnership();
-    }
-
 }
