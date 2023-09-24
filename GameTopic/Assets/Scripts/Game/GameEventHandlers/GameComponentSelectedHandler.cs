@@ -57,7 +57,7 @@ public class GameComponentSelectedHandler : MonoBehaviour, IGameEventHandler
                 }catch (System.OperationCanceledException){
                     renderer.color = originalColor;
                 }
-                
+                renderer.color = originalColor;
             });
     }
     private async UniTask RunColorAnimation(SpriteRenderer renderer, Color originalColor, Color targetColor, CancellationToken token)

@@ -29,6 +29,7 @@ public class AssemblyController : NetworkBehaviour
     /// </summary>
     public event Action<IGameComponent> AfterGameComponentConnected;
     private InputAction selectAction;
+    private InputAction disconnectAction;
     private InputAction flipAction;
     private InputAction rotateAction;
 
@@ -45,17 +46,21 @@ public class AssemblyController : NetworkBehaviour
     }
     public void OwnerInitialize(
         InputAction selectAction, 
+        InputAction DisconnectAction,
         InputAction flipAction, 
         InputAction rotateAction
         ){
         if (IsOwner){
             this.selectAction = selectAction;
+            this.disconnectAction = DisconnectAction;
             this.flipAction = flipAction;
             this.rotateAction = rotateAction;
             this.selectAction.started += SelectHandler;
+            this.disconnectAction.started += DisconnectHandler;
             this.flipAction.started += FlipHandler;
             this.rotateAction.started += RotateHandler;
             this.selectAction.Disable();
+            this.disconnectAction.Disable();
             this.flipAction.Disable();
             this.rotateAction.Disable();
         }
@@ -64,6 +69,7 @@ public class AssemblyController : NetworkBehaviour
     {
         if(IsOwner){
             selectAction.Enable();
+            disconnectAction.Enable();
             flipAction.Enable();
             rotateAction.Enable();
         }
@@ -72,6 +78,7 @@ public class AssemblyController : NetworkBehaviour
     {
         if(IsOwner){
             selectAction.Disable();
+            disconnectAction.Disable();
             flipAction.Disable();
             rotateAction.Disable();
             CancelLastSelection();
@@ -90,7 +97,9 @@ public class AssemblyController : NetworkBehaviour
                     .Where(c => GetSelectableGameObject().Contains(c.NetworkObjectID))
                     .OrderBy(c => c.BodyTransform.position.z);
                 if (orderedComponents.Count() > 0){
-                    SelectComponentHandler_ServerRpc(orderedComponents.First().NetworkObjectID);
+                    if (orderedComponents.First().NetworkObjectID != SelectedComponentID){
+                        SelectComponentHandler_ServerRpc(orderedComponents.First().NetworkObjectID);
+                    }
                 }
             }
         }
@@ -146,6 +155,28 @@ public class AssemblyController : NetworkBehaviour
         var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IGameComponent>();
         Debug.Assert(component != null, "component is null");
         component.SetSelected(selected);
+    }
+
+
+
+    private void DisconnectHandler(InputAction.CallbackContext context){
+        if (IsOwner){
+            var components = Utils.GetGameObjectsUnderMouse<IGameComponent>();
+            var orderedComponents = components
+                    .Where(c => GetSelectableGameObject().Contains(c.NetworkObjectID))
+                    .OrderBy(c => c.BodyTransform.position.z);
+            if (orderedComponents.Count() > 0){
+                DisconnectServerRpc(orderedComponents.First().NetworkObjectID);
+            }
+        }
+    }
+    [ServerRpc]
+    private void DisconnectServerRpc(ulong componentID){
+        CancelLastSelection();
+        var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IGameComponent>();
+        Debug.Assert(component != null, "component is null");
+        component.DisconnectFromParent();
+        component.DisconnectAllChildren();
     }
 
     #region Flip

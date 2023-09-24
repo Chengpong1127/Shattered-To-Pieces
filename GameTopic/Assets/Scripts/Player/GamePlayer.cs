@@ -52,6 +52,7 @@ public class GamePlayer: BasePlayer{
         if (IsOwner){
             AssemblyController.OwnerInitialize(
                 playerInput.currentActionMap.FindAction("SelectComponent"), 
+                playerInput.currentActionMap.FindAction("DisconnectComponent"),
                 playerInput.currentActionMap.FindAction("FlipComponent"), 
                 playerInput.currentActionMap.FindAction("RotateComponent"));
         }
