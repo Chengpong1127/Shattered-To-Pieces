@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using Cysharp.Threading.Tasks;
 using System.Linq;
-using System.ComponentModel;
-using GameplayTagNamespace.Authoring;
 public class AssemblyController : NetworkBehaviour
 {
     private Func<ulong[]> GetSelectableGameObject { get; set; }
@@ -16,7 +14,7 @@ public class AssemblyController : NetworkBehaviour
 
     private ulong? SelectedComponentID { get; set; }
     private ulong? tempSelectedParentComponentID { get; set; }
-    private int? tempSelectedTargetID { get; set; }
+    private ConnectionInfo tempConnectionInfo { get; set; }
 
     /// <summary>
     /// This event will be invoked when a game component is started to drag.
@@ -76,14 +74,7 @@ public class AssemblyController : NetworkBehaviour
             selectAction.Disable();
             flipAction.Disable();
             rotateAction.Disable();
-            if (SelectedComponentID.HasValue){
-                SetSelect_ServerRpc(SelectedComponentID.Value, false);
-            }
-            SelectedComponentID = null;
-            if (tempConnectableComponentIDs != null){
-                SetAvailableForConnection(tempConnectableComponentIDs, false);
-                tempConnectableComponentIDs = null;
-            }
+            CheckLastSelection();
         }
     }
     private void SelectHandler(InputAction.CallbackContext context){
@@ -112,18 +103,24 @@ public class AssemblyController : NetworkBehaviour
     }
     private void SelectComponentHandler(IGameComponent gameComponent){
         if (IsOwner){
-            if (SelectedComponentID.HasValue){
-                SetSelect_ServerRpc(SelectedComponentID.Value, false);
-                if (tempSelectedParentComponentID.HasValue){
-                    Connection_ServerRpc(SelectedComponentID.Value, tempSelectedParentComponentID.Value, tempSelectedTargetID.Value);
-                    tempSelectedParentComponentID = null;
-                    tempSelectedTargetID = null;
-                }
-            }
-            tempSelectedParentComponentID = gameComponent.Parent == null ? gameComponent.NetworkObjectID : (gameComponent.Parent as IGameComponent).NetworkObjectID;
+            CheckLastSelection();
+            tempSelectedParentComponentID = gameComponent.Parent == null ? null : (gameComponent.Parent as IGameComponent).NetworkObjectID;
+            tempConnectionInfo = gameComponent.Parent == null ? null : (gameComponent.Connector.Dump() as ConnectionInfo);
             gameComponent.DisconnectFromParent();
+            gameComponent.DisconnectAllChildren();
             SelectedComponentID = gameComponent.NetworkObjectID;
             SetSelect_ServerRpc(SelectedComponentID.Value, true);
+        }
+    }
+    private void CheckLastSelection(){
+        if (SelectedComponentID.HasValue){
+            SetSelect_ServerRpc(SelectedComponentID.Value, false);
+            if (tempSelectedParentComponentID.HasValue){
+                Connection_ServerRpc(SelectedComponentID.Value, tempSelectedParentComponentID.Value, tempConnectionInfo.linkedTargetID);
+                tempSelectedParentComponentID = null;
+                tempConnectionInfo = null;
+            }
+            SelectedComponentID = null;
         }
     }
     private void SelectTargetHandler(Target target){
