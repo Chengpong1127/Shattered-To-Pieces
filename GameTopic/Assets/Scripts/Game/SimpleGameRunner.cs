@@ -1,9 +1,9 @@
 using UnityEngine;
 
 public class SimpleGameRunner: BaseGameRunner{
-    private GameEffectManager gameEffectManager;
     public Transform[] SpawnPoints;
     protected override void PreGameStart(){
+        base.PreGameStart();
         SetPlayerSpawnPoints();
     }
     protected override void GameStart(){
