@@ -46,9 +46,6 @@ public class BaseGameRunner: NetworkBehaviour{
     /// Initialize the game. This method will be invoked on the server. Runs before all players are loaded.
     /// </summary>
     protected virtual void GameInitialize(){
-        if(IsServer){
-            GameEventHandlers.ToList().ForEach(handler => handler.enabled = true);
-        }
     }
     /// <summary>
     /// Server loads all players.
@@ -75,7 +72,9 @@ public class BaseGameRunner: NetworkBehaviour{
     }
 
     protected virtual void PreGameStart(){
-
+        if(IsServer){
+            GameEventHandlers.ToList().ForEach(handler => handler.enabled = true);
+        }
     }
 
     protected virtual void GameStart(){

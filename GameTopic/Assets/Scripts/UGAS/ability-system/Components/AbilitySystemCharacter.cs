@@ -165,7 +165,7 @@ namespace AbilitySystem
 
                 // Tick the periodic component
                 ge.TickPeriodic(Time.deltaTime, out var executePeriodicTick);
-                if (executePeriodicTick)
+                if (executePeriodicTick && CheckTagRequirementsMet(AppliedGameplayEffects[i].spec.GameplayEffect.gameplayEffectTags.OngoingTagRequirements))
                 {
                     ApplyInstantGameplayEffect(ge);
                 }

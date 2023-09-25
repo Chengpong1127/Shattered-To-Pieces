@@ -10,34 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b97745751ed742f48090c0e693705db, type: 3}
-  m_Name: RegenerationEffect
+  m_Name: RegenerateGE
   m_EditorClassIdentifier: 
   gameplayEffect:
-    DurationPolicy: 2
-    DurationModifier: {fileID: 11400000, guid: 5c69ab17e675944bcb250d5d684d897e, type: 2}
-    DurationMultiplier: 5.1
+    DurationPolicy: 1
+    DurationModifier: {fileID: 0}
+    DurationMultiplier: 0
     Modifiers:
     - Attribute: {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
       ModifierOperator: 0
-      ModifierMagnitude: {fileID: 11400000, guid: 3ad7f3ee55ff54420bb5f27a7eba9afe, type: 2}
-      Multiplier: 1
+      ModifierMagnitude: {fileID: 11400000, guid: 5c69ab17e675944bcb250d5d684d897e, type: 2}
+      Multiplier: 5
     ConditionalGameplayEffects: []
   gameplayEffectTags:
-    AssetTag: {fileID: 11400000, guid: 7e2bb5cb5ff5e4bb581d6ab5f576d607, type: 2}
-    GrantedTags:
-    - {fileID: 11400000, guid: 7e2bb5cb5ff5e4bb581d6ab5f576d607, type: 2}
+    AssetTag: {fileID: 0}
+    GrantedTags: []
     OngoingTagRequirements:
       RequireTags: []
-      IgnoreTags: []
-    ApplicationTagRequirements:
-      RequireTags:
-      - {fileID: 11400000, guid: 12bb00736f0924f138733a5c9893373f, type: 2}
       IgnoreTags:
-      - {fileID: 11400000, guid: 7e2bb5cb5ff5e4bb581d6ab5f576d607, type: 2}
+      - {fileID: 11400000, guid: 6c08b0f5e56fe44eb871e146f3ab54e7, type: 2}
+    ApplicationTagRequirements:
+      RequireTags: []
+      IgnoreTags: []
     RemovalTagRequirements:
       RequireTags: []
       IgnoreTags: []
     RemoveGameplayEffectsWithTag: []
   Period:
-    Period: 5
+    Period: 1
     ExecuteOnApplication: 0

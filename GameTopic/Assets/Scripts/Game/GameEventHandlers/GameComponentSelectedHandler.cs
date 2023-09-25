@@ -62,6 +62,8 @@ public class GameComponentSelectedHandler : NetworkBehaviour, IGameEventHandler
                     }
                 }catch (System.OperationCanceledException){
                     renderer.color = originalColor;
+                }catch (System.Exception){
+                    return;
                 }
                 renderer.color = originalColor;
             });

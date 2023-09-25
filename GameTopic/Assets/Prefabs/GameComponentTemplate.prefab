@@ -77,6 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttributeSystemEvents:
   - {fileID: 11400000, guid: 4f4cdc7090ecd448f859aae79c310302, type: 2}
+  - {fileID: 11400000, guid: 779d0e3e351f441caacd8fbfdb691989, type: 2}
   Attributes:
   - {fileID: 11400000, guid: e0d843f15ad51485c8b6d6f25aa2554f, type: 2}
   - {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
