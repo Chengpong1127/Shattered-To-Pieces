@@ -63,7 +63,7 @@ public class GamePlayer: BasePlayer{
         var colliders = Physics2D.OverlapCircleAll(Utils.GetLocalGameObjectByNetworkID(RootNetworkObjectID.Value).transform.position, AssemblyRange);
         return colliders.Select(collider => collider.GetComponentInParent<IGameComponent>())
             .Where(component => component != null)
-            .Select(component => component.NetworkObjectID)
+            .Select(component => component.NetworkObjectId)
             .ToArray();
     }
     public ulong[] GetDraggableNetworkIDs()

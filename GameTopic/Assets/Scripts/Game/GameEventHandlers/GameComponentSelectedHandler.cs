@@ -3,7 +3,8 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-public class GameComponentSelectedHandler : MonoBehaviour, IGameEventHandler
+using Unity.Netcode;
+public class GameComponentSelectedHandler : NetworkBehaviour, IGameEventHandler
 {
     public Color TargetColor = new Color(1, 1, 1, 0.5f);
     public float BlinkDuration = 0.5f;
@@ -20,6 +21,11 @@ public class GameComponentSelectedHandler : MonoBehaviour, IGameEventHandler
 
     public void OnGameComponentSelected(GameComponent gameComponent, bool selected)
     {
+        OnGameComponentSelected_ClientRpc(gameComponent.NetworkObjectId, selected);
+    }
+    [ClientRpc]
+    private void OnGameComponentSelected_ClientRpc(ulong gameComponentID, bool selected){
+        var gameComponent = Utils.GetLocalGameObjectByNetworkID(gameComponentID).GetComponent<GameComponent>();
         switch (selected)
         {
             case true:

@@ -48,7 +48,7 @@ public class BasePlayer : NetworkBehaviour
         ServerAbilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager, OwnerClientId);
         OnPlayerLoaded?.Invoke();
         IsAlive.Value = true;
-        RootNetworkObjectID.Value = SelfDevice.RootGameComponent.NetworkObjectID;
+        RootNetworkObjectID.Value = SelfDevice.RootGameComponent.NetworkObjectId;
         SelfDevice.OnDeviceDied += DeviceDiedHandler;
     }
     [ServerRpc]

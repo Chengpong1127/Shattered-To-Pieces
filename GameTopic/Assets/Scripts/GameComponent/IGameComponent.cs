@@ -11,6 +11,7 @@ public interface IGameComponent: ITreeNode, IAssemblyable
     public Collider2D[] BodyColliders { get; }
 
     public Animator BodyAnimator { get; }
+    public ulong NetworkObjectId { get; }
     public event Action OnRootConnectionChanged;
     public string ComponentName { get; set; }
     /// <summary>

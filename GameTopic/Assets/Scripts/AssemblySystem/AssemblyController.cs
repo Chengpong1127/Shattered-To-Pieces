@@ -81,134 +81,124 @@ public class AssemblyController : NetworkBehaviour
             disconnectAction.Disable();
             flipAction.Disable();
             rotateAction.Disable();
-            CancelLastSelection();
+            CancelLastSelection_ServerRpc();
         }
     }
+    #region Select
     private void SelectHandler(InputAction.CallbackContext context){
         if (IsOwner){
             var targets = Utils.GetGameObjectsUnderMouse<Target>();
             if (targets.Length > 0){
-                SelectTargetHandler(targets.First());
+                TryConnection_ServerRpc(targets.First().OwnerConnector.GameComponent.NetworkObjectId, targets.First().TargetID);
                 return;
             }
             var components = Utils.GetGameObjectsUnderMouse<IGameComponent>();
             if (components.Length > 0){
-                var orderedComponents = components
-                    .Where(c => GetSelectableGameObject().Contains(c.NetworkObjectID))
-                    .OrderBy(c => c.BodyTransform.position.z);
-                if (orderedComponents.Count() > 0){
-                    if (orderedComponents.First().NetworkObjectID != SelectedComponentID){
-                        SelectComponentHandler_ServerRpc(orderedComponents.First().NetworkObjectID);
-                    }
-                }
+                SelectComponentHandler_ServerRpc(components.Select(c => c.NetworkObjectId).ToArray());
             }
         }
     }
     [ServerRpc]
-    private void SelectComponentHandler_ServerRpc(ulong componentID){
-        var gameComponent = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<IGameComponent>();
-        CancelLastSelection();
-        tempSelectedParentComponentID = gameComponent.Parent == null ? null : (gameComponent.Parent as IGameComponent).NetworkObjectID;
-        tempConnectionInfo = gameComponent.Parent == null ? null : (gameComponent.Connector.Dump() as ConnectionInfo);
-        gameComponent.DisconnectFromParent();
-        gameComponent.DisconnectAllChildren();
-        SelectedComponentID = gameComponent.NetworkObjectID;
-        SetSelect_ServerRpc(SelectedComponentID.Value, true);
-        tempConnectableComponentIDs = GetConnectableGameObject();
-        SetAvailableForConnection(tempConnectableComponentIDs, true);
+    private void SelectComponentHandler_ServerRpc(ulong[] componentIDs){
+        
+        componentIDs = componentIDs.Where(id => GetSelectableGameObject().Contains(id)).ToArray();
+        if (componentIDs.Length > 0){
+            if (componentIDs.First() != SelectedComponentID){
+                Debug.Log("SelectComponentHandler_ServerRpc");
+                var gameComponent = Utils.GetLocalGameObjectByNetworkID(componentIDs.First()).GetComponent<IGameComponent>();
+                CancelLastSelection_ServerRpc();
+                tempSelectedParentComponentID = gameComponent.Parent == null ? null : (gameComponent.Parent as IGameComponent).NetworkObjectId;
+                tempConnectionInfo = gameComponent.Parent == null ? null : (gameComponent.Connector.Dump() as ConnectionInfo);
+                gameComponent.DisconnectFromParent();
+                gameComponent.DisconnectAllChildren();
+                SelectedComponentID = gameComponent.NetworkObjectId;
+                gameComponent.SetSelected(true);
+                tempConnectableComponentIDs = GetConnectableGameObject();
+                SetAvailableForConnection(tempConnectableComponentIDs, true);
+            }
+        }
     }
-    private void CancelLastSelection(){
+    [ServerRpc]
+    private void CancelLastSelection_ServerRpc(){
         if (SelectedComponentID.HasValue){
-            SetSelect_ServerRpc(SelectedComponentID.Value, false);
+            Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<IGameComponent>().SetSelected(false);
             if (tempSelectedParentComponentID.HasValue){
-                Connection_ServerRpc(SelectedComponentID.Value, tempSelectedParentComponentID.Value, tempConnectionInfo.linkedTargetID);
+                TryConnection_ServerRpc(tempSelectedParentComponentID.Value, tempConnectionInfo.linkedTargetID);
                 tempSelectedParentComponentID = null;
                 tempConnectionInfo = null;
             }
             SelectedComponentID = null;
         }
     }
-    private void SelectTargetHandler(Target target){
-        if (IsOwner){
-            if (SelectedComponentID.HasValue){
-                Connection_ServerRpc(SelectedComponentID.Value, target.OwnerConnector.GameComponent.NetworkObjectID, target.TargetID);
-                SetSelect_ServerRpc(SelectedComponentID.Value, false);
-                SelectedComponentID = null;
-            }
+    [ServerRpc]
+    private void TryConnection_ServerRpc(ulong parentComponentID, int targetID){
+        if (SelectedComponentID.HasValue){
+            var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<IGameComponent>();
+            var parentComponent = Utils.GetLocalGameObjectByNetworkID(parentComponentID)?.GetComponent<IGameComponent>();
+            var connectionInfo = new ConnectionInfo
+            {
+                linkedTargetID = targetID,
+            };
+            component.SetSelected(false);
+            component.ConnectToParent(parentComponent, connectionInfo);
+            SetAvailableForConnection(tempConnectableComponentIDs, false);
+            tempConnectableComponentIDs = null;
+            SelectedComponentID = null;
         }
+        
     }
-    [ServerRpc]
-    private void Connection_ServerRpc(ulong componentID, ulong parentComponentID, int targetID){
-        var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IGameComponent>();
-        var parentComponent = Utils.GetLocalGameObjectByNetworkID(parentComponentID)?.GetComponent<IGameComponent>();
-        var connectionInfo = new ConnectionInfo
-        {
-            linkedTargetID = targetID,
-        };
-
-        component.ConnectToParent(parentComponent, connectionInfo);
-        SetAvailableForConnection(tempConnectableComponentIDs, false);
-        tempConnectableComponentIDs = null;
-    }
-    [ServerRpc]
-    private void SetSelect_ServerRpc(ulong componentID, bool selected){
-        var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IGameComponent>();
-        Debug.Assert(component != null, "component is null");
-        component.SetSelected(selected);
-    }
-
 
 
     private void DisconnectHandler(InputAction.CallbackContext context){
         if (IsOwner){
             var components = Utils.GetGameObjectsUnderMouse<IGameComponent>();
-            var orderedComponents = components
-                    .Where(c => GetSelectableGameObject().Contains(c.NetworkObjectID))
-                    .OrderBy(c => c.BodyTransform.position.z);
-            if (orderedComponents.Count() > 0){
-                DisconnectServerRpc(orderedComponents.First().NetworkObjectID);
+            if (components.Count() > 0){
+                DisconnectServerRpc(components.Select(c => c.NetworkObjectId).ToArray());
             }
         }
     }
     [ServerRpc]
-    private void DisconnectServerRpc(ulong componentID){
-        CancelLastSelection();
-        var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IGameComponent>();
-        Debug.Assert(component != null, "component is null");
-        component.DisconnectFromParent();
-        component.DisconnectAllChildren();
+    private void DisconnectServerRpc(ulong[] componentIDs){
+        CancelLastSelection_ServerRpc();
+        componentIDs = componentIDs.Where(id => GetSelectableGameObject().Contains(id)).ToArray();
+        if (componentIDs.Length > 0){
+            var component = Utils.GetLocalGameObjectByNetworkID(componentIDs.First())?.GetComponent<IGameComponent>();
+            Debug.Assert(component != null, "component is null");
+            component.DisconnectFromParent();
+            component.DisconnectAllChildren();
+        }
+        
     }
-
+    #endregion
     #region Flip
     private void FlipHandler(InputAction.CallbackContext context){
         if (IsOwner){
-            if (SelectedComponentID.HasValue){
-                Flip_ServerRpc(SelectedComponentID.Value);
-            }
+            Flip_ServerRpc();
         }
 
     }
     [ServerRpc]
-    private void Flip_ServerRpc(ulong componentID){
-        var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IAssemblyable>();
-        Debug.Assert(component != null, "component is null");
-        component.AssemblyTransform.localScale = new Vector3(-component.AssemblyTransform.localScale.x, component.AssemblyTransform.localScale.y, component.AssemblyTransform.localScale.z);
+    private void Flip_ServerRpc(){
+        if (SelectedComponentID.HasValue){
+            var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<IAssemblyable>();
+            component.AssemblyTransform.localScale = new Vector3(-component.AssemblyTransform.localScale.x, component.AssemblyTransform.localScale.y, component.AssemblyTransform.localScale.z);
+        }
+        
     }
     #endregion
     #region Rotate
     private void RotateHandler(InputAction.CallbackContext context){
         if (IsOwner){
-            var value = context.ReadValue<float>();
-            if (SelectedComponentID.HasValue){
-                AddRotation(SelectedComponentID.Value, value * RotationUnit);
-            }
-            
+            AddRotation_ServerRpc(context.ReadValue<float>());
         }
     }
-    private void AddRotation(ulong componentID, float rotation){
-        var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IAssemblyable>();
-        Debug.Assert(component != null, "component is null");
-        component.AssemblyTransform.Rotate(new Vector3(0, 0, rotation));
+    [ServerRpc]
+    private void AddRotation_ServerRpc(float rotation){
+        if(SelectedComponentID.HasValue){
+            var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<IAssemblyable>();
+            component.AssemblyTransform.Rotate(new Vector3(0, 0, rotation * RotationUnit));
+        }
+        
     }
     #endregion
     

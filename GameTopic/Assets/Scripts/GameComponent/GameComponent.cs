@@ -19,10 +19,6 @@ public class GameComponent : AbilityEntity, IGameComponent
     public IConnector Connector => connector;
     public Transform DraggableTransform => BodyTransform;
     public string ComponentName { get; set; }
-
-
-    public ulong NetworkObjectID => NetworkObject.NetworkObjectId;
-
     public Transform AssemblyTransform => assemblyTransform;
 
 
