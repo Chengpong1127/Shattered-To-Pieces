@@ -46,11 +46,12 @@ public class SkillBinder : NetworkBehaviour {
     }
 
     private async void OnEnable() {
+        Debug.Log("IsServer: " + IsServer + " IsClient: " + IsClient + " IsOwner: " + IsOwner);
         // set entry stuff
         // player = GetComponent<BasePlayer>();
         player = GetComponentInParent<BasePlayer>();
 
-        await UniTask.WaitUntil(() => player.IsAlive.Value == true);
+        //await UniTask.WaitUntil(() => player.IsAlive.Value == true);
         if (IsServer) {
             Debug.Log("Server running SkillBinding.");
 
