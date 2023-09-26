@@ -15,7 +15,6 @@ public class GamePlayer: BasePlayer{
         playerInput = GetComponent<PlayerInput>();
         InitAssemblyControl();
         TurnOffAssembly_ClientRpc();
-        SkillUI = ResourceManager.Instance.LoadPrefab("S_SkillDisplayUI");
     }
 
     [ClientRpc]
@@ -23,7 +22,7 @@ public class GamePlayer: BasePlayer{
         if (IsOwner){
             AssemblyController.enabled = !AssemblyController.enabled;
             AssemblyUI.SetActive(AssemblyController.enabled);
-            SkillUI.SetActive(SkillUI.activeSelf);
+            SkillUI.SetActive(AssemblyController.enabled);
         }
 
     }
