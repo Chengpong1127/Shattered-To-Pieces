@@ -53,7 +53,8 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         DASO = newData;
         if (DASO == null) { gameObject.SetActive(false); return; }
 
-        displayImg.sprite = DASO.Image;
+        // displayImg.sprite = DASO.IsPlaceImage ? DASO.Image : null;
+        if(DASO.IsPlaceImage) { displayImg.sprite = DASO.Image; }
         gameObject.SetActive(true);
     }
 }

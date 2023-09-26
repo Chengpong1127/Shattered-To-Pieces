@@ -15,6 +15,7 @@ public class SkillBinder : NetworkBehaviour {
     [SerializeField] SkillDropper NonDropper;
     [SerializeField] List<SkillDropper> Droppers;
     public UnityAction<int, int, int> setAbilityAction { get; set; }
+    bool firstTimeRunOnEnable = true;
 
 
     // set entry stuff.
@@ -48,15 +49,14 @@ public class SkillBinder : NetworkBehaviour {
     }
 
     private async void OnEnable() {
-        Debug.Log("IsServer: " + IsServer + " IsClient: " + IsClient + " IsOwner: " + IsOwner);
+        // Debug.Log("IsServer: " + IsServer + " IsClient: " + IsClient + " IsOwner: " + IsOwner);
         // set entry stuff
         // player = GetComponent<BasePlayer>();
         player = GetComponentInParent<BasePlayer>();
 
         //await UniTask.WaitUntil(() => player.IsAlive.Value == true);
-        if (IsServer) {
-            Debug.Log("Server running SkillBinding.");
-
+        if (IsServer && firstTimeRunOnEnable) {
+            firstTimeRunOnEnable = false;
             abilityManager = player.SelfDevice.AbilityManager;
             GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += (_, _) => RefreshAllSkillBox();
             GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += _ => RefreshAllSkillBox();
@@ -107,6 +107,17 @@ public class SkillBinder : NetworkBehaviour {
 
     void RefreshAllSkillBox() {
         if (IsServer) {
+            // clear all skills
+            NonDropper.draggerList.ForEach(d => {
+                d.UpdateDisplay(null);
+            });
+            Droppers.ForEach(d => {
+                d.draggerList.ForEach(d => {
+                    d.UpdateDisplay(null);
+                });
+            });
+
+            // show skills
             int abilityID = 0;
             for (int i = 0; i < 10; ++i) {
                 abilityID = 0;
@@ -126,11 +137,10 @@ public class SkillBinder : NetworkBehaviour {
 
     [ClientRpc]
     void RefreshSkillBox_ClientRpc(int BoxID, int abilityID, string abilityName) {
-        Debug.Log("Call RefreshSkillBox_ClientRpc");
         var ability = ResourceManager.Instance.GetAbilityScriptableObjectByName(abilityName);
         var DASO = ability as DisplayableAbilityScriptableObject;
 
-        Debug.Log("AbilityName : " + abilityName + " get ability : " + ability != null);
+        // Debug.Log("AbilityName : " + abilityName + " get ability : " + ability != null);
 
         this.SetDisply(BoxID, abilityID, DASO);
     }

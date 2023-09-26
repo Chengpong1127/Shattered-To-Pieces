@@ -9,5 +9,7 @@ public abstract class DisplayableAbilityScriptableObject: AbstractAbilityScripta
     public Sprite Icon;
     [SerializeField]
     public string Description;
+    [SerializeField]
+    public bool IsPlaceImage;
 
 }
