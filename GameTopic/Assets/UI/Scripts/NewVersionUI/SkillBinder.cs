@@ -45,7 +45,7 @@ public class SkillBinder : NetworkBehaviour {
         this.setAbilityAction += BindAbilityToEntry;
     }
 
-    private async void Start() {
+    private async void OnEnable() {
         // set entry stuff
         // player = GetComponent<BasePlayer>();
         player = GetComponentInParent<BasePlayer>();
@@ -61,7 +61,6 @@ public class SkillBinder : NetworkBehaviour {
             RefreshAllSkillBox();
         }
     }
-
 
     public void Bind(int origin, int newID, int abilityID) {
         setAbilityAction?.Invoke(origin, newID, abilityID);
