@@ -44,7 +44,7 @@ public class SkillBinder : NetworkBehaviour {
         // Bind Actions
         this.setAbilityAction += BindAbilityToEntry;
 
-        this.gameObject.transform.parent.gameObject.SetActive(false);
+        //this.gameObject.transform.parent.gameObject.SetActive(false);
     }
 
     private async void OnEnable() {
@@ -65,12 +65,12 @@ public class SkillBinder : NetworkBehaviour {
         }
     }
 
-    private void OnEnable() {
-        if (IsServer) {
-            Debug.Log("SkillBinder Call enable on server.");
-            RefreshAllSkillBox();
-        }
-    }
+    // private void OnEnable() {
+    //     if (IsServer) {
+    //         Debug.Log("SkillBinder Call enable on server.");
+    //         RefreshAllSkillBox();
+    //     }
+    // }
 
     public void Bind(int origin, int newID, int abilityID) {
         setAbilityAction?.Invoke(origin, newID, abilityID);
