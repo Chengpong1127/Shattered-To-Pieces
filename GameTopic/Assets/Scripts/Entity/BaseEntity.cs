@@ -8,7 +8,7 @@ public abstract class BaseEntity : NetworkBehaviour
     public virtual Rigidbody2D BodyRigidbody => bodyRigidbody;
     public virtual Collider2D[] BodyColliders => bodyColliders;
     public virtual Animator BodyAnimator => bodyAnimator;
-    public virtual Renderer[] BodyRenderers { get; protected set; }
+    public virtual Renderer[] BodyRenderers => bodyRenderers;
 
     [Header("BaseEntity Setting")]
     [SerializeField]
@@ -17,12 +17,14 @@ public abstract class BaseEntity : NetworkBehaviour
     private Collider2D[] bodyColliders;
     [SerializeField]
     private Animator bodyAnimator;
+    [SerializeField]
+    private Renderer[] bodyRenderers;
     protected virtual void Awake()
     {
         if (BodyTransform == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyTransform.");
         if (BodyRigidbody == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyRigidbody.");
         if (BodyColliders == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyColliders.");
-        BodyRenderers = GetComponentsInChildren<Renderer>();
+        if (BodyRenderers == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyRenderers.");
     }
 
     protected virtual void Start()

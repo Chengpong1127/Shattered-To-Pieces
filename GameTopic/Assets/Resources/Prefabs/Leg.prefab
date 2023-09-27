@@ -527,6 +527,10 @@ MonoBehaviour:
   - {fileID: 947707986843120935}
   - {fileID: 4919809954925681856}
   bodyAnimator: {fileID: 6540674429720086562}
+  bodyRenderers:
+  - {fileID: 7584931007153504725}
+  - {fileID: 5981861964978868201}
+  - {fileID: 8600567707534542262}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
   InitializationAbilities:

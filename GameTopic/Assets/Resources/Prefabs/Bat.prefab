@@ -378,6 +378,8 @@ MonoBehaviour:
   bodyColliders:
   - {fileID: 6791638567251657035}
   bodyAnimator: {fileID: 2491090600287931855}
+  bodyRenderers:
+  - {fileID: 5471085482766566025}
   AttributeSystemComponent: {fileID: 6213903921903726249}
   AbilitySystemCharacter: {fileID: 2210190192269421485}
   InitializationAbilities:
