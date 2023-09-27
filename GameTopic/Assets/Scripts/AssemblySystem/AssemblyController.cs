@@ -19,11 +19,11 @@ public class AssemblyController : NetworkBehaviour
     /// <summary>
     /// This event will be invoked when a game component is started to drag.
     /// </summary>
-    public event Action<IGameComponent> OnGameComponentDraggedStart;
+    public event Action<IGameComponent> OnGameComponentSelected;
     /// <summary>
     /// This event will be invoked after a game component is dragged and released.
     /// </summary>
-    public event Action<IGameComponent> OnGameComponentDraggedEnd;
+    public event Action<IGameComponent> OnGameComponentSelectedEnd;
     /// <summary>
     /// This event will be invoked after a game component is connected to another game component.
     /// </summary>

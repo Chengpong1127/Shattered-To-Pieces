@@ -56,7 +56,7 @@ public class WorkShop : MonoBehaviour
             // room.assemblyController.OnGameComponentDraggedStart -= RefreshAllBoxAbilityAction;
             // room.assemblyController.OnGameComponentDraggedEnd -= RefreshAllBoxAbilityAction;
             // room.assemblyController.AfterGameComponentConnected -= RefreshAllBoxAbilityAction;
-            room.assemblyController.OnGameComponentDraggedStart -= UpdateUserCostRemain;
+            room.assemblyController.OnGameComponentSelected -= UpdateUserCostRemain;
             room.assemblyController.AfterGameComponentConnected -= UpdateUserCostRemain;
 
             room.OnLoadedDevice -= shopDispatcher.RefreshAllBoxAbility;
@@ -75,7 +75,7 @@ public class WorkShop : MonoBehaviour
         // room.assemblyController.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
         // room.assemblyController.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
         // room.assemblyController.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
-        room.assemblyController.OnGameComponentDraggedStart += UpdateUserCostRemain;
+        room.assemblyController.OnGameComponentSelected += UpdateUserCostRemain;
         room.assemblyController.AfterGameComponentConnected += UpdateUserCostRemain;
 
         room.OnLoadedDevice += shopDispatcher.RefreshAllBoxAbility;

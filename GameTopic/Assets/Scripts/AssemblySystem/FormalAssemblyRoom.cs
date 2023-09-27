@@ -96,8 +96,8 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     private void SetEventHandler(){
         GameEvents.AbilityRunnerEvents.OnLocalInputStartAbility += AbilityRunner.StartEntryAbility;
         GameEvents.AbilityRunnerEvents.OnLocalInputCancelAbility += AbilityRunner.CancelEntryAbility;
-        assemblyController.OnGameComponentDraggedStart += _ => UpdateAbility();
-        assemblyController.OnGameComponentDraggedEnd += _ => UpdateAbility();
+        assemblyController.OnGameComponentSelected += _ => UpdateAbility();
+        assemblyController.OnGameComponentSelectedEnd += _ => UpdateAbility();
 
     }
 

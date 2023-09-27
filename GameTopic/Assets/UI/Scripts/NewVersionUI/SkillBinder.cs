@@ -15,7 +15,6 @@ public class SkillBinder : NetworkBehaviour {
     [SerializeField] SkillDropper NonDropper;
     [SerializeField] List<SkillDropper> Droppers;
     public UnityAction<int, int, int> setAbilityAction { get; set; }
-    bool firstTimeRunOnEnable = true;
 
 
     // set entry stuff.
@@ -24,6 +23,7 @@ public class SkillBinder : NetworkBehaviour {
 
     private void Awake() {
         // Dropper setting.
+        player = GetComponentInParent<BasePlayer>();
         NonDropper.Binder = this;
         NonDropper.draggerList.ForEach(d => {
             d.NonSetDropper = NonDropper;
@@ -48,29 +48,13 @@ public class SkillBinder : NetworkBehaviour {
         //this.gameObject.transform.parent.gameObject.SetActive(false);
     }
 
-    private async void OnEnable() {
-        // Debug.Log("IsServer: " + IsServer + " IsClient: " + IsClient + " IsOwner: " + IsOwner);
-        // set entry stuff
-        // player = GetComponent<BasePlayer>();
-        player = GetComponentInParent<BasePlayer>();
-
-        //await UniTask.WaitUntil(() => player.IsAlive.Value == true);
-        if (IsServer && firstTimeRunOnEnable) {
-            firstTimeRunOnEnable = false;
-            abilityManager = player.SelfDevice.AbilityManager;
-            GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += (_, _) => RefreshAllSkillBox();
-            GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += _ => RefreshAllSkillBox();
-
-            RefreshAllSkillBox();
+    private void OnEnable() {
+        if (IsOwner){
+            RefreshAllSkillBox_ServerRpc();
         }
     }
 
-    // private void OnEnable() {
-    //     if (IsServer) {
-    //         Debug.Log("SkillBinder Call enable on server.");
-    //         RefreshAllSkillBox();
-    //     }
-    // }
+    
 
     public void Bind(int origin, int newID, int abilityID) {
         setAbilityAction?.Invoke(origin, newID, abilityID);
@@ -99,14 +83,17 @@ public class SkillBinder : NetworkBehaviour {
 
     [ServerRpc]
     void BindAbilityToEntry_ServerRpc(int origin, int newID, int abilityID) {
+        Debug.Log(newID + " " + abilityID + " " + origin);
         var ability = origin != -1 ?
             abilityManager.AbilityInputEntries[origin].Abilities[abilityID] :
             abilityManager.GetAbilitiesOutOfEntry()[abilityID];
         if (newID == -1) { abilityManager.SetAbilityOutOfEntry(ability); } else { abilityManager.SetAbilityToEntry(newID, ability); }
+        RefreshAllSkillBox_ServerRpc();
     }
-
-    void RefreshAllSkillBox() {
+    [ServerRpc]
+    void RefreshAllSkillBox_ServerRpc() {
         if (IsServer) {
+            abilityManager = player.SelfDevice.AbilityManager;
             // clear all skills
             int abilityID = 0;
             int entryID = 0;
