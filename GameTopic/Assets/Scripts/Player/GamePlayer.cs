@@ -14,7 +14,7 @@ public class GamePlayer: BasePlayer{
         base.Start();
         playerInput = GetComponent<PlayerInput>();
         InitAssemblyControl();
-        // TurnOffAssembly_ClientRpc();
+        TurnOffAssembly_ClientRpc();
     }
 
     [ClientRpc]

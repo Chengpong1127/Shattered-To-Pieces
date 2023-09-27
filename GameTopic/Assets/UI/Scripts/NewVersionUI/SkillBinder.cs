@@ -108,17 +108,23 @@ public class SkillBinder : NetworkBehaviour {
     void RefreshAllSkillBox() {
         if (IsServer) {
             // clear all skills
+            int abilityID = 0;
+            int entryID = 0;
             NonDropper.draggerList.ForEach(d => {
-                d.UpdateDisplay(null);
+                RefreshSkillBox_ClientRpc(-1, abilityID, null);
+                abilityID++;
             });
             Droppers.ForEach(d => {
+                abilityID = 0;
                 d.draggerList.ForEach(d => {
-                    d.UpdateDisplay(null);
+                    RefreshSkillBox_ClientRpc(entryID, abilityID, null);
+                    abilityID++;
                 });
+                entryID++;
             });
 
             // show skills
-            int abilityID = 0;
+            abilityID = 0;
             for (int i = 0; i < 10; ++i) {
                 abilityID = 0;
                 abilityManager.AbilityInputEntries[i].Abilities.ForEach(a => {
@@ -137,7 +143,8 @@ public class SkillBinder : NetworkBehaviour {
 
     [ClientRpc]
     void RefreshSkillBox_ClientRpc(int BoxID, int abilityID, string abilityName) {
-        var ability = ResourceManager.Instance.GetAbilityScriptableObjectByName(abilityName);
+        if(!IsOwner) { return; }
+        var ability = abilityName != null ? ResourceManager.Instance.GetAbilityScriptableObjectByName(abilityName) : null;
         var DASO = ability as DisplayableAbilityScriptableObject;
 
         // Debug.Log("AbilityName : " + abilityName + " get ability : " + ability != null);
