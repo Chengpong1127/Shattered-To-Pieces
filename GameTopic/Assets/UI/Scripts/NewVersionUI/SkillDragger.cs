@@ -51,10 +51,27 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
 
     public void UpdateDisplay(DisplayableAbilityScriptableObject newData) {
         DASO = newData;
-        if (DASO == null) { gameObject.SetActive(false); return; }
+        if (DASO == null) { ShowDisplay(false); return; }
 
         // displayImg.sprite = DASO.IsPlaceImage ? DASO.Image : null;
-        if(DASO.IsPlaceImage) { displayImg.sprite = DASO.Image; }
-        gameObject.SetActive(true);
+        // if(DASO.IsPlaceImage) { displayImg.sprite = DASO.Image; }
+        // try {
+        //     displayImg.sprite = DASO.Image;
+        // } catch {
+        //     // displayImg.sprite = null;
+        //     Debug.Log("Sprite Setting Boom!");
+        // }
+        displayImg.sprite = DASO.Image;
+
+        ShowDisplay(true);
+    }
+    void ShowDisplay(bool b) {
+        if (b) {
+            displayImg.color = Color.white;
+            displayImg.raycastTarget = true;
+        } else {
+            displayImg.color = Color.clear;
+            displayImg.raycastTarget = false;
+        }
     }
 }

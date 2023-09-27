@@ -22,20 +22,20 @@ public class SkillBinder : NetworkBehaviour {
     private BasePlayer player;
     private AbilityManager abilityManager;
 
-    private void Awake() {
+    private void Start() {
         // Dropper setting.
         NonDropper.Binder = this;
         NonDropper.draggerList.ForEach(d => {
             d.NonSetDropper = NonDropper;
             d.DraggingParentTransform = this.transform.parent;
-            d.UpdateDisplay(null);
+            // d.UpdateDisplay(null);
         });
         int id = 0;
         Droppers.ForEach(d => {
             d.draggerList.ForEach(d => {
                 d.NonSetDropper = NonDropper;
                 d.DraggingParentTransform = this.transform.parent;
-                d.UpdateDisplay(null);
+                // d.UpdateDisplay(null);
             });
             d.Binder = this;
             d.BoxID = id;
