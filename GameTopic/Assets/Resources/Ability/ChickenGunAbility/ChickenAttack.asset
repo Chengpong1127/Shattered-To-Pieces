@@ -29,7 +29,8 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  Image: {fileID: 0}
+  Image: {fileID: 21300000, guid: 026f3ffff5932d84f8cc09fa1130bea2, type: 3}
   Icon: {fileID: 0}
   Description: 
+  IsPlaceImage: 0
   SummonPrefab: {fileID: 5346167607756816510, guid: 78614bf13556f415897075210584148b, type: 3}
