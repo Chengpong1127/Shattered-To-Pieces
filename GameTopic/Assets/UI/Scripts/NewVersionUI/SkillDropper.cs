@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SkillDropper : MonoBehaviour, IDropHandler {
     [SerializeField] public GameObject RBDisplayer;
     [SerializeField] public List<SkillDragger> draggerList;
+    [SerializeField] public TMP_Text BindingKeyText;
 
     public SkillBinder Binder;
     public int BoxID { get; set; } = -1;
@@ -17,6 +19,7 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
             d.draggerID = i;
             i++;
         });
+        BindingKeyText.text = "Non";
     }
 
     private void Start() {

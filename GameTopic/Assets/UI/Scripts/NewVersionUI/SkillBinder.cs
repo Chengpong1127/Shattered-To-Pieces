@@ -21,21 +21,21 @@ public class SkillBinder : NetworkBehaviour {
     private BasePlayer player;
     private AbilityManager abilityManager;
 
-    private void Awake() {
+    private void Start() {
         // Dropper setting.
         player = GetComponentInParent<BasePlayer>();
         NonDropper.Binder = this;
         NonDropper.draggerList.ForEach(d => {
             d.NonSetDropper = NonDropper;
             d.DraggingParentTransform = this.transform.parent;
-            d.UpdateDisplay(null);
+            // d.UpdateDisplay(null);
         });
         int id = 0;
         Droppers.ForEach(d => {
             d.draggerList.ForEach(d => {
                 d.NonSetDropper = NonDropper;
                 d.DraggingParentTransform = this.transform.parent;
-                d.UpdateDisplay(null);
+                // d.UpdateDisplay(null);
             });
             d.Binder = this;
             d.BoxID = id;
@@ -137,5 +137,22 @@ public class SkillBinder : NetworkBehaviour {
         // Debug.Log("AbilityName : " + abilityName + " get ability : " + ability != null);
 
         this.SetDisply(BoxID, abilityID, DASO);
+    }
+
+
+    [ClientRpc]
+    void SetSkillBoxKeyText_ClientRpc(int entryID, string keyStr) {
+        if(!IsOwner) { return; }
+        SetSkillBoxKeyText(entryID, keyStr);
+    }
+    void SetSkillBoxKeyText(int entryID, string keyStr) {
+        if(Droppers.Count <= entryID) { return; }
+        var result = keyStr.Split(' ');
+        Droppers[entryID].BindingKeyText.text = result[result.Length - 1];
+    }
+
+    [ServerRpc]
+    void RebindKeyText_ServerRpc(int entryID) {
+        // AbilityRebinder.StartRebinding(entryID);
     }
 }

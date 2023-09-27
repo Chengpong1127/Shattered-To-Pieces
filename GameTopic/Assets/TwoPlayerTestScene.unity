@@ -462,7 +462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4028a190dc6ea43d5870b1c9da8a14bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerCount: 2
+  PlayerCount: 1
   RunAtStart: 1
   InitLoadDeviceName: 0
   GameRunner: {fileID: 751570058}
