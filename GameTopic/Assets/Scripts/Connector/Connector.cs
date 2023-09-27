@@ -116,9 +116,6 @@ public class Connector : MonoBehaviour, IConnector
         if (newParent == null) throw new ArgumentException("newParent is null");
         if (info == null) throw new ArgumentException("info is null");
         _currentLinkedTarget = newParent.GetTarget(info.linkedTargetID);
-        
-        //GameComponent.BodyTransform.SetParent(newParent.GameComponent.BodyTransform);
-        //GameComponent.BodyTransform.position = _currentLinkedTarget.ConnectionPosition;
         Joint.connectedAnchor = _currentLinkedTarget.ConnectionPosition;
         Joint.connectedBody = newParent.GameComponent.BodyRigidbody;
         _currentLinkedTarget.LinkedBy(this);

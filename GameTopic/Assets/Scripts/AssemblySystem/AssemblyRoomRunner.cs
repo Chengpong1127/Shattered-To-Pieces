@@ -3,6 +3,7 @@ using Unity.Netcode;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
     public GamePlayer ControlledPlayer => PlayerMap.Values.First() as GamePlayer;
@@ -71,9 +72,13 @@ public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
     protected override void PreGameStart(){
         base.PreGameStart();
         _gameComponentFactory = new NetworkGameComponentFactory();
-        LoadDevice(CurrentDeviceID);
     }
 
+
+    protected override void GameStartSpawnAllPlayer()
+    {
+        LoadDevice(CurrentDeviceID);
+    }
 
     protected override void GameStart(){
     }

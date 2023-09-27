@@ -33,7 +33,7 @@ public class BaseGameRunner: NetworkBehaviour{
     public async void RunGame(){
         if (IsServer){
             GameInitialize();
-            await CreatePlayer();
+            await CreateAllPlayers();
             PreGameStart();
             StateMachine.ChangeState(GameStates.Gaming);
             GameStart();
@@ -51,12 +51,15 @@ public class BaseGameRunner: NetworkBehaviour{
     /// Server loads all players.
     /// </summary>
     /// <returns></returns>
-    private async UniTask CreatePlayer(){
+    private async UniTask CreateAllPlayers(){
         var playerSpawner = new PlayerSpawner();
         PlayerMap = playerSpawner.SpawnAllPlayers();
         PlayerMap.Values.ToList().ForEach(player => player.OnPlayerDied += () => PlayerDiedHandler(player));
-        PlayerMap.Values.ToList().ForEach(player => SpawnDevice(player, "0"));
+        GameStartSpawnAllPlayer();
         await UniTask.WaitUntil(() => PlayerMap.Values.All(player => player.IsAlive.Value));
+    }
+    protected virtual void GameStartSpawnAllPlayer(){
+        PlayerMap.Values.ToList().ForEach(player => SpawnDevice(player, "0"));
     }
 
     public virtual async void SpawnDevice(BasePlayer player, string filename){
