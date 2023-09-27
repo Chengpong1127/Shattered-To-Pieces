@@ -29,9 +29,10 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  Image: {fileID: 0}
+  Image: {fileID: 21300000, guid: 37b5786447d2eaf49961b271847163d4, type: 3}
   Icon: {fileID: 0}
   Description: 
+  IsPlaceImage: 0
   Direction: {x: -1, y: 0, z: 0}
   Speed: 2
   AnimationName: MoveLeft

@@ -29,8 +29,9 @@ MonoBehaviour:
       IgnoreTags: []
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  Image: {fileID: 0}
+  Image: {fileID: 21300000, guid: df5954f3ba5ecb24e96fbba1e460b642, type: 3}
   Icon: {fileID: 0}
   Description: 
+  IsPlaceImage: 0
   AssemblyEffect: {fileID: 11400000, guid: dfa20b9925abc4234bbf21e25c0cecbf, type: 2}
   AssemblyCancelEffect: {fileID: 11400000, guid: dda4fa2b1ed2947019fcd00f069e352a, type: 2}
