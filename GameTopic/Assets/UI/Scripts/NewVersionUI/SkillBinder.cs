@@ -61,6 +61,16 @@ public class SkillBinder : NetworkBehaviour {
             GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += (_, _) => RefreshAllSkillBox();
             GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += _ => RefreshAllSkillBox();
 
+            // hook rebindkey action, clien tell server we want rebind key.
+
+
+            // hook rebindkey action, server tell client key is change at someone entry.
+            // there is two event ?????
+            // GameEvents.AbilityManagerEvents.OnSetBinding += SetSkillBoxKeyText_ClientRpc;
+            // GameEvents.RebindEvents.OnFinishRebinding += SetSkillBoxKeyText_ClientRpc;
+            
+            // but how server know player input a key at client?
+
             RefreshAllSkillBox();
         }
     }
@@ -150,5 +160,22 @@ public class SkillBinder : NetworkBehaviour {
         // Debug.Log("AbilityName : " + abilityName + " get ability : " + ability != null);
 
         this.SetDisply(BoxID, abilityID, DASO);
+    }
+
+
+    [ClientRpc]
+    void SetSkillBoxKeyText_ClientRpc(int entryID, string keyStr) {
+        if(!IsOwner) { return; }
+        SetSkillBoxKeyText(entryID, keyStr);
+    }
+    void SetSkillBoxKeyText(int entryID, string keyStr) {
+        if(Droppers.Count <= entryID) { return; }
+        var result = keyStr.Split(' ');
+        Droppers[entryID].BindingKeyText.text = result[result.Length - 1];
+    }
+
+    [ServerRpc]
+    void RebindKeyText_ServerRpc(int entryID) {
+        // AbilityRebinder.StartRebinding(entryID);
     }
 }
