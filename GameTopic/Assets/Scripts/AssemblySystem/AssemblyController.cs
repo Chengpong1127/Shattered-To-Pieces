@@ -132,7 +132,7 @@ public class AssemblyController : NetworkBehaviour
     }
     [ServerRpc]
     private void TryConnection_ServerRpc(ulong parentComponentID, int targetID){
-        if (SelectedComponentID.HasValue){
+        if (SelectedComponentID.HasValue && parentComponentID != SelectedComponentID.Value){
             var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<IGameComponent>();
             var parentComponent = Utils.GetLocalGameObjectByNetworkID(parentComponentID)?.GetComponent<IGameComponent>();
             var connectionInfo = new ConnectionInfo

@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 392658167
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 750775187, guid: 9c10ba9bf984aac439bf99187622b882, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -400,6 +400,8 @@ MonoBehaviour:
   bodyColliders:
   - {fileID: 6804235984704648300}
   bodyAnimator: {fileID: 1610879430255940508}
+  bodyRenderers:
+  - {fileID: 5313162394069196484}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
   InitializationAbilities:
