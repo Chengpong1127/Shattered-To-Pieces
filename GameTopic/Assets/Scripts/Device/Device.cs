@@ -39,9 +39,7 @@ public class Device: IDevice
         deviceInfo.AbilityManagerInfo = new AbilityManagerInfo(AbilityManager, gameComponentIDMapping);
         return deviceInfo;
     }
-
-    public async void Load(IInfo info)
-    {
+    public async void Load(IInfo info){
         await LoadAsync(info);
     }
     public async UniTask LoadAsync(IInfo info){
@@ -54,20 +52,18 @@ public class Device: IDevice
         var deviceInfo = info as DeviceInfo;
 
         var tempDictionary = CreateAllComponents(deviceInfo.TreeInfo.NodeInfoMap);
-        
         deviceInfo.TreeInfo.NodeInfoMap.ToList().ForEach((pair) => {
             var component = tempDictionary[pair.Key];
             component.Load(pair.Value);
         });
-        //await UniTask.WaitForFixedUpdate();
+        await UniTask.WaitForFixedUpdate();
         RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID];
-        ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList);
+        ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList);  
         AbilityManager.Load(this, deviceInfo.AbilityManagerInfo, tempDictionary);
         RootGameComponent.OnRootConnectionChanged += () => {
             AbilityManager.UpdateDeviceAbilities();
             OnDeviceConnectionChanged?.Invoke();
         };
-        await UniTask.Yield();
     }
 
     private Dictionary<int, IGameComponent> CreateAllComponents(Dictionary<int, GameComponentInfo> nodes){

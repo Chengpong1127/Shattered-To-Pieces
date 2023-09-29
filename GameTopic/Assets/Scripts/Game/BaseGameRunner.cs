@@ -62,8 +62,8 @@ public class BaseGameRunner: NetworkBehaviour{
         PlayerMap.Values.ToList().ForEach(player => SpawnDevice(player, "0"));
     }
 
-    public virtual async void SpawnDevice(BasePlayer player, string filename){
-        await player.ServerLoadDevice(filename);
+    public virtual void SpawnDevice(BasePlayer player, string filename){
+        player.ServerLoadDevice(filename);
         OnPlayerSpawned?.Invoke(player.OwnerClientId);
     }
 

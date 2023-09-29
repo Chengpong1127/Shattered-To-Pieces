@@ -83,10 +83,9 @@ public class BasePlayer : NetworkBehaviour
         OnPlayerDied?.Invoke();
         Destroy(ServerAbilityRunner);
     }
-    public async UniTask ServerLoadDevice(string filename){
+    public void ServerLoadDevice(string filename){
         if (IsServer){
             LoadLocalDeviceClientRpc(filename);
-            await UniTask.WaitUntil(() => IsAlive.Value == true);
         }
     }
     [ClientRpc]

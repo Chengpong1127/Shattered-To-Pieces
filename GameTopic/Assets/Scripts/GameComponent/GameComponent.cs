@@ -39,7 +39,6 @@ public class GameComponent : AbilityEntity, IGameComponent
         if (info == null) throw new ArgumentNullException("info");
         Parent = parentComponent;
         Parent.Children.Add(this);
-        BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
         connector.ConnectToComponent(parentComponent.Connector, info);
         (GetRoot() as GameComponent)?.OnRootConnectionChanged?.Invoke();
     }
