@@ -15,7 +15,7 @@ public class SkillBinder : NetworkBehaviour {
     [SerializeField] SkillDropper NonDropper;
     [SerializeField] List<SkillDropper> Droppers;
     public UnityAction<int, int, int> setAbilityAction { get; set; }
-
+    bool firsTimeEnable = true;
 
     // set entry stuff.
     private BasePlayer player;
@@ -50,6 +50,11 @@ public class SkillBinder : NetworkBehaviour {
     private void OnEnable() {
         if (IsOwner){
             RefreshAllSkillBox_ServerRpc();
+            for(int i = 0; i < 10; ++i) {
+                UpdateSkillBoxKeyText_ServerRpc(i);
+            }
+
+
         }
     }
 
@@ -94,6 +99,13 @@ public class SkillBinder : NetworkBehaviour {
         if (IsServer) {
             player = GetComponentInParent<BasePlayer>();
             abilityManager = player.SelfDevice.AbilityManager;
+
+            // set key rebinding action.
+            if (firsTimeEnable) {
+                firsTimeEnable = false;
+                GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText_ServerRpc(eID);
+            }
+
             // clear all skills
             int abilityID = 0;
             int entryID = 0;
@@ -139,7 +151,12 @@ public class SkillBinder : NetworkBehaviour {
         this.SetDisply(BoxID, abilityID, DASO);
     }
 
+    [ServerRpc]
+    void UpdateSkillBoxKeyText_ServerRpc(int entryID) {
+        var keyText = abilityManager != null ? abilityManager.AbilityInputEntries[entryID].InputPath : "Non";
 
+        SetSkillBoxKeyText_ClientRpc(entryID, keyText);
+    }
     [ClientRpc]
     void SetSkillBoxKeyText_ClientRpc(int entryID, string keyStr) {
         if(!IsOwner) { return; }
@@ -147,7 +164,7 @@ public class SkillBinder : NetworkBehaviour {
     }
     void SetSkillBoxKeyText(int entryID, string keyStr) {
         if(Droppers.Count <= entryID) { return; }
-        var result = keyStr.Split(' ');
+        var result = keyStr.Split('/');
         Droppers[entryID].BindingKeyText.text = result[result.Length - 1];
     }
 
