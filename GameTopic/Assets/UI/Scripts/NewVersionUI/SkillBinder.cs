@@ -23,7 +23,6 @@ public class SkillBinder : NetworkBehaviour {
 
     private void Start() {
         // Dropper setting.
-        player = GetComponentInParent<BasePlayer>();
         NonDropper.Binder = this;
         NonDropper.draggerList.ForEach(d => {
             d.NonSetDropper = NonDropper;
@@ -93,6 +92,7 @@ public class SkillBinder : NetworkBehaviour {
     [ServerRpc]
     void RefreshAllSkillBox_ServerRpc() {
         if (IsServer) {
+            player = GetComponentInParent<BasePlayer>();
             abilityManager = player.SelfDevice.AbilityManager;
             // clear all skills
             int abilityID = 0;

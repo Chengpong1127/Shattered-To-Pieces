@@ -24,7 +24,6 @@ public class GamePlayer: BasePlayer{
             AssemblyUI.SetActive(AssemblyController.enabled);
             SkillUI.SetActive(AssemblyController.enabled);
         }
-
     }
 
     protected override void DeviceDiedHandler()
@@ -37,6 +36,8 @@ public class GamePlayer: BasePlayer{
         if (IsOwner){
             AssemblyController.enabled = false;
             AssemblyUI.SetActive(false);
+            SkillUI.SetActive(false);
+        } else {
             SkillUI.SetActive(false);
         }
     }
