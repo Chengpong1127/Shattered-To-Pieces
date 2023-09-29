@@ -66,12 +66,13 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         ShowDisplay(true);
     }
     void ShowDisplay(bool b) {
-        if (b) {
-            displayImg.color = Color.white;
-            displayImg.raycastTarget = true;
-        } else {
-            displayImg.color = Color.clear;
-            displayImg.raycastTarget = false;
-        }
+        gameObject.SetActive(b);
+        // if (b) {
+        //     displayImg.color = Color.white;
+        //     displayImg.raycastTarget = true;
+        // } else {
+        //     displayImg.color = Color.clear;
+        //     displayImg.raycastTarget = false;
+        // }
     }
 }
