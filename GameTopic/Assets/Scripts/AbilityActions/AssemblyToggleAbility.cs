@@ -40,9 +40,9 @@ public class AssemblyToggleAbility : DisplayableAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
-            var player = Utils.ServerGetBasePlayer(Runner.OwnerPlayerID) as GamePlayer;
-            player.ToggleAssemblyClientRpc();
+            var player = Utils.ServerGetBasePlayer(Runner.OwnerPlayerID) as AssemblyablePlayer;
             isAssembly = !isAssembly;
+            player.SetAssemblyMode_ClientRpc(isAssembly);
             Debug.Log("AssemblyToggleAbilitySpec: " + isAssembly);
             if (isAssembly)
             {
