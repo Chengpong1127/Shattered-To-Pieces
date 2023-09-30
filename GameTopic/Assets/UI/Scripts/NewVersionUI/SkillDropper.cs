@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SkillDropper : MonoBehaviour, IDropHandler {
     [SerializeField] public GameObject RBDisplayer;
     [SerializeField] public List<SkillDragger> draggerList;
     [SerializeField] public TMP_Text BindingKeyText;
+    [SerializeField] public Button RebindBTN;
 
     public SkillBinder Binder;
     public int BoxID { get; set; } = -1;

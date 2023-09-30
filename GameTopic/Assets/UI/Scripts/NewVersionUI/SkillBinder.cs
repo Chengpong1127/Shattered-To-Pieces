@@ -7,6 +7,7 @@ using System.Reflection;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class SkillBinder : NetworkBehaviour {
@@ -20,6 +21,8 @@ public class SkillBinder : NetworkBehaviour {
     // set entry stuff.
     private BasePlayer player;
     private AbilityManager abilityManager;
+    private GamePlayer gamePlayer;
+    private AbilityRebinder rebinder;
 
     private void Start() {
         // Dropper setting.
@@ -38,6 +41,7 @@ public class SkillBinder : NetworkBehaviour {
             });
             d.Binder = this;
             d.BoxID = id;
+            d.RebindBTN.onClick.AddListener(() => RebindKeyText(d.BoxID));
             id++;
         });
 
@@ -166,10 +170,17 @@ public class SkillBinder : NetworkBehaviour {
         if(Droppers.Count <= entryID) { return; }
         var result = keyStr.Split('/');
         Droppers[entryID].BindingKeyText.text = result[result.Length - 1];
+        // var result2 = keyStr != null ? InputControlPath.ToHumanReadableString(keyStr) : "";
+        // Droppers[entryID].BindingKeyText.text = result2;
     }
 
-    [ServerRpc]
-    void RebindKeyText_ServerRpc(int entryID) {
+    void RebindKeyText(int entryID) {
         // AbilityRebinder.StartRebinding(entryID);
+        if(!IsOwner) { return; }
+        gamePlayer = GetComponentInParent<GamePlayer>();
+        rebinder = gamePlayer?.AbilityRebinder;
+        if(rebinder == null) { return; }
+
+        rebinder.StartRebinding(entryID);
     }
 }
