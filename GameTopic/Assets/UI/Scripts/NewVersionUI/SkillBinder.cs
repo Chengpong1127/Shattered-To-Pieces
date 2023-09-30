@@ -16,13 +16,15 @@ public class SkillBinder : NetworkBehaviour {
     [SerializeField] SkillDropper NonDropper;
     [SerializeField] List<SkillDropper> Droppers;
     public UnityAction<int, int, int> setAbilityAction { get; set; }
-    bool firsTimeEnable = true;
-
     // set entry stuff.
     private BasePlayer player;
     private AbilityManager abilityManager;
     private GamePlayer gamePlayer;
     private AbilityRebinder rebinder;
+    void Awake()
+    {
+        GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText(eID);
+    }
 
     private void Start() {
         // Dropper setting.
@@ -54,11 +56,15 @@ public class SkillBinder : NetworkBehaviour {
     private void OnEnable() {
         if (IsOwner){
             RefreshAllSkillBox_ServerRpc();
-            for(int i = 0; i < 10; ++i) {
-                UpdateSkillBoxKeyText_ServerRpc(i);
-            }
+            UpdateAllSkillBoxKeyText_ServerRpc();
 
 
+        }
+    }
+    [ServerRpc]
+    private void UpdateAllSkillBoxKeyText_ServerRpc() {
+        for(int i = 0; i < 10; ++i) {
+            UpdateSkillBoxKeyText(i);
         }
     }
 
@@ -103,12 +109,6 @@ public class SkillBinder : NetworkBehaviour {
         if (IsServer) {
             player = GetComponentInParent<BasePlayer>();
             abilityManager = player.SelfDevice.AbilityManager;
-
-            // set key rebinding action.
-            if (firsTimeEnable) {
-                firsTimeEnable = false;
-                GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText_ServerRpc(eID);
-            }
 
             // clear all skills
             int abilityID = 0;
@@ -155,8 +155,7 @@ public class SkillBinder : NetworkBehaviour {
         this.SetDisply(BoxID, abilityID, DASO);
     }
 
-    [ServerRpc]
-    void UpdateSkillBoxKeyText_ServerRpc(int entryID) {
+    void UpdateSkillBoxKeyText(int entryID) {
         var keyText = abilityManager != null ? abilityManager.AbilityInputEntries[entryID].InputPath : "Non";
 
         SetSkillBoxKeyText_ClientRpc(entryID, keyText);

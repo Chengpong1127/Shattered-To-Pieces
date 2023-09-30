@@ -77,10 +77,10 @@ public class AssemblyController : NetworkBehaviour
     void OnDisable()
     {
         if(IsOwner){
-            selectAction.Disable();
-            disconnectAction.Disable();
-            flipAction.Disable();
-            rotateAction.Disable();
+            selectAction?.Disable();
+            disconnectAction?.Disable();
+            flipAction?.Disable();
+            rotateAction?.Disable();
             CancelLastSelection_ServerRpc();
         }
     }
