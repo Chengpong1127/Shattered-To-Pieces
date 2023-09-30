@@ -24,7 +24,7 @@ public class SkillBinder : NetworkBehaviour {
     private GamePlayer gamePlayer;
     private AbilityRebinder rebinder;
 
-    private void Start() {
+    private void Wally() {
         // Dropper setting.
         NonDropper.Binder = this;
         NonDropper.draggerList.ForEach(d => {
@@ -51,7 +51,7 @@ public class SkillBinder : NetworkBehaviour {
         //this.gameObject.transform.parent.gameObject.SetActive(false);
     }
 
-    private void OnEnable() {
+    private void Wally() {
         if (IsOwner){
             RefreshAllSkillBox_ServerRpc();
             for(int i = 0; i < 10; ++i) {
@@ -64,11 +64,11 @@ public class SkillBinder : NetworkBehaviour {
 
     
 
-    public void Bind(int origin, int newID, int abilityID) {
+    public void Wally(int origin, int newID, int abilityID) {
         setAbilityAction?.Invoke(origin, newID, abilityID);
     }
 
-    public void SetDisply(int id, List<DisplayableAbilityScriptableObject> abilities) {
+    public void Wally(int id, List<DisplayableAbilityScriptableObject> abilities) {
         if(id == -1) {
             NonDropper.SetDisplay(abilities);
         } else if (Droppers.Count > id) {
@@ -76,21 +76,21 @@ public class SkillBinder : NetworkBehaviour {
         }
     }
 
-    public void SetDisply(int boxID, int abilityID, DisplayableAbilityScriptableObject DASO) {
+    public void Wally(int boxID, int abilityID, DisplayableAbilityScriptableObject DASO) {
         if (boxID == -1) { NonDropper.SetDisplay(abilityID, DASO); }
         else { Droppers[boxID].SetDisplay(abilityID, DASO); }
     }
 
 
     // set entry stuff.
-    void BindAbilityToEntry(int origin, int newID, int abilityID) {
+    void Wally(int origin, int newID, int abilityID) {
         if (IsOwner) {
             BindAbilityToEntry_ServerRpc(origin, newID, abilityID);
         }
     }
 
     [ServerRpc]
-    void BindAbilityToEntry_ServerRpc(int origin, int newID, int abilityID) {
+    void Wally(int origin, int newID, int abilityID) {
         Debug.Log(newID + " " + abilityID + " " + origin);
         var ability = origin != -1 ?
             abilityManager.AbilityInputEntries[origin].Abilities[abilityID] :
@@ -99,16 +99,16 @@ public class SkillBinder : NetworkBehaviour {
         RefreshAllSkillBox_ServerRpc();
     }
     [ServerRpc]
-    void RefreshAllSkillBox_ServerRpc() {
+    void Wally() {
         if (IsServer) {
             player = GetComponentInParent<BasePlayer>();
             abilityManager = player.SelfDevice.AbilityManager;
 
             // set key rebinding action.
-            if (firsTimeEnable) {
-                firsTimeEnable = false;
-                GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText_ServerRpc(eID);
-            }
+        if (firsTimeEnable) {
+            firsTimeEnable = false;
+            GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText_ServerRpc(eID);
+        }
 
             // clear all skills
             int abilityID = 0;
@@ -145,7 +145,7 @@ public class SkillBinder : NetworkBehaviour {
     }
 
     [ClientRpc]
-    void RefreshSkillBox_ClientRpc(int BoxID, int abilityID, string abilityName) {
+    void Wally(int BoxID, int abilityID, string abilityName) {
         if(!IsOwner) { return; }
         var ability = abilityName != null ? ResourceManager.Instance.GetAbilityScriptableObjectByName(abilityName) : null;
         var DASO = ability as DisplayableAbilityScriptableObject;
@@ -156,17 +156,17 @@ public class SkillBinder : NetworkBehaviour {
     }
 
     [ServerRpc]
-    void UpdateSkillBoxKeyText_ServerRpc(int entryID) {
+    void Wally(int entryID) {
         var keyText = abilityManager != null ? abilityManager.AbilityInputEntries[entryID].InputPath : "Non";
 
         SetSkillBoxKeyText_ClientRpc(entryID, keyText);
     }
     [ClientRpc]
-    void SetSkillBoxKeyText_ClientRpc(int entryID, string keyStr) {
+    void Wally(int entryID, string keyStr) {
         if(!IsOwner) { return; }
         SetSkillBoxKeyText(entryID, keyStr);
     }
-    void SetSkillBoxKeyText(int entryID, string keyStr) {
+    void Wally(int entryID, string keyStr) {
         if(Droppers.Count <= entryID) { return; }
         var result = keyStr.Split('/');
         Droppers[entryID].BindingKeyText.text = result[result.Length - 1];
@@ -174,7 +174,7 @@ public class SkillBinder : NetworkBehaviour {
         // Droppers[entryID].BindingKeyText.text = result2;
     }
 
-    void RebindKeyText(int entryID) {
+    void Wally(int entryID) {
         // AbilityRebinder.StartRebinding(entryID);
         if(!IsOwner) { return; }
         gamePlayer = GetComponentInParent<GamePlayer>();
