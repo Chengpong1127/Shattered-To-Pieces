@@ -8,6 +8,7 @@ public class GamePlayer: BasePlayer{
     public float AssemblyRange = 5;
     private PlayerInput playerInput;
     public AssemblyController AssemblyController;
+    public AbilityRebinder AbilityRebinder;
     public GameObject AssemblyUI;
     public GameObject SkillUI;
     protected override void Start(){
@@ -15,6 +16,9 @@ public class GamePlayer: BasePlayer{
         playerInput = GetComponent<PlayerInput>();
         InitAssemblyControl();
         TurnOffAssembly_ClientRpc();
+        if(IsOwner){
+            GameEvents.RebindEvents.OnFinishRebinding += OnFinishRebindingHandler_ServerRpc;
+        }
     }
 
     [ClientRpc]
@@ -39,6 +43,20 @@ public class GamePlayer: BasePlayer{
             SkillUI.SetActive(false);
         } else {
             SkillUI.SetActive(false);
+        }
+    }
+    [ClientRpc]
+    protected override void LoadLocalDeviceClientRpc(string filename)
+    {
+        base.LoadLocalDeviceClientRpc(filename);
+        if (IsOwner){
+            AbilityRebinder = new AbilityRebinder(LocalAbilityActionMap);
+        }
+    }
+    [ServerRpc]
+    private void OnFinishRebindingHandler_ServerRpc(int entryID, string path){
+        if (IsAlive.Value){
+            SelfDevice.AbilityManager.SetBinding(entryID, path);
         }
     }
     private void InitAssemblyControl(){

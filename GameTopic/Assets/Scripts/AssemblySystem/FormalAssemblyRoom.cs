@@ -144,7 +144,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
         AbilityInputActionMap = deviceInfo.AbilityManagerInfo.GetAbilityInputActionMap();
         AbilityInputActionMap.Enable();
-        AbilityRebinder = new AbilityRebinder(ControlledDevice.AbilityManager, AbilityInputActionMap);
+        //AbilityRebinder = new AbilityRebinder(ControlledDevice.AbilityManager, AbilityInputActionMap);
 
         OnLoadedDevice?.Invoke();
         GameEvents.AssemblyRoomEvents.OnLoadedDevice.Invoke();

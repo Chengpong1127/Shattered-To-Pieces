@@ -9,11 +9,9 @@ public class AbilityRebinder : IAbilityRebinder
     public InputActionMap AbilityActionMap { get; private set; }
     public event Action<string> OnFinishRebinding;
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
-    private readonly AbilityManager _abilityManager;
     private bool actionEnabled;
-    public AbilityRebinder(AbilityManager abilityManager, InputActionMap actions)
+    public AbilityRebinder(InputActionMap actions)
     {
-        _abilityManager = abilityManager ?? throw new ArgumentNullException(nameof(abilityManager));
         AbilityActionMap = actions ?? throw new ArgumentNullException(nameof(actions));
     }
     public void CancelRebinding()
@@ -41,7 +39,6 @@ public class AbilityRebinder : IAbilityRebinder
 
     }
     private void RebindingComplete(int abilityID, InputActionRebindingExtensions.RebindingOperation operation){
-        _abilityManager.SetBinding(abilityID, operation.action.bindings[0].effectivePath);
         OnFinishRebinding?.Invoke(operation.action.bindings[0].effectivePath);
         GameEvents.RebindEvents.OnFinishRebinding?.Invoke(abilityID, operation.action.bindings[0].effectivePath);
         if (actionEnabled) rebindingOperation.action.Enable();

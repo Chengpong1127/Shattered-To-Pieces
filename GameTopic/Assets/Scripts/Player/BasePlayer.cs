@@ -89,7 +89,7 @@ public class BasePlayer : NetworkBehaviour
         }
     }
     [ClientRpc]
-    private void LoadLocalDeviceClientRpc(string filename){
+    protected virtual void LoadLocalDeviceClientRpc(string filename){
         if (IsOwner){
             var info = GetLocalDeviceInfo(filename);
             LoadDeviceServerRpc(info.ToJson());

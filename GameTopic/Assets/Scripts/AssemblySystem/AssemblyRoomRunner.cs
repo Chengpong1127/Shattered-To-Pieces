@@ -15,7 +15,7 @@ public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
 
     public AbilityManager AbilityManager => ControlledDevice.AbilityManager;
 
-    public IAbilityRebinder AbilityRebinder { get; private set; }
+    public IAbilityRebinder AbilityRebinder => ControlledPlayer.AbilityRebinder;
     public int GetPlayerRemainedMoney()
     {
         return PlayerInitMoney - GetDeviceTotalCost();
@@ -116,7 +116,6 @@ public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
         SpawnDevice(ControlledPlayer, DeviceID.ToString());
         ControlledPlayer.LocalAbilityActionMap.Enable();
         CurrentDeviceID = DeviceID;
-        AbilityRebinder = new AbilityRebinder(AbilityManager, ControlledPlayer.LocalAbilityActionMap);
         OnLoadedDevice?.Invoke();
         GameEvents.AssemblyRoomEvents.OnLoadedDevice.Invoke();
     }
