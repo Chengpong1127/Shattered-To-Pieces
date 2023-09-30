@@ -109,5 +109,7 @@ public static class GameEvents{
     public static class GameComponentEvents{
         public static Action<GameComponent, bool> OnGameComponentSelected = delegate { };
     }
-
+    public static class LocalPlayerEvents{
+        public static Action OnPlayerRequestExitGame = delegate { };
+    }
 }

@@ -9,7 +9,6 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     public int PlayerCount = 1;
     public bool RunAtStart = false;
     public BasePlayer Player { get; private set; }
-    public bool IsLocalPlayerCompleteSetup { get; private set; } = false;
     public string InitLoadDeviceName = "0";
     protected INetworkConnector connectionManager;
     public BaseGameRunner GameRunner;
@@ -50,7 +49,6 @@ public class BaseLocalPlayerManager : NetworkBehaviour
             Player = Utils.GetLocalPlayerDevice();
             await UniTask.WaitUntil(() => Player.IsAlive.Value);
             PlayerSpawnSetup();
-            IsLocalPlayerCompleteSetup = true;
         }
     }
     /// <summary>
@@ -58,13 +56,10 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     /// </summary>
     protected virtual void PlayerSpawnSetup(){
     }
-    public void RequestExitGame(){
+    public virtual void ExitGame(){
         if(IsOwner){
-            PreExitGame();
             connectionManager.StopConnection();
-            LocalGameManager.Instance.RequestExitRoom();
+            GameEvents.LocalPlayerEvents.OnPlayerRequestExitGame.Invoke();
         }
-    }
-    protected virtual void PreExitGame(){
     }
 }
