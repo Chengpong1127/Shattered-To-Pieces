@@ -69,7 +69,7 @@ public class SkillBinder : NetworkBehaviour {
     }
 
     public void SwitchActive(bool b) {
-        if (!IsOwner) { return; }
+        if (!IsOwner) { this.gameObject.SetActive(false); return; }
         this.gameObject.SetActive(b);
     }
 
