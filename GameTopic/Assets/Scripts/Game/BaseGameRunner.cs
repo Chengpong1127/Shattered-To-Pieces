@@ -11,6 +11,7 @@ using System;
 /// The game runner is responsible for running the game. It will be run on the server.
 /// </summary>
 public class BaseGameRunner: NetworkBehaviour{
+    public event Action<BasePlayer> OnPlayerExitGame;
     public StateMachine<GameStates> StateMachine;
     public IGameEventHandler[] GameEventHandlers;
     public enum GameStates{
@@ -36,6 +37,7 @@ public class BaseGameRunner: NetworkBehaviour{
             await CreateAllPlayers();
             PreGameStart();
             StateMachine.ChangeState(GameStates.Gaming);
+            GameEventHandlers.ToList().ForEach(handler => handler.enabled = true);
             GameStart();
         }
         else{
@@ -67,20 +69,21 @@ public class BaseGameRunner: NetworkBehaviour{
         OnPlayerSpawned?.Invoke(player.OwnerClientId);
     }
 
-    protected virtual async void PlayerDiedHandler(BasePlayer player){
-        await UniTask.WaitForSeconds(3);
-        if (player.IsAlive.Value)
-            return;
-        SpawnDevice(player, "0");
+    protected virtual void PlayerDiedHandler(BasePlayer player){
     }
 
     protected virtual void PreGameStart(){
-        if(IsServer){
-            GameEventHandlers.ToList().ForEach(handler => handler.enabled = true);
-        }
+        
     }
 
     protected virtual void GameStart(){
 
     }
+    protected virtual void PlayerExitGame(BasePlayer player){
+        player.OnPlayerDied -= () => PlayerDiedHandler(player);
+        PlayerMap.Remove(player.OwnerClientId);
+        OnPlayerExitGame?.Invoke(player);
+        Debug.Log($"Player with id {player.OwnerClientId} exit the game");
+    }
+
 }

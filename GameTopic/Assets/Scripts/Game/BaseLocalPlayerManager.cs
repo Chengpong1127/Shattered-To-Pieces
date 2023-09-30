@@ -9,7 +9,6 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     public int PlayerCount = 1;
     public bool RunAtStart = false;
     public BasePlayer Player { get; private set; }
-    public string InitLoadDeviceName = "0";
     protected INetworkConnector connectionManager;
     public BaseGameRunner GameRunner;
     
@@ -38,11 +37,18 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     }
     private void SetRunner(){
         GameRunner.OnPlayerSpawned += PlayerSpawnedHandlerClientRpc;
+        GameRunner.OnPlayerExitGame += player => PlayerExitGameHandler_ClientRpc(player.OwnerClientId);
         GameRunner.RunGame();
     }
     [ClientRpc]
     private void PlayerSpawnedHandlerClientRpc(ulong playerID){
         PlayerSpawnedHandler(playerID);
+    }
+    [ClientRpc]
+    private void PlayerExitGameHandler_ClientRpc(ulong playerID){
+        if (OwnerClientId == playerID){
+            ExitGame();
+        }
     }
     private async void PlayerSpawnedHandler(ulong playerID){
         if(playerID == OwnerClientId){

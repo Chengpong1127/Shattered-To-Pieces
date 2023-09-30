@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SimpleGameRunner: BaseGameRunner{
+public class SimpleGameRunner: FightGameRunner{
     public Transform[] SpawnPoints;
     protected override void PreGameStart(){
         base.PreGameStart();
