@@ -30,11 +30,12 @@ public static class GameEvents{
         /// <summary>
         /// Triggered after the ability is set to an entry. 
         /// </summary>
-        public static Action<GameComponentAbility, int> OnSetAbilityToEntry = delegate { };
+        public static Action<AbilityManager, GameComponentAbility, int> OnSetAbilityToEntry = delegate { };
         /// <summary>
         /// Triggered after the ability is set to out of an entry. 
         /// </summary>
-        public static Action<GameComponentAbility> OnSetAbilityOutOfEntry = delegate { };
+        public static Action<AbilityManager, GameComponentAbility> OnSetAbilityOutOfEntry = delegate { };
+        public static Action<AbilityManager> OnAbilityManagerUpdated = delegate { };
         /// <summary>
         /// Triggered after setting binding. 
         /// </summary>
@@ -107,7 +108,21 @@ public static class GameEvents{
         public static Action<BaseEntity> OnEntityDied = delegate { };
     }
     public static class GameComponentEvents{
+        /// <summary>
+        /// Triggered after the game component is selected.
+        /// Parameters: (game component, is selected)
+        /// </summary>
         public static Action<GameComponent, bool> OnGameComponentSelected = delegate { };
+        /// <summary>
+        /// Triggered after the game component is connected.
+        /// Parameters: (game component, component connected to)
+        /// </summary>
+        public static Action<GameComponent, GameComponent> OnGameComponentConnected = delegate { };
+        /// <summary>
+        /// Triggered after the game component is disconnected.
+        /// Parameters: (game component, component disconnected from)
+        /// </summary>
+        public static Action<GameComponent, GameComponent> OnGameComponentDisconnected = delegate { };
     }
     public static class LocalPlayerEvents{
         public static Action OnPlayerRequestExitGame = delegate { };

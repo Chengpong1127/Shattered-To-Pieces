@@ -24,6 +24,14 @@ public class SkillBinder : NetworkBehaviour {
     void Awake()
     {
         GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText(eID);
+        GameEvents.AbilityManagerEvents.OnAbilityManagerUpdated += ServerRequestUpdateAllSkillBox;
+        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += (am, _, _) => ServerRequestUpdateAllSkillBox(am);
+        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += (am, _) => ServerRequestUpdateAllSkillBox(am);
+    }
+    private void ServerRequestUpdateAllSkillBox(AbilityManager updatedAbilityManager){
+        if (abilityManager == updatedAbilityManager){
+            RefreshAllSkillBox_ServerRpc();
+        }
     }
 
     private void Start() {
@@ -102,9 +110,8 @@ public class SkillBinder : NetworkBehaviour {
             abilityManager.AbilityInputEntries[origin].Abilities[abilityID] :
             abilityManager.GetAbilitiesOutOfEntry()[abilityID];
         if (newID == -1) { abilityManager.SetAbilityOutOfEntry(ability); } else { abilityManager.SetAbilityToEntry(newID, ability); }
-        RefreshAllSkillBox_ServerRpc();
     }
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     void RefreshAllSkillBox_ServerRpc() {
         if (IsServer) {
             player = GetComponentInParent<BasePlayer>();

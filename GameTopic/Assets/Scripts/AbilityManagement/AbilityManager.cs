@@ -109,6 +109,7 @@ public class AbilityManager: IEnumerable<GameComponentAbility>
                 abilityInEntryStatus.Add(ability, false);
             }
         }
+        GameEvents.AbilityManagerEvents.OnAbilityManagerUpdated.Invoke(this);
     }
     
     private void CreateAbilityInputEntries(int number){
@@ -147,7 +148,7 @@ public class AbilityManager: IEnumerable<GameComponentAbility>
             abilityInEntryStatus[removed] = false;
         }
         OnSetAbilityToEntry?.Invoke(ability, entryID);
-        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry.Invoke(ability, entryID);
+        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry.Invoke(this, ability, entryID);
     }
     /// <summary>
     /// Remove the ability from the input entry;
@@ -161,7 +162,7 @@ public class AbilityManager: IEnumerable<GameComponentAbility>
         }
         abilityInEntryStatus[ability] = false;
         OnSetAbilityOutOfEntry?.Invoke(ability);
-        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry.Invoke(ability);
+        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry.Invoke(this, ability);
     }
 
     /// <summary>

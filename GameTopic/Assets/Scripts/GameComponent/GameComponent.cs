@@ -41,6 +41,7 @@ public class GameComponent : AbilityEntity, IGameComponent
         Parent.Children.Add(this);
         connector.ConnectToComponent(parentComponent.Connector, info);
         (GetRoot() as GameComponent)?.OnRootConnectionChanged?.Invoke();
+        GameEvents.GameComponentEvents.OnGameComponentConnected.Invoke(this, Parent as GameComponent);
     }
 
     public virtual void DisconnectFromParent()
@@ -48,10 +49,12 @@ public class GameComponent : AbilityEntity, IGameComponent
         if (Parent == null) return;
         var root = GetRoot() as GameComponent;
         Parent.Children.Remove(this);
+        var tempParent = Parent;
         Parent = null;
         connector.Disconnect();
         BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
         root?.OnRootConnectionChanged?.Invoke();
+        GameEvents.GameComponentEvents.OnGameComponentDisconnected.Invoke(this, tempParent as GameComponent);
     }
 
     public IInfo Dump(){

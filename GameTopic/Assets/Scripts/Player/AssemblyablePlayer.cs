@@ -13,7 +13,7 @@ public class AssemblyablePlayer: BasePlayer{
         base.Start();
         playerInput = GetComponent<PlayerInput>();
         InitAssemblyControl();
-        SetAssemblyMode_ClientRpc(false);
+        AssemblyController.enabled = false;;
         if(IsOwner){
             GameEvents.RebindEvents.OnFinishRebinding += OnFinishRebindingHandler_ServerRpc;
         }
