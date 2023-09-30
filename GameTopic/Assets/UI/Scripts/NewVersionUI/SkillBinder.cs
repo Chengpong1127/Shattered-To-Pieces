@@ -68,7 +68,10 @@ public class SkillBinder : NetworkBehaviour {
         }
     }
 
-    
+    public void SwitchActive(bool b) {
+        if (!IsOwner) { return; }
+        this.gameObject.SetActive(b);
+    }
 
     public void Bind(int origin, int newID, int abilityID) {
         setAbilityAction?.Invoke(origin, newID, abilityID);
