@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2852ba9f3f0f34d2092c864bbab5e505, type: 3}
   m_Name: MoveLeft
   m_EditorClassIdentifier: 
-  AbilityName: MoveLeft
+  AbilityName: WheelMoveLeft
   AbilityTags:
     AssetTag: {fileID: 0}
     CancelAbilitiesWithTags: []
@@ -32,5 +32,6 @@ MonoBehaviour:
   Image: {fileID: 0}
   Icon: {fileID: 0}
   Description: 
+  IsPlaceImage: 0
   Speed: 800
   Direction: 0
