@@ -105,6 +105,55 @@ MonoBehaviour:
   AssemblyController: {fileID: 983135910985303398}
   AssemblyUI: {fileID: 7643525238309669416}
   SkillUI: {fileID: 2031401437555429989}
+  _cameraZoomInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 10
+      inSlope: -18.698887
+      outSlope: -18.698887
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.029246341
+    - serializedVersion: 3
+      time: 1
+      value: 5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _cameraZoomOutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 5
+      inSlope: 16.82407
+      outSlope: 16.82407
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.025871765
+    - serializedVersion: 3
+      time: 1
+      value: 10
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _cameraZoomDuration: 0.5
 --- !u!114 &983135910985303398
 MonoBehaviour:
   m_ObjectHideFlags: 0
