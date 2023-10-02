@@ -53,8 +53,8 @@ public class GameComponent : AbilityEntity, IGameComponent
         Parent = null;
         connector.Disconnect();
         BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
-        root?.OnRootConnectionChanged?.Invoke();
         GameEvents.GameComponentEvents.OnGameComponentDisconnected.Invoke(this, tempParent as GameComponent);
+        root?.OnRootConnectionChanged?.Invoke();
     }
 
     public IInfo Dump(){

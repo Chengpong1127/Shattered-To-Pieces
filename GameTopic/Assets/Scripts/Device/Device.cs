@@ -23,6 +23,13 @@ public class Device: IDevice
                 OnDeviceDied?.Invoke();
             }
         };
+        GameEvents.GameComponentEvents.OnGameComponentDisconnected += (component, parent) => {
+            Debug.Log(component);
+            AbilityManager
+                .Where(ability => ability.OwnerGameComponent.Equals(component))
+                .ToList()
+                .ForEach(ability => ability.AbilitySpec.CancelAbility());
+        };
     }
     public IInfo Dump()
     {
