@@ -35,4 +35,4 @@ MonoBehaviour:
   IsPlaceImage: 0
   Power: 80
   JumpTime: 0.2
-  JumpMultipiler: 5
+  JumpMultipiler: 2
