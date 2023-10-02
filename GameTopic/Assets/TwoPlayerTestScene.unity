@@ -462,7 +462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4028a190dc6ea43d5870b1c9da8a14bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerCount: 1
+  PlayerCount: 2
   RunAtStart: 1
   GameRunner: {fileID: 751570058}
   VirtualCamera: {fileID: 1957124926}
@@ -1018,6 +1018,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3846991642439745827, guid: b51391143787144c68081c1ccea0a601, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7485796374773040987, guid: b51391143787144c68081c1ccea0a601, type: 3}
+      propertyPath: NetworkConfig.ForceSamePrefabs
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
