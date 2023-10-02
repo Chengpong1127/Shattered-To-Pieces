@@ -78,7 +78,7 @@ public class JumpAbility : DisplayableAbilityScriptableObject {
         }
 
         protected override IEnumerator PreActivate() {
-           // Character = Body.GetRoot() as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
+           //Character = Body.GetRoot() as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
             JumpCounter = 0;
             isJumping = true;
             yield return null;
