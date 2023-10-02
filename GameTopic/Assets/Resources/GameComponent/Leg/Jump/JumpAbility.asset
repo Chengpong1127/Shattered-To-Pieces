@@ -33,6 +33,6 @@ MonoBehaviour:
   Icon: {fileID: 0}
   Description: 
   IsPlaceImage: 0
-  Power: 2
+  Power: 80
   JumpTime: 0.2
-  JumpMultipiler: 3
+  JumpMultipiler: 5

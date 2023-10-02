@@ -33,5 +33,5 @@ MonoBehaviour:
   Icon: {fileID: 0}
   Description: 
   IsPlaceImage: 0
-  Power: 80
+  Power: 100
   AnimationName: 

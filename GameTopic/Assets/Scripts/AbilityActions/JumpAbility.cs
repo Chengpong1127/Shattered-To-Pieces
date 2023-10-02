@@ -39,9 +39,9 @@ public class JumpAbility : DisplayableAbilityScriptableObject {
 
         public override void CancelAbility() {
             isJumping = false;
-            if (Body.Root.BodyRigidbody.velocity.y > 0)
+            if (SelfEntity.BodyRigidbody.velocity.y > 0)
             {
-                Body.Root.BodyRigidbody.velocity = new Vector2(Body.Root.BodyRigidbody.velocity.x, Body.Root.BodyRigidbody.velocity.y * 0.6f);
+                SelfEntity.BodyRigidbody.velocity = new Vector2(SelfEntity.BodyRigidbody.velocity.x, SelfEntity.BodyRigidbody.velocity.y * 0.6f);
             }
             return;
         }
@@ -58,8 +58,8 @@ public class JumpAbility : DisplayableAbilityScriptableObject {
             }
             // Character.Move(Body.BodyTransform.TransformDirection(Direction) * Power);
             // Character.VerticalMove(Power);
-            Body.Root.BodyRigidbody.velocity = new Vector2(Body.Root.BodyRigidbody.velocity.x, Power);
-            while (isJumping && Body.Root.BodyRigidbody.velocity.y > 0)
+            SelfEntity.BodyRigidbody.velocity = new Vector2(SelfEntity.BodyRigidbody.velocity.x, Power);
+            while (isJumping && SelfEntity.BodyRigidbody.velocity.y > 0)
             {
                 JumpCounter += Time.deltaTime;
                 if (JumpCounter > JumpTime) isJumping = false;
@@ -70,7 +70,7 @@ public class JumpAbility : DisplayableAbilityScriptableObject {
                     currentJumpM = JumpMultipiler * (1 - time);
                 }
                 new Vector2(0, -Physics2D.gravity.y);
-                Body.Root.BodyRigidbody.velocity += new Vector2(0, -Physics2D.gravity.y) * currentJumpM * Time.deltaTime;
+                SelfEntity.BodyRigidbody.velocity += new Vector2(0, -Physics2D.gravity.y) * currentJumpM * Time.deltaTime;
                 yield return null;
             }
             //Character.AddForce(Body.BodyTransform.TransformDirection(Vector3.up) * Power, ForceMode2D.Impulse);  
@@ -78,7 +78,7 @@ public class JumpAbility : DisplayableAbilityScriptableObject {
         }
 
         protected override IEnumerator PreActivate() {
-            Character = Body.GetRoot() as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
+           // Character = Body.GetRoot() as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
             JumpCounter = 0;
             isJumping = true;
             yield return null;
