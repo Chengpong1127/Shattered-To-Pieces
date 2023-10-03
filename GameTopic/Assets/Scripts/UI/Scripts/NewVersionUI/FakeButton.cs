@@ -17,19 +17,15 @@ public class FakeButton : MonoBehaviour, IPointerDownHandler,IPointerUpHandler, 
     }
 
     public void OnPointerDown(PointerEventData pointerEventData) {
-        Debug.Log("Down " + gameObject.name);
         animator?.SetTrigger(Press);
     }
     public void OnPointerUp(PointerEventData pointerEventData) {
-        Debug.Log("Up " + gameObject.name);
         animator?.SetTrigger(Release);
     }
     public void OnPointerEnter(PointerEventData pointerEventData) {
-        Debug.Log("Enter " + gameObject.name);
         animator?.SetTrigger(Hover);
     }
     public void OnPointerExit(PointerEventData pointerEventData) {
-        Debug.Log("Exit " + gameObject.name);
         animator?.SetTrigger(Idle);
     }
 }
