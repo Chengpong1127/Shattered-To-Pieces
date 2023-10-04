@@ -4,7 +4,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Unity.Netcode;
-public class GameComponentSelectedHandler : NetworkBehaviour, IGameEventHandler
+public class GameComponentSelectedHandler : BaseGameEventHandler
 {
     public Color TargetColor = new Color(1, 1, 1, 0.5f);
     public float BlinkDuration = 0.5f;

@@ -5,7 +5,7 @@ using Unity.Netcode;
 using System.Threading;
 using System.Collections.Generic;
 
-public class HealthEffectHandler: NetworkBehaviour, IGameEventHandler
+public class HealthEffectHandler: BaseGameEventHandler
 {
     public float Duration = 0.2f;
     public Color RecoveryColor = Color.green;
