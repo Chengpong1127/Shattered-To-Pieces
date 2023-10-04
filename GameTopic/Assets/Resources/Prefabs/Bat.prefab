@@ -593,7 +593,7 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 667df11ad0ce8446ca762310a262fbb6, type: 2}
   assemblyTransform: {fileID: 1924151084018908080}
-  EntityTriggerCollider: {fileID: 0}
+  EntityTriggerCollider: {fileID: 1767429543466599302}
 --- !u!114 &6318985712159059288
 MonoBehaviour:
   m_ObjectHideFlags: 0

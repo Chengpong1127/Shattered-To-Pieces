@@ -30,7 +30,8 @@ public class GamePlayer: AssemblyablePlayer{
         if(IsOwner){
             AssemblyUI.SetActive(enabled);
             SkillUI.SetActive(enabled);
-            ZoomCamera(enabled ? _cameraZoomInCurve : _cameraZoomOutCurve);
+            if (VirtualCamera != null)
+                ZoomCamera(enabled ? _cameraZoomInCurve : _cameraZoomOutCurve);
         }
         
     }
