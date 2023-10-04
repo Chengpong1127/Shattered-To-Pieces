@@ -152,6 +152,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4062258426741874536, guid: 57568e207e9237241bc415c2205c6d4b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2948362944592187287}
+    - targetCorrespondingSourceObject: {fileID: 5563189435891086120, guid: 57568e207e9237241bc415c2205c6d4b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9018000684678252567}
+    - targetCorrespondingSourceObject: {fileID: 226986445920048131, guid: 57568e207e9237241bc415c2205c6d4b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5646305173855239954}
+    - targetCorrespondingSourceObject: {fileID: 226986445920048131, guid: 57568e207e9237241bc415c2205c6d4b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7430397443773773512}
   m_SourcePrefab: {fileID: 100100000, guid: 57568e207e9237241bc415c2205c6d4b, type: 3}
 --- !u!1 &862939747997904142 stripped
 GameObject:
@@ -175,6 +184,41 @@ MonoBehaviour:
   Release: Gra_release
   Idle: Pendant_Idle
   animator: {fileID: 2638173151361481779}
+--- !u!1 &3512710250498565733 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 226986445920048131, guid: 57568e207e9237241bc415c2205c6d4b, type: 3}
+  m_PrefabInstance: {fileID: 3718229075290206822}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5646305173855239954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3512710250498565733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc87cf7896b32047823874aa99548b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hover: 
+  Press: 
+  Release: 
+  Idle: Pendant_Idle
+  animator: {fileID: 2638173151361481779}
+--- !u!114 &7430397443773773512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3512710250498565733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cac1512619f58046a90f12e87877c8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExitMenu: {fileID: 0}
 --- !u!1 &5536300776191456397 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9173033774415333099, guid: 57568e207e9237241bc415c2205c6d4b, type: 3}
@@ -213,3 +257,25 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &9128135595146461518 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5563189435891086120, guid: 57568e207e9237241bc415c2205c6d4b, type: 3}
+  m_PrefabInstance: {fileID: 3718229075290206822}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9018000684678252567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9128135595146461518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc87cf7896b32047823874aa99548b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hover: 
+  Press: 
+  Release: 
+  Idle: Pendant_Idle
+  animator: {fileID: 2638173151361481779}
