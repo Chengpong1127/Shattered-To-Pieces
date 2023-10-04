@@ -6,7 +6,7 @@ using UnityEngine;
 using System;
 using UnityEngine.InputSystem.LowLevel;
 
-public class GameEffectManager: MonoBehaviour, IGameEventHandler{
+public class GameEffectManager: BaseGameEventHandler{
     void OnEnable()
     {
         GameEvents.GameEffectManagerEvents.RequestModifyAttribute += ModifyAttribute;
