@@ -6,10 +6,6 @@ using System;
 public interface IAssemblyRoom
 {
     public Device ControlledDevice { get; }
-    /// <summary>
-    /// Event that will be triggered after switching the assembly room mode.
-    /// </summary>
-    public event Action<AssemblyRoomMode> OnSetRoomMode;
 
 
     /// <summary>
@@ -18,12 +14,6 @@ public interface IAssemblyRoom
     /// <param name="componentID"></param>
     /// <param name="position"></param>
     public IGameComponent CreateNewGameComponent(GameComponentData componentData, Vector2 position);
-
-    /// <summary>
-    /// Set the assembly room to the specified mode. There are two modes: AssemblyMode and PlayMode.
-    /// </summary>
-    /// <param name="mode">The mode specified.</param>
-    public void SetRoomMode(AssemblyRoomMode mode);
     /// <summary>
     /// Get all game component data of the specified type.
     /// </summary>

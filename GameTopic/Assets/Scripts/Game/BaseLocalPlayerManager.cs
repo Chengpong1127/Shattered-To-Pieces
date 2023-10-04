@@ -11,6 +11,7 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     public BasePlayer Player { get; private set; }
     protected INetworkConnector connectionManager;
     public BaseGameRunner GameRunner;
+    public event Action OnPlayerExitRoom;
     
     public void Awake()
     {
@@ -66,6 +67,7 @@ public class BaseLocalPlayerManager : NetworkBehaviour
         if(IsOwner){
             connectionManager.StopConnection();
             GameEvents.LocalPlayerEvents.OnPlayerRequestExitGame.Invoke();
+            OnPlayerExitRoom?.Invoke();
         }
     }
 }

@@ -55,6 +55,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
     private void OnEnterRoom(){
         var playerManager = FindObjectOfType<BaseLocalPlayerManager>();
+        playerManager.OnPlayerExitRoom += RequestExitRoom;
         if (!playerManager.RunAtStart)
             playerManager.StartPlayerSetup();
     }
@@ -65,4 +66,12 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         GameStateMachine.ChangeState(GameState.Home);
     }
     
+    public void DeleteReduntantNetworkManagers(){
+        var networkManagers = FindObjectsOfType<NetworkManager>();
+        foreach(var manager in networkManagers){
+            if(manager.gameObject != gameObject){
+                Destroy(manager.gameObject);
+            }
+        }
+    }
 }
