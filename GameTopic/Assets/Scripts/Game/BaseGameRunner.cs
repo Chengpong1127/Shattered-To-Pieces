@@ -13,7 +13,7 @@ using System;
 public class BaseGameRunner: NetworkBehaviour{
     public event Action<BasePlayer> OnPlayerExitGame;
     public StateMachine<GameStates> StateMachine;
-    public IGameEventHandler[] GameEventHandlers;
+    public BaseGameEventHandler[] GameEventHandlers;
     public enum GameStates{
         Initialize,
         Gaming,
@@ -28,7 +28,6 @@ public class BaseGameRunner: NetworkBehaviour{
     {
         StateMachine = new StateMachine<GameStates>(this);
         StateMachine.ChangeState(GameStates.Initialize);
-        GameEventHandlers = GetComponents<IGameEventHandler>();
         GameEventHandlers.ToList().ForEach(handler => handler.enabled = false);
     }
     public async void RunGame(){
