@@ -33,14 +33,15 @@ public class WorkShop : MonoBehaviour
         await UniTask.WaitUntil(() => room.StateMachine.State == AssemblyRoomRunner.GameStates.Gaming);
         SetAssimblyRoom(impRoom.GetComponent<IAssemblyRoom>());
 
-        shopDispatcher.setAbilityAction += room.AbilityManager.SetAbilityToEntry;
-        shopDispatcher.setNullAbilityAction += room.AbilityManager.SetAbilityOutOfEntry;
-        shopDispatcher.refreshAbilityAction += RefreshAbillity;
-        shopDispatcher.refreshNullAbilityAction += RefreshNullAbillity;
-        shopDispatcher.rebindKeyAction += room.AbilityRebinder.StartRebinding;
-
-        shopDispatcher.RefreshAllBoxAbility();
-        RefreshAllSkillBoxDisplayText();
+        // ==== comment shopDispatcher ====
+        // shopDispatcher.setAbilityAction += room.AbilityManager.SetAbilityToEntry;
+        // shopDispatcher.setNullAbilityAction += room.AbilityManager.SetAbilityOutOfEntry;
+        // shopDispatcher.refreshAbilityAction += RefreshAbillity;
+        // shopDispatcher.refreshNullAbilityAction += RefreshNullAbillity;
+        // shopDispatcher.rebindKeyAction += room.AbilityRebinder.StartRebinding;
+        // 
+        // shopDispatcher.RefreshAllBoxAbility();
+        // RefreshAllSkillBoxDisplayText();
     }
 
     /// <summary>
@@ -51,16 +52,18 @@ public class WorkShop : MonoBehaviour
         if(Iar == null) { Debug.Log("IAssemblyRoom is null."); return; }
 
         if(room != null) {
-            room.AbilityRebinder.OnFinishRebinding -= shopDispatcher.SetRebindKeyText;
-            room.ControlledDevice.OnDeviceConnectionChanged -= shopDispatcher.RefreshAllBoxAbility;
+            // ==== comment shopDispatcher ====
+            // room.AbilityRebinder.OnFinishRebinding -= shopDispatcher.SetRebindKeyText;
+            // room.ControlledDevice.OnDeviceConnectionChanged -= shopDispatcher.RefreshAllBoxAbility;
             // room.assemblyController.OnGameComponentDraggedStart -= RefreshAllBoxAbilityAction;
             // room.assemblyController.OnGameComponentDraggedEnd -= RefreshAllBoxAbilityAction;
             // room.assemblyController.AfterGameComponentConnected -= RefreshAllBoxAbilityAction;
             room.assemblyController.OnGameComponentSelected -= UpdateUserCostRemain;
             room.assemblyController.AfterGameComponentConnected -= UpdateUserCostRemain;
 
-            room.OnLoadedDevice -= shopDispatcher.RefreshAllBoxAbility;
-            room.AbilityManager.OnSetBinding += RefreshSkillBoxDisplayText;
+            // ==== comment shopDispatcher ====
+            // room.OnLoadedDevice -= shopDispatcher.RefreshAllBoxAbility;
+            // room.AbilityManager.OnSetBinding += RefreshSkillBoxDisplayText;
 
             // fileCtrl.RemoveRenameAction(room.RenameDevice);
             // fileCtrl.StoreAction -= room.SaveCurrentDevice;
@@ -69,17 +72,20 @@ public class WorkShop : MonoBehaviour
         }
 
         room = Iar;
-        GameEvents.RebindEvents.OnFinishRebinding += (_, str) => shopDispatcher.SetRebindKeyText(str);
+        // ==== comment shopDispatcher ====
+        // GameEvents.RebindEvents.OnFinishRebinding += (_, str) => shopDispatcher.SetRebindKeyText(str);
         //room.AbilityRebinder.OnFinishRebinding += shopDispatcher.SetRebindKeyText;
-        room.ControlledDevice.OnDeviceConnectionChanged += shopDispatcher.RefreshAllBoxAbility;
+        // ==== comment shopDispatcher ====
+        // room.ControlledDevice.OnDeviceConnectionChanged += shopDispatcher.RefreshAllBoxAbility;
         // room.assemblyController.OnGameComponentDraggedStart += RefreshAllBoxAbilityAction;
         // room.assemblyController.OnGameComponentDraggedEnd += RefreshAllBoxAbilityAction;
         // room.assemblyController.AfterGameComponentConnected += RefreshAllBoxAbilityAction;
         room.assemblyController.OnGameComponentSelected += UpdateUserCostRemain;
         room.assemblyController.AfterGameComponentConnected += UpdateUserCostRemain;
 
-        room.OnLoadedDevice += shopDispatcher.RefreshAllBoxAbility;
-        GameEvents.AbilityManagerEvents.OnSetBinding += RefreshSkillBoxDisplayText;
+        // ==== comment shopDispatcher ====
+        // room.OnLoadedDevice += shopDispatcher.RefreshAllBoxAbility;
+        // GameEvents.AbilityManagerEvents.OnSetBinding += RefreshSkillBoxDisplayText;
         //room.AbilityManager.OnSetBinding += RefreshSkillBoxDisplayText;
 
         shopPage.SetElements(room.GetGameComponentDataListByTypeForShop(GameComponentType.Basic), GameComponentType.Basic);

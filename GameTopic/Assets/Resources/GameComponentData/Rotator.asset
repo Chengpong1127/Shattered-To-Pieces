@@ -18,4 +18,4 @@ MonoBehaviour:
   Price: 30
   Type: 0
   ResourcePath: Rotator
-  DisplayAtShop: 1
+  DisplayAtShop: 0

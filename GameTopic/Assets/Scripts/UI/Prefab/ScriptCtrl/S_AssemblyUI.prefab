@@ -1034,6 +1034,9 @@ PrefabInstance:
     - {fileID: 8148466409294020589, guid: 440468f6ddaf7a741bc002b3761ed747, type: 3}
     - {fileID: 4573785135877102460, guid: 440468f6ddaf7a741bc002b3761ed747, type: 3}
     - {fileID: 5141715582809335664, guid: 440468f6ddaf7a741bc002b3761ed747, type: 3}
+    - {fileID: 6779022743314965081, guid: 440468f6ddaf7a741bc002b3761ed747, type: 3}
+    - {fileID: 3381590013982915331, guid: 440468f6ddaf7a741bc002b3761ed747, type: 3}
+    - {fileID: 3699473650008978882, guid: 440468f6ddaf7a741bc002b3761ed747, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8459436834022300516, guid: 440468f6ddaf7a741bc002b3761ed747, type: 3}
@@ -1060,7 +1063,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe301c2f9b8a7c4fb9c9c33e4fb87f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Binder: {fileID: 0}
 --- !u!114 &8825177196458673074
 MonoBehaviour:
   m_ObjectHideFlags: 0
