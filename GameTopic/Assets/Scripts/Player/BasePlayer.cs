@@ -13,7 +13,7 @@ public class BasePlayer : NetworkBehaviour
     public event Action OnPlayerLoaded;
     public event Action OnPlayerDied;
     public Device SelfDevice { get; private set; }
-    protected NetworkVariable<ulong> RootNetworkObjectID = new NetworkVariable<ulong>(
+    public NetworkVariable<ulong> RootNetworkObjectID = new NetworkVariable<ulong>(
         readPerm: NetworkVariableReadPermission.Owner,
         writePerm: NetworkVariableWritePermission.Server
     );

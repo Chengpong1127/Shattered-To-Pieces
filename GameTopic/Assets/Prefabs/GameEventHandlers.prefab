@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Duration: 0.2
-  RecoveryColor: {r: 0, g: 1, b: 0, a: 0.2627451}
+  RecoveryColor: {r: 0.6179246, g: 1, b: 0.6179246, a: 1}
   DamageColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &4088894706831831336
 MonoBehaviour:

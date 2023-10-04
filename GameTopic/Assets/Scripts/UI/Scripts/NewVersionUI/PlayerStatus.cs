@@ -22,6 +22,7 @@ public class PlayerStatus : NetworkBehaviour
 
         if (!IsServer) { return; }
         GameEvents.AttributeEvents.OnEntityHealthChanged += UpdateBloodBar;
+        player = GetComponentInParent<GamePlayer>();
     }
 
     [ClientRpc]
@@ -35,9 +36,12 @@ public class PlayerStatus : NetworkBehaviour
 
     public void UpdateBloodBar(Entity entity, float prevHealth, float currentHealth) {
         if (!IsServer) { return; }
-        
-        player = GetComponentInParent<GamePlayer>();
-        Entity ctrlRoomEntity = player?.GetTracedTransform()?.GetComponent<Entity>();
+        Entity ctrlRoomEntity = null;
+        try{
+            ctrlRoomEntity = Utils.GetLocalGameObjectByNetworkID(player.RootNetworkObjectID.Value).GetComponent<Entity>();
+        }catch{
+            return;
+        }
 
         if (HealthAttribute == null ||
             MaxHealthAttribute == null ||
