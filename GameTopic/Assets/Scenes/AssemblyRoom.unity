@@ -10230,7 +10230,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1281276213}
         m_TargetAssemblyTypeName: BaseLocalPlayerManager, Scripts
-        m_MethodName: RequestExitGame
+        m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

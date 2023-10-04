@@ -84,5 +84,8 @@ public class BaseGameRunner: NetworkBehaviour{
         OnPlayerExitGame?.Invoke(player);
         Debug.Log($"Player with id {player.OwnerClientId} exit the game");
     }
+    public void EndGame(){
+        StateMachine.ChangeState(GameStates.GameEnd);
+    }
 
 }

@@ -94,7 +94,6 @@ public class WorkShop : MonoBehaviour
         // SetStoreFileNames(room.GetSavedDeviceList());
 
         UpdateUserCostRemain(null);
-        room.SetRoomMode(roomMode);
     }
 
     /// <summary>
@@ -111,7 +110,6 @@ public class WorkShop : MonoBehaviour
     /// </summary>
     public void SwitchRoomMode() {
         roomMode = (roomMode == AssemblyRoomMode.PlayMode) ? AssemblyRoomMode.ConnectionMode : AssemblyRoomMode.PlayMode;
-        room?.SetRoomMode(roomMode);
     }
 
     /// <summary>

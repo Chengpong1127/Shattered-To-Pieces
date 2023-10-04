@@ -50,6 +50,7 @@ public class Device: IDevice
         await LoadAsync(info);
     }
     public async UniTask LoadAsync(IInfo info){
+        Debug.Log("Load device");
         if (info is not DeviceInfo){
             throw new ArgumentException("The info should be DeviceInfo");
         }

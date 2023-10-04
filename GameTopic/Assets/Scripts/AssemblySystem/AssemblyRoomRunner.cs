@@ -20,7 +20,6 @@ public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
     {
         return PlayerInitMoney - GetDeviceTotalCost();
     }
-    public event Action<AssemblyRoomMode> OnSetRoomMode;
     public event Action OnLoadedDevice;
     public event Action OnSavedDevice;
     private IGameComponentFactory _gameComponentFactory;
@@ -49,17 +48,6 @@ public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
         ResourceManager.Instance.SaveLocalDeviceInfo(info as DeviceInfo, CurrentDeviceID.ToString());
         OnSavedDevice?.Invoke();
         GameEvents.AssemblyRoomEvents.OnSavedDevice.Invoke();
-    }
-
-    public void SetRoomMode(AssemblyRoomMode mode)
-    {
-        switch(mode){
-            case AssemblyRoomMode.ConnectionMode:
-                break;
-            case AssemblyRoomMode.PlayMode:
-                break;
-        }
-        OnSetRoomMode?.Invoke(mode);
     }
 
     public List<GameComponentData> GetGameComponentDataListByTypeForShop(GameComponentType type)
