@@ -1,9 +1,6 @@
 using UnityEngine;
 
 public class AssemblyRoomLocalPlayerManager: BaseLocalPlayerManager{
-    protected override void PlayerSpawnSetup(){
-        Player.LocalAbilityActionMap.Enable();
-    }
     public override void ExitGame()
     {
         (GameRunner as AssemblyRoomRunner).SaveCurrentDevice();

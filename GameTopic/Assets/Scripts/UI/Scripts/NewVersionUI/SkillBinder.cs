@@ -21,7 +21,6 @@ public class SkillBinder : NetworkBehaviour {
     private AbilityManager abilityManager;
     private GamePlayer gamePlayer;
     private AbilityRebinder rebinder;
-    private bool isSet = false;
     void Awake()
     {
         GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText(eID);
@@ -59,7 +58,6 @@ public class SkillBinder : NetworkBehaviour {
         // Bind Actions
         this.setAbilityAction += BindAbilityToEntry;
 
-        isSet = true;
     }
 
     private void OnEnable() {
@@ -167,7 +165,7 @@ public class SkillBinder : NetworkBehaviour {
     }
 
     void UpdateSkillBoxKeyText(int entryID) {
-        if (isSet){
+        if (BaseLocalPlayerManager.RoomInstance.StateMachine.State == BaseLocalPlayerManager.PlayerStatus.Playing){
             var keyText = abilityManager != null ? abilityManager.AbilityInputEntries[entryID].InputPath : "Non";
 
             SetSkillBoxKeyText_ClientRpc(entryID, keyText);

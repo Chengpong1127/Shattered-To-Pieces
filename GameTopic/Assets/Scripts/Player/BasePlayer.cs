@@ -95,6 +95,7 @@ public class BasePlayer : NetworkBehaviour
             LoadDeviceServerRpc(info.ToJson());
             LocalAbilityActionMap?.Dispose();
             LocalAbilityActionMap = info.AbilityManagerInfo.GetAbilityInputActionMap();
+            LocalAbilityActionMap.Enable();
         }
     }
 

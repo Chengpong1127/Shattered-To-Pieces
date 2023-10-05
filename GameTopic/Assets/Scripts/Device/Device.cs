@@ -24,7 +24,6 @@ public class Device: IDevice
             }
         };
         GameEvents.GameComponentEvents.OnGameComponentDisconnected += (component, parent) => {
-            Debug.Log(component);
             AbilityManager
                 .Where(ability => ability.OwnerGameComponent.Equals(component))
                 .ToList()
@@ -50,7 +49,6 @@ public class Device: IDevice
         await LoadAsync(info);
     }
     public async UniTask LoadAsync(IInfo info){
-        Debug.Log("Load device");
         if (info is not DeviceInfo){
             throw new ArgumentException("The info should be DeviceInfo");
         }

@@ -38,10 +38,6 @@ public class AbilityManager: IEnumerable<GameComponentAbility>
 
         ReloadDeviceAbilities();
     }
-
-    public AbilityManager(IDevice device, AbilityManagerInfo info, Dictionary<int, IGameComponent> componentMap){
-        Load(device, info, componentMap);
-    }
     public void Load(IDevice device, AbilityManagerInfo info, Dictionary<int, IGameComponent> componentMap){
         if (device == null) throw new ArgumentNullException(nameof(device));
         if (componentMap == null) throw new ArgumentNullException(nameof(componentMap));

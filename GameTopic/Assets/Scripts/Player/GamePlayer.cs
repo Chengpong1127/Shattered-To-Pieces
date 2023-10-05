@@ -14,8 +14,9 @@ public class GamePlayer: AssemblyablePlayer{
     private AnimationCurve _cameraZoomOutCurve;
     [SerializeField]
     private float _cameraZoomDuration = 0.5f;
-    protected override void Start(){
+    protected override async void Start(){
         base.Start();
+        await UniTask.WaitUntil(() => BaseLocalPlayerManager.RoomInstance.StateMachine.State == BaseLocalPlayerManager.PlayerStatus.Playing);
         AssemblyUI.SetActive(false);
         SkillUI.SetActive(false);
         if (IsOwner)

@@ -3,19 +3,35 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Events;
 using System;
+using MonsterLove.StateMachine;
 
 public class BaseLocalPlayerManager : NetworkBehaviour
 {
+    public static BaseLocalPlayerManager RoomInstance { get; private set; }
     public int PlayerCount = 1;
     public BasePlayer Player { get; private set; }
     [SerializeField]
     protected BaseConnectionManager connectionManager;
     public BaseGameRunner GameRunner;
     public event Action OnPlayerExitRoom;
-    
+    public StateMachine<PlayerStatus> StateMachine;
+    public enum PlayerStatus
+    {
+        Loading,
+        Playing,
+        Exiting
+    }
+
     public void Awake()
     {
         Application.targetFrameRate = 30;
+        StateMachine = StateMachine<PlayerStatus>.Initialize(this);
+        StateMachine.ChangeState(PlayerStatus.Loading);
+        if (RoomInstance != null)
+        {
+            Debug.LogError("There is more than one local player manager in the scene.");
+        }
+        RoomInstance = this;
         if (connectionManager == null)
         {
             Debug.LogError("There is no connection manager in local player manager.");
@@ -54,15 +70,18 @@ public class BaseLocalPlayerManager : NetworkBehaviour
             Player = Utils.GetLocalPlayerDevice();
             await UniTask.WaitUntil(() => Player.IsAlive.Value);
             PlayerSpawnSetup();
+            StateMachine.ChangeState(PlayerStatus.Playing);
         }
     }
     /// <summary>
     /// This method will be invoked after the local player is loaded.
     /// </summary>
     protected virtual void PlayerSpawnSetup(){
+        Debug.Log("Player Spawn Setup");
     }
     public virtual void ExitGame(){
         if(IsOwner){
+            StateMachine.ChangeState(PlayerStatus.Exiting);
             connectionManager.StopConnection();
             GameEvents.LocalPlayerEvents.OnPlayerRequestExitGame.Invoke();
             OnPlayerExitRoom?.Invoke();
