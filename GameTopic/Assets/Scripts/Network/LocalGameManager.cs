@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using MonsterLove.StateMachine;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 
 public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
@@ -27,8 +28,8 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     private StateMachine<GameState> GameStateMachine;
     private Player SelfPlayer;
 
-    private void Awake() {
-        
+    protected override void Awake() {
+        base.Awake();
         GameStateMachine = new StateMachine<GameState>(this);
         GameStateMachine.ChangeState(GameState.Init);
         DontDestroyOnLoad(this);
@@ -53,11 +54,11 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         operation.completed += _ => OnEnterRoom();
     }
 
-    private void OnEnterRoom(){
+    private async void OnEnterRoom(){
         var playerManager = FindObjectOfType<BaseLocalPlayerManager>();
         playerManager.OnPlayerExitRoom += RequestExitRoom;
-        if (!playerManager.RunAtStart)
-            playerManager.StartPlayerSetup();
+        await UniTask.NextFrame();
+        playerManager.StartPlayerSetup(NetworkType.Host);
     }
 
 

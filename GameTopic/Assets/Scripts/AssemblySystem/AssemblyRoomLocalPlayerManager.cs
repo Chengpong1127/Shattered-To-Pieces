@@ -1,12 +1,4 @@
-
-
-
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
-using Unity.Netcode;
-using System.Reflection;
 
 public class AssemblyRoomLocalPlayerManager: BaseLocalPlayerManager{
     protected override void PlayerSpawnSetup(){
@@ -16,5 +8,12 @@ public class AssemblyRoomLocalPlayerManager: BaseLocalPlayerManager{
     {
         (GameRunner as AssemblyRoomRunner).SaveCurrentDevice();
         base.ExitGame();
+    }
+    private void Start() {
+        if (FindAnyObjectByType(typeof(LocalGameManager)) == null)
+        {
+            StartPlayerSetup(NetworkType.Host);
+            Debug.Log("There is no GameLocalPlayerManager, self start connection");
+        }
     }
 }

@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 using Unity.Netcode.Transports.UTP;
 using System.Linq;
 
-public class GlobalConnectionManager : MonoBehaviour, INetworkConnector{
+public class GlobalConnectionManager : MonoBehaviour{
     private UnityTransport RelayTransport;
     private UnityTransport LocalTransport;
     public event Action OnAllDeviceConnected;

@@ -7,30 +7,28 @@ using System;
 public class BaseLocalPlayerManager : NetworkBehaviour
 {
     public int PlayerCount = 1;
-    public bool RunAtStart = false;
     public BasePlayer Player { get; private set; }
-    protected INetworkConnector connectionManager;
+    [SerializeField]
+    protected BaseConnectionManager connectionManager;
     public BaseGameRunner GameRunner;
     public event Action OnPlayerExitRoom;
     
     public void Awake()
     {
         Application.targetFrameRate = 30;
-        connectionManager = gameObject.AddComponent<GlobalConnectionManager>();
+        if (connectionManager == null)
+        {
+            Debug.LogError("There is no connection manager in local player manager.");
+        }
         GameRunner ??= FindObjectOfType<BaseGameRunner>() ?? throw new Exception("GameRunner is null");
 
-    }
-    public void Start(){
-        if(RunAtStart){
-            StartPlayerSetup();
-        }
     }
     /// <summary>
     /// Start the player setup. This method need to be invoked after enter a scene.
     /// </summary>
-    public void StartPlayerSetup(){
-        connectionManager.StartConnection(PlayerCount);
-        connectionManager.OnAllDeviceConnected += () => {
+    public void StartPlayerSetup(NetworkType type){
+        connectionManager.StartConnection(type);
+        connectionManager.OnAllClientConnected += () => {
             if(IsServer){
                 SetRunner();
             }
