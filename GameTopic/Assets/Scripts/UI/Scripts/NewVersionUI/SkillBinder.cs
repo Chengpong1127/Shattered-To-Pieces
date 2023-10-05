@@ -165,7 +165,7 @@ public class SkillBinder : NetworkBehaviour {
     }
 
     void UpdateSkillBoxKeyText(int entryID) {
-        if (BaseLocalPlayerManager.RoomInstance.StateMachine.State == BaseLocalPlayerManager.PlayerStatus.Playing){
+        if (BaseLocalPlayerManager.RoomInstance.StateMachine.State == BaseLocalPlayerManager.LocalPlayerStates.Playing){
             var keyText = abilityManager != null ? abilityManager.AbilityInputEntries[entryID].InputPath : "Non";
 
             SetSkillBoxKeyText_ClientRpc(entryID, keyText);

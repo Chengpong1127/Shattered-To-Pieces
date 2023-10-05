@@ -14,9 +14,10 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     protected BaseConnectionManager connectionManager;
     public BaseGameRunner GameRunner;
     public event Action OnPlayerExitRoom;
-    public StateMachine<PlayerStatus> StateMachine;
-    public enum PlayerStatus
+    public StateMachine<LocalPlayerStates> StateMachine;
+    public enum LocalPlayerStates
     {
+        Initializing,
         Loading,
         Playing,
         Exiting
@@ -25,8 +26,8 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     public void Awake()
     {
         Application.targetFrameRate = 30;
-        StateMachine = StateMachine<PlayerStatus>.Initialize(this);
-        StateMachine.ChangeState(PlayerStatus.Loading);
+        StateMachine = StateMachine<LocalPlayerStates>.Initialize(this);
+        StateMachine.ChangeState(LocalPlayerStates.Initializing);
         if (RoomInstance != null)
         {
             Debug.LogError("There is more than one local player manager in the scene.");
@@ -43,6 +44,7 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     /// Start the player setup. This method need to be invoked after enter a scene.
     /// </summary>
     public void StartPlayerSetup(NetworkType type){
+        StateMachine.ChangeState(LocalPlayerStates.Loading);
         connectionManager.StartConnection(type);
         connectionManager.OnAllClientConnected += () => {
             if(IsServer){
@@ -69,12 +71,12 @@ public class BaseLocalPlayerManager : NetworkBehaviour
         if(playerID == OwnerClientId){
             Player = Utils.GetLocalPlayerDevice();
             await UniTask.WaitUntil(() => Player.IsAlive.Value);
-            StateMachine.ChangeState(PlayerStatus.Playing);
+            StateMachine.ChangeState(LocalPlayerStates.Playing);
         }
     }
     public virtual void ExitGame(){
         if(IsOwner){
-            StateMachine.ChangeState(PlayerStatus.Exiting);
+            StateMachine.ChangeState(LocalPlayerStates.Exiting);
             connectionManager.StopConnection();
             GameEvents.LocalPlayerEvents.OnPlayerRequestExitGame.Invoke();
             OnPlayerExitRoom?.Invoke();
