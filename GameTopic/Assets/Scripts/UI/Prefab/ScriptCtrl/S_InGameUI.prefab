@@ -92,6 +92,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: S_Pendant
       objectReference: {fileID: 0}
+    - target: {fileID: 6702531162840900021, guid: 0fdc7a6e86787434585b77a748f50a64, type: 3}
+      propertyPath: ExitMenu
+      value: 
+      objectReference: {fileID: 2816363507964778213}
     - target: {fileID: 7430397443773773512, guid: 0fdc7a6e86787434585b77a748f50a64, type: 3}
       propertyPath: ExitMenu
       value: 
