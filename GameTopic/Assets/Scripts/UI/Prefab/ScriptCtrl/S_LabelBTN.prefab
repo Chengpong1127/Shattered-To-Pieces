@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3382682878659352669, guid: c0478e40096e22949a229460957531d8, type: 3}
       propertyPath: m_Name
-      value: S_LabelBTN Variant
+      value: S_LabelBTN
       objectReference: {fileID: 0}
     - target: {fileID: 6269627074431585729, guid: c0478e40096e22949a229460957531d8, type: 3}
       propertyPath: m_Pivot.x
@@ -95,5 +95,25 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3382682878659352669, guid: c0478e40096e22949a229460957531d8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7243400202756338973}
   m_SourcePrefab: {fileID: 100100000, guid: c0478e40096e22949a229460957531d8, type: 3}
+--- !u!1 &3644092142030389647 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3382682878659352669, guid: c0478e40096e22949a229460957531d8, type: 3}
+  m_PrefabInstance: {fileID: 2045723130072848850}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7243400202756338973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3644092142030389647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76a7ed254a3c8a34c824ee946852d63e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
