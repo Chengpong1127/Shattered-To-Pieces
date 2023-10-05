@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SideBar : MonoBehaviour
 {
     [SerializeField] List<Label> labels;
+    [SerializeField] List<TitleTextSprite> TitleTextSprites;
+    [SerializeField] TitleTextImage TitleTextImage;
     [SerializeField] List<Image> DarkRenderImage;
     [SerializeField] List<Image> LightRenderImage;
 
     Animator sideBarAnimator;
-    int displayTypeID = 1;
+    int displayTypeID = 0;
     bool IsSwitching = false;
 
     private void Awake() {
@@ -27,7 +30,7 @@ public class SideBar : MonoBehaviour
 
 
     public void OnClickLabel(int id) {
-        if (id == 0) { sideBarAnimator.SetTrigger("Slide"); return; }
+        if (id == 4) { sideBarAnimator.SetTrigger("Slide"); return; } // 4 is list position of unity editor where display label is.
         if (displayTypeID == id) { return; }
         displayTypeID = id;
         if (IsSwitching) { return; }
@@ -41,6 +44,7 @@ public class SideBar : MonoBehaviour
 
         // Ste SideBar color.
         UpdateSlideBarColor();
+        UpdateTitleText();
 
         // finish changing.
         IsSwitching = false;
@@ -54,4 +58,22 @@ public class SideBar : MonoBehaviour
             img.color = labels[displayTypeID].labelColor.Light;
         });
     }
+    void UpdateTitleText() {
+        TitleTextImage.FirstCharacter.sprite = TitleTextSprites[displayTypeID].FirstCharacter;
+        TitleTextImage.OtherCharacter.sprite = TitleTextSprites[displayTypeID].OtherCharacter;
+    }
+}
+
+
+
+[System.Serializable]
+public struct TitleTextSprite {
+    public Sprite FirstCharacter;
+    public Sprite OtherCharacter;
+}
+
+[System.Serializable]
+public struct TitleTextImage {
+    public Image FirstCharacter;
+    public Image OtherCharacter;
 }

@@ -2378,6 +2378,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4669601732013800825, guid: fc360802f490dbe479a47119b60a5da5, type: 3}
   m_PrefabInstance: {fileID: 8487777350110278314}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6268289149912317654 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2537720403604311164, guid: fc360802f490dbe479a47119b60a5da5, type: 3}
+  m_PrefabInstance: {fileID: 8487777350110278314}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7000573037574362484 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1508051192584988638, guid: fc360802f490dbe479a47119b60a5da5, type: 3}
+  m_PrefabInstance: {fileID: 8487777350110278314}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7136808318603084881 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1639782907957360379, guid: fc360802f490dbe479a47119b60a5da5, type: 3}
@@ -2428,11 +2450,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   labels:
-  - {fileID: 1230258504719095386}
   - {fileID: 3926674732690270744}
   - {fileID: 3014875326658036624}
   - {fileID: 5597954663874835146}
   - {fileID: 5327977382814725384}
+  - {fileID: 1230258504719095386}
+  TitleTextSprites:
+  - FirstCharacter: {fileID: 119964919, guid: aa97db5eb2068e041bd635ca2b690ad5, type: 3}
+    OtherCharacter: {fileID: -962164136, guid: ea885d5d4a3f4f44ab0eee451010f32a, type: 3}
+  - FirstCharacter: {fileID: 1235785901, guid: b094afeef65b9314eb7f26cd891161c1, type: 3}
+    OtherCharacter: {fileID: -1735205398, guid: 983c2dee59709e4498ce005b5d32e4ce, type: 3}
+  - FirstCharacter: {fileID: 1198076255, guid: 5955c62f02e476346bf6bee5e6191250, type: 3}
+    OtherCharacter: {fileID: 2005091550, guid: 972eacddab734724fb80e7a39323cd93, type: 3}
+  - FirstCharacter: {fileID: 1582679102, guid: 4c68eca0498f3f84ca4fca6245d2f769, type: 3}
+    OtherCharacter: {fileID: -967117770, guid: 0abec35f46564f4458acf09d25ed5980, type: 3}
+  TitleTextImage:
+    FirstCharacter: {fileID: 6268289149912317654}
+    OtherCharacter: {fileID: 7000573037574362484}
   DarkRenderImage:
   - {fileID: 7136808318603084881}
   - {fileID: 523786298654235734}
