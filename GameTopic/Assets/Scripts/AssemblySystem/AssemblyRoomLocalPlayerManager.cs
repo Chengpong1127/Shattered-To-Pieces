@@ -1,10 +1,8 @@
 using UnityEngine;
 
 public class AssemblyRoomLocalPlayerManager: BaseLocalPlayerManager{
-    public override void ExitGame()
-    {
+    private void Exiting_Enter(){
         (GameRunner as AssemblyRoomRunner).SaveCurrentDevice();
-        base.ExitGame();
     }
     private void Start() {
         if (FindAnyObjectByType(typeof(LocalGameManager)) == null)

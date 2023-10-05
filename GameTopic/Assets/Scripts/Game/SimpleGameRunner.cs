@@ -2,12 +2,8 @@ using UnityEngine;
 
 public class SimpleGameRunner: FightGameRunner{
     public Transform[] SpawnPoints;
-    protected override void PreGameStart(){
-        base.PreGameStart();
+    private void Gaming_Enter(){
         SetPlayerSpawnPoints();
-    }
-    protected override void GameStart(){
-        Debug.Log("GameStart");
     }
 
     private void SetPlayerSpawnPoints(){

@@ -15,7 +15,8 @@ public class BaseGameRunner: NetworkBehaviour{
     public StateMachine<GameStates> StateMachine;
     public BaseGameEventHandler[] GameEventHandlers;
     public enum GameStates{
-        Initialize,
+        Initializing,
+        CreatingPlayers,
         Gaming,
         GameEnd
     }
@@ -27,27 +28,20 @@ public class BaseGameRunner: NetworkBehaviour{
     void Awake()
     {
         StateMachine = new StateMachine<GameStates>(this);
-        StateMachine.ChangeState(GameStates.Initialize);
+        StateMachine.ChangeState(GameStates.Initializing);
         GameEventHandlers.ToList().ForEach(handler => handler.enabled = false);
     }
     public async void RunGame(){
         if (IsServer){
-            GameInitialize();
-            await CreateAllPlayers();
-            PreGameStart();
-            StateMachine.ChangeState(GameStates.Gaming);
             GameEventHandlers.ToList().ForEach(handler => handler.enabled = true);
-            GameStart();
+            StateMachine.ChangeState(GameStates.CreatingPlayers);
+            await CreateAllPlayers();
+            StateMachine.ChangeState(GameStates.Gaming);
         }
         else{
             Debug.LogError("GameRunner is not running on server");
         }
     } 
-    /// <summary>
-    /// Initialize the game. This method will be invoked on the server. Runs before all players are loaded.
-    /// </summary>
-    protected virtual void GameInitialize(){
-    }
     /// <summary>
     /// Server loads all players.
     /// </summary>
@@ -69,14 +63,6 @@ public class BaseGameRunner: NetworkBehaviour{
     }
 
     protected virtual void PlayerDiedHandler(BasePlayer player){
-    }
-
-    protected virtual void PreGameStart(){
-        
-    }
-
-    protected virtual void GameStart(){
-
     }
     protected virtual void PlayerExitGame(BasePlayer player){
         player.OnPlayerDied -= () => PlayerDiedHandler(player);

@@ -69,15 +69,8 @@ public class BaseLocalPlayerManager : NetworkBehaviour
         if(playerID == OwnerClientId){
             Player = Utils.GetLocalPlayerDevice();
             await UniTask.WaitUntil(() => Player.IsAlive.Value);
-            PlayerSpawnSetup();
             StateMachine.ChangeState(PlayerStatus.Playing);
         }
-    }
-    /// <summary>
-    /// This method will be invoked after the local player is loaded.
-    /// </summary>
-    protected virtual void PlayerSpawnSetup(){
-        Debug.Log("Player Spawn Setup");
     }
     public virtual void ExitGame(){
         if(IsOwner){

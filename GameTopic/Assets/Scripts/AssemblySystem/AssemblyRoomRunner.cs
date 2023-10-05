@@ -57,8 +57,7 @@ public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
     }
     public int CurrentDeviceID { get; private set; } = 0;
 
-    protected override void PreGameStart(){
-        base.PreGameStart();
+    private void Initializing_Enter(){
         _gameComponentFactory = new NetworkGameComponentFactory();
     }
 
@@ -66,9 +65,6 @@ public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
     protected override void GameStartSpawnAllPlayer()
     {
         LoadDevice(CurrentDeviceID);
-    }
-
-    protected override void GameStart(){
     }
 
     public void CleanAllGameComponents(){
