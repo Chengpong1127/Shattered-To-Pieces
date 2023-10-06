@@ -14,9 +14,15 @@ public class StartSceneManager: MonoBehaviour{
 
 
     public void EnterAssemblyRoom(){
-        LocalGameManager.Instance.EnterRoom("AssemblyRoom");
+        LocalGameManager.Instance.EnterRoom("AssemblyRoom", NetworkType.Host);
     }
-    public void EnterGameRoom(string roomName){
-        LocalGameManager.Instance.EnterRoom(roomName);
+    public void EnterGameRoomAsServer(string roomName){
+        LocalGameManager.Instance.EnterRoom(roomName, NetworkType.Server);
+    }
+    public void EnterGameRoomAsHost(string roomName){
+        LocalGameManager.Instance.EnterRoom(roomName, NetworkType.Host);
+    }
+    public void EnterGameRoomAsClient(string roomName){
+        LocalGameManager.Instance.EnterRoom(roomName, NetworkType.Client);
     }
 }

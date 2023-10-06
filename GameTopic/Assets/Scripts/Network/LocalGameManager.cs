@@ -48,31 +48,21 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         SceneManager.LoadSceneAsync("StartScene");
     }
 
-    public void EnterRoom(string roomName){
+    public void EnterRoom(string roomName, NetworkType networkType){
         GameStateMachine.ChangeState(GameState.GameRoom);
         var operation = SceneManager.LoadSceneAsync(roomName);
-        operation.completed += _ => OnEnterRoom();
+        operation.completed += _ => OnEnterRoom(networkType);
     }
 
-    private async void OnEnterRoom(){
+    private void OnEnterRoom(NetworkType networkType){
         var playerManager = FindObjectOfType<BaseLocalPlayerManager>();
         playerManager.OnPlayerExitRoom += RequestExitRoom;
-        await UniTask.NextFrame();
-        playerManager.StartPlayerSetup(NetworkType.Host);
+        playerManager.StartPlayerSetup(networkType);
     }
 
 
 
     public void RequestExitRoom(){
         GameStateMachine.ChangeState(GameState.Home);
-    }
-    
-    public void DeleteReduntantNetworkManagers(){
-        var networkManagers = FindObjectsOfType<NetworkManager>();
-        foreach(var manager in networkManagers){
-            if(manager.gameObject != gameObject){
-                Destroy(manager.gameObject);
-            }
-        }
     }
 }

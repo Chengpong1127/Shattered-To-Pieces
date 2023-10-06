@@ -8,7 +8,6 @@ using MonsterLove.StateMachine;
 public class BaseLocalPlayerManager : NetworkBehaviour
 {
     public static BaseLocalPlayerManager RoomInstance { get; private set; }
-    public int PlayerCount = 1;
     public BasePlayer Player { get; private set; }
     [SerializeField]
     protected BaseConnectionManager connectionManager;

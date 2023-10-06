@@ -12,6 +12,5 @@ public class GameLocalPlayerManager: BaseLocalPlayerManager{
 
     private void Loading_Exit(){
         SetCamera();
-        Player.LocalAbilityActionMap.Enable();
     }
 }
