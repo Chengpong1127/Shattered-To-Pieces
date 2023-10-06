@@ -101,6 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5172b97858b044fbf9d2752c7db7a5f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RootNetworkObjectID:
+    m_InternalValue: 0
   IsAlive:
     m_InternalValue: 0
   AssemblyRange: 5
@@ -278,6 +280,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5275897292047075632}
     m_Modifications:
+    - target: {fileID: -144332740601049678, guid: 4f379eedf2dc7084ea28355b58019845, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 951099334
+      objectReference: {fileID: 0}
     - target: {fileID: 834846911059018171, guid: 4f379eedf2dc7084ea28355b58019845, type: 3}
       propertyPath: m_Name
       value: S_PlayerStatus
@@ -809,6 +815,10 @@ PrefabInstance:
     - target: {fileID: 2256266765536315991, guid: 7c4d57297bf6439498059ad9e391f95b, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2263608697083937184, guid: 7c4d57297bf6439498059ad9e391f95b, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1206290283
       objectReference: {fileID: 0}
     - target: {fileID: 2361567085884559995, guid: 7c4d57297bf6439498059ad9e391f95b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1476,6 +1486,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7384505917188883813, guid: 7c4d57297bf6439498059ad9e391f95b, type: 3}
+    - {fileID: 2263608697083937184, guid: 7c4d57297bf6439498059ad9e391f95b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
