@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -15,7 +16,9 @@ public class SideBar : MonoBehaviour
 
     Animator sideBarAnimator;
     int displayTypeID = 0;
+    bool IsDisplaying = true;
     bool IsSwitching = false;
+    GameComponentType displayComponentType = GameComponentType.Attack;
 
     private void Awake() {
         sideBarAnimator = GetComponent<Animator>();
@@ -37,8 +40,8 @@ public class SideBar : MonoBehaviour
 
 
     public void OnClickLabel(int id) {
-        if (id == 4) { sideBarAnimator.SetTrigger("Slide"); return; } // 4 is list position of unity editor where display label is.
-        if (displayTypeID == id) { return; }
+        if (id == 4) { sideBarAnimator.SetTrigger("Slide"); IsDisplaying = !IsDisplaying; return; } // 4 is list position of unity editor where display label is.
+        if (displayTypeID == id && IsDisplaying) { return; }
         displayTypeID = id;
         if (IsSwitching) { return; }
         IsSwitching = true;
@@ -52,6 +55,7 @@ public class SideBar : MonoBehaviour
         // Ste SideBar color.
         UpdateSlideBarColor();
         UpdateTitleText();
+        UpdateSellElements();
 
         // finish changing.
         IsSwitching = false;
@@ -68,6 +72,33 @@ public class SideBar : MonoBehaviour
     void UpdateTitleText() {
         TitleTextImage.FirstCharacter.sprite = TitleTextSprites[displayTypeID].FirstCharacter;
         TitleTextImage.OtherCharacter.sprite = TitleTextSprites[displayTypeID].OtherCharacter;
+    }
+
+    public Func<GameComponentType, List<GameComponentData>> GetSells; // should set by someone has Iassemblyroom. It stored componentDatas.
+    public void UpdateSellElements() {
+        switch (displayTypeID) { // this switch should mach batween GameComponentType and labelID;
+            case 0:
+                displayComponentType = GameComponentType.Attack; break;
+            case 1:
+                displayComponentType = GameComponentType.Basic; break;
+            case 2:
+                displayComponentType = GameComponentType.Functional; break;
+            case 3:
+                displayComponentType = GameComponentType.Movement; break;
+        }
+
+        var sellsData = GetSells?.Invoke(displayComponentType);
+        if (sellsData == null) { return; }
+
+        int index = 0;
+        while(index < Sells.Count && index < sellsData.Count) {
+            Sells[index].SetDisplay(sellsData[index].DisplayImage, sellsData[index].Price);
+            index++;
+        }
+        while(index < Sells.Count) {
+            Sells[index].SetDisplay(null, 0);
+            index++;
+        }
     }
 }
 

@@ -19,13 +19,13 @@ public class SellElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        EventSubmitter.Buy(SellID);
+        EventSubmitter?.Buy?.Invoke(SellID);
     }
     public void OnPointerEnter(PointerEventData eventData) {
-        EventSubmitter.OpenDescription(SellID);
+        EventSubmitter?.OpenDescription?.Invoke(SellID);
     }
     public void OnPointerExit(PointerEventData eventData) {
-        EventSubmitter.CloseDescription(SellID);
+        EventSubmitter?.CloseDescription?.Invoke(SellID);
     }
 
     public void SetDisplay(Sprite sprite, int price) {
