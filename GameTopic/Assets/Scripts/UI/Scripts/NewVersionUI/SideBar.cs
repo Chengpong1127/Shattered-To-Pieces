@@ -11,6 +11,7 @@ public class SideBar : MonoBehaviour
     [SerializeField] TitleTextImage TitleTextImage;
     [SerializeField] List<Image> DarkRenderImage;
     [SerializeField] List<Image> LightRenderImage;
+    [SerializeField] public List<SellElement> Sells;
 
     Animator sideBarAnimator;
     int displayTypeID = 0;
@@ -20,10 +21,16 @@ public class SideBar : MonoBehaviour
         sideBarAnimator = GetComponent<Animator>();
 
         // setting label variables.
-        int labelID = 0;
+        int ID = 0;
         labels.ForEach(label => {
             label.sideBar = this;
-            label.LabelID = labelID++;
+            label.LabelID = ID++;
+        });
+
+        ID = 0;
+        // setting SellElement ID;
+        Sells.ForEach(se => {
+            se.SellID = ID++;
         });
     }
 
