@@ -105,9 +105,9 @@ public class AssemblyController : NetworkBehaviour
         if (componentIDs.Length > 0){
             if (componentIDs.First() != SelectedComponentID){
                 Debug.Log("SelectComponentHandler_ServerRpc");
-                var gameComponent = Utils.GetLocalGameObjectByNetworkID(componentIDs.First()).GetComponent<IGameComponent>();
+                var gameComponent = Utils.GetLocalGameObjectByNetworkID(componentIDs.First()).GetComponent<GameComponent>();
                 CancelLastSelection_ServerRpc();
-                tempSelectedParentComponentID = gameComponent.Parent == null ? null : (gameComponent.Parent as IGameComponent).NetworkObjectId;
+                tempSelectedParentComponentID = gameComponent.Parent == null ? null : (gameComponent.Parent as GameComponent).NetworkObjectId;
                 tempConnectionInfo = gameComponent.Parent == null ? null : (gameComponent.Connector.Dump() as ConnectionInfo);
                 gameComponent.DisconnectFromParent();
                 gameComponent.DisconnectAllChildren();
@@ -115,7 +115,16 @@ public class AssemblyController : NetworkBehaviour
                 gameComponent.SetSelected(true);
                 tempConnectableComponentIDs = GetConnectableGameObject();
                 SetAvailableForConnection(tempConnectableComponentIDs, true);
+                gameComponent.NetworkObject.ChangeOwnership(OwnerClientId);
+                SelectComponentHandler_ClientRpc(gameComponent.NetworkObjectId);
             }
+        }
+    }
+    [ClientRpc]
+    private void SelectComponentHandler_ClientRpc(ulong componentID){
+        if (IsOwner){
+            var gameComponent = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<GameComponent>();
+            gameComponent.SetSelected(true);
         }
     }
     [ServerRpc]
@@ -180,10 +189,16 @@ public class AssemblyController : NetworkBehaviour
     [ServerRpc]
     private void Flip_ServerRpc(){
         if (SelectedComponentID.HasValue){
-            var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<IAssemblyable>();
-            component.AssemblyTransform.localScale = new Vector3(-component.AssemblyTransform.localScale.x, component.AssemblyTransform.localScale.y, component.AssemblyTransform.localScale.z);
+            FlipClientRpc(SelectedComponentID.Value);
         }
         
+    }
+    [ClientRpc]
+    private void FlipClientRpc(ulong componentID){
+        if (IsOwner){
+            var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IAssemblyable>();
+            component.AssemblyTransform.localScale = new Vector3(-component.AssemblyTransform.localScale.x, component.AssemblyTransform.localScale.y, component.AssemblyTransform.localScale.z);
+        }
     }
     #endregion
     #region Rotate
@@ -195,10 +210,16 @@ public class AssemblyController : NetworkBehaviour
     [ServerRpc]
     private void AddRotation_ServerRpc(float rotation){
         if(SelectedComponentID.HasValue){
-            var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<IAssemblyable>();
-            component.AssemblyTransform.Rotate(new Vector3(0, 0, rotation * RotationUnit));
+            AddRotation_ClientRpc(SelectedComponentID.Value, rotation * RotationUnit);
         }
         
+    }
+    [ClientRpc]
+    private void AddRotation_ClientRpc(ulong componentID, float rotation){
+        if (IsOwner){
+            var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<IAssemblyable>();
+            component.AssemblyTransform.Rotate(new Vector3(0, 0, rotation));
+        }
     }
     #endregion
     

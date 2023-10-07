@@ -33,15 +33,29 @@ public class GameComponent : AbilityEntity, IGameComponent
 
     #endregion
 
-    public virtual void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
+    public virtual async void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
     {
         if (parentComponent == null) throw new ArgumentNullException("parentComponent");
         if (info == null) throw new ArgumentNullException("info");
+        var parent = parentComponent as GameComponent;
         Parent = parentComponent;
         Parent.Children.Add(this);
         connector.ConnectToComponent(parentComponent.Connector, info);
+
+        NetworkObject.ChangeOwnership(parent.NetworkObject.OwnerClientId);
+        await UniTask.NextFrame();
+        ConnectToParent_ClientRpc(parent.NetworkObjectId, info.ToJson());
+
         (GetRoot() as GameComponent)?.OnRootConnectionChanged?.Invoke();
         GameEvents.GameComponentEvents.OnGameComponentConnected.Invoke(this, Parent as GameComponent);
+    }
+    [ClientRpc]
+    private void ConnectToParent_ClientRpc(ulong parentID, string connectionInfoJson){
+        if (IsOwner){
+            var info = ConnectionInfo.CreateFromJson(connectionInfoJson);
+            var parent = Utils.GetLocalGameObjectByNetworkID(parentID)?.GetComponent<IGameComponent>();
+            connector.ConnectToComponent(parent.Connector, info);
+        }
     }
 
     public virtual void DisconnectFromParent()
@@ -51,10 +65,19 @@ public class GameComponent : AbilityEntity, IGameComponent
         Parent.Children.Remove(this);
         var tempParent = Parent;
         Parent = null;
+        DisconnectFromParent_ClientRpc();
         connector.Disconnect();
         BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
+        
         GameEvents.GameComponentEvents.OnGameComponentDisconnected.Invoke(this, tempParent as GameComponent);
         root?.OnRootConnectionChanged?.Invoke();
+    }
+    [ClientRpc]
+    private void DisconnectFromParent_ClientRpc(){
+        if (IsOwner){
+            connector.Disconnect();
+            BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
+        }
     }
 
     public IInfo Dump(){

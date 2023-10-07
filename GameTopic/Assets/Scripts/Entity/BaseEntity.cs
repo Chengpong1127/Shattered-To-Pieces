@@ -45,4 +45,14 @@ public abstract class BaseEntity : NetworkBehaviour
         GameEvents.AttributeEvents.OnEntityDied?.Invoke(this);
         NetworkObject?.Despawn(true);
     }
+    [ClientRpc]
+    public void BodyRigibodySetVelocity_ClientRpc(Vector2 velocity){
+        if (IsOwner)
+            BodyRigidbody.velocity = velocity;
+    }
+    [ClientRpc]
+    public void BodyRigibodyAddForce_ClientRpc(Vector2 force, ForceMode2D mode){
+        if (IsOwner)
+            BodyRigidbody.AddForce(force, mode);
+    }
 }

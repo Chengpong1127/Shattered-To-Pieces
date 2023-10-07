@@ -45,6 +45,7 @@ public class BasePlayer : NetworkBehaviour
         }
         SelfDevice = new Device(new NetworkGameComponentFactory());
         await SelfDevice.LoadAsync(DeviceInfo.CreateFromJson(json));
+        SelfDevice.ForEachGameComponent(component => (component as GameComponent)?.NetworkObject.ChangeOwnership(OwnerClientId));
         ServerAbilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager, OwnerClientId);
         OnPlayerLoaded?.Invoke();
         IsAlive.Value = true;

@@ -43,7 +43,8 @@ public class SelfJumpAbility : DisplayableAbilityScriptableObject
                 if (!groundCheckable.IsGrounded) yield break;
             }
             if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, true);
-            SelfEntity.BodyRigidbody.AddForce(SelfEntity.BodyTransform.up * Power, ForceMode2D.Impulse);
+            SelfEntity.BodyRigibodyAddForce_ClientRpc(SelfEntity.BodyTransform.up * Power, ForceMode2D.Impulse);
+            //SelfEntity.BodyRigidbody.AddForce(SelfEntity.BodyTransform.up * Power, ForceMode2D.Impulse);
             yield return null;
         }
     }
