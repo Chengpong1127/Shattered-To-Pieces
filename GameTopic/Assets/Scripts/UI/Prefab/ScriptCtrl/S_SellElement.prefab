@@ -222,9 +222,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28013769bd97c3a438f5fdc0996a65fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reycastedImage: {fileID: 3734177664862070802}
   displayImage: {fileID: 5345108980455540263}
   priceCtrl: {fileID: 5645173659488310380}
   SellID: -1
+--- !u!114 &3734177664862070802 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 828813967518963049, guid: bbc20ad683fb99e4ba12bf666fb82618, type: 3}
+  m_PrefabInstance: {fileID: 4058586747462008187}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362226053498712743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8632144018940074724 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5735745775363368863, guid: bbc20ad683fb99e4ba12bf666fb82618, type: 3}

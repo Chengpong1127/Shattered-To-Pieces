@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SellElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
+    [SerializeField] Image reycastedImage;
     [SerializeField] Image displayImage;
     [SerializeField] PriceCtrl priceCtrl;
 
@@ -32,6 +33,9 @@ public class SellElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         if(sprite == null) {
             displayImage.color = Color.clear;
             priceCtrl.gameObject.SetActive(false);
+            if(reycastedImage != null) {
+                reycastedImage.raycastTarget = false;
+            }
             return;
         }
 
@@ -47,5 +51,9 @@ public class SellElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         displayImage.sprite = sprite;
         priceCtrl.gameObject.SetActive(true);
         priceCtrl.SetPrice(price);
+
+        if (reycastedImage != null) {
+            reycastedImage.raycastTarget = true;
+        }
     }
 }

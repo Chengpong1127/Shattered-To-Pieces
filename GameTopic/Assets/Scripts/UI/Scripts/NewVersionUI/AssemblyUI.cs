@@ -6,6 +6,7 @@ using UnityEngine;
 public class AssemblyUI : MonoBehaviour , ISellElementSubmitable {
     [SerializeField] PriceCtrl CostRemain;
     [SerializeField] SideBar Shop;
+    [SerializeField] ComponentDescription descriptionBox;
 
     IAssemblyRoom room = null;
     List<GameComponentData>[] componentList { get; set; } = new List<GameComponentData>[Enum.GetValues(typeof(GameComponentType)).Length];
@@ -21,6 +22,8 @@ public class AssemblyUI : MonoBehaviour , ISellElementSubmitable {
 
         Shop.GetSells += GetSells;
         Buy += BuyComponent;
+        OpenDescription += OpenDescriptionBox;
+        CloseDescription += CloseDescriptionBox;
     }
     private async void Start() {
         GameObject impRoom = GameObject.Find("RoomManager");
@@ -32,6 +35,8 @@ public class AssemblyUI : MonoBehaviour , ISellElementSubmitable {
     }
     private void OnDestroy() {
         Shop.GetSells -= GetSells;
+        OpenDescription -= OpenDescriptionBox;
+        CloseDescription -= CloseDescriptionBox;
         Buy = null;
         OpenDescription = null;
         CloseDescription = null;
@@ -70,5 +75,15 @@ public class AssemblyUI : MonoBehaviour , ISellElementSubmitable {
         if (room == null) { return; }
 
         room.CreateNewGameComponent(componentList[(int)Shop.displayComponentType][elementID], Vector2.zero);
+    }
+    void OpenDescriptionBox(int elementID) {
+        descriptionBox.SetDisplay(
+            componentList[(int)Shop.displayComponentType][elementID].DisplayImage,
+            componentList[(int)Shop.displayComponentType][elementID].DisplayName + " : " +
+            componentList[(int)Shop.displayComponentType][elementID].Description);
+        descriptionBox.gameObject.SetActive(true);
+    }
+    void CloseDescriptionBox(int elementID) {
+        descriptionBox.gameObject.SetActive(false);
     }
 }
