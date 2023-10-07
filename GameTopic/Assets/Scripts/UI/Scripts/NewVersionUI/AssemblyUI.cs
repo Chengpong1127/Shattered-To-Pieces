@@ -20,6 +20,7 @@ public class AssemblyUI : MonoBehaviour , ISellElementSubmitable {
         });
 
         Shop.GetSells += GetSells;
+        Buy += BuyComponent;
     }
     private async void Start() {
         GameObject impRoom = GameObject.Find("RoomManager");
@@ -62,5 +63,12 @@ public class AssemblyUI : MonoBehaviour , ISellElementSubmitable {
     void UpdateCostRemain(IGameComponent igc) {
         if (room == null) { return; }
         CostRemain.SetPrice(room.GetPlayerRemainedMoney());
+    }
+
+    void BuyComponent(int elementID) {
+        // room?.CreateNewGameComponent(gcd, Vector2.zero);// IDK position value.
+        if (room == null) { return; }
+
+        room.CreateNewGameComponent(componentList[(int)Shop.displayComponentType][elementID], Vector2.zero);
     }
 }

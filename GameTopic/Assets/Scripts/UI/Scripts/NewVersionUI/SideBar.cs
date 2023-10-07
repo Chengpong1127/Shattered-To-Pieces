@@ -18,7 +18,7 @@ public class SideBar : MonoBehaviour
     int displayTypeID = 0;
     bool IsDisplaying = true;
     bool IsSwitching = false;
-    GameComponentType displayComponentType = GameComponentType.Attack;
+    public GameComponentType displayComponentType = GameComponentType.Attack;
 
     private void Awake() {
         sideBarAnimator = GetComponent<Animator>();
