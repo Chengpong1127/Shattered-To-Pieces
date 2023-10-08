@@ -36,7 +36,7 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
         {
             var velocity = SelfEntity.BodyRigidbody.velocity;
             velocity.x = 0;
-            SelfEntity.BodyRigidbody.velocity = velocity;
+            SelfEntity.BodyRigibodySetVelocity_ClientRpc(velocity);
             if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, false);
             EndAbility();
         }
@@ -59,8 +59,9 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
                         velocity.x = Speed;
                         break;
                 }
-                SelfEntity.BodyRigidbody.velocity = velocity;
-                yield return null;
+                SelfEntity.BodyRigibodySetVelocity_ClientRpc(velocity);
+                //SelfEntity.BodyRigidbody.velocity = velocity;
+                yield return new WaitForFixedUpdate();
             }
         }
     }

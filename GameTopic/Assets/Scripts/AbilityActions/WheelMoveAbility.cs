@@ -25,26 +25,22 @@ public class WheelMoveAbility : DisplayableAbilityScriptableObject
     {
         public float Speed;
         public MoveDirection Direction;
-        public WheelJoint2D WheelJoint2D;
+        public Wheel wheel;
         public WheelMoveAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
-            WheelJoint2D = (SelfEntity as Wheel)?.WheelJoint;
-            Debug.Assert(WheelJoint2D != null, "The entity should have WheelJoint2D.");
+            wheel = SelfEntity as Wheel;
         }
 
         public override void CancelAbility()
         {
-            WheelJoint2D.useMotor = false;
+            wheel.WheelJointSetUseMotor_ClientRpc(false);
             EndAbility();
         }
 
         protected override IEnumerator ActivateAbility()
         {
-            WheelJoint2D.motor = new JointMotor2D() {
-                motorSpeed = Direction == MoveDirection.Left ? -Speed : Speed,
-                maxMotorTorque = 10000 
-            };
-            WheelJoint2D.useMotor = true;
+            wheel.WheelJointSetMotor_ClientRpc(Direction == MoveDirection.Left ? -Speed : Speed, 10000);
+            wheel.WheelJointSetUseMotor_ClientRpc(true);
             yield return null;
         }
     }
