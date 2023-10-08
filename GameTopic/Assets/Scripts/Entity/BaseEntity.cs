@@ -47,12 +47,15 @@ public abstract class BaseEntity : NetworkBehaviour
     }
     [ClientRpc]
     public void BodyRigibodySetVelocity_ClientRpc(Vector2 velocity){
-        if (IsOwner)
+        if (IsOwner){
             BodyRigidbody.velocity = velocity;
+        }
+
     }
     [ClientRpc]
     public void BodyRigibodyAddForce_ClientRpc(Vector2 force, ForceMode2D mode){
-        if (IsOwner)
+        if (IsOwner){
             BodyRigidbody.AddForce(force, mode);
+        }
     }
 }

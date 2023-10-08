@@ -61,7 +61,7 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
                 }
                 SelfEntity.BodyRigibodySetVelocity_ClientRpc(velocity);
                 //SelfEntity.BodyRigidbody.velocity = velocity;
-                yield return null;
+                yield return new WaitForFixedUpdate();
             }
         }
     }

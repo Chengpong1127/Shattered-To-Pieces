@@ -55,13 +55,11 @@ public class BasePlayer : NetworkBehaviour
     [ServerRpc]
     private void StartAbility_ServerRPC(int abilityNumber)
     {
-        Debug.Log("StartAbility_ServerRPC: " + abilityNumber);
         ServerAbilityRunner?.StartEntryAbility(abilityNumber);
     }
     [ServerRpc]
     private void CancelAbility_ServerRPC(int abilityNumber)
     {
-        Debug.Log("CancelAbility_ServerRPC: " + abilityNumber);
         ServerAbilityRunner?.CancelEntryAbility(abilityNumber);
     }
     protected virtual void Start(){
