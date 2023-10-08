@@ -104,28 +104,27 @@ public class AssemblyController : NetworkBehaviour
         componentIDs = componentIDs.Where(id => GetSelectableGameObject().Contains(id)).ToArray();
         if (componentIDs.Length > 0){
             if (componentIDs.First() != SelectedComponentID){
-                Debug.Log("SelectComponentHandler_ServerRpc");
-                var gameComponent = Utils.GetLocalGameObjectByNetworkID(componentIDs.First()).GetComponent<GameComponent>();
-                CancelLastSelection_ServerRpc();
-                tempSelectedParentComponentID = gameComponent.Parent == null ? null : (gameComponent.Parent as GameComponent).NetworkObjectId;
-                tempConnectionInfo = gameComponent.Parent == null ? null : (gameComponent.Connector.Dump() as ConnectionInfo);
-                gameComponent.DisconnectFromParent();
-                gameComponent.DisconnectAllChildren();
-                SelectedComponentID = gameComponent.NetworkObjectId;
-                gameComponent.SetSelected(true);
-                tempConnectableComponentIDs = GetConnectableGameObject();
-                SetAvailableForConnection(tempConnectableComponentIDs, true);
-                gameComponent.NetworkObject.ChangeOwnership(OwnerClientId);
-                SelectComponentHandler_ClientRpc(gameComponent.NetworkObjectId);
+                SelectComponentHandler(componentIDs.First());
             }
         }
     }
-    [ClientRpc]
-    private void SelectComponentHandler_ClientRpc(ulong componentID){
-        if (IsOwner){
-            var gameComponent = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<GameComponent>();
-            gameComponent.SetSelected(true);
-        }
+    private async void SelectComponentHandler(ulong componentID){
+        var gameComponent = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<GameComponent>();
+        CancelLastSelection_ServerRpc();
+        await UniTask.WaitUntil(() => !SelectedComponentID.HasValue);
+        await UniTask.NextFrame();
+        tempSelectedParentComponentID = gameComponent.Parent == null ? null : (gameComponent.Parent as GameComponent).NetworkObjectId;
+        tempConnectionInfo = gameComponent.Parent == null ? null : (gameComponent.Connector.Dump() as ConnectionInfo);
+        gameComponent.DisconnectFromParent();
+        gameComponent.DisconnectAllChildren();
+        SelectedComponentID = gameComponent.NetworkObjectId;
+        
+        tempConnectableComponentIDs = GetConnectableGameObject();
+        SetAvailableForConnection(tempConnectableComponentIDs, true);
+        
+        gameComponent.NetworkObject.ChangeOwnership(OwnerClientId);
+        await UniTask.NextFrame();
+        gameComponent.SetSelected(true);
     }
     [ServerRpc]
     private void CancelLastSelection_ServerRpc(){
@@ -136,7 +135,6 @@ public class AssemblyController : NetworkBehaviour
                 tempSelectedParentComponentID = null;
                 tempConnectionInfo = null;
             }
-            SelectedComponentID = null;
         }
     }
     [ServerRpc]
@@ -168,15 +166,19 @@ public class AssemblyController : NetworkBehaviour
     }
     [ServerRpc]
     private void DisconnectServerRpc(ulong[] componentIDs){
-        CancelLastSelection_ServerRpc();
         componentIDs = componentIDs.Where(id => GetSelectableGameObject().Contains(id)).ToArray();
         if (componentIDs.Length > 0){
-            var component = Utils.GetLocalGameObjectByNetworkID(componentIDs.First())?.GetComponent<IGameComponent>();
-            Debug.Assert(component != null, "component is null");
-            component.DisconnectFromParent();
-            component.DisconnectAllChildren();
+            Disconnect(componentIDs.First());
         }
-        
+    }
+    private async void Disconnect(ulong componentID){
+        CancelLastSelection_ServerRpc();
+        await UniTask.WaitUntil(() => !SelectedComponentID.HasValue);
+        await UniTask.NextFrame();
+        var component = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<GameComponent>();
+        component.DisconnectFromParent();
+        component.DisconnectAllChildren();
+        component.NetworkObject.RemoveOwnership();
     }
     #endregion
     #region Flip

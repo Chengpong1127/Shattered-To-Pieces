@@ -66,9 +66,8 @@ public class GameComponent : AbilityEntity, IGameComponent
         var tempParent = Parent;
         Parent = null;
         DisconnectFromParent_ClientRpc();
-        connector.Disconnect();
         BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
-        
+        connector.Disconnect();
         GameEvents.GameComponentEvents.OnGameComponentDisconnected.Invoke(this, tempParent as GameComponent);
         root?.OnRootConnectionChanged?.Invoke();
     }
