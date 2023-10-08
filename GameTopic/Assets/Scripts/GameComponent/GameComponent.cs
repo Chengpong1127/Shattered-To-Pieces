@@ -146,7 +146,6 @@ public class GameComponent : AbilityEntity, IGameComponent
     private void SetSelectedClientRpc(bool selected){
         switch (selected){
             case true:
-                connector.SetNonConnectedTargetsDisplay(false);
                 BodyColliders.ToList().ForEach((collider) => collider.isTrigger = true);
                 BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
                 BodyRigidbody.angularVelocity = 0;
@@ -154,7 +153,6 @@ public class GameComponent : AbilityEntity, IGameComponent
                 GameEvents.GameComponentEvents.OnGameComponentSelected.Invoke(this, true);
                 break;
             case false:
-                connector.SetNonConnectedTargetsDisplay(true);
                 BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
                 BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
                 BodyRigidbody.angularVelocity = 0;

@@ -120,6 +120,7 @@ public class AssemblyController : NetworkBehaviour
         SelectedComponentID = gameComponent.NetworkObjectId;
         
         tempConnectableComponentIDs = GetConnectableGameObject();
+        tempConnectableComponentIDs = tempConnectableComponentIDs.Where(id => id != SelectedComponentID).ToArray();
         SetAvailableForConnection(tempConnectableComponentIDs, true);
         
         gameComponent.NetworkObject.ChangeOwnership(OwnerClientId);
