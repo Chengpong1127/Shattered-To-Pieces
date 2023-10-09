@@ -1,9 +1,6 @@
 using UnityEngine;
 
 public class AssemblyRoomLocalPlayerManager: BaseLocalPlayerManager{
-    private void Exiting_Enter(){
-        (GameRunner as AssemblyRoomRunner).SaveCurrentDevice();
-    }
     private void Start() {
         if (FindAnyObjectByType(typeof(LocalGameManager)) == null)
         {

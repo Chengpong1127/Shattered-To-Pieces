@@ -77,7 +77,7 @@ public class BaseLocalPlayerManager : NetworkBehaviour
         if(IsOwner){
             StateMachine.ChangeState(LocalPlayerStates.Exiting);
             connectionManager.StopConnection();
-            GameEvents.LocalPlayerEvents.OnPlayerRequestExitGame.Invoke();
+            //GameEvents.LocalPlayerEvents.OnPlayerRequestExitGame.Invoke();
             OnPlayerExitRoom?.Invoke();
         }
     }
