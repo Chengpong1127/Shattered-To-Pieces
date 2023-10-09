@@ -55,11 +55,13 @@ public class BaseGameRunner: NetworkBehaviour{
         await UniTask.WaitUntil(() => PlayerMap.Values.All(player => player.IsAlive.Value));
     }
     protected virtual void GameStartSpawnAllPlayer(){
-        PlayerMap.Values.ToList().ForEach(player => SpawnDevice(player, "0"));
+        PlayerMap.Values.ToList().ForEach(player => {
+            SpawnDevice(player, "0");
+        });
     }
 
     public virtual void SpawnDevice(BasePlayer player, string filename){
-        player.ServerLoadDevice(filename);
+        player.ServerLoadDevice(filename, Vector3.zero);
     }
 
     protected virtual void PlayerDiedHandler(BasePlayer player){

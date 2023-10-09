@@ -6,18 +6,9 @@ public class MapTestGameRunner : SimpleGameRunner
 {
     public Transform[] ComponentSpawnPoint;
     public GameObject[] Components;
-    private void Gaming_Enter()
+    protected void Gaming_Enter()
     {
-        SetPlayerSpawnPoints();
         SetRandomComponents();
-    }
-    private void SetPlayerSpawnPoints()
-    {
-        int i = 0;
-        foreach (var player in PlayerMap)
-        {
-            player.Value.SetPlayerPoint(SpawnPoints[i++]);
-        }
     }
     private void SetRandomComponents()
     {

@@ -443,7 +443,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4028a190dc6ea43d5870b1c9da8a14bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerCount: 1
   connectionManager: {fileID: 751570062}
   GameRunner: {fileID: 751570058}
   VirtualCamera: {fileID: 1957124926}

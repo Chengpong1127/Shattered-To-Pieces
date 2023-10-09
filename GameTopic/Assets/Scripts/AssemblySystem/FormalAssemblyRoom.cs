@@ -139,7 +139,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
 
         deviceInfo ??= ResourceManager.Instance.LoadDefaultDeviceInfo();
         ClearAllGameComponents();
-        ControlledDevice.Load(deviceInfo);
+        //ControlledDevice.Load(deviceInfo);
         ControlledDevice.ForEachGameComponent(SpawnedGameComponents.Add);
 
         AbilityInputActionMap = deviceInfo.AbilityManagerInfo.GetAbilityInputActionMap();
@@ -154,7 +154,7 @@ public class FormalAssemblyRoom : MonoBehaviour, IAssemblyRoom
     public IGameComponent CreateNewGameComponent(GameComponentData componentData, Vector2 position)
     {
         var path = componentData.ResourcePath;
-        var newComponent = _gameComponentFactory.CreateGameComponentObject(path);
+        var newComponent = _gameComponentFactory.CreateGameComponentObject(path, Vector3.zero);
         SpawnedGameComponents.Add(newComponent);
         newComponent.DraggableTransform.position = position;
         return newComponent;

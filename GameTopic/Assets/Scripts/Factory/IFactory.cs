@@ -1,3 +1,4 @@
+using UnityEngine;
 
 public interface IGameComponentFactory{
     /// <summary>
@@ -5,5 +6,5 @@ public interface IGameComponentFactory{
     /// </summary>
     /// <param name="gameComponentName"></param>
     /// <returns></returns>
-    IGameComponent CreateGameComponentObject(string gameComponentName);
+    IGameComponent CreateGameComponentObject(string gameComponentName, Vector3 position);
 }

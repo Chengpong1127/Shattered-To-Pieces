@@ -86,12 +86,12 @@ public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
 
     public override void SpawnDevice(BasePlayer player, string filename){
         CleanAllGameComponents();
-        player.ServerLoadDevice(filename);
+        player.ServerLoadDevice(filename, Vector3.zero);
     }
 
     public IGameComponent CreateNewGameComponent(GameComponentData componentData, Vector2 position)
     {
-        return _gameComponentFactory.CreateGameComponentObject(componentData.ResourcePath);
+        return _gameComponentFactory.CreateGameComponentObject(componentData.ResourcePath, Vector3.zero);
     }
 
     public void LoadDevice(int DeviceID)

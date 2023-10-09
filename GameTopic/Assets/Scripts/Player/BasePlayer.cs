@@ -35,22 +35,26 @@ public class BasePlayer : NetworkBehaviour
 
     
     [ServerRpc]
-    private void LoadDeviceServerRpc(string json)
+    private void LoadDeviceServerRpc(string json, Vector3 position)
     {
-        loadDevice(json);
+        loadDevice(json, position);
     }
-    private async void loadDevice(string json){
+    private async void loadDevice(string json, Vector3 position){
         if (ServerAbilityRunner != null){
             Destroy(ServerAbilityRunner);
         }
         SelfDevice = new Device(new NetworkGameComponentFactory());
-        await SelfDevice.LoadAsync(DeviceInfo.CreateFromJson(json));
-        SelfDevice.ForEachGameComponent(component => (component as GameComponent)?.NetworkObject.ChangeOwnership(OwnerClientId));
+        await SelfDevice.LoadAsync(DeviceInfo.CreateFromJson(json), position, OwnerClientId);
         ServerAbilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager, OwnerClientId);
         OnPlayerLoaded?.Invoke();
         IsAlive.Value = true;
         RootNetworkObjectID.Value = SelfDevice.RootGameComponent.NetworkObjectId;
         SelfDevice.OnDeviceDied += DeviceDiedHandler;
+        // await UniTask.WaitForSeconds(5);
+        // SelfDevice.ForEachGameComponent(async component => {
+        //     (component as GameComponent).NetworkObject.ChangeOwnership(OwnerClientId);
+        //     await UniTask.DelayFrame(5);
+        // });
     }
     [ServerRpc]
     private void StartAbility_ServerRPC(int abilityNumber)
@@ -82,16 +86,16 @@ public class BasePlayer : NetworkBehaviour
         OnPlayerDied?.Invoke();
         Destroy(ServerAbilityRunner);
     }
-    public void ServerLoadDevice(string filename){
+    public void ServerLoadDevice(string filename, Vector3 position){
         if (IsServer){
-            LoadLocalDeviceClientRpc(filename);
+            LoadLocalDeviceClientRpc(filename, position);
         }
     }
     [ClientRpc]
-    protected virtual void LoadLocalDeviceClientRpc(string filename){
+    protected virtual void LoadLocalDeviceClientRpc(string filename, Vector3 position){
         if (IsOwner){
             var info = GetLocalDeviceInfo(filename);
-            LoadDeviceServerRpc(info.ToJson());
+            LoadDeviceServerRpc(info.ToJson(), position);
             LocalAbilityActionMap?.Dispose();
             LocalAbilityActionMap = info.AbilityManagerInfo.GetAbilityInputActionMap();
             LocalAbilityActionMap.Enable();
@@ -102,10 +106,6 @@ public class BasePlayer : NetworkBehaviour
         return ResourceManager.Instance.LoadLocalDeviceInfo(filename) ?? ResourceManager.Instance.LoadDefaultDeviceInfo();
     }
 
-    public void SetPlayerPoint(Transform transform)
-    {
-        SelfDevice.RootGameComponent.BodyTransform.SetPositionAndRotation(transform.position, transform.rotation);
-    }
 
     public Transform GetTracedTransform(){
         var obj = Utils.GetLocalGameObjectByNetworkID(RootNetworkObjectID.Value);

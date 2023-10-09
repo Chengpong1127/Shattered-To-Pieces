@@ -38,9 +38,9 @@ public class GameComponent : AbilityEntity, IGameComponent
         if (parentComponent == null) throw new ArgumentNullException("parentComponent");
         if (info == null) throw new ArgumentNullException("info");
         var parent = parentComponent as GameComponent;
-        Parent = parentComponent;
-        Parent.Children.Add(this);
-        connector.ConnectToComponent(parentComponent.Connector, info);
+        // Parent = parentComponent;
+        // Parent.Children.Add(this);
+        //connector.ConnectToComponent(parentComponent.Connector, info);
 
         NetworkObject.ChangeOwnership(parent.NetworkObject.OwnerClientId);
         await UniTask.NextFrame();
@@ -51,32 +51,29 @@ public class GameComponent : AbilityEntity, IGameComponent
     }
     [ClientRpc]
     private void ConnectToParent_ClientRpc(ulong parentID, string connectionInfoJson){
-        if (IsOwner){
-            var info = ConnectionInfo.CreateFromJson(connectionInfoJson);
-            var parent = Utils.GetLocalGameObjectByNetworkID(parentID)?.GetComponent<IGameComponent>();
-            connector.ConnectToComponent(parent.Connector, info);
-        }
+        var info = ConnectionInfo.CreateFromJson(connectionInfoJson);
+        var parent = Utils.GetLocalGameObjectByNetworkID(parentID)?.GetComponent<IGameComponent>();
+        Parent = parent;
+        Parent.Children.Add(this);
+        connector.ConnectToComponent(parent.Connector, info);
     }
 
     public virtual void DisconnectFromParent()
     {
         if (Parent == null) return;
         var root = GetRoot() as GameComponent;
-        Parent.Children.Remove(this);
-        var tempParent = Parent;
-        Parent = null;
+        //Parent.Children.Remove(this);
+        //Parent = null;
+        //connector.Disconnect();
+        GameEvents.GameComponentEvents.OnGameComponentDisconnected.Invoke(this, Parent as GameComponent);
         DisconnectFromParent_ClientRpc();
-        BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
-        connector.Disconnect();
-        GameEvents.GameComponentEvents.OnGameComponentDisconnected.Invoke(this, tempParent as GameComponent);
         root?.OnRootConnectionChanged?.Invoke();
     }
     [ClientRpc]
     private void DisconnectFromParent_ClientRpc(){
-        if (IsOwner){
-            connector.Disconnect();
-            BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
-        }
+        Parent.Children.Remove(this);
+        Parent = null;
+        connector.Disconnect();
     }
 
     public IInfo Dump(){

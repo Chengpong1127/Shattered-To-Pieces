@@ -32,9 +32,9 @@ public class AssemblyablePlayer: BasePlayer{
         base.DeviceDiedHandler();
     }
     [ClientRpc]
-    protected override void LoadLocalDeviceClientRpc(string filename)
+    protected override void LoadLocalDeviceClientRpc(string filename, Vector3 position)
     {
-        base.LoadLocalDeviceClientRpc(filename);
+        base.LoadLocalDeviceClientRpc(filename, position);
         if (IsOwner){
             AbilityRebinder = new AbilityRebinder(LocalAbilityActionMap);
         }

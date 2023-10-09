@@ -45,10 +45,7 @@ public class Device: IDevice
         deviceInfo.AbilityManagerInfo = new AbilityManagerInfo(AbilityManager, gameComponentIDMapping);
         return deviceInfo;
     }
-    public async void Load(IInfo info){
-        await LoadAsync(info);
-    }
-    public async UniTask LoadAsync(IInfo info){
+    public async UniTask LoadAsync(IInfo info, Vector3 position, ulong ownerID){
         if (info is not DeviceInfo){
             throw new ArgumentException("The info should be DeviceInfo");
         }
@@ -57,7 +54,7 @@ public class Device: IDevice
         }
         var deviceInfo = info as DeviceInfo;
 
-        var tempDictionary = CreateAllComponents(deviceInfo.TreeInfo.NodeInfoMap);
+        var tempDictionary = CreateAllComponents(deviceInfo.TreeInfo.NodeInfoMap, position);
         tempDictionary.Values.ToList().ForEach((component) => {
             component.SetSelected(true);
         });
@@ -65,8 +62,8 @@ public class Device: IDevice
             var component = tempDictionary[pair.Key];
             component.Load(pair.Value);
         });
-        await UniTask.WaitForFixedUpdate();
         RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID];
+        await UniTask.WaitForFixedUpdate();
         ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList);  
         tempDictionary.Values.ToList().ForEach((component) => {
             component.SetSelected(false);
@@ -78,12 +75,12 @@ public class Device: IDevice
         };
     }
 
-    private Dictionary<int, IGameComponent> CreateAllComponents(Dictionary<int, GameComponentInfo> nodes){
+    private Dictionary<int, IGameComponent> CreateAllComponents(Dictionary<int, GameComponentInfo> nodes, Vector3 position){
         Debug.Assert(GameComponentFactory != null, "GameComponentFactory is null");
         var tempDictionary = new Dictionary<int, IGameComponent>();
         foreach (var (key, value) in nodes){
             var componentInfo = value;
-            var component = GameComponentFactory.CreateGameComponentObject(componentInfo.ComponentName);
+            var component = GameComponentFactory.CreateGameComponentObject(componentInfo.ComponentName, position);
             tempDictionary.Add(key, component);
         }
         return tempDictionary;

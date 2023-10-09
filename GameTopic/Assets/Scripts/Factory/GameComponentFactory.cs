@@ -24,4 +24,20 @@ public class GameComponentFactory : IGameComponentFactory
         return null;
     }
 
+    public IGameComponent CreateGameComponentObject(string gameComponentName, Vector3 position)
+    {
+        GameObject prefab = ResourceManager.Instance.LoadPrefab(gameComponentName);
+        if (prefab != null)
+        {
+            var obj = GameObject.Instantiate(prefab, position, Quaternion.identity);
+            var component = obj.GetComponent<IGameComponent>();
+            component.ComponentName = gameComponentName;
+            return component;
+        }
+        else
+        {
+            Debug.LogWarning("Cannot find prefab: " + gameComponentName);
+        }
+        return null;
+    }
 }

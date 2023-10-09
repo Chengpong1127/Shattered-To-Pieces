@@ -8,12 +8,13 @@ public class NetworkGameComponentFactory : IGameComponentFactory
     public NetworkGameComponentFactory(){
 
     }
-    public IGameComponent CreateGameComponentObject(string gameComponentName)
+
+    public IGameComponent CreateGameComponentObject(string gameComponentName, Vector3 position)
     {
         GameObject prefab = ResourceManager.Instance.LoadPrefab(gameComponentName);
         if (prefab != null)
         {
-            var obj = GameObject.Instantiate(prefab);
+            var obj = GameObject.Instantiate(prefab, position, Quaternion.identity);
             obj.GetComponent<NetworkObject>()?.Spawn();
             var component = obj.GetComponent<IGameComponent>();
             component.ComponentName = gameComponentName;
@@ -25,5 +26,4 @@ public class NetworkGameComponentFactory : IGameComponentFactory
         }
         return null;
     }
-
 }

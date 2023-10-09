@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using AbilitySystem.Authoring;
 
-public interface IDevice: IStorable{
+public interface IDevice{
     public IGameComponent RootGameComponent { get; }
     /// <summary>
     /// Get all of the ability list of this device.
