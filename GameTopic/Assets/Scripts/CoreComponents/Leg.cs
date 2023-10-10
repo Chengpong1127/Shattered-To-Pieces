@@ -22,7 +22,6 @@ public class Leg : BaseCoreComponent , IBodyControlable, IGroundCheckable {
         while(cancellationToken.IsCancellationRequested == false){
             try{
                 await ListenGround(cancellationToken);
-                if (cancellationToken.IsCancellationRequested) break;
                 await ListenUnground(cancellationToken);
             }catch(OperationCanceledException){
                 return;
@@ -33,10 +32,8 @@ public class Leg : BaseCoreComponent , IBodyControlable, IGroundCheckable {
         var trigger = GroundTriggerCollider.GetAsyncTriggerStay2DTrigger();
         
         while(!IsGrounded && !cancellationToken.IsCancellationRequested) {
-            var collider = await trigger.OnTriggerStay2DAsync(cancellationToken);
-            if (collider.GetComponentInParent<Taggable>()?.HasTag("Ground") ?? false) {
-                IsGrounded = true;
-            }
+            await trigger.OnTriggerStay2DAsync(cancellationToken);
+            IsGrounded = true;
         }
     }
     private async UniTask ListenUnground(CancellationToken cancellationToken) {
