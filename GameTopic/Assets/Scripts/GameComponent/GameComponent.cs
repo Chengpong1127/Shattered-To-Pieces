@@ -39,6 +39,10 @@ public class GameComponent : AbilityEntity, IGameComponent
         if (info == null) throw new ArgumentNullException("info");
         var parent = parentComponent as GameComponent;
 
+        Parent = parent;
+        Parent.Children.Add(this);
+        connector.ConnectToComponent(parent.Connector, info);
+
         NetworkObject.ChangeOwnership(parent.NetworkObject.OwnerClientId);
         await UniTask.NextFrame();
         ConnectToParent_ClientRpc(parent.NetworkObjectId, info.ToJson());
@@ -48,26 +52,36 @@ public class GameComponent : AbilityEntity, IGameComponent
     }
     [ClientRpc]
     private void ConnectToParent_ClientRpc(ulong parentID, string connectionInfoJson){
-        var info = ConnectionInfo.CreateFromJson(connectionInfoJson);
-        var parent = Utils.GetLocalGameObjectByNetworkID(parentID)?.GetComponent<IGameComponent>();
-        Parent = parent;
-        Parent.Children.Add(this);
-        connector.ConnectToComponent(parent.Connector, info);
+        if (!IsServer){
+            var info = ConnectionInfo.CreateFromJson(connectionInfoJson);
+            var parent = Utils.GetLocalGameObjectByNetworkID(parentID)?.GetComponent<IGameComponent>();
+            Parent = parent;
+            Parent.Children.Add(this);
+            connector.ConnectToComponent(parent.Connector, info);
+        }
+
     }
 
     public virtual void DisconnectFromParent()
     {
         if (Parent == null) return;
         var root = GetRoot() as GameComponent;
+        Parent.Children.Remove(this);
+        Parent = null;
+        connector.Disconnect();
+
         GameEvents.GameComponentEvents.OnGameComponentDisconnected.Invoke(this, Parent as GameComponent);
         DisconnectFromParent_ClientRpc();
         root?.OnRootConnectionChanged?.Invoke();
     }
     [ClientRpc]
     private void DisconnectFromParent_ClientRpc(){
-        Parent.Children.Remove(this);
-        Parent = null;
-        connector.Disconnect();
+        if (!IsServer){
+            Parent.Children.Remove(this);
+            Parent = null;
+            connector.Disconnect();
+        }
+        
     }
 
     public IInfo Dump(){

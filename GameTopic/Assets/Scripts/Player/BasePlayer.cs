@@ -44,7 +44,7 @@ public class BasePlayer : NetworkBehaviour
             Destroy(ServerAbilityRunner);
         }
         SelfDevice = new Device(new NetworkGameComponentFactory());
-        await SelfDevice.LoadAsync(DeviceInfo.CreateFromJson(json), position, OwnerClientId);
+        await SelfDevice.LoadAsync(DeviceInfo.CreateFromJson(json), position);
         ServerAbilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager, OwnerClientId);
         OnPlayerLoaded?.Invoke();
         RootNetworkObjectID.Value = SelfDevice.RootGameComponent.NetworkObjectId;

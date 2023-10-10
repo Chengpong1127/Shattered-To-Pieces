@@ -45,7 +45,7 @@ public class Device: IDevice
         deviceInfo.AbilityManagerInfo = new AbilityManagerInfo(AbilityManager, gameComponentIDMapping);
         return deviceInfo;
     }
-    public async UniTask LoadAsync(IInfo info, Vector3 position, ulong ownerID){
+    public async UniTask LoadAsync(IInfo info, Vector3 position){
         if (info is not DeviceInfo){
             throw new ArgumentException("The info should be DeviceInfo");
         }
@@ -64,7 +64,8 @@ public class Device: IDevice
         });
         await UniTask.WaitForFixedUpdate();
         RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID];
-        ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList);  
+        ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList); 
+        await UniTask.NextFrame();
         tempDictionary.Values.ToList().ForEach((component) => {
             component.SetSelected(false);
         });
