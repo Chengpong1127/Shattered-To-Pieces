@@ -8,12 +8,17 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using Cysharp.Threading.Tasks.Triggers;
+using AttributeSystem.Authoring;
 
 /// <summary>
 /// Entity is the base class for all entities in the game. An entity has attributes and the init abilities to set up the init state of the entity.
 /// </summary>
 [RequireComponent(typeof(AttributeSystemComponent)), RequireComponent(typeof(AbilitySystemCharacter))]
 public class Entity: BaseEntity{
+    //[HideInInspector]
+    public float CollisionDamageThreshold = 400;
+    [HideInInspector]
+    public GameplayEffectScriptableObject CollisionDamageEffect;
     [HideInInspector]
     public AttributeSystemComponent AttributeSystemComponent;
     [HideInInspector]
@@ -27,6 +32,12 @@ public class Entity: BaseEntity{
         AbilitySystemCharacter ??= GetComponent<AbilitySystemCharacter>();
         AbilitySystemCharacter.AttributeSystem = AttributeSystemComponent;
         ActivateInitializationAbilities();
+        CollisionDamageEffect = ResourceManager.Instance.LoadGameplayEffect("CollisionDamageGE");
+    }
+    protected override void Start()
+    {
+        base.Start();
+        BodyColliders.ToList().ForEach(SetColliderCollision);
     }
     private async void ActivateInitializationAbilities()
     {
@@ -45,16 +56,22 @@ public class Entity: BaseEntity{
 
     private async void SetColliderCollision(Collider2D collider){
         var collisionTrigger = collider.GetAsyncCollisionEnter2DTrigger();
-        while(true){
-            var collision = await collisionTrigger.OnCollisionEnter2DAsync();
+        try{
+            while(true){
+                var collision = await collisionTrigger.OnCollisionEnter2DAsync();
+                if (GetImpulse(collision) > CollisionDamageThreshold){
+                    var damage = GetImpulse(collision) - CollisionDamageThreshold;
+                    damage = Mathf.Pow(damage, 1.5f) / 10;
+                    Debug.Log($"Collision damage: {damage}");
+                    CollisionDamageEffect.gameplayEffect.Modifiers[0].Multiplier = -damage;
+                    GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(this, this, CollisionDamageEffect);
+                }
 
-            ContactPoint2D[] contacts = new ContactPoint2D[collision.contactCount];
-            collision.GetContacts(contacts);
-            float totalImpulse = 0;
-            foreach (ContactPoint2D contact in contacts) {
-                totalImpulse += contact.normalImpulse;
             }
-            Debug.Log(totalImpulse);
+        }catch(OperationCanceledException){
         }
+    }
+    private float GetImpulse(Collision2D collision){
+        return 0.5f * BodyRigidbody.mass * Mathf.Pow(collision.relativeVelocity.magnitude, 2);
     }
 }

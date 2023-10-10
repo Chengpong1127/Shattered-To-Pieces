@@ -10,7 +10,6 @@ public class HealthEffectHandler: BaseGameEventHandler
     public float Duration = 0.2f;
     public Color RecoveryColor = Color.green;
     public Color DamageColor = Color.red;
-    private Dictionary<BaseEntity, CancellationTokenSource> EntityToken = new();
 
     void OnEnable()
     {
@@ -25,35 +24,23 @@ public class HealthEffectHandler: BaseGameEventHandler
     }
     [ClientRpc]
     private void OnEntityHealthChanged_ClientRpc(ulong entityID, float oldHealth, float newHealth){
-        BaseEntity baseEntity = null;
         try{
+            BaseEntity baseEntity = null;
             baseEntity = Utils.GetLocalGameObjectByNetworkID(entityID).GetComponent<BaseEntity>();
+            if (newHealth > 0){
+                if (newHealth > oldHealth){
+                    ColorAnimation(baseEntity.NetworkObjectId, RecoveryColor);
+                }
+                if (newHealth < oldHealth){
+                    ColorAnimation(baseEntity.NetworkObjectId, DamageColor);
+                }
+            }
         }catch{
             return;
         }
-        if (newHealth > 0){
-            if (newHealth > oldHealth){
-                if (EntityToken.ContainsKey(baseEntity)){
-                    var tokenSource = EntityToken[baseEntity];
-                    tokenSource.Cancel();
-                    EntityToken.Remove(baseEntity);
-                }
-                EntityToken.Add(baseEntity, new CancellationTokenSource());
-                ColorAnimation(baseEntity.NetworkObjectId, RecoveryColor, EntityToken[baseEntity].Token);
-            }
-            if (newHealth < oldHealth){
-                if (EntityToken.ContainsKey(baseEntity)){
-                    var tokenSource = EntityToken[baseEntity];
-                    tokenSource.Cancel();
-                    EntityToken.Remove(baseEntity);
-                }
-                EntityToken.Add(baseEntity, new CancellationTokenSource());
-                ColorAnimation(baseEntity.NetworkObjectId, DamageColor, EntityToken[baseEntity].Token);
-            }
-        }
     }
 
-    private void ColorAnimation(ulong entityID, Color startColor, CancellationToken token){
+    private void ColorAnimation(ulong entityID, Color startColor){
         var entity = Utils.GetLocalGameObjectByNetworkID(entityID).GetComponent<BaseEntity>();
         entity.BodyRenderers.Select(renderer => renderer as SpriteRenderer).
             Where(renderer => renderer != null).
@@ -65,7 +52,7 @@ public class HealthEffectHandler: BaseGameEventHandler
                 {
                     renderer.color = Color.Lerp(startColor, endColor, elapsedTime / Duration);
                     elapsedTime += Time.deltaTime;
-                    await UniTask.Yield(token);
+                    await UniTask.Yield();
                 }
                 renderer.color = endColor;
             });

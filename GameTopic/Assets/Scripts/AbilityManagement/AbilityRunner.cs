@@ -43,13 +43,11 @@ public class AbilityRunner: MonoBehaviour, IAbilityRunner{
     private void ActivateEntry(List<GameComponentAbility> abilities){
         foreach (var ability in abilities){
             ability.AbilitySpec.Runner = this;
-            Debug.Log("Start ability: " + ability.AbilityName);
             StartCoroutine(ability.AbilitySpec.TryActivateAbility());
         }
     }
     private void CancelEntry(List<GameComponentAbility> abilities){
         foreach (var ability in abilities){
-            Debug.Log("Cancel ability: " + ability.AbilityName);
             ability.AbilitySpec.CancelAbility();
         }
     }

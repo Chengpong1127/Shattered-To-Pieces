@@ -531,6 +531,8 @@ MonoBehaviour:
   - {fileID: 7584931007153504725}
   - {fileID: 5981861964978868201}
   - {fileID: 8600567707534542262}
+  CollisionDamageThreshold: 300
+  CollisionDamageEffect: {fileID: 0}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
   InitializationAbilities:

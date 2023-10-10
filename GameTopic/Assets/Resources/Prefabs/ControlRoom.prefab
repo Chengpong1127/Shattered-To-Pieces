@@ -796,6 +796,8 @@ MonoBehaviour:
   bodyAnimator: {fileID: 0}
   bodyRenderers:
   - {fileID: 5638081112914515358}
+  CollisionDamageThreshold: 500
+  CollisionDamageEffect: {fileID: 0}
   AttributeSystemComponent: {fileID: 8187615772520921709}
   AbilitySystemCharacter: {fileID: 4120888074827841385}
   InitializationAbilities:
