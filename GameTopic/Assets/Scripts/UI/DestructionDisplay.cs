@@ -5,8 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Unity.Netcode;
 
-public class DestructionDisplay : MonoBehaviour
+public class DestructionDisplay : NetworkBehaviour
 {
     [SerializeField] AttributeScriptableObject HealthAttribute;
     [SerializeField] AttributeScriptableObject MaxHealthAttribute;
@@ -18,9 +19,6 @@ public class DestructionDisplay : MonoBehaviour
     AttributeSystemComponent ASC;
     AttributeValue AttributeGetter;
     Entity entity;
-    float currentVal;
-    float maximaVal;
-    float proportion;
 
     
 
@@ -59,11 +57,15 @@ public class DestructionDisplay : MonoBehaviour
         if (!isDisplay) { return; }
 
         ASC.GetAttributeValue(HealthAttribute, out AttributeGetter);
-        currentVal = AttributeGetter.CurrentValue;
+        var currentVal = AttributeGetter.CurrentValue;
         ASC.GetAttributeValue(MaxHealthAttribute, out AttributeGetter);
-        maximaVal = AttributeGetter.CurrentValue;
-        proportion = 1 - (currentVal / maximaVal);
+        var maximaVal = AttributeGetter.CurrentValue;
+        var proportion = 1 - (currentVal / maximaVal);
 
+        UpdateMaterials_ClientRpc(proportion);
+    }
+    [ClientRpc]
+    private void UpdateMaterials_ClientRpc(float proportion){
         MaterialList.ForEach(m => {
             m.SetFloat("_Fade", proportion);
         });
