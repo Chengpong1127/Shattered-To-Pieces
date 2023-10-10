@@ -33,18 +33,15 @@ public class GameComponent : AbilityEntity, IGameComponent
 
     #endregion
 
-    public virtual void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
+    public virtual async void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
     {
         if (parentComponent == null) throw new ArgumentNullException("parentComponent");
         if (info == null) throw new ArgumentNullException("info");
         var parent = parentComponent as GameComponent;
-        Parent = parentComponent;
-        Parent.Children.Add(this);
-        connector.ConnectToComponent(parentComponent.Connector, info);
 
-        //NetworkObject.ChangeOwnership(parent.NetworkObject.OwnerClientId);
-        //await UniTask.NextFrame();
-        //ConnectToParent_ClientRpc(parent.NetworkObjectId, info.ToJson());
+        NetworkObject.ChangeOwnership(parent.NetworkObject.OwnerClientId);
+        await UniTask.NextFrame();
+        ConnectToParent_ClientRpc(parent.NetworkObjectId, info.ToJson());
 
         (GetRoot() as GameComponent)?.OnRootConnectionChanged?.Invoke();
         GameEvents.GameComponentEvents.OnGameComponentConnected.Invoke(this, Parent as GameComponent);
@@ -62,11 +59,8 @@ public class GameComponent : AbilityEntity, IGameComponent
     {
         if (Parent == null) return;
         var root = GetRoot() as GameComponent;
-        //Parent.Children.Remove(this);
-        //Parent = null;
-        //connector.Disconnect();
         GameEvents.GameComponentEvents.OnGameComponentDisconnected.Invoke(this, Parent as GameComponent);
-        //DisconnectFromParent_ClientRpc();
+        DisconnectFromParent_ClientRpc();
         root?.OnRootConnectionChanged?.Invoke();
     }
     [ClientRpc]
@@ -194,11 +188,5 @@ public class GameComponent : AbilityEntity, IGameComponent
             var child = Children[0] as GameComponent;
             child.DisconnectFromParent();
         }
-    }
-
-    public override void OnDestroy()
-    {
-        DisconnectAllChildren();
-        DisconnectFromParent();
     }
 }

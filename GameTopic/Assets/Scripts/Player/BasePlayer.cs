@@ -51,9 +51,8 @@ public class BasePlayer : NetworkBehaviour
         SelfDevice.OnDeviceDied += DeviceDiedHandler;
         IsAlive.Value = true;
         // await UniTask.WaitForSeconds(5);
-        // SelfDevice.ForEachGameComponent(async component => {
+        // SelfDevice.ForEachGameComponent(component => {
         //     (component as GameComponent).NetworkObject.ChangeOwnership(OwnerClientId);
-        //     await UniTask.DelayFrame(5);
         // });
     }
     [ServerRpc]
