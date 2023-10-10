@@ -460,7 +460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkManager: {fileID: 0}
-  PlayerCount: 2
+  PlayerCount: 1
   UseRelay: 0
 --- !u!1 &1193135942
 GameObject:

@@ -101,7 +101,7 @@ public class Connector : MonoBehaviour, IConnector
 
     public void Disconnect()
     {
-        GameComponent.BodyTransform.SetParent(null);
+        //GameComponent.BodyTransform.SetParent(null);
         if (_currentLinkedTarget != null){
             _currentLinkedTarget.Unlink();
             _currentLinkedTarget = null;
