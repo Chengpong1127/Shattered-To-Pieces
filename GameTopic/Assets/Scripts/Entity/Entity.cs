@@ -59,10 +59,8 @@ public class Entity: BaseEntity{
         try{
             while(true){
                 var collision = await collisionTrigger.OnCollisionEnter2DAsync();
-                Debug.Log(GetImpulse(collision));
                 if (GetImpulse(collision) > CollisionDamageThreshold){
                     var damage = GetImpulse(collision) - CollisionDamageThreshold;
-                    Debug.Log($"Collision damage: {damage}");
                     CollisionDamageEffect.gameplayEffect.Modifiers[0].Multiplier = -damage;
                     GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(this, this, CollisionDamageEffect);
                 }
