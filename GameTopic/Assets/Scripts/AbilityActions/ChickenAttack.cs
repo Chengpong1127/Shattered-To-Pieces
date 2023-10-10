@@ -38,13 +38,6 @@ public class ChickenAttack : DisplayableAbilityScriptableObject {
             summonMachine.InitSummonObject(SummonPrefab);
             yield return null;
         }
-
-        protected override IEnumerator PreActivate() {
-            yield return null;
-        }
-
-        private void TriggerAction(Entity other) {
-        }
     }
 
 
