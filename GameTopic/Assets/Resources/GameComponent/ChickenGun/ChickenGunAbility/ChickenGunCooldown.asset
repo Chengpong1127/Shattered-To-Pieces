@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: ChickenGunCooldown
   m_EditorClassIdentifier: 
   gameplayEffect:
-    DurationPolicy: 0
-    DurationModifier: {fileID: 0}
-    DurationMultiplier: 0
+    DurationPolicy: 2
+    DurationModifier: {fileID: 11400000, guid: 5c69ab17e675944bcb250d5d684d897e, type: 2}
+    DurationMultiplier: 1
     Modifiers: []
     ConditionalGameplayEffects: []
   gameplayEffectTags:
-    AssetTag: {fileID: 0}
-    GrantedTags: []
+    AssetTag: {fileID: 11400000, guid: 1a79037684f4d4aa5ab7f098a3f989f5, type: 2}
+    GrantedTags:
+    - {fileID: 11400000, guid: 1a79037684f4d4aa5ab7f098a3f989f5, type: 2}
     OngoingTagRequirements:
       RequireTags: []
       IgnoreTags: []

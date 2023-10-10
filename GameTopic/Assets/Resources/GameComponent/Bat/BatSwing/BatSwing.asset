@@ -17,7 +17,7 @@ MonoBehaviour:
     AssetTag: {fileID: 0}
     CancelAbilitiesWithTags: []
     BlockAbilitiesWithTags:
-    - {fileID: 11400000, guid: 12bb00736f0924f138733a5c9893373f, type: 2}
+    - {fileID: 11400000, guid: 1a79037684f4d4aa5ab7f098a3f989f5, type: 2}
     ActivationOwnedTags: []
     OwnerTags:
       RequireTags: []

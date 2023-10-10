@@ -6,6 +6,8 @@ using System;
 using System.Collections;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
+using Cysharp.Threading.Tasks.Triggers;
 
 /// <summary>
 /// Entity is the base class for all entities in the game. An entity has attributes and the init abilities to set up the init state of the entity.
@@ -39,5 +41,20 @@ public class Entity: BaseEntity{
         await UniTask.WaitUntil(() => specs.Any(spec => spec.isActive));
         await UniTask.WaitUntil(() => specs.All(spec => !spec.isActive));
         IsInitialized = true;
+    }
+
+    private async void SetColliderCollision(Collider2D collider){
+        var collisionTrigger = collider.GetAsyncCollisionEnter2DTrigger();
+        while(true){
+            var collision = await collisionTrigger.OnCollisionEnter2DAsync();
+
+            ContactPoint2D[] contacts = new ContactPoint2D[collision.contactCount];
+            collision.GetContacts(contacts);
+            float totalImpulse = 0;
+            foreach (ContactPoint2D contact in contacts) {
+                totalImpulse += contact.normalImpulse;
+            }
+            Debug.Log(totalImpulse);
+        }
     }
 }
