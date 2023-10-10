@@ -77,7 +77,7 @@ public class GameComponent : AbilityEntity, IGameComponent
     [ClientRpc]
     private void DisconnectFromParent_ClientRpc(){
         if (!IsServer){
-            Parent.Children.Remove(this);
+            Parent?.Children.Remove(this);
             Parent = null;
             connector.Disconnect();
         }

@@ -4,6 +4,7 @@ using UnityEngine;
 using AbilitySystem.Authoring;
 using AbilitySystem;
 using AbilitySystem.ModifierMagnitude;
+using Unity.Netcode;
 
 
 [CreateAssetMenu(fileName = "MoveAbility", menuName = "Ability/MoveAbility")]

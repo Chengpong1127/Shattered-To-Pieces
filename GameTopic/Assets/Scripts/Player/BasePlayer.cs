@@ -50,10 +50,9 @@ public class BasePlayer : NetworkBehaviour
         RootNetworkObjectID.Value = SelfDevice.RootGameComponent.NetworkObjectId;
         SelfDevice.OnDeviceDied += DeviceDiedHandler;
         IsAlive.Value = true;
-        // await UniTask.WaitForSeconds(5);
-        // SelfDevice.ForEachGameComponent(component => {
-        //     (component as GameComponent).NetworkObject.ChangeOwnership(OwnerClientId);
-        // });
+        SelfDevice.ForEachGameComponent(component => {
+            (component as GameComponent).NetworkObject.ChangeOwnership(OwnerClientId);
+        });
     }
     [ServerRpc]
     private void StartAbility_ServerRPC(int abilityNumber)
