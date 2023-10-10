@@ -139,6 +139,11 @@ public class AssemblyController : NetworkBehaviour
                 TryConnection_ServerRpc(tempSelectedParentComponentID.Value, tempConnectionInfo.linkedTargetID);
                 tempSelectedParentComponentID = null;
                 tempConnectionInfo = null;
+            }else{
+                var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<GameComponent>();
+                component.SetSelected(false);
+                component.NetworkObject.RemoveOwnership();
+                SelectedComponentID = null;
             }
         }
     }
