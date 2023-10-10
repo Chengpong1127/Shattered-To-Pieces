@@ -210,6 +210,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6678300757159349119}
     - target: {fileID: 8211648019079314832, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: CollisionDamageThreshold
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 8211648019079314832, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: bodyRenderers.Array.size
       value: 1
       objectReference: {fileID: 0}

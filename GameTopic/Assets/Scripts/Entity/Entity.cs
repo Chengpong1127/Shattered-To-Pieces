@@ -16,7 +16,7 @@ using AttributeSystem.Authoring;
 [RequireComponent(typeof(AttributeSystemComponent)), RequireComponent(typeof(AbilitySystemCharacter))]
 public class Entity: BaseEntity{
     //[HideInInspector]
-    public float CollisionDamageThreshold = 400;
+    public float CollisionDamageThreshold = 80;
     [HideInInspector]
     public GameplayEffectScriptableObject CollisionDamageEffect;
     [HideInInspector]
@@ -59,9 +59,9 @@ public class Entity: BaseEntity{
         try{
             while(true){
                 var collision = await collisionTrigger.OnCollisionEnter2DAsync();
+                Debug.Log(GetImpulse(collision));
                 if (GetImpulse(collision) > CollisionDamageThreshold){
                     var damage = GetImpulse(collision) - CollisionDamageThreshold;
-                    damage = Mathf.Pow(damage, 1.5f) / 10;
                     Debug.Log($"Collision damage: {damage}");
                     CollisionDamageEffect.gameplayEffect.Modifiers[0].Multiplier = -damage;
                     GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(this, this, CollisionDamageEffect);
@@ -72,6 +72,6 @@ public class Entity: BaseEntity{
         }
     }
     private float GetImpulse(Collision2D collision){
-        return 0.5f * BodyRigidbody.mass * Mathf.Pow(collision.relativeVelocity.magnitude, 2);
+        return Mathf.Pow(collision.relativeVelocity.magnitude, 2);
     }
 }

@@ -150,19 +150,22 @@ public class AssemblyController : NetworkBehaviour
     [ServerRpc]
     private void TryConnection_ServerRpc(ulong parentComponentID, int targetID){
         if (SelectedComponentID.HasValue && parentComponentID != SelectedComponentID.Value){
-            var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<IGameComponent>();
+            TryConnection(parentComponentID, targetID);
+        }
+    }
+    private async void TryConnection(ulong parentComponentID, int targetID){
+        var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<GameComponent>();
             var parentComponent = Utils.GetLocalGameObjectByNetworkID(parentComponentID)?.GetComponent<IGameComponent>();
             var connectionInfo = new ConnectionInfo
             {
                 linkedTargetID = targetID,
             };
-            component.SetSelected(false);
             component.ConnectToParent(parentComponent, connectionInfo);
+            await UniTask.NextFrame();
+            component.SetSelected(false);
             SetAvailableForConnection(tempConnectableComponentIDs, false);
             tempConnectableComponentIDs = null;
             SelectedComponentID = null;
-        }
-        
     }
 
 
