@@ -81,7 +81,11 @@ public class AssemblyController : NetworkBehaviour
             disconnectAction?.Disable();
             flipAction?.Disable();
             rotateAction?.Disable();
-            CancelLastSelection_ServerRpc();
+            try{
+                CancelLastSelection_ServerRpc();
+            }
+            catch{
+            }
         }
     }
     #region Select
