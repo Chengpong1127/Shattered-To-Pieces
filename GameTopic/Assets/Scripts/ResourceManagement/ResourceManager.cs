@@ -21,7 +21,6 @@ public class ResourceManager: Singleton<ResourceManager>
     private AbstractAbilityScriptableObject[] _allAbilities;
     public ResourceManager() { 
         localDeviceStorageManager = SaveLoadManager.Create("BaseDirectory", "SavedDevice", SerializationMethodType.JsonDotNet);
-        _allAbilities = Resources.FindObjectsOfTypeAll<DisplayableAbilityScriptableObject>();
     }
     public GameObject LoadPrefab(string filename){
         var path = Path.Combine(PrefabPath, filename);
@@ -105,6 +104,9 @@ public class ResourceManager: Singleton<ResourceManager>
         return player;
     }
     public AbstractAbilityScriptableObject GetAbilityScriptableObjectByName(string name){
+        if (_allAbilities == null){
+            _allAbilities = Resources.FindObjectsOfTypeAll<DisplayableAbilityScriptableObject>();
+        }
         var result = _allAbilities.ToList().FindAll((ability) => ability.AbilityName == name);
         if (result.Count == 0){
             Debug.LogWarning("Cannot find ability: " + name);
