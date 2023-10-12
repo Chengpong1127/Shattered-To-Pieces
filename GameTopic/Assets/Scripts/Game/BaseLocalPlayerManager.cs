@@ -1,7 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
-using UnityEngine.Events;
 using System;
 using MonsterLove.StateMachine;
 
@@ -72,14 +71,11 @@ public class BaseLocalPlayerManager : NetworkBehaviour
         connectionManager.StopConnection();
         OnPlayerExitRoom?.Invoke();
     }
-    protected virtual async void GameOverHandler(GameResult result){
-        int rank = result.PlayerRankMap[Player.OwnerClientId];
-        Debug.Log($"Game Over. Rank: {rank}");
-        await UniTask.WaitForSeconds(5);
+    protected virtual void GameOverHandler(GameResult result){
         ExitGame();
     }
     [ClientRpc]
-    protected void GameOverHandler_ClientRpc(GameResult result){
+    private void GameOverHandler_ClientRpc(GameResult result){
         GameOverHandler(result);
     }
 }
