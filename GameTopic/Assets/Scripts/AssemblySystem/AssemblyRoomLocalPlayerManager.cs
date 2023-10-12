@@ -8,4 +8,7 @@ public class AssemblyRoomLocalPlayerManager: BaseLocalPlayerManager{
             Debug.Log("There is no GameLocalPlayerManager, self start connection");
         }
     }
+    private void Exiting_Enter(){
+        (GameRunner as AssemblyRoomRunner).SaveCurrentDevice();
+    }
 }
