@@ -1,7 +1,8 @@
 using Newtonsoft.Json;
+using Unity.Netcode;
 
 
-public class ConnectionInfo: IInfo
+public class ConnectionInfo: IInfo, INetworkSerializable
 {
     public int linkedTargetID;
     public bool IsConnected => linkedTargetID != -1;
@@ -10,22 +11,9 @@ public class ConnectionInfo: IInfo
             linkedTargetID = -1,
         };
     }
-    public override bool Equals(object obj)
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
-        return obj is ConnectionInfo info &&
-            linkedTargetID == info.linkedTargetID;
+        serializer.SerializeValue(ref linkedTargetID);
     }
-    public override int GetHashCode()
-    {
-        return linkedTargetID.GetHashCode();
-    }
-
-    public string ToJson(){
-        return JsonConvert.SerializeObject(this);
-    }
-
-    public static ConnectionInfo CreateFromJson(string json){
-        return JsonConvert.DeserializeObject<ConnectionInfo>(json);
-    }
-
 }

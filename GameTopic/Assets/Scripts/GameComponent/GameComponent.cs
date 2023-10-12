@@ -45,15 +45,14 @@ public class GameComponent : AbilityEntity, IGameComponent
 
         NetworkObject.ChangeOwnership(parent.NetworkObject.OwnerClientId);
         await UniTask.NextFrame();
-        ConnectToParent_ClientRpc(parent.NetworkObjectId, info.ToJson());
+        ConnectToParent_ClientRpc(parent.NetworkObjectId, info);
 
         (GetRoot() as GameComponent)?.OnRootConnectionChanged?.Invoke();
         GameEvents.GameComponentEvents.OnGameComponentConnected.Invoke(this, Parent as GameComponent);
     }
     [ClientRpc]
-    private void ConnectToParent_ClientRpc(ulong parentID, string connectionInfoJson){
+    private void ConnectToParent_ClientRpc(ulong parentID, ConnectionInfo info){
         if (!IsServer){
-            var info = ConnectionInfo.CreateFromJson(connectionInfoJson);
             var parent = Utils.GetLocalGameObjectByNetworkID(parentID)?.GetComponent<IGameComponent>();
             Parent = parent;
             Parent.Children.Add(this);

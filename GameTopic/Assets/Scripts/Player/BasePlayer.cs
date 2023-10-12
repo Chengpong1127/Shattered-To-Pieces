@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using Newtonsoft.Json;
 using UnityEngine.InputSystem;
 using System;
-using System.Linq;
-using Cysharp.Threading.Tasks;
 
 public class BasePlayer : NetworkBehaviour
 {
@@ -35,16 +32,16 @@ public class BasePlayer : NetworkBehaviour
 
     
     [ServerRpc]
-    private void LoadDeviceServerRpc(string json, Vector3 position)
+    private void LoadDeviceServerRpc(DeviceInfo info, Vector3 position)
     {
-        loadDevice(json, position);
+        loadDevice(info, position);
     }
-    private async void loadDevice(string json, Vector3 position){
+    private async void loadDevice(DeviceInfo info, Vector3 position){
         if (ServerAbilityRunner != null){
             Destroy(ServerAbilityRunner);
         }
         SelfDevice = new Device(new NetworkGameComponentFactory());
-        await SelfDevice.LoadAsync(DeviceInfo.CreateFromJson(json), position);
+        await SelfDevice.LoadAsync(info, position);
         ServerAbilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager, OwnerClientId);
         OnPlayerLoaded?.Invoke();
         RootNetworkObjectID.Value = SelfDevice.RootGameComponent.NetworkObjectId;
@@ -93,7 +90,7 @@ public class BasePlayer : NetworkBehaviour
     protected virtual void LoadLocalDeviceClientRpc(string filename, Vector3 position){
         if (IsOwner){
             var info = GetLocalDeviceInfo(filename);
-            LoadDeviceServerRpc(info.ToJson(), position);
+            LoadDeviceServerRpc(info, position);
             LocalAbilityActionMap?.Dispose();
             LocalAbilityActionMap = info.AbilityManagerInfo.GetAbilityInputActionMap();
             LocalAbilityActionMap.Enable();
