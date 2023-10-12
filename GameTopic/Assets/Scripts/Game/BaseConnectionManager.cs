@@ -24,8 +24,12 @@ public class BaseConnectionManager: MonoBehaviour{
         NetworkManager.Shutdown();
     }
 
-    public virtual void StartConnection(NetworkType type){
+    public virtual void StartConnection(NetworkType type, NetworkIPPort ipPort){
         NetworkManager.NetworkConfig.NetworkTransport = UseRelay ? RelayTransport : UnityTransport;
+        if(ipPort != null){
+            (NetworkManager.NetworkConfig.NetworkTransport as UnityTransport).ConnectionData.Address = ipPort.IP;
+            (NetworkManager.NetworkConfig.NetworkTransport as UnityTransport).ConnectionData.Port = ipPort.Port;
+        }
         switch(type){
             case NetworkType.Server:
                 NetworkManager.StartServer();

@@ -44,16 +44,16 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         GameStateMachine.ChangeState(GameState.Home);
     }
 
-    public void EnterRoom(string roomName, NetworkType networkType){
+    public void EnterRoom(string roomName, NetworkType networkType, NetworkIPPort ipPort = null){
         GameStateMachine.ChangeState(GameState.GameRoom);
         var operation = SceneManager.LoadSceneAsync(roomName);
-        operation.completed += _ => OnEnterRoom(networkType);
+        operation.completed += _ => OnEnterRoom(networkType, ipPort);
     }
 
-    private void OnEnterRoom(NetworkType networkType){
+    private void OnEnterRoom(NetworkType networkType, NetworkIPPort ipPort = null){
         var playerManager = FindObjectOfType<BaseLocalPlayerManager>();
         playerManager.OnPlayerExitRoom += RequestExitRoom;
-        playerManager.StartPlayerSetup(networkType);
+        playerManager.StartPlayerSetup(networkType, ipPort);
     }
 
 

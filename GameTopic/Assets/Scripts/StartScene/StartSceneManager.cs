@@ -1,10 +1,14 @@
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.UI;
+using TMPro;
 
 public class StartSceneManager: MonoBehaviour{
+    public TMP_InputField IPField;
+    public TMP_InputField PortField;
 
-
-
+    public NetworkIPPort NetworkIPPort => new NetworkIPPort(IPField.text, ushort.Parse(PortField.text));
+    
 
     void Start()
     {
@@ -20,9 +24,9 @@ public class StartSceneManager: MonoBehaviour{
         LocalGameManager.Instance.EnterRoom(roomName, NetworkType.Server);
     }
     public void EnterGameRoomAsHost(string roomName){
-        LocalGameManager.Instance.EnterRoom(roomName, NetworkType.Host);
+        LocalGameManager.Instance.EnterRoom(roomName, NetworkType.Host, NetworkIPPort);
     }
     public void EnterGameRoomAsClient(string roomName){
-        LocalGameManager.Instance.EnterRoom(roomName, NetworkType.Client);
+        LocalGameManager.Instance.EnterRoom(roomName, NetworkType.Client, NetworkIPPort);
     }
 }
