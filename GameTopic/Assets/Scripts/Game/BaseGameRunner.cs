@@ -11,14 +11,14 @@ using System;
 /// The game runner is responsible for running the game. It will be run on the server.
 /// </summary>
 public class BaseGameRunner: NetworkBehaviour{
-    public event Action<BasePlayer> OnPlayerExitGame;
+    public event Action<GameResult> OnGameOver;
     public StateMachine<GameStates> StateMachine;
     public BaseGameEventHandler[] GameEventHandlers;
     public enum GameStates{
         Initializing,
         CreatingPlayers,
         Gaming,
-        GameEnd
+        GameOver
     }
     protected Dictionary<ulong, BasePlayer> PlayerMap;
     /// <summary>
@@ -66,14 +66,9 @@ public class BaseGameRunner: NetworkBehaviour{
 
     protected virtual void PlayerDiedHandler(BasePlayer player){
     }
-    protected virtual void PlayerExitGame(BasePlayer player){
-        player.OnPlayerDied -= () => PlayerDiedHandler(player);
-        PlayerMap.Remove(player.OwnerClientId);
-        OnPlayerExitGame?.Invoke(player);
-        Debug.Log($"Player with id {player.OwnerClientId} exit the game");
-    }
-    public void EndGame(){
-        StateMachine.ChangeState(GameStates.GameEnd);
+    public void GameOver(GameResult result){
+        StateMachine.ChangeState(GameStates.GameOver);
+        OnGameOver?.Invoke(result);
     }
 
 }

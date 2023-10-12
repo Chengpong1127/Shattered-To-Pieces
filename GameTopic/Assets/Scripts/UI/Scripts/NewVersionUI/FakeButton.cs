@@ -13,7 +13,7 @@ public class FakeButton : MonoBehaviour, IPointerDownHandler,IPointerUpHandler, 
     [SerializeField] public Animator animator;
 
     private void Start() {
-        Debug.Log(animator?.name);
+        //Debug.Log(animator?.name);
     }
 
     public void OnPointerDown(PointerEventData pointerEventData) {

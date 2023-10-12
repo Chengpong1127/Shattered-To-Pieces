@@ -43,10 +43,6 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         SelfPlayer = new Player(AuthenticationService.Instance.PlayerId);
         GameStateMachine.ChangeState(GameState.Home);
     }
-    private void Home_Enter(){
-        Debug.Log("Enter Home");
-        SceneManager.LoadSceneAsync("StartScene");
-    }
 
     public void EnterRoom(string roomName, NetworkType networkType){
         GameStateMachine.ChangeState(GameState.GameRoom);
@@ -64,5 +60,6 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
     public void RequestExitRoom(){
         GameStateMachine.ChangeState(GameState.Home);
+        SceneManager.LoadSceneAsync("StartScene");
     }
 }

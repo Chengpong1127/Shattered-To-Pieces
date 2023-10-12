@@ -53,18 +53,12 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     }
     private void SetRunner(){
         GameRunner.OnPlayerSpawned += PlayerSpawnedHandlerClientRpc;
-        GameRunner.OnPlayerExitGame += player => PlayerExitGameHandler_ClientRpc(player.OwnerClientId);
+        GameRunner.OnGameOver += GameOverHandler_ClientRpc;
         GameRunner.RunGame();
     }
     [ClientRpc]
     private void PlayerSpawnedHandlerClientRpc(ulong playerID){
         PlayerSpawnedHandler(playerID);
-    }
-    [ClientRpc]
-    private void PlayerExitGameHandler_ClientRpc(ulong playerID){
-        if (OwnerClientId == playerID){
-            ExitGame();
-        }
     }
     private async void PlayerSpawnedHandler(ulong playerID){
         if(playerID == OwnerClientId){
@@ -74,11 +68,18 @@ public class BaseLocalPlayerManager : NetworkBehaviour
         }
     }
     public virtual void ExitGame(){
-        if(IsOwner){
-            StateMachine.ChangeState(LocalPlayerStates.Exiting);
-            connectionManager.StopConnection();
-            //GameEvents.LocalPlayerEvents.OnPlayerRequestExitGame.Invoke();
-            OnPlayerExitRoom?.Invoke();
-        }
+        StateMachine.ChangeState(LocalPlayerStates.Exiting);
+        connectionManager.StopConnection();
+        OnPlayerExitRoom?.Invoke();
+    }
+    protected virtual async void GameOverHandler(GameResult result){
+        int rank = result.PlayerRankMap[Player.OwnerClientId];
+        Debug.Log($"Game Over. Rank: {rank}");
+        await UniTask.WaitForSeconds(5);
+        ExitGame();
+    }
+    [ClientRpc]
+    protected void GameOverHandler_ClientRpc(GameResult result){
+        GameOverHandler(result);
     }
 }

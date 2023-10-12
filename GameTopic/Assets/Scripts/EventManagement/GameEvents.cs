@@ -124,7 +124,4 @@ public static class GameEvents{
         /// </summary>
         public static Action<GameComponent, GameComponent> OnGameComponentDisconnected = delegate { };
     }
-    public static class LocalPlayerEvents{
-        public static Action OnPlayerRequestExitGame = delegate { };
-    }
 }
