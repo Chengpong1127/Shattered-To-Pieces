@@ -5,9 +5,8 @@ using TMPro;
 
 public class StartSceneManager: MonoBehaviour{
     public TMP_InputField IPField;
-    public TMP_InputField PortField;
 
-    public NetworkIPPort NetworkIPPort => new NetworkIPPort(IPField.text, ushort.Parse(PortField.text));
+    public NetworkIPPort NetworkIPPort => new NetworkIPPort(IPField.text, 7777);
     
 
     void Start()

@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Linq;
 using System;
 using Cysharp.Threading.Tasks;
+using System.Net;
+using System.Net.Sockets;
 
 public class BaseConnectionManager: MonoBehaviour{
     [HideInInspector]
@@ -27,8 +29,11 @@ public class BaseConnectionManager: MonoBehaviour{
     public virtual void StartConnection(NetworkType type, NetworkIPPort ipPort){
         NetworkManager.NetworkConfig.NetworkTransport = UseRelay ? RelayTransport : UnityTransport;
         if(ipPort != null){
-            (NetworkManager.NetworkConfig.NetworkTransport as UnityTransport).ConnectionData.Address = ipPort.IP;
-            (NetworkManager.NetworkConfig.NetworkTransport as UnityTransport).ConnectionData.Port = ipPort.Port;
+            RelayTransport.ConnectionData.Address = ipPort.IP;
+            RelayTransport.ConnectionData.Port = ipPort.Port;
+
+            UnityTransport.ConnectionData.Address = ipPort.IP;
+            UnityTransport.ConnectionData.Port = ipPort.Port;
         }
         switch(type){
             case NetworkType.Server:
@@ -60,10 +65,19 @@ public class BaseConnectionManager: MonoBehaviour{
     }
 
     private async void ServerWaitAllPlayerConnected(){
+        Debug.Log("Start as a host or a server. IP: " + GetLocalIPAddress());
         await UniTask.WaitUntil(() => NetworkManager.Singleton.ConnectedClientsList.Count == PlayerCount);
         OnAllClientConnected?.Invoke();
         Debug.Log("ConnectionManager: All players connected");
     }
-
+    public string GetLocalIPAddress() {
+		var host = Dns.GetHostEntry(Dns.GetHostName());
+		foreach (var ip in host.AddressList) {
+			if (ip.AddressFamily == AddressFamily.InterNetwork) {
+				return ip.ToString();
+			}
+		}
+		throw new System.Exception("No network adapters with an IPv4 address in the system!");
+	}
 
 }
