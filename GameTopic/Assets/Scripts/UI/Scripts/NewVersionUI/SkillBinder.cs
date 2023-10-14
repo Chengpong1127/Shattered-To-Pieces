@@ -21,12 +21,12 @@ public class SkillBinder : NetworkBehaviour {
     private AbilityManager abilityManager;
     private GamePlayer gamePlayer;
     private AbilityRebinder rebinder;
-    void Awake()
-    {
-        GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText(eID);
-        GameEvents.AbilityManagerEvents.OnAbilityManagerUpdated += ServerRequestUpdateAllSkillBox;
-        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += (am, _, _) => ServerRequestUpdateAllSkillBox(am);
-        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += (am, _) => ServerRequestUpdateAllSkillBox(am);
+    public override void OnDestroy() {
+        base.OnDestroy();
+        GameEvents.AbilityManagerEvents.OnSetBinding -= (eID, _) => UpdateSkillBoxKeyText(eID);
+        GameEvents.AbilityManagerEvents.OnAbilityManagerUpdated -= ServerRequestUpdateAllSkillBox;
+        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry -= (am, _, _) => ServerRequestUpdateAllSkillBox(am);
+        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry -= (am, _) => ServerRequestUpdateAllSkillBox(am);
     }
     private void ServerRequestUpdateAllSkillBox(AbilityManager updatedAbilityManager){
         if (abilityManager == updatedAbilityManager){
@@ -57,7 +57,10 @@ public class SkillBinder : NetworkBehaviour {
 
         // Bind Actions
         this.setAbilityAction += BindAbilityToEntry;
-
+        GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText(eID);
+        GameEvents.AbilityManagerEvents.OnAbilityManagerUpdated += ServerRequestUpdateAllSkillBox;
+        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += (am, _, _) => ServerRequestUpdateAllSkillBox(am);
+        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += (am, _) => ServerRequestUpdateAllSkillBox(am);
     }
 
     private void OnEnable() {
@@ -165,9 +168,8 @@ public class SkillBinder : NetworkBehaviour {
     }
 
     void UpdateSkillBoxKeyText(int entryID) {
-        if (BaseLocalPlayerManager.RoomInstance.StateMachine.State == BaseLocalPlayerManager.LocalPlayerStates.Playing){
+        if (BaseGameRunner.ServerGameRunnerInstance.StateMachine.State == BaseGameRunner.GameStates.Gaming) {
             var keyText = abilityManager != null ? abilityManager.AbilityInputEntries[entryID].InputPath : "Non";
-
             SetSkillBoxKeyText_ClientRpc(entryID, keyText);
         }
 
