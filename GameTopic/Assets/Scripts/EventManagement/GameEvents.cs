@@ -105,7 +105,6 @@ public static class GameEvents{
         public static Action<Entity, AttributeScriptableObject, float, float> OnEntityAttributeChanged = delegate { };
 
         public static Action<Entity, float, float> OnEntityHealthChanged = delegate { };
-        public static Action<BaseEntity> OnEntityDied = delegate { };
     }
     public static class GameComponentEvents{
         /// <summary>
@@ -123,5 +122,6 @@ public static class GameEvents{
         /// Parameters: (game component, component disconnected from)
         /// </summary>
         public static Action<GameComponent, GameComponent> OnGameComponentDisconnected = delegate { };
+        public static Action<BaseEntity> OnEntityDied = delegate { };
     }
 }

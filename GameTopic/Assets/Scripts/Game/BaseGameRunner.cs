@@ -14,6 +14,7 @@ public class BaseGameRunner: NetworkBehaviour{
     public event Action<GameResult> OnGameOver;
     public StateMachine<GameStates> StateMachine;
     public BaseGameEventHandler[] GameEventHandlers;
+    public static BaseGameRunner ServerGameRunnerInstance { get; private set; }
     public enum GameStates{
         Initializing,
         CreatingPlayers,
@@ -33,6 +34,10 @@ public class BaseGameRunner: NetworkBehaviour{
     }
     public async void RunGame(){
         if (IsServer){
+            if (ServerGameRunnerInstance != null){
+                Debug.LogError("There is more than one game runner in the scene.");
+            }
+            ServerGameRunnerInstance = this;
             GameEventHandlers.ToList().ForEach(handler => handler.enabled = true);
             StateMachine.ChangeState(GameStates.CreatingPlayers);
             await CreateAllPlayers();
@@ -69,6 +74,7 @@ public class BaseGameRunner: NetworkBehaviour{
     public void GameOver(GameResult result){
         StateMachine.ChangeState(GameStates.GameOver);
         OnGameOver?.Invoke(result);
+        ServerGameRunnerInstance = null;
     }
 
 }

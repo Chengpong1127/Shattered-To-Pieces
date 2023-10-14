@@ -130,18 +130,22 @@ public class AssemblyController : NetworkBehaviour
         gameComponent.NetworkObject.ChangeOwnership(OwnerClientId);
         await UniTask.NextFrame();
         gameComponent.SetSelected(true);
+
+        OnGameComponentSelected?.Invoke(gameComponent);
     }
     [ServerRpc]
     private void CancelLastSelection_ServerRpc(){
         if (SelectedComponentID.HasValue){
-            Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<IGameComponent>().SetSelected(false);
+            var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<GameComponent>();
+            component.SetSelected(false);
+            OnGameComponentSelectedEnd?.Invoke(component);
             if (tempSelectedParentComponentID.HasValue){
                 TryConnection_ServerRpc(tempSelectedParentComponentID.Value, tempConnectionInfo.linkedTargetID);
                 tempSelectedParentComponentID = null;
                 tempConnectionInfo = null;
             }else{
-                var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<GameComponent>();
                 component.SetSelected(false);
+                OnGameComponentSelectedEnd?.Invoke(component);
                 component.NetworkObject.RemoveOwnership();
                 SelectedComponentID = null;
             }
@@ -155,17 +159,20 @@ public class AssemblyController : NetworkBehaviour
     }
     private async void TryConnection(ulong parentComponentID, int targetID){
         var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<GameComponent>();
-            var parentComponent = Utils.GetLocalGameObjectByNetworkID(parentComponentID)?.GetComponent<IGameComponent>();
-            var connectionInfo = new ConnectionInfo
-            {
-                linkedTargetID = targetID,
-            };
-            component.ConnectToParent(parentComponent, connectionInfo);
-            await UniTask.NextFrame();
-            component.SetSelected(false);
-            SetAvailableForConnection(tempConnectableComponentIDs, false);
-            tempConnectableComponentIDs = null;
-            SelectedComponentID = null;
+        var parentComponent = Utils.GetLocalGameObjectByNetworkID(parentComponentID)?.GetComponent<IGameComponent>();
+        var connectionInfo = new ConnectionInfo
+        {
+            linkedTargetID = targetID,
+        };
+        component.ConnectToParent(parentComponent, connectionInfo);
+        await UniTask.NextFrame();
+        component.SetSelected(false);
+        SetAvailableForConnection(tempConnectableComponentIDs, false);
+        OnGameComponentSelectedEnd?.Invoke(component);
+        tempConnectableComponentIDs = null;
+        SelectedComponentID = null;
+
+        AfterGameComponentConnected?.Invoke(component);
     }
 
 

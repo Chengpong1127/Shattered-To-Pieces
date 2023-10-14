@@ -18,7 +18,7 @@ public class Device: IDevice
     public Device(IGameComponentFactory gameComponentFactory){
         GameComponentFactory = gameComponentFactory;
         AbilityManager = new AbilityManager(this);
-        GameEvents.AttributeEvents.OnEntityDied += entity => {
+        GameEvents.GameComponentEvents.OnEntityDied += entity => {
             if (entity.Equals(RootGameComponent)){
                 OnDeviceDied?.Invoke();
             }

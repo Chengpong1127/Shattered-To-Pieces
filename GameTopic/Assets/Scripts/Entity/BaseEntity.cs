@@ -42,7 +42,7 @@ public abstract class BaseEntity : NetworkBehaviour
     /// This method will immediately destroy the BodyTransform of an entity.
     /// </summary>
     public virtual void Die(){
-        GameEvents.AttributeEvents.OnEntityDied?.Invoke(this);
+        GameEvents.GameComponentEvents.OnEntityDied?.Invoke(this);
         NetworkObject?.Despawn(true);
     }
     [ClientRpc]
