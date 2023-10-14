@@ -8,7 +8,8 @@ public class Flour : BaseCoreComponent, IAffectObjectOwner {
 
     ThrowOutAffect affect { get;set; }
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         affect = ScriptableObject.CreateInstance<ThrowOutAffect>();
         affectedObjectInstance = ScriptableObject.CreateInstance<AffectedObjectBase>();
 
