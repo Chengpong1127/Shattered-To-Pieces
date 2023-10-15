@@ -157,7 +157,7 @@ public class AssemblyController : NetworkBehaviour
             TryConnection(parentComponentID, targetID);
         }
     }
-    private async void TryConnection(ulong parentComponentID, int targetID){
+    private void TryConnection(ulong parentComponentID, int targetID){
         var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<GameComponent>();
         var parentComponent = Utils.GetLocalGameObjectByNetworkID(parentComponentID)?.GetComponent<IGameComponent>();
         var connectionInfo = new ConnectionInfo
@@ -165,7 +165,6 @@ public class AssemblyController : NetworkBehaviour
             linkedTargetID = targetID,
         };
         component.ConnectToParent(parentComponent, connectionInfo);
-        await UniTask.NextFrame();
         component.SetSelected(false);
         SetAvailableForConnection(tempConnectableComponentIDs, false);
         OnGameComponentSelectedEnd?.Invoke(component);

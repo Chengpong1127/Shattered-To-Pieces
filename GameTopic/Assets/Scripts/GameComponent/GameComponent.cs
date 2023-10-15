@@ -41,6 +41,7 @@ public class GameComponent : AbilityEntity, IGameComponent
 
         Parent = parent;
         Parent.Children.Add(this);
+        BodyTransform.position = parentComponent.BodyTransform.position;
         connector.ConnectToComponent(parent.Connector, info);
 
         NetworkObject.ChangeOwnership(parent.NetworkObject.OwnerClientId);
@@ -54,8 +55,6 @@ public class GameComponent : AbilityEntity, IGameComponent
     private void ConnectToParent_ClientRpc(ulong parentID, ConnectionInfo info){
         if (!IsServer){
             var parent = Utils.GetLocalGameObjectByNetworkID(parentID)?.GetComponent<IGameComponent>();
-            Parent = parent;
-            Parent.Children.Add(this);
             connector.ConnectToComponent(parent.Connector, info);
         }
 
@@ -76,8 +75,6 @@ public class GameComponent : AbilityEntity, IGameComponent
     [ClientRpc]
     private void DisconnectFromParent_ClientRpc(){
         if (!IsServer){
-            Parent?.Children.Remove(this);
-            Parent = null;
             connector.Disconnect();
         }
         
