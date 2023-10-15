@@ -20,6 +20,7 @@ public class GameComponent : AbilityEntity, IGameComponent
     public Transform DraggableTransform => BodyTransform;
     public string ComponentName { get; set; }
     public Transform AssemblyTransform => assemblyTransform;
+    public bool CanSelected = true;
 
 
     #region Inspector
@@ -100,30 +101,6 @@ public class GameComponent : AbilityEntity, IGameComponent
         ComponentName = componentInfo.ComponentName;
         AssemblyTransform.rotation = Quaternion.Euler(0, 0, componentInfo.ConnectionZRotation);
         AssemblyTransform.localScale = new Vector3(componentInfo.ToggleXScale ? -1 : 1, 1, 1);
-    }
-
-    public (IGameComponent, ConnectionInfo) GetAvailableConnection(){
-        var (availableParent, targetID) = connector.GetAvailableConnector();
-        if (availableParent == null){
-            return (null, ConnectionInfo.NoConnection());
-        }
-        Debug.Assert(availableParent.GameComponent != null);
-
-        var tempTree = new Tree(this);
-        var result = false;
-        tempTree.TraverseBFS((node) => {
-            if (node == availableParent.GameComponent){
-                result = true;
-            }
-        });
-        if (result){
-            return (null, ConnectionInfo.NoConnection());
-        }
-
-        var newInfo = new ConnectionInfo{
-            linkedTargetID = targetID,
-        };
-        return (availableParent.GameComponent, newInfo);
     }
     public void SetSelected(bool selected){
         switch (selected){

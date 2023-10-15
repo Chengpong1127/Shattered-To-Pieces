@@ -96,9 +96,11 @@ public class AssemblyController : NetworkBehaviour
                 TryConnection_ServerRpc(targets.First().OwnerConnector.GameComponent.NetworkObjectId, targets.First().TargetID);
                 return;
             }
-            var components = Utils.GetGameObjectsUnderMouse<IGameComponent>();
+            var components = Utils.GetGameObjectsUnderMouse<GameComponent>();
             if (components.Length > 0){
-                SelectComponentHandler_ServerRpc(components.Select(c => c.NetworkObjectId).ToArray());
+                SelectComponentHandler_ServerRpc(components
+                    .Where(component => component.CanSelected)
+                    .Select(c => c.NetworkObjectId).ToArray());
             }
         }
     }

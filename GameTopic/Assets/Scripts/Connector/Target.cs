@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Netcode;
+using System.Linq;
+using System;
 
 public class Target : MonoBehaviour
 {
     public int TargetID { get; set; }
     public Connector OwnerConnector { get; set; } = null;
-    public bool IsConnected { get => AimerConnector != null; }
+    public bool IsConnected  => LinkedConnector != null;
     public Collider2D BodyCollider { get; private set; } = null;
 
-    private Connector AimerConnector = null;
+    public event Action<Connector> OnLinked;
+    public event Action<Connector> OnUnlinked;
+
+    private Connector LinkedConnector = null;
     private Renderer Renderer = null;
     public Vector3 ConnectionPosition => transform.localPosition;
 
@@ -30,13 +34,15 @@ public class Target : MonoBehaviour
     {
         OwnerConnector = oc;
     }
-    public void LinkedBy(Connector lic)
+    public void SetLink(Connector lic)
     {
-        AimerConnector = lic ?? throw new System.ArgumentNullException("lic");
+        LinkedConnector = lic ?? throw new ArgumentNullException("lic");
+        OnLinked?.Invoke(lic);
     }
     public void Unlink()
     {
-        AimerConnector = null;
+        LinkedConnector = null;
+        OnUnlinked?.Invoke(OwnerConnector);
     }
 
     public void SetTargetDisplay(bool display)

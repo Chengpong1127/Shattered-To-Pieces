@@ -76,8 +76,9 @@ public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
             );
         });
         NetworkManager.Singleton.SpawnManager.SpawnedObjectsList
-            .Select((obj) => obj.GetComponentInParent<IGameComponent>())
-            .Where((component) => component != null)
+            .Select((obj) => obj.GetComponentInParent<BaseEntity>())
+            .Where((entity) => entity != null)
+            .Where(entity => entity.NetworkObject.IsSceneObject == false)
             .ToList()
             .ForEach((component) => {
                 component.Die();

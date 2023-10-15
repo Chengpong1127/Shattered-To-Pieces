@@ -33,11 +33,6 @@ public interface IGameComponent: ITreeNode, IAssemblyable
     /// Make all children disconnect from this component.
     /// </summary>
     public void DisconnectAllChildren();
-    /// <summary>
-    /// Get the first available connection.
-    /// </summary>
-    /// <returns> The first available connection. </returns>
-    public (IGameComponent, ConnectionInfo) GetAvailableConnection();
     public void SetSelected(bool assemblyMode);
     public void SetAvailableForConnectionClientRpc(bool draggingMode);
     public void Die();
