@@ -50,7 +50,7 @@ public class AssemblyablePlayer: BasePlayer{
         Debug.Assert(AssemblyController != null, "AssemblyController is null");
         if (IsServer){
             AssemblyController.ServerInitialize(
-                GetDraggableNetworkIDs, 
+                GetSelectableNetworkIDs, 
                 GetConnectableNetworkIDs);
         }
         if (IsOwner){
@@ -65,12 +65,13 @@ public class AssemblyablePlayer: BasePlayer{
     private ulong[] GetConnectableNetworkIDs()
     {
         var colliders = Physics2D.OverlapCircleAll(Utils.GetLocalGameObjectByNetworkID(RootNetworkObjectID.Value).transform.position, AssemblyRange);
-        return colliders.Select(collider => collider.GetComponentInParent<IGameComponent>())
+        return colliders.Select(collider => collider.GetComponentInParent<GameComponent>())
             .Where(component => component != null)
+            .Where(component => component.GetRoot() is IDeviceRoot deviceRoot && deviceRoot.Device == SelfDevice || component.GetRoot() is not IDeviceRoot)
             .Select(component => component.NetworkObjectId)
             .ToArray();
     }
-    public ulong[] GetDraggableNetworkIDs()
+    public ulong[] GetSelectableNetworkIDs()
     {
         return GetConnectableNetworkIDs().Where(id => id != RootNetworkObjectID.Value).ToArray();
     }

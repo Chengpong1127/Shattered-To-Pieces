@@ -74,6 +74,8 @@ public class Device: IDevice
             AbilityManager.UpdateDeviceAbilities();
             OnDeviceConnectionChanged?.Invoke();
         };
+        Debug.Assert(RootGameComponent is IDeviceRoot);
+        (RootGameComponent as IDeviceRoot).Device = this;
     }
 
     private Dictionary<int, IGameComponent> CreateAllComponents(Dictionary<int, GameComponentInfo> nodes, Vector3 position){
