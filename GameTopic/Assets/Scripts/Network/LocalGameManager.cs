@@ -3,14 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
-using Unity.Services.Lobbies;
-using System.Net;
 using Unity.Services.Lobbies.Models;
-using Unity.Netcode;
-using Unity.Netcode.Transports.UTP;
-using Unity.Services.Relay.Models;
-using Unity.Services.Relay;
-using Unity.Networking.Transport.Relay;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using MonsterLove.StateMachine;
@@ -23,6 +16,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     private enum GameState{
         Init,
         Home,
+        Lobby,
         GameRoom,
     }
     private StateMachine<GameState> GameStateMachine;
@@ -43,7 +37,25 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         SelfPlayer = new Player(AuthenticationService.Instance.PlayerId);
         GameStateMachine.ChangeState(GameState.Home);
     }
+    #region Lobby
 
+    public async void CreateLobby(string lobbyName){
+        GameStateMachine.ChangeState(GameState.Lobby);
+        await LobbyManager.Instance.CreateLobby(lobbyName, 4, SelfPlayer);
+    }
+
+    public async UniTask<Lobby[]> GetAllAvailableLobby(){
+        return await LobbyManager.Instance.GetAllAvailableLobby();
+    }
+
+    public async void JoinLobby(Lobby lobby){
+        GameStateMachine.ChangeState(GameState.Lobby);
+        await LobbyManager.Instance.JoinLobby(lobby, SelfPlayer);
+    }
+
+    #endregion
+
+    #region GameRoom
     public void EnterRoom(string roomName, NetworkType networkType){
         GameStateMachine.ChangeState(GameState.GameRoom);
         var operation = SceneManager.LoadSceneAsync(roomName);
@@ -62,4 +74,5 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         GameStateMachine.ChangeState(GameState.Home);
         SceneManager.LoadSceneAsync("StartScene");
     }
+    #endregion
 }
