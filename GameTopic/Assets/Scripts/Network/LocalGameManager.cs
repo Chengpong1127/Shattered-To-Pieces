@@ -20,39 +20,67 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         GameRoom,
     }
     private StateMachine<GameState> GameStateMachine;
-    private Player SelfPlayer;
+    private LobbyManager LobbyManager;
 
-    protected override void Awake() {
+    protected override async void Awake() {
         base.Awake();
         GameStateMachine = new StateMachine<GameState>(this);
         GameStateMachine.ChangeState(GameState.Init);
         DontDestroyOnLoad(this);
+        var player = await PlayerSignIn();
+        LobbyManager = new LobbyManager(player);
+        GameStateMachine.ChangeState(GameState.Home);
     }
-    public async Task PlayerSignIn(){
+    public async UniTask<Player> PlayerSignIn(){
         await UnityServices.InitializeAsync();
         AuthenticationService.Instance.SignedIn += () => {
             Debug.Log("Signed In with ID: " + AuthenticationService.Instance.PlayerId);
         };
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        SelfPlayer = new Player(AuthenticationService.Instance.PlayerId);
-        GameStateMachine.ChangeState(GameState.Home);
+        var player = new Player(AuthenticationService.Instance.PlayerId);
+        return player;
     }
     #region Lobby
 
     public async void CreateLobby(string lobbyName){
         GameStateMachine.ChangeState(GameState.Lobby);
-        await LobbyManager.Instance.CreateLobby(lobbyName, 4, SelfPlayer);
+        await LobbyManager.CreateLobby(lobbyName, 4);
+
+        LobbyManager.OnPlayerReady += player => {
+            Debug.Log("Player " + player.Id + " is ready");
+        };
+        LobbyManager.OnPlayerUnready += player => {
+            Debug.Log("Player " + player.Id + " is unready");
+        };
+
+        LobbyManager.OnLobbyReady += () => {
+            GameStateMachine.ChangeState(GameState.GameRoom);
+            EnterRoom("GameRoom", NetworkType.Host);
+        };
     }
 
     public async UniTask<Lobby[]> GetAllAvailableLobby(){
-        return await LobbyManager.Instance.GetAllAvailableLobby();
+        return await LobbyManager.GetAllAvailableLobby();
     }
 
     public async void JoinLobby(Lobby lobby){
         GameStateMachine.ChangeState(GameState.Lobby);
-        await LobbyManager.Instance.JoinLobby(lobby, SelfPlayer);
+        await LobbyManager.JoinLobby(lobby);
+
+        LobbyManager.OnLobbyReady += () => {
+            GameStateMachine.ChangeState(GameState.GameRoom);
+            EnterRoom("GameRoom", NetworkType.Host);
+        };
     }
 
+    public void PlayerReady(){
+        Debug.Assert(GameStateMachine.State == GameState.Lobby);
+        LobbyManager.PlayerReady();
+    }
+    public void PlayerUnready(){
+        Debug.Assert(GameStateMachine.State == GameState.Lobby);
+        LobbyManager.PlayerUnready();
+    }
     #endregion
 
     #region GameRoom
