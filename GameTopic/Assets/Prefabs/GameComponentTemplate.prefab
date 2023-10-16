@@ -60,13 +60,14 @@ MonoBehaviour:
   bodyAnimator: {fileID: 0}
   bodyRenderers:
   - {fileID: 2973098028539147263}
-  CollisionDamageThreshold: 80
+  CollisionDamageThreshold: 400
   CollisionDamageEffect: {fileID: 11400000, guid: 0fd6d98023a9946f9823102fe15e2dbb, type: 2}
   AttributeSystemComponent: {fileID: 1647381966340234252}
   AbilitySystemCharacter: {fileID: 6795010306233276680}
   InitializationAbilities:
   - {fileID: 11400000, guid: c4f25b21df2854a408a96dbd63f58a65, type: 2}
   Abilities: []
+  CanSelected: 1
   assemblyTransform: {fileID: 6508652183922362645}
 --- !u!114 &1647381966340234252
 MonoBehaviour:
@@ -235,6 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DiedEffect: {fileID: 1758473627833946668, guid: 9b21333b068a5084ba09535839bee3c8, type: 3}
+  EffectTime: 1
 --- !u!1 &6248433714480983650
 GameObject:
   m_ObjectHideFlags: 0

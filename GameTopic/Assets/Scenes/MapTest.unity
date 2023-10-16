@@ -836,8 +836,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 0, y: 0.0016999841, z: 0}
-    m_Extent: {x: 1.0099, y: 1.006, z: 0}
+    m_Center: {x: -0.00084996223, y: 0.0046499968, z: 0}
+    m_Extent: {x: 1.00385, y: 1.00115, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -1036,6 +1036,8 @@ GameObject:
   m_Component:
   - component: {fileID: 394965531}
   - component: {fileID: 394965532}
+  - component: {fileID: 394965534}
+  - component: {fileID: 394965533}
   m_Layer: 0
   m_Name: MoonLight
   m_TagString: Untagged
@@ -1092,8 +1094,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -4.7378, y: -7.8914, z: 0}
-    m_Extent: {x: 11.198299, y: 10.7642, z: 0}
+    m_Center: {x: -4.73735, y: -7.8966503, z: 0}
+    m_Extent: {x: 11.198151, y: 10.767651, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -1108,6 +1110,41 @@ MonoBehaviour:
   - {x: 5.9580154, y: -18.161953, z: 0}
   - {x: 2.8113785, y: 1.6822777, z: 0}
   - {x: 0.2853737, y: 2.3686867, z: 0}
+--- !u!114 &394965533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394965530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 394965534}
+--- !u!95 &394965534
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394965530}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 64c69bb4beed2ec4696c935f17581b0b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &422219229
 GameObject:
   m_ObjectHideFlags: 0
