@@ -41,9 +41,9 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     /// <summary>
     /// Start the player setup. This method need to be invoked after enter a scene.
     /// </summary>
-    public void StartPlayerSetup(NetworkType type){
+    public void StartPlayerSetup(NetworkType type, string ServerAddress = null){
         StateMachine.ChangeState(LocalPlayerStates.Loading);
-        connectionManager.StartConnection(type);
+        connectionManager.StartConnection(type, ServerAddress);
         connectionManager.OnAllClientConnected += () => {
             if(IsServer){
                 SetRunner();

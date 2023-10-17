@@ -24,7 +24,11 @@ public class BaseConnectionManager: MonoBehaviour{
         NetworkManager.Shutdown();
     }
 
-    public virtual void StartConnection(NetworkType type){
+    public virtual void StartConnection(NetworkType type, string ServerAddress){
+        if (!string.IsNullOrEmpty(ServerAddress)){
+            RelayTransport.ConnectionData.Address = ServerAddress;
+            UnityTransport.ConnectionData.Address = ServerAddress;
+        }
         NetworkManager.NetworkConfig.NetworkTransport = UseRelay ? RelayTransport : UnityTransport;
         switch(type){
             case NetworkType.Server:
