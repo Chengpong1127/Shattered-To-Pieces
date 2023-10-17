@@ -22,8 +22,8 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     private StateMachine<GameState> GameStateMachine;
     private LobbyManager LobbyManager;
 
-    protected override async void Awake() {
-        base.Awake();
+    async void Start()
+    {
         GameStateMachine = new StateMachine<GameState>(this);
         GameStateMachine.ChangeState(GameState.Init);
         DontDestroyOnLoad(this);
@@ -31,6 +31,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         LobbyManager = new LobbyManager(player);
         GameStateMachine.ChangeState(GameState.Home);
     }
+
     public async UniTask<Player> PlayerSignIn(){
         await UnityServices.InitializeAsync();
         AuthenticationService.Instance.SignedIn += () => {
@@ -44,8 +45,6 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
     public async void CreateLobby(string lobbyName){
         GameStateMachine.ChangeState(GameState.Lobby);
-        await LobbyManager.CreateLobby(lobbyName, 4);
-
         LobbyManager.OnPlayerReady += player => {
             Debug.Log("Player " + player.Id + " is ready");
         };
@@ -53,10 +52,11 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
             Debug.Log("Player " + player.Id + " is unready");
         };
 
-        LobbyManager.OnLobbyReady += () => {
-            GameStateMachine.ChangeState(GameState.GameRoom);
-            EnterRoom("GameRoom", NetworkType.Host);
-        };
+        LobbyManager.OnLobbyReady += LobbyReadyHandler;
+        await LobbyManager.CreateLobby(lobbyName, 4);
+    }
+    private void LobbyReadyHandler(){
+        EnterRoom(LobbyManager.GetLobbyMap(), NetworkType.Host);
     }
 
     public async UniTask<Lobby[]> GetAllAvailableLobby(){
@@ -67,10 +67,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         GameStateMachine.ChangeState(GameState.Lobby);
         await LobbyManager.JoinLobby(lobby);
 
-        LobbyManager.OnLobbyReady += () => {
-            GameStateMachine.ChangeState(GameState.GameRoom);
-            EnterRoom("GameRoom", NetworkType.Host);
-        };
+        LobbyManager.OnLobbyReady += LobbyReadyHandler;
     }
 
     public void PlayerReady(){
@@ -81,6 +78,15 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         Debug.Assert(GameStateMachine.State == GameState.Lobby);
         LobbyManager.PlayerUnready();
     }
+
+    public void PlayerLeave(){
+        
+    }
+
+    private string GetServerAddress(){
+        return LobbyManager.GetLobbyHostIP();
+    }
+
     #endregion
 
     #region GameRoom
@@ -93,7 +99,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     private void OnEnterRoom(NetworkType networkType){
         var playerManager = FindObjectOfType<BaseLocalPlayerManager>();
         playerManager.OnPlayerExitRoom += RequestExitRoom;
-        playerManager.StartPlayerSetup(networkType);
+        playerManager.StartPlayerSetup(networkType, GetServerAddress());
     }
 
 
