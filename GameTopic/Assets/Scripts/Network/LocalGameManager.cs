@@ -90,16 +90,16 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     #endregion
 
     #region GameRoom
-    public void EnterRoom(string roomName, NetworkType networkType){
+    public void EnterRoom(string roomName, NetworkType networkType, string ServerAddress = null){
         GameStateMachine.ChangeState(GameState.GameRoom);
         var operation = SceneManager.LoadSceneAsync(roomName);
-        operation.completed += _ => OnEnterRoom(networkType);
+        operation.completed += _ => OnEnterRoom(networkType, ServerAddress);
     }
 
-    private void OnEnterRoom(NetworkType networkType){
+    private void OnEnterRoom(NetworkType networkType, string ServerAddress = null){
         var playerManager = FindObjectOfType<BaseLocalPlayerManager>();
         playerManager.OnPlayerExitRoom += RequestExitRoom;
-        playerManager.StartPlayerSetup(networkType, GetServerAddress());
+        playerManager.StartPlayerSetup(networkType, ServerAddress);
     }
 
 

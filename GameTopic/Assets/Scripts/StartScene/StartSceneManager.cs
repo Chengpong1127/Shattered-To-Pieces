@@ -1,9 +1,10 @@
 using UnityEngine;
 using Unity.Netcode;
+using TMPro;
 
 public class StartSceneManager: MonoBehaviour{
 
-
+    public TMP_InputField ServerAddressInputField;
 
 
     void Start()
@@ -23,6 +24,6 @@ public class StartSceneManager: MonoBehaviour{
         LocalGameManager.Instance.EnterRoom(roomName, NetworkType.Host);
     }
     public void EnterGameRoomAsClient(string roomName){
-        LocalGameManager.Instance.EnterRoom(roomName, NetworkType.Client);
+        LocalGameManager.Instance.EnterRoom(roomName, NetworkType.Client, ServerAddressInputField.text);
     }
 }
