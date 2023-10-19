@@ -14,7 +14,7 @@ public class LobbyManager
     public event Action<Player> OnPlayerUnready;
 
     // Client Events
-    public event Action OnLobbyReady;
+    public event Action<PlayerLobbyReadyInfo> OnLobbyReady;
 
     public LobbyIdentity Identity { get; private set; }
     public Lobby CurrentLobby { get; private set; }
@@ -37,9 +37,6 @@ public class LobbyManager
         return CurrentLobby;
     }
 
-    public string GetLobbyMap(){
-        return CurrentLobby.Data["Map"].Value;
-    }
 
     private Dictionary<string, DataObject> GetDefaultLobbyData(){
         return new Dictionary<string, DataObject>(){
@@ -81,29 +78,49 @@ public class LobbyManager
         LobbyEventCallbacks lobbyEventCallbacks = new LobbyEventCallbacks();
         lobbyEventCallbacks.DataChanged += DataChangedHandler;
         lobbyEventCallbacks.PlayerJoined += player => Debug.Log("Player " + player + " joined");
-        lobbyEventCallbacks.PlayerDataChanged += data => HostPlayerDataChangedHandler(lobby, data);
-        lobbyEventCallbacks.PlayerDataAdded += data => HostPlayerDataChangedHandler(lobby, data);
+        lobbyEventCallbacks.PlayerDataChanged += PlayerDataChangedHandler;
+        lobbyEventCallbacks.PlayerDataAdded += PlayerDataChangedHandler;
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
     }
 
-    private void HostPlayerDataChangedHandler(Lobby lobby, Dictionary<int, Dictionary<string, ChangedOrRemovedLobbyValue<PlayerDataObject>>> data)
+    private void PlayerDataChangedHandler(Dictionary<int, Dictionary<string, ChangedOrRemovedLobbyValue<PlayerDataObject>>> data)
     {
-        var readyPlayers = data.Where(playerData => playerData.Value["Ready"].Value.Value == "true")
-                                .Select(playerData => lobby.Players[playerData.Key]);
-
-        readyPlayers.ToList().ForEach(player => OnPlayerReady?.Invoke(player));
-        CheckLobbyReady();
+        Debug.Log("Player Data Changed");
+        foreach(var (key, value) in data)
+        {
+            var player = CurrentLobby.Players[key];
+            var playerData = value;
+            if (player.Id == SelfPlayer.Id)
+                continue;
+            if (playerData["Ready"].Value.Value == "true"){
+                OnPlayerReady?.Invoke(CurrentLobby.Players[key]);
+            }
+            if (playerData["Ready"].Value.Value == "false"){
+                OnPlayerUnready?.Invoke(CurrentLobby.Players[key]);
+            }
+        }
+        if (Identity == LobbyIdentity.Host)
+            CheckLobbyReady();
     }
 
     private async UniTask BindClinetLobbyHandler(Lobby lobby){
         LobbyEventCallbacks lobbyEventCallbacks = new LobbyEventCallbacks();
         lobbyEventCallbacks.DataChanged += DataChangedHandler;
+        lobbyEventCallbacks.PlayerJoined += player => Debug.Log("Player " + player + " joined");
+        lobbyEventCallbacks.PlayerDataChanged += PlayerDataChangedHandler;
+        lobbyEventCallbacks.PlayerDataAdded += PlayerDataChangedHandler;
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
     }
 
     private void DataChangedHandler(Dictionary<string, ChangedOrRemovedLobbyValue<DataObject>> data){
         if (data["Ready"].Value.Value == "true"){
-            OnLobbyReady?.Invoke();
+            var lobbyReadyInfo = new PlayerLobbyReadyInfo(){
+                Identity = Identity,
+                Player = SelfPlayer,
+                HostAddress = GetLobbyHostIP(),
+                MapName = CurrentLobby.Data["Map"].Value
+            };
+            OnLobbyReady?.Invoke(lobbyReadyInfo);
         }
     }
 
@@ -133,15 +150,32 @@ public class LobbyManager
         OnPlayerUnready?.Invoke(SelfPlayer);
     }
 
-    public void CheckLobbyReady(){
+    public async void CheckLobbyReady(){
+        bool isAllReady = true;
         CurrentLobby.Players.ToList().ForEach(player => {
             if (player.Data["Ready"].Value == "false"){
-                return;
+                isAllReady = false;
             }
         });
-        OnLobbyReady?.Invoke();
+        if (!isAllReady){
+            return;
+        }
+        await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions { 
+            Data = new Dictionary<string, DataObject> { 
+                { "Ready", new DataObject(
+                    DataObject.VisibilityOptions.Public, 
+                    "true") 
+                }
+            } });
+        var lobbyReadyInfo = new PlayerLobbyReadyInfo(){
+            Identity = Identity,
+            Player = SelfPlayer,
+            HostAddress = GetLobbyHostIP(),
+            MapName = CurrentLobby.Data["Map"].Value
+        };
+        OnLobbyReady?.Invoke(lobbyReadyInfo);
     }
-    public string GetLobbyHostIP(){
+    private string GetLobbyHostIP(){
         try{
             var networkHost = NetworkHost.FromJson(CurrentLobby.Data["HostNetworkInfo"].Value);
             var selfNetworkHost = NetworkTool.GetLocalNetworkHost();
@@ -158,5 +192,12 @@ public class LobbyManager
     public enum LobbyIdentity{
         Host,
         Client
+    }
+
+    public class PlayerLobbyReadyInfo{
+        public LobbyIdentity Identity;
+        public Player Player;
+        public string HostAddress;
+        public string MapName;
     }
 }

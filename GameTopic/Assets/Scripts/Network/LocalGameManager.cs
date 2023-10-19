@@ -34,6 +34,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
     public async UniTask<Player> PlayerSignIn(){
         await UnityServices.InitializeAsync();
+        AuthenticationService.Instance.ClearSessionToken();
         AuthenticationService.Instance.SignedIn += () => {
             Debug.Log("Signed In with ID: " + AuthenticationService.Instance.PlayerId);
         };
@@ -54,9 +55,16 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
         LobbyManager.OnLobbyReady += LobbyReadyHandler;
         await LobbyManager.CreateLobby(lobbyName, 4);
+        Debug.Log("Lobby Created with ID: " + LobbyManager.CurrentLobby.Id);
     }
-    private void LobbyReadyHandler(){
-        EnterRoom(LobbyManager.GetLobbyMap(), NetworkType.Host);
+    private void LobbyReadyHandler(LobbyManager.PlayerLobbyReadyInfo playerLobbyReadyInfo){
+        NetworkType networkType;
+        if (playerLobbyReadyInfo.Identity == LobbyManager.LobbyIdentity.Host){
+            networkType = NetworkType.Host;
+        }else{
+            networkType = NetworkType.Client;
+        }
+        EnterRoom(playerLobbyReadyInfo.MapName, networkType, playerLobbyReadyInfo.HostAddress);
     }
 
     public async UniTask<Lobby[]> GetAllAvailableLobby(){
@@ -65,26 +73,31 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
     public async void JoinLobby(Lobby lobby){
         GameStateMachine.ChangeState(GameState.Lobby);
+        LobbyManager.OnPlayerReady += player => {
+            Debug.Log("Player " + player.Id + " is ready");
+        };
+        LobbyManager.OnPlayerUnready += player => {
+            Debug.Log("Player " + player.Id + " is unready");
+        };
         await LobbyManager.JoinLobby(lobby);
 
         LobbyManager.OnLobbyReady += LobbyReadyHandler;
+        Debug.Log("Lobby Joined with ID: " + LobbyManager.CurrentLobby.Id);
     }
 
     public void PlayerReady(){
         Debug.Assert(GameStateMachine.State == GameState.Lobby);
         LobbyManager.PlayerReady();
+        Debug.Log("Player Ready");
     }
     public void PlayerUnready(){
         Debug.Assert(GameStateMachine.State == GameState.Lobby);
         LobbyManager.PlayerUnready();
+        Debug.Log("Player Unready");
     }
 
     public void PlayerLeave(){
         
-    }
-
-    private string GetServerAddress(){
-        return LobbyManager.GetLobbyHostIP();
     }
 
     #endregion
