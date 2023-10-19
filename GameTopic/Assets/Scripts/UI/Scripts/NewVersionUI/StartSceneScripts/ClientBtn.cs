@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class ClientBtn : MonoBehaviour
 {
@@ -18,20 +19,26 @@ public class ClientBtn : MonoBehaviour
         LayoutParent.SetActive(false);
     }
 
-    void UpdateConnectRoom() {
+    async void UpdateConnectRoom() {
         // get room name list by GM.
+
+        var lgm = LocalGameManager.Instance;
+        var lobbyLst = await lgm.GetAllAvailableLobby();
         List<string> roomNames = new List<string>();
 
-        if (RoomBtns.Count < roomNames.Count) {
+        for(int i=0;i< lobbyLst.Length; ++i) {
+            roomNames.Add(lobbyLst[i].Name);
+        }
+
+        RoomBtns.ForEach(btn => {
+            Destroy(btn.gameObject);
+        });
+        RoomBtns.Clear();
+        roomNames.ForEach(roomName => {
             var igo = Instantiate(AddRoomBtnPrefab, LayoutParent.transform, false);
             var rif = igo.GetComponent<RoomInfo>();
             RoomBtns.Add(rif);
-        } else {
-            for(int i= roomNames.Count;i < RoomBtns.Count; ++i) {
-                RoomBtns[i].gameObject.SetActive(false);
-            }
-        }
-
+        });
         for(int i = 0; i < roomNames.Count; ++i) {
             RoomBtns[i].gameObject.SetActive(true);
             RoomBtns[i].tmp_t.text = roomNames[i];
@@ -52,8 +59,13 @@ public class ClientBtn : MonoBehaviour
         yield return null;
     }
 
-    void ClickRoomBtn(string roomName) {
+    async void ClickRoomBtn(string roomName) {
         // submit enter room
         Debug.Log("Choose room : " + roomName);
+
+        var lobbies = await LocalGameManager.Instance.GetAllAvailableLobby();
+        var lobby = lobbies.Where(lb => { return lb.Name == roomName; }).FirstOrDefault();
+        if(lobby == null) { return; }
+        LocalGameManager.Instance.JoinLobby(lobby);
     }
 }
