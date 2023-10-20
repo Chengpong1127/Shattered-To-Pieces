@@ -12,17 +12,20 @@ public class Egg : BaseEntity, ICreated {
     bool hit = false;
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        if (hit) { return; }
-        if (Owner == null) { hit = true; }
+        if (IsServer){
+            if (hit) { return; }
+            if (Owner == null) { hit = true; }
 
-        var hitComponent = collision.gameObject.GetComponentInChildren<BaseCoreComponent>();
-        if (hitComponent == null) { Destroy(gameObject.transform.root.gameObject); return; }
-        if (Owner.HasTheSameRootWith(hitComponent)) { return; }
+            var hitComponent = collision.gameObject.GetComponentInChildren<BaseCoreComponent>();
+            if (hitComponent == null) { Destroy(gameObject.transform.root.gameObject); return; }
+            if (Owner.HasTheSameRootWith(hitComponent)) { return; }
 
 
-        hit = true;
-        var entity = hitComponent as Entity;
-        GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(Owner, entity, DamageEffect);
-        Destroy(gameObject.transform.root.gameObject);
+            hit = true;
+            var entity = hitComponent as Entity;
+            GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(Owner, entity, DamageEffect);
+            Destroy(gameObject.transform.root.gameObject);
+        }
+        
     }
 }
