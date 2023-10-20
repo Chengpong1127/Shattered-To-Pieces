@@ -64,7 +64,7 @@ public class Device: IDevice
         });
         await UniTask.WaitForFixedUpdate();
         RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID];
-        ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList); 
+        await ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList); 
         await UniTask.NextFrame();
         tempDictionary.Values.ToList().ForEach((component) => {
             component.SetSelected(false);
@@ -89,12 +89,13 @@ public class Device: IDevice
         return tempDictionary;
     }
 
-    private void ConnectAllComponents(Dictionary<int, IGameComponent> nodes, Dictionary<int, GameComponentInfo> infos, List<(int, int)> edges){
+    private async UniTask ConnectAllComponents(Dictionary<int, IGameComponent> nodes, Dictionary<int, GameComponentInfo> infos, List<(int, int)> edges){
         foreach (var (parent, child) in edges){
             var parentComponent = nodes[parent];
             var childComponent = nodes[child];
             var childInfo = infos[child];
             childComponent.ConnectToParent(parentComponent, childInfo.ConnectionInfo);
+            await UniTask.NextFrame();
         }
     }
     /// <summary>

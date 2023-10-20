@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.InputSystem;
 using System;
+using Cysharp.Threading.Tasks;
 
 public class BasePlayer : NetworkBehaviour
 {
@@ -47,8 +48,9 @@ public class BasePlayer : NetworkBehaviour
         RootNetworkObjectID.Value = SelfDevice.RootGameComponent.NetworkObjectId;
         SelfDevice.OnDeviceDied += DeviceDiedHandler;
         IsAlive.Value = true;
-        SelfDevice.ForEachGameComponent(component => {
+        SelfDevice.ForEachGameComponent(async component => {
             (component as GameComponent).NetworkObject.ChangeOwnership(OwnerClientId);
+            await UniTask.NextFrame();
         });
     }
     [ServerRpc]

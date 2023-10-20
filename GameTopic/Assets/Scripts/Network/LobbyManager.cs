@@ -77,7 +77,7 @@ public class LobbyManager
     private async UniTask BindHostLobbyHandler(Lobby lobby){
         LobbyEventCallbacks lobbyEventCallbacks = new LobbyEventCallbacks();
         lobbyEventCallbacks.DataChanged += DataChangedHandler;
-        lobbyEventCallbacks.PlayerJoined += player => Debug.Log("Player " + player + " joined");
+        lobbyEventCallbacks.PlayerJoined += playerList => OnPlayerJoined.Invoke(playerList.First().Player);
         lobbyEventCallbacks.PlayerDataChanged += PlayerDataChangedHandler;
         lobbyEventCallbacks.PlayerDataAdded += PlayerDataChangedHandler;
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
