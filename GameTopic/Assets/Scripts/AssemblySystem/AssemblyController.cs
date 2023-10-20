@@ -88,6 +88,10 @@ public class AssemblyController : NetworkBehaviour
             }
         }
     }
+    [ServerRpc]
+    private void CancelLastSelection_ServerRpc(){
+        _ = CancelLastSelection();
+    }
     #region Select
     private void SelectHandler(InputAction.CallbackContext context){
         if (IsOwner){
@@ -116,12 +120,10 @@ public class AssemblyController : NetworkBehaviour
     }
     private async void SelectComponentHandler(ulong componentID){
         var gameComponent = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<GameComponent>();
-        CancelLastSelection_ServerRpc();
-        await UniTask.WaitUntil(() => !SelectedComponentID.HasValue);
-        await UniTask.NextFrame();
+        await CancelLastSelection();
         tempSelectedParentComponentID = gameComponent.Parent == null ? null : (gameComponent.Parent as GameComponent).NetworkObjectId;
         tempConnectionInfo = gameComponent.Parent == null ? null : (gameComponent.Connector.Dump() as ConnectionInfo);
-        gameComponent.DisconnectFromParent();
+        //gameComponent.DisconnectFromParent();
         gameComponent.DisconnectAllChildren();
         SelectedComponentID = gameComponent.NetworkObjectId;
         
@@ -135,8 +137,7 @@ public class AssemblyController : NetworkBehaviour
 
         OnGameComponentSelected?.Invoke(gameComponent);
     }
-    [ServerRpc]
-    private void CancelLastSelection_ServerRpc(){
+    private async UniTask CancelLastSelection(){
         if (SelectedComponentID.HasValue){
             var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<GameComponent>();
             component.SetSelected(false);
@@ -151,6 +152,8 @@ public class AssemblyController : NetworkBehaviour
                 component.NetworkObject.RemoveOwnership();
                 SelectedComponentID = null;
             }
+            await UniTask.WaitUntil(() => !SelectedComponentID.HasValue);
+            await UniTask.NextFrame();
         }
     }
     [ServerRpc]
@@ -166,7 +169,13 @@ public class AssemblyController : NetworkBehaviour
         {
             linkedTargetID = targetID,
         };
-        component.ConnectToParent(parentComponent, connectionInfo);
+        if (component.Parent != parentComponent || targetID != (component.Connector.Dump() as ConnectionInfo).linkedTargetID){
+            component.DisconnectFromParent();
+            component.ConnectToParent(parentComponent, connectionInfo);
+        }else{
+            component.Connector.Disconnect();
+            component.Connector.ConnectToComponent(parentComponent.Connector, connectionInfo);
+        }
         component.SetSelected(false);
         SetAvailableForConnection(tempConnectableComponentIDs, false);
         OnGameComponentSelectedEnd?.Invoke(component);
@@ -193,9 +202,7 @@ public class AssemblyController : NetworkBehaviour
         }
     }
     private async void Disconnect(ulong componentID){
-        CancelLastSelection_ServerRpc();
-        await UniTask.WaitUntil(() => !SelectedComponentID.HasValue);
-        await UniTask.NextFrame();
+        await CancelLastSelection();
         var component = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<GameComponent>();
         component.DisconnectFromParent();
         component.DisconnectAllChildren();

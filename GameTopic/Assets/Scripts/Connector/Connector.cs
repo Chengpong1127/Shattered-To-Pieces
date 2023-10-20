@@ -75,7 +75,6 @@ public class Connector : MonoBehaviour, IConnector
     }
     void OnJointBreak2D(Joint2D brokenJoint)
     {
-        Debug.Log("A joint broken, joint: " + brokenJoint);
         GameComponent.DisconnectFromParent();
     }
 }
