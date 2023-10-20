@@ -15,8 +15,8 @@ public class ClientBtn : MonoBehaviour
 
 
     private void Awake() {
-        button.onClick.AddListener(UpdateConnectRoom);
-        LayoutParent.SetActive(false);
+        // button.onClick.AddListener(UpdateConnectRoom);
+        // LayoutParent.SetActive(false);
     }
 
     async void UpdateConnectRoom() {
@@ -65,7 +65,7 @@ public class ClientBtn : MonoBehaviour
 
         var lobbies = await LocalGameManager.Instance.GetAllAvailableLobby();
         var lobby = lobbies.Where(lb => { return lb.Name == roomName; }).FirstOrDefault();
-        if(lobby == null) { return; }
+        if(lobby == null) { Debug.Log("Choose room is null"); return; }
         LocalGameManager.Instance.JoinLobby(lobby);
     }
 }

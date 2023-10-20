@@ -20,7 +20,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         GameRoom,
     }
     private StateMachine<GameState> GameStateMachine;
-    private LobbyManager LobbyManager;
+    public LobbyManager LobbyManager;
 
     async void Start()
     {
