@@ -48,10 +48,11 @@ public class BasePlayer : NetworkBehaviour
         RootNetworkObjectID.Value = SelfDevice.RootGameComponent.NetworkObjectId;
         SelfDevice.OnDeviceDied += DeviceDiedHandler;
         IsAlive.Value = true;
-        SelfDevice.ForEachGameComponent(async component => {
+        await SelfDevice.ForEachGameComponentAsync(async component => {
             (component as GameComponent).NetworkObject.ChangeOwnership(OwnerClientId);
             await UniTask.NextFrame();
         });
+
     }
     [ServerRpc]
     private void StartAbility_ServerRPC(int abilityNumber)
