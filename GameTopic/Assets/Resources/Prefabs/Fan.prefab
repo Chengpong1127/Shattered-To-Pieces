@@ -160,6 +160,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 321598573330694155, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 951099334
+      objectReference: {fileID: 0}
     - target: {fileID: 323697144701428813, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_AutoConfigureConnectedAnchor
       value: 0
@@ -257,9 +261,9 @@ PrefabInstance:
       value: 0.05
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 3908426105045055669, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-    - {fileID: 8933114590945976158, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-    - {fileID: 657034829396577035, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     - {fileID: 2973098028539147263, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
     - {fileID: 8211648019079314832, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
     - {fileID: 7388634133129272788, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -272,15 +276,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       insertIndex: 1
       addedObject: {fileID: 4715040809478573304}
-    - targetCorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -7071325682516955612}
-    - targetCorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -4178220039955171687}
-    - targetCorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 699281427936924571}
     - targetCorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2862088518758928107}
@@ -314,75 +309,16 @@ MonoBehaviour:
   bodyAnimator: {fileID: 8648572613100063812}
   bodyRenderers:
   - {fileID: 1353910435260644711}
+  CollisionDamageThreshold: 80
+  CollisionDamageEffect: {fileID: 0}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
   InitializationAbilities:
   - {fileID: 11400000, guid: c4f25b21df2854a408a96dbd63f58a65, type: 2}
   Abilities:
   - {fileID: 11400000, guid: c76e7e721e5ee1c43a4ce3741049367a, type: 2}
+  CanSelected: 1
   assemblyTransform: {fileID: 7463319265100932557}
---- !u!114 &-7071325682516955612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3148579403918746710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  UseQuaternionSynchronization: 0
-  UseQuaternionCompression: 0
-  UseHalfFloatPrecision: 0
-  InLocalSpace: 0
-  Interpolate: 1
-  SlerpPosition: 0
---- !u!114 &-4178220039955171687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3148579403918746710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &699281427936924571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3148579403918746710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!114 &2862088518758928107
 MonoBehaviour:
   m_ObjectHideFlags: 0
