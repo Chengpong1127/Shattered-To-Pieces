@@ -107,7 +107,8 @@ public class LobbyManager
     private async UniTask BindClinetLobbyHandler(Lobby lobby){
         LobbyEventCallbacks lobbyEventCallbacks = new LobbyEventCallbacks();
         lobbyEventCallbacks.DataChanged += DataChangedHandler;
-        lobbyEventCallbacks.PlayerJoined += player => Debug.Log("Player " + player + " joined");
+        lobbyEventCallbacks.PlayerJoined += _ => OnPlayerJoinOrLeave?.Invoke();
+        lobbyEventCallbacks.PlayerLeft += _ => OnPlayerJoinOrLeave?.Invoke();
         lobbyEventCallbacks.PlayerDataChanged += PlayerDataChangedHandler;
         lobbyEventCallbacks.PlayerDataAdded += PlayerDataChangedHandler;
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
