@@ -9,7 +9,7 @@ using System.Linq;
 public class LobbyManager
 {
     // Server Events
-    public event Action<Player> OnPlayerJoined;
+    public event Action OnPlayerJoinOrLeave;
     public event Action<Player> OnPlayerReady;
     public event Action<Player> OnPlayerUnready;
 
@@ -77,7 +77,8 @@ public class LobbyManager
     private async UniTask BindHostLobbyHandler(Lobby lobby){
         LobbyEventCallbacks lobbyEventCallbacks = new LobbyEventCallbacks();
         lobbyEventCallbacks.DataChanged += DataChangedHandler;
-        lobbyEventCallbacks.PlayerJoined += playerList => OnPlayerJoined.Invoke(playerList.First().Player);
+        lobbyEventCallbacks.PlayerJoined += _ => OnPlayerJoinOrLeave?.Invoke();
+        lobbyEventCallbacks.PlayerLeft += _ => OnPlayerJoinOrLeave?.Invoke();
         lobbyEventCallbacks.PlayerDataChanged += PlayerDataChangedHandler;
         lobbyEventCallbacks.PlayerDataAdded += PlayerDataChangedHandler;
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
