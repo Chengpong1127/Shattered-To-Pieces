@@ -34,6 +34,7 @@ public class LobbyManager
         CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
         await BindHostLobbyHandler(CurrentLobby);
         Identity = LobbyIdentity.Host;
+        OnPlayerJoinOrLeave?.Invoke();
         return CurrentLobby;
     }
 
@@ -72,6 +73,7 @@ public class LobbyManager
         CurrentLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, joinLobbyOptions);
         await BindClinetLobbyHandler(CurrentLobby);
         Identity = LobbyIdentity.Client;
+        OnPlayerJoinOrLeave?.Invoke();
     }
 
     private async UniTask BindHostLobbyHandler(Lobby lobby){
