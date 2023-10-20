@@ -536,7 +536,7 @@ MonoBehaviour:
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
   InitializationAbilities:
-  - {fileID: 11400000, guid: c4f25b21df2854a408a96dbd63f58a65, type: 2}
+  - {fileID: 11400000, guid: 7c6ff749d408d4aa1899bc696128b5bd, type: 2}
   Abilities:
   - {fileID: 11400000, guid: 9ec3e7a88c1c04d00bb6ff6285f2ba61, type: 2}
   - {fileID: 11400000, guid: c961840a329ca4129ac1bea657e4caf1, type: 2}

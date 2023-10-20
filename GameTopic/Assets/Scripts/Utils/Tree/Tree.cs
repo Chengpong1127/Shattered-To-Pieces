@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Cysharp.Threading.Tasks;
 public class Tree
 {
     public ITreeNode root;
@@ -21,12 +22,36 @@ public class Tree
         }
     }
 
+    public async UniTask TraverseBFSAsync(Func<ITreeNode, UniTask> action){
+        var queue = new Queue<ITreeNode>();
+        queue.Enqueue(root);
+        while (queue.Count > 0){
+            var node = queue.Dequeue();
+            await action(node);
+            foreach (var child in node.Children){
+                queue.Enqueue(child);
+            }
+        }
+    }
+
     public void TraverseDFS(Action<ITreeNode> action){
         var stack = new Stack<ITreeNode>();
         stack.Push(root);
         while (stack.Count > 0){
             var node = stack.Pop();
             action(node);
+            foreach (var child in node.Children){
+                stack.Push(child);
+            }
+        }
+    }
+
+    public async UniTask TraverseDFSAsync(Func<ITreeNode, UniTask> action){
+        var stack = new Stack<ITreeNode>();
+        stack.Push(root);
+        while (stack.Count > 0){
+            var node = stack.Pop();
+            await action(node);
             foreach (var child in node.Children){
                 stack.Push(child);
             }

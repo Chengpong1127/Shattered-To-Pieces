@@ -32,8 +32,10 @@ public class Leg : BaseCoreComponent , IBodyControlable, IGroundCheckable {
         var trigger = GroundTriggerCollider.GetAsyncTriggerStay2DTrigger();
         
         while(!IsGrounded && !cancellationToken.IsCancellationRequested) {
-            await trigger.OnTriggerStay2DAsync(cancellationToken);
-            IsGrounded = true;
+            var collider = await trigger.OnTriggerStay2DAsync(cancellationToken);
+            if (collider.GetComponentInParent<Taggable>()?.HasTag("Ground") ?? false) {
+                IsGrounded = true;
+            }
         }
     }
     private async UniTask ListenUnground(CancellationToken cancellationToken) {
