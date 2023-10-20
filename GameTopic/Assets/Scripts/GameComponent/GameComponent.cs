@@ -140,7 +140,7 @@ public class GameComponent : AbilityEntity, IGameComponent
         }
     }
     [ClientRpc]
-    public void SetAvailableForConnectionClientRpc(bool available){
+    public virtual void SetAvailableForConnectionClientRpc(bool available){
         switch(available){
             case true:
                 connector.SetNonConnectedTargetsDisplay(true);
