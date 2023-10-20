@@ -687,12 +687,15 @@ MonoBehaviour:
   bodyRenderers:
   - {fileID: 3552658760420736364}
   - {fileID: 2560736522442253250}
+  CollisionDamageThreshold: 400
+  CollisionDamageEffect: {fileID: 0}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
   InitializationAbilities:
   - {fileID: 11400000, guid: c4f25b21df2854a408a96dbd63f58a65, type: 2}
   Abilities:
   - {fileID: 11400000, guid: 7baa1cdab01668841b814009aac8f23f, type: 2}
+  CanSelected: 1
   assemblyTransform: {fileID: 4366935879820701512}
 --- !u!114 &1501339162109166869
 MonoBehaviour:

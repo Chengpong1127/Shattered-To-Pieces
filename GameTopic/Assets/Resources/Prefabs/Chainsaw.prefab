@@ -402,12 +402,15 @@ MonoBehaviour:
   bodyAnimator: {fileID: 1610879430255940508}
   bodyRenderers:
   - {fileID: 5313162394069196484}
+  CollisionDamageThreshold: 400
+  CollisionDamageEffect: {fileID: 0}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
   InitializationAbilities:
   - {fileID: 11400000, guid: c4f25b21df2854a408a96dbd63f58a65, type: 2}
   Abilities:
   - {fileID: 11400000, guid: afbe5320ee1837743917693eefa29f29, type: 2}
+  CanSelected: 1
   assemblyTransform: {fileID: 1773814014207798786}
   EntityTriggerCollider: {fileID: 6804235984704648300}
 --- !u!114 &2052199197313306808

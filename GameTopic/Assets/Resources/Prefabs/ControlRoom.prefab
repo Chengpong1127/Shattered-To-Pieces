@@ -796,7 +796,7 @@ MonoBehaviour:
   bodyAnimator: {fileID: 0}
   bodyRenderers:
   - {fileID: 5638081112914515358}
-  CollisionDamageThreshold: 200
+  CollisionDamageThreshold: 800
   CollisionDamageEffect: {fileID: 0}
   AttributeSystemComponent: {fileID: 8187615772520921709}
   AbilitySystemCharacter: {fileID: 4120888074827841385}
@@ -804,10 +804,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1fa5b200971aa48578672c8fe6e7cc4e, type: 2}
   Abilities:
   - {fileID: 11400000, guid: 31f9dc9e81759497894eac5fbb7f5084, type: 2}
+  CanSelected: 1
   assemblyTransform: {fileID: 4408897233033228148}
-  m_Default: {fileID: 0}
-  m_Invisible: {fileID: 0}
-  AssemblyCollider: {fileID: 0}
 --- !u!114 &7784025365141811698
 MonoBehaviour:
   m_ObjectHideFlags: 0

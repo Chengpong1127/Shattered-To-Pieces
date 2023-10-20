@@ -709,12 +709,15 @@ MonoBehaviour:
   bodyAnimator: {fileID: 738041516568089503}
   bodyRenderers:
   - {fileID: 6992470058117770966}
+  CollisionDamageThreshold: 400
+  CollisionDamageEffect: {fileID: 0}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
   InitializationAbilities:
   - {fileID: 11400000, guid: c4f25b21df2854a408a96dbd63f58a65, type: 2}
   Abilities:
   - {fileID: 11400000, guid: 36c3d4c272a4f884289894bd5088f535, type: 2}
+  CanSelected: 1
   assemblyTransform: {fileID: 4469932153802063128}
   SpwanPoint: {fileID: 1155119543493593414}
   Power: 5
