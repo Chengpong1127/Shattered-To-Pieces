@@ -8,10 +8,12 @@ using UnityEngine;
 public class PropellerFly : DisplayableAbilityScriptableObject {
 
     [SerializeField] float Power;
+    [SerializeField] float EnergyCostPerSecond;
     
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner) {
         var spec = new PropellerFlySpec(this, owner) {
-            Power = Power
+            Power = Power,
+            EnergyCostPerSecond = EnergyCostPerSecond,
         };
 
         return spec;
@@ -19,6 +21,7 @@ public class PropellerFly : DisplayableAbilityScriptableObject {
 
     public class PropellerFlySpec : RunnerAbilitySpec {
         public float Power;
+        public float EnergyCostPerSecond;
 
         Animator animator;
         public PropellerFlySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner) {
@@ -27,15 +30,22 @@ public class PropellerFly : DisplayableAbilityScriptableObject {
 
         public override void CancelAbility()
         {
+            animator.SetBool("Fly", false);
             EndAbility();
         }
 
         protected override IEnumerator ActivateAbility() {
             if(isActive) { animator.SetBool("Fly",true); }
             while (isActive) {
+                if (EnergyManager.HasEnergy(EnergyCostPerSecond * Time.fixedDeltaTime))
+                    EnergyManager.CostEnergy(EnergyCostPerSecond * Time.fixedDeltaTime);
+                else {
+                    CancelAbility();
+                    yield break;
+                }
                 var gameComponent = SelfEntity as GameComponent;
                 SelfEntity.BodyRigibodyAddForce_ClientRpc(gameComponent.AssemblyTransform.TransformDirection(Vector3.up) * Power, ForceMode2D.Force);
-                yield return null;
+                yield return new WaitForFixedUpdate();
             }
             animator.SetBool("Fly", false);
         }

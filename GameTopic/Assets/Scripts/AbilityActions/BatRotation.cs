@@ -50,10 +50,5 @@ public class BatRotation : DisplayableAbilityScriptableObject
             entityTriggerable.OnTriggerEntity -= TriggerAction;
             GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(SelfEntity, other, DamageEffect);
         }
-
-        protected override IEnumerator PreActivate()
-        {
-            yield return base.PreActivate();
-        }
     }
 }

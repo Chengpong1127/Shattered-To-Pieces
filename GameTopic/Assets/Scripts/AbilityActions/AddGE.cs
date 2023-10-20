@@ -32,9 +32,5 @@ public class AddGE : DisplayableAbilityScriptableObject {
             GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(SelfEntity, SelfEntity, gameEffect);
             yield return null;
         }
-
-        protected override IEnumerator PreActivate() {
-            yield return null;
-        }
     }
 }

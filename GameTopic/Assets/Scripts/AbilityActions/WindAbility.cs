@@ -71,7 +71,7 @@ public class WindAbility : DisplayableAbilityScriptableObject
             Character = body.GetRoot() as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl"); 
             Active = true;
 
-            yield return null;
+            yield return base.PreActivate();
         }
     }
 }

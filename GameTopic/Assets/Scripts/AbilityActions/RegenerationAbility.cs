@@ -41,10 +41,5 @@ public class RegenerationAbility : DisplayableAbilityScriptableObject
             Debug.Log("Start Regeneration");
             GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(SelfEntity, component, RegenerationEffect);
         }
-
-        protected override IEnumerator PreActivate()
-        {
-            yield return base.PreActivate();
-        }
     }
 }

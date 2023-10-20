@@ -73,11 +73,6 @@ public class InvisibleAbility : DisplayableAbilityScriptableObject
             });
             yield return null;
         }
-
-        protected override IEnumerator PreActivate()
-        {
-            yield return null;
-        }
     }
 }
 

@@ -43,10 +43,6 @@ public class ChainsawAttack : DisplayableAbilityScriptableObject {
             SelfEntity.BodyColliders.ToList().ForEach(collider => collider.isTrigger = false);
         }
 
-        protected override IEnumerator PreActivate() {
-            yield return null;
-        }
-
         private void TriggerAction(Entity other) {
             GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(SelfEntity, other, DamageEffect);
             entityTriggerable.OnTriggerEntity -= TriggerAction;

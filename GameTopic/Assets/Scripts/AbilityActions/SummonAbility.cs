@@ -40,10 +40,5 @@ public class SummonAbility : DisplayableAbilityScriptableObject
             Summonable.InitSummonObject(instance);
             yield return null;
         }
-
-        protected override IEnumerator PreActivate()
-        {
-            yield return null;
-        }
     }
 }

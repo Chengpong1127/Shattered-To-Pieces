@@ -53,11 +53,6 @@ public class LightAbility : DisplayableAbilityScriptableObject
             clear = true;
             yield return null;
         }
-
-        protected override IEnumerator PreActivate()
-        {
-            yield return null;
-        }
     }
 }
 
