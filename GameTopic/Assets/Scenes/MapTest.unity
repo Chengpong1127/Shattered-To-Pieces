@@ -764,8 +764,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 0.00090003014, y: 0.0023500025, z: 0}
-    m_Extent: {x: 1.0071, y: 0.99735, z: 0}
+    m_Center: {x: 0.0020999908, y: -0.003099978, z: 0}
+    m_Extent: {x: 1.0035, y: 0.9981, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -1022,8 +1022,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -4.745, y: -7.8990498, z: 0}
-    m_Extent: {x: 11.201, y: 10.76535, z: 0}
+    m_Center: {x: -4.7380505, y: -7.89365, z: 0}
+    m_Extent: {x: 11.19685, y: 10.76255, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -2104,7 +2104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkManager: {fileID: 0}
-  PlayerCount: 1
+  PlayerCount: 2
   UseRelay: 0
 --- !u!114 &1585596239
 MonoBehaviour:
