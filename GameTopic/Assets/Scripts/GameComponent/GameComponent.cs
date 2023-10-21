@@ -44,7 +44,6 @@ public class GameComponent : AbilityEntity, IGameComponent
         Parent.Children.Add(this);
         BodyTransform.position = parentComponent.BodyTransform.position;
         connector.ConnectToComponent(parent.Connector, info);
-
         NetworkObject.ChangeOwnership(parent.NetworkObject.OwnerClientId);
         await UniTask.NextFrame();
         ConnectToParent_ClientRpc(parent.NetworkObjectId, info);
@@ -157,6 +156,7 @@ public class GameComponent : AbilityEntity, IGameComponent
         base.Awake();
         connector ??= GetComponent<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
         if (assemblyTransform == null) Debug.LogWarning("The assemblyTransform is not set.");
+        connector.OnJointBreak += JointBreakHandler_ServerRpc;
     }
     
 
@@ -175,5 +175,10 @@ public class GameComponent : AbilityEntity, IGameComponent
             var child = Children[0] as GameComponent;
             child.DisconnectFromParent();
         }
+    }
+    [ServerRpc]
+    protected void JointBreakHandler_ServerRpc(){
+        DisconnectFromParent();
+        NetworkObject.RemoveOwnership();
     }
 }

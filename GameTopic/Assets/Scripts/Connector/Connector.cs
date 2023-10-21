@@ -1,22 +1,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using UnityEngine;
-using UnityEngine.Events;
 using System.Linq;
+using Unity.Netcode;
 [RequireComponent(typeof(AnchoredJoint2D))]
 public class Connector : MonoBehaviour, IConnector
 {
+    public event Action OnJointBreak;
     public AnchoredJoint2D Joint { get; set; }
-    public IGameComponent GameComponent { get; private set; }
+    public GameComponent GameComponent { get; private set; }
     List<Target> targetList;
 
     Target _currentLinkedTarget = null;
     private void Awake() {
         Joint = GetComponent<AnchoredJoint2D>();
         targetList = GetComponentsInChildren<Target>().ToList();
-        GameComponent = GetComponentInParent<IGameComponent>();
+        GameComponent = GetComponentInParent<GameComponent>();
         SetTargetList(targetList);
     }
 
@@ -75,6 +75,6 @@ public class Connector : MonoBehaviour, IConnector
     }
     void OnJointBreak2D(Joint2D brokenJoint)
     {
-        GameComponent.DisconnectFromParent();
+        OnJointBreak?.Invoke();
     }
 }
