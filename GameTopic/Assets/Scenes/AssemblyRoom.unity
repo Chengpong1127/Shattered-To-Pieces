@@ -2964,7 +2964,7 @@ GameObject:
   - component: {fileID: 473428230}
   - component: {fileID: 473428232}
   m_Layer: 0
-  m_Name: GarbageCan
+  m_Name: GarbageCanSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7550,6 +7550,10 @@ PrefabInstance:
       value: 585363698
       objectReference: {fileID: 0}
     - target: {fileID: 7336128848403849758, guid: 4fced92005cb04f298be086e2d933fd2, type: 3}
+      propertyPath: bodyAnimator
+      value: 
+      objectReference: {fileID: 2007554313}
+    - target: {fileID: 7336128848403849758, guid: 4fced92005cb04f298be086e2d933fd2, type: 3}
       propertyPath: bodyColliders.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -10401,7 +10405,7 @@ Animator:
   m_GameObject: {fileID: 2007554304}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cb129ad38ad4d1540844d6d6acf7ecb4, type: 2}
+  m_Controller: {fileID: 9100000, guid: 94e7dc05f2351bb4d87dedd4d3e4f7b9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

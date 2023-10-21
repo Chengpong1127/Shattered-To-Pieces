@@ -20,12 +20,10 @@ public class GarbageCan: GameComponent{
 
     private async void OnLinkedHandler(Connector connector)
     {
-       // this.BodyAnimator.SetBool("IsTrigger",true);
+        this.BodyAnimator.SetTrigger("Trigger");
         await UniTask.WaitForSeconds(0.5f);
         connector.GameComponent.Die();
         Target.SetTargetDisplay(true);
-        //this.BodyAnimator.SetBool("IsTrigger", false);
-
     }
     [ClientRpc]
     public override void SetAvailableForConnectionClientRpc(bool available)
