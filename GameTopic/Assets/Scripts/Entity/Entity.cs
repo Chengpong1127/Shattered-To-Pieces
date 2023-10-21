@@ -8,7 +8,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using Cysharp.Threading.Tasks.Triggers;
-using AttributeSystem.Authoring;
+using Unity.Netcode;
 
 /// <summary>
 /// Entity is the base class for all entities in the game. An entity has attributes and the init abilities to set up the init state of the entity.
@@ -58,16 +58,21 @@ public class Entity: BaseEntity{
         var collisionTrigger = collider.GetAsyncCollisionEnter2DTrigger();
         try{
             while(true){
-                var collision = await collisionTrigger.OnCollisionEnter2DAsync();
-                if (GetImpulse(collision) > CollisionDamageThreshold){
-                    var damage = GetImpulse(collision) - CollisionDamageThreshold;
-                    CollisionDamageEffect.gameplayEffect.Modifiers[0].Multiplier = -damage;
-                    GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(this, this, CollisionDamageEffect);
+                if (IsOwner){
+                    var collision = await collisionTrigger.OnCollisionEnter2DAsync();
+                    if (GetImpulse(collision) > CollisionDamageThreshold){
+                        var damage = GetImpulse(collision) - CollisionDamageThreshold;
+                        SetCollisionDamage_ServerRpc(damage);
+                    }
                 }
-
             }
         }catch(OperationCanceledException){
         }
+    }
+    [ServerRpc]
+    private void SetCollisionDamage_ServerRpc(float damage){
+        CollisionDamageEffect.gameplayEffect.Modifiers[0].Multiplier = -damage;
+        GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(this, this, CollisionDamageEffect);
     }
     private float GetImpulse(Collision2D collision){
         return Mathf.Pow(collision.relativeVelocity.magnitude, 2);
