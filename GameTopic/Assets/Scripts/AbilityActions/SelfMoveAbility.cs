@@ -52,7 +52,7 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
                 if (!groundCheckable.IsGrounded) yield break;
             }
             while(isActive){
-                if (EnergyManager.HasEnergy(EnergyCostPerSecond * Time.fixedDeltaTime))
+                if (EnergyManager.HasEnergy(EnergyCostPerSecond * Time.fixedDeltaTime * 2))
                     EnergyManager.CostEnergy(EnergyCostPerSecond * Time.fixedDeltaTime);
                 else{
                     CancelAbility();

@@ -37,7 +37,7 @@ public class PropellerFly : DisplayableAbilityScriptableObject {
         protected override IEnumerator ActivateAbility() {
             if(isActive) { animator.SetBool("Fly",true); }
             while (isActive) {
-                if (EnergyManager.HasEnergy(EnergyCostPerSecond * Time.fixedDeltaTime))
+                if (EnergyManager.HasEnergy(EnergyCostPerSecond * Time.fixedDeltaTime * 2))
                     EnergyManager.CostEnergy(EnergyCostPerSecond * Time.fixedDeltaTime);
                 else {
                     CancelAbility();
