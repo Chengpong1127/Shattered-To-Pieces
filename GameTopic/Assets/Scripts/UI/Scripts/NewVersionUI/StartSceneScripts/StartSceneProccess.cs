@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,12 +31,18 @@ public class StartSceneProccess : MonoBehaviour
 
     private void Awake() {
         HostBtn.onClick.AddListener(SubmitHostName);
-        RoomListBtn.onClick.AddListener(RegistListener);
 
         RoomListBtn.onClick.AddListener(UpdateConnectRoom);
         RoomListBtn.onClick.AddListener(RegistListener);
         RoomListLayoutParent.SetActive(false);
     }
+
+    private void OnDestroy() {
+        LocalGameManager.Instance.LobbyManager.OnPlayerJoinOrLeave -= RegistPlayerInfo;
+        LocalGameManager.Instance.LobbyManager.OnPlayerReady -= UpdatePlayerInfo;
+        LocalGameManager.Instance.LobbyManager.OnPlayerUnready -= UpdatePlayerInfo;
+    }
+
 
     #region RoomList
     async void UpdateConnectRoom() {
@@ -95,6 +102,7 @@ public class StartSceneProccess : MonoBehaviour
     #region HostBtn
     void SubmitHostName() {
         var hn = HostNameInputField.text;
+        RegistListener();
         LocalGameManager.Instance.CreateLobby(hn);
     }
     #endregion
@@ -103,14 +111,10 @@ public class StartSceneProccess : MonoBehaviour
     #region LobbyInfo
 
     void RegistPlayerInfo() {
-        Debug.Log("server call RegistPlayerInfo");
-        RegistPlayerInfo_ClientRpc();
-    }
-    [ClientRpc]
-    void RegistPlayerInfo_ClientRpc() {
-        Debug.Log("client call RegistPlayerInfo rpc");
+        Debug.Log("call RegistPlayerInfo");
 
         infos.ForEach(info => {
+            if (info.IsDestroyed()) { return; }
             Destroy(info.gameObject);
         });
         infos.Clear();
@@ -118,7 +122,7 @@ public class StartSceneProccess : MonoBehaviour
         LocalGameManager.Instance.LobbyManager.CurrentLobby.Players.ForEach(player => {
             var pinfo = Instantiate(LobbyPlayerInfoPrefab, LobbyLayoutParent.transform, false).GetComponent<LobbyPlayerInfo>();
             infos.Add(pinfo);
-            if (player != LocalGameManager.Instance.LobbyManager.SelfPlayer) {
+            if (player.Id != LocalGameManager.Instance.LobbyManager.SelfPlayer.Id) {
                 pinfo.readyBtn.gameObject.SetActive(false);
             } else {
                 pinfo.readyBtn.onClick.AddListener(ReadySwitch);
@@ -131,18 +135,12 @@ public class StartSceneProccess : MonoBehaviour
     }
 
     void UpdatePlayerInfo(Player player) {
-        Debug.Log("server call UpdatePlayerInfo");
-        UpdatePlayerInfo_ClientRpc();
-    }
-
-    [ClientRpc]
-    void UpdatePlayerInfo_ClientRpc() {
-        Debug.Log("client call UpdatePlayerInfo rpc");
+        Debug.Log("call UpdatePlayerInfo");
         int index = 0;
 
         LocalGameManager.Instance.LobbyManager.CurrentLobby.Players.ForEach(player => {
             if (infos.Count <= index) { return; }
-            infos[index].tmp_t.text = player.Data["Ready"].Value == "true" ? "Ready" : "";
+            infos[index].tmp_t.text = player.Data["Ready"].Value == "true" ? "Ready" : "not ready";
             index++;
         });
     }
