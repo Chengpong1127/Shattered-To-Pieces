@@ -18,7 +18,7 @@ public class HostBtn : MonoBehaviour
 
     void SubmitHostName() {
         var hn = HostNameInputField.text;
-        LocalGameManager.Instance.CreateLobby(hn);
+        // LocalGameManager.Instance.CreateLobby(hn);
         
         // var lobbies = await LocalGameManager.Instance.GetAllAvailableLobby();
         // var lobby = lobbies.Where(lb => { return lb.Name == hn; }).FirstOrDefault();
