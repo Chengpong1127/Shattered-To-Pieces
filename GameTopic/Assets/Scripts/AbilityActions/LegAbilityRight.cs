@@ -84,7 +84,7 @@ public class LegAbilityRight : DisplayableAbilityScriptableObject {
             Active = Character != null;
             addConfirm = false;
             animator.SetFloat("Speed", Speed / 2);
-            yield return null;
+            yield return base.PreActivate();
         }
     }
 }

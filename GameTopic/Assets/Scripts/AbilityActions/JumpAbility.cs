@@ -81,7 +81,7 @@ public class JumpAbility : DisplayableAbilityScriptableObject {
            //Character = Body.GetRoot() as ICharacterCtrl ?? throw new System.ArgumentNullException("Root component need ICharacterCtrl");
             JumpCounter = 0;
             isJumping = true;
-            yield return null;
+            yield return base.PreActivate();
         }
     }
 }

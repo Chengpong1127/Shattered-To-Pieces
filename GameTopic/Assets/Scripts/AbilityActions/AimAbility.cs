@@ -51,11 +51,6 @@ public class AimAbility: DisplayableAbilityScriptableObject{
             Aimable.EndAim(GetCurrentAimVector());
             EndAbility();
         }
-
-        protected override IEnumerator PreActivate()
-        {
-            yield return null;
-        }
         private Vector2 GetCurrentAimVector()
         {
             var mousePosition = Mouse.current.position.ReadValue();

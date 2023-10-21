@@ -37,11 +37,6 @@ public class RubbergunAbility : DisplayableAbilityScriptableObject
         {
             yield return null;
         }
-
-        protected override IEnumerator PreActivate()
-        {
-            yield return null;
-        }
     }
 }
 

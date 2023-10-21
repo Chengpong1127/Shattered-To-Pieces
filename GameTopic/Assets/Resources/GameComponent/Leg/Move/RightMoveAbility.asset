@@ -27,6 +27,7 @@ MonoBehaviour:
     TargetTags:
       RequireTags: []
       IgnoreTags: []
+  EnergyCost: 0
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
   Image: {fileID: 21300000, guid: a85b816a124f15a45903ec4a186ea24d, type: 3}
@@ -36,3 +37,4 @@ MonoBehaviour:
   Speed: 6
   Direction: 1
   AnimationName: MoveRight
+  EnergyCostPerSecond: 0.2

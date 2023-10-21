@@ -13,13 +13,15 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
     public float Speed;
     public MoveDirection Direction;
     public string AnimationName;
+    public float EnergyCostPerSecond;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
         var spec = new MoveAbilitySpec(this, owner)
         {
             Speed = Speed,
             Direction = Direction,
-            AnimationName = AnimationName
+            AnimationName = AnimationName,
+            EnergyCostPerSecond = EnergyCostPerSecond,
         };
         return spec;
     }
@@ -29,6 +31,7 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
         public float Speed;
         public MoveDirection Direction;
         public string AnimationName;
+        public float EnergyCostPerSecond;
         public MoveAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
         }
@@ -49,6 +52,12 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
                 if (!groundCheckable.IsGrounded) yield break;
             }
             while(isActive){
+                if (EnergyManager.HasEnergy(EnergyCostPerSecond * Time.fixedDeltaTime * 2))
+                    EnergyManager.CostEnergy(EnergyCostPerSecond * Time.fixedDeltaTime);
+                else{
+                    CancelAbility();
+                    yield break;
+                }
                 if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, true);
                 var velocity = SelfEntity.BodyRigidbody.velocity;
                 switch (Direction)
@@ -61,7 +70,6 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
                         break;
                 }
                 SelfEntity.BodyRigibodySetVelocity_ClientRpc(velocity);
-                //SelfEntity.BodyRigidbody.velocity = velocity;
                 yield return new WaitForFixedUpdate();
             }
         }

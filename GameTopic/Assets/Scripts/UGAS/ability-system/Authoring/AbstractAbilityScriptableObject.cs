@@ -16,6 +16,8 @@ namespace AbilitySystem.Authoring
         /// </summary>
         [SerializeField] public AbilityTags AbilityTags;
 
+        [SerializeField] public float EnergyCost;
+
         /// <summary>
         /// The GameplayEffect that defines the cost associated with activating the ability
         /// </summary>
