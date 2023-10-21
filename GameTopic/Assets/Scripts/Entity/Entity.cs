@@ -37,7 +37,7 @@ public class Entity: BaseEntity{
     protected override void Start()
     {
         base.Start();
-        BodyColliders.ToList().ForEach(SetColliderCollision);
+        //BodyColliders.ToList().ForEach(SetColliderCollision);
     }
     private async void ActivateInitializationAbilities()
     {
