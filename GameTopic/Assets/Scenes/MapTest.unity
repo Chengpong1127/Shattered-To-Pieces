@@ -764,8 +764,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.004099995, y: 0.0009999871, z: 0}
-    m_Extent: {x: 0.99960005, y: 1.0076001, z: 0}
+    m_Center: {x: 0.00090003014, y: 0.0023500025, z: 0}
+    m_Extent: {x: 1.0071, y: 0.99735, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -1022,8 +1022,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -4.7365, y: -7.89845, z: 0}
-    m_Extent: {x: 11.1994, y: 10.76245, z: 0}
+    m_Center: {x: -4.745, y: -7.8990498, z: 0}
+    m_Extent: {x: 11.201, y: 10.76535, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -2104,7 +2104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkManager: {fileID: 0}
-  PlayerCount: 2
+  PlayerCount: 1
   UseRelay: 0
 --- !u!114 &1585596239
 MonoBehaviour:
@@ -2245,7 +2245,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e97b76950ddf545d189cddf6bcb3359f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2314,7 +2314,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 3d9b5292c19f94b9391bbc9fe4f098b1, type: 3}
     - target: {fileID: 1250451669130524287, guid: 4f20def6595fac943a90a391fd7b0072, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1250451669130524287, guid: 4f20def6595fac943a90a391fd7b0072, type: 3}
       propertyPath: m_WasSpriteAssigned
