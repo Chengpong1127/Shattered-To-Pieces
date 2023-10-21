@@ -20,6 +20,7 @@ public class GarbageCan: GameComponent{
 
     private async void OnLinkedHandler(Connector connector)
     {
+        this.BodyAnimator.SetTrigger("Trigger");
         await UniTask.WaitForSeconds(0.5f);
         connector.GameComponent.Die();
         Target.SetTargetDisplay(true);
