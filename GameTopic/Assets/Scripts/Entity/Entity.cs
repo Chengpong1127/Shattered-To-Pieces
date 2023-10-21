@@ -37,7 +37,7 @@ public class Entity: BaseEntity{
     protected override void Start()
     {
         base.Start();
-        //BodyColliders.ToList().ForEach(SetColliderCollision);
+        BodyColliders.ToList().ForEach(SetColliderCollision);
     }
     private async void ActivateInitializationAbilities()
     {
@@ -64,6 +64,8 @@ public class Entity: BaseEntity{
                         var damage = GetImpulse(collision) - CollisionDamageThreshold;
                         SetCollisionDamage_ServerRpc(damage);
                     }
+                }else{
+                    await UniTask.Yield();
                 }
             }
         }catch(OperationCanceledException){

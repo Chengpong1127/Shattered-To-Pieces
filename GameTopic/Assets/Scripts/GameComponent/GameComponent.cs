@@ -156,7 +156,7 @@ public class GameComponent : AbilityEntity, IGameComponent
         base.Awake();
         connector ??= GetComponent<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
         if (assemblyTransform == null) Debug.LogWarning("The assemblyTransform is not set.");
-        connector.OnJointBreak += JointBreakHandler_ServerRpc;
+        connector.OnJointBreak += JointBreakHandler;
     }
     
 
@@ -176,9 +176,13 @@ public class GameComponent : AbilityEntity, IGameComponent
             child.DisconnectFromParent();
         }
     }
+    protected void JointBreakHandler(){
+        if (IsOwner){
+            JointBreakHandler_ServerRpc();
+        }
+    }
     [ServerRpc]
     protected void JointBreakHandler_ServerRpc(){
         DisconnectFromParent();
-        NetworkObject.RemoveOwnership();
     }
 }
