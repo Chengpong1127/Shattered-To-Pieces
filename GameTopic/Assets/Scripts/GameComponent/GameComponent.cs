@@ -19,14 +19,11 @@ public class GameComponent : AbilityEntity, IGameComponent
     public IConnector Connector => connector;
     public Transform DraggableTransform => BodyTransform;
     public string ComponentName { get; set; }
-    public Transform AssemblyTransform => assemblyTransform;
+    public Transform AssemblyTransform => BodyTransform;
     public bool CanSelected = true;
 
 
     #region Inspector
-
-    [SerializeField]
-    private Transform assemblyTransform;
     [Tooltip("The connector of the game component.")]
     [SerializeField]
     private IConnector connector;
@@ -155,7 +152,6 @@ public class GameComponent : AbilityEntity, IGameComponent
     {
         base.Awake();
         connector ??= GetComponent<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
-        if (assemblyTransform == null) Debug.LogWarning("The assemblyTransform is not set.");
         connector.OnJointBreak += JointBreakHandler;
     }
     
