@@ -94,7 +94,7 @@ public class Device: IDevice
             var childComponent = nodes[child];
             var childInfo = infos[child];
             childComponent.ConnectToParent(parentComponent, childInfo.ConnectionInfo);
-            await UniTask.NextFrame();
+            await UniTask.DelayFrame(3);
         }
     }
     /// <summary>

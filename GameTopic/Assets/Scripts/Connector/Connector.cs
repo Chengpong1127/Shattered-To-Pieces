@@ -56,9 +56,6 @@ public class Connector : NetworkBehaviour, IConnector
     public void Disconnect()
     {
         Disconnect_ClientRpc();
-    }
-    [ClientRpc]
-    private void Disconnect_ClientRpc(){
         if (_currentLinkedTarget != null){
             _currentLinkedTarget.Unlink();
             _currentLinkedTarget = null;
@@ -66,14 +63,21 @@ public class Connector : NetworkBehaviour, IConnector
         Joint.connectedBody = null;
         Joint.enabled = false;
     }
+    [ClientRpc]
+    private void Disconnect_ClientRpc(){
+        if (!IsServer){
+            if (_currentLinkedTarget != null){
+                _currentLinkedTarget.Unlink();
+                _currentLinkedTarget = null;
+            }
+            Joint.connectedBody = null;
+            Joint.enabled = false;
+        }
+    }
 
     public void ConnectToComponent(IConnector newParent, ConnectionInfo info)
     {
         ConnectToComponent_ClientRpc(newParent.GameComponent.NetworkObjectId, info);
-    }
-    [ClientRpc]
-    private void ConnectToComponent_ClientRpc(ulong parentID, ConnectionInfo info){
-        var newParent = Utils.GetLocalGameObjectByNetworkID(parentID).GetComponent<IConnector>();
         if (newParent == null) throw new ArgumentException("newParent is null");
         if (info == null) throw new ArgumentException("info is null");
         _currentLinkedTarget = newParent.GetTarget(info.linkedTargetID);
@@ -81,6 +85,20 @@ public class Connector : NetworkBehaviour, IConnector
         Joint.connectedBody = newParent.GameComponent.BodyRigidbody;
         _currentLinkedTarget.SetLink(this);
         Joint.enabled = true;
+    }
+    [ClientRpc]
+    private void ConnectToComponent_ClientRpc(ulong parentID, ConnectionInfo info){
+        if (!IsServer){
+            var newParent = Utils.GetLocalGameObjectByNetworkID(parentID).GetComponent<IConnector>();
+            if (newParent == null) throw new ArgumentException("newParent is null");
+            if (info == null) throw new ArgumentException("info is null");
+            _currentLinkedTarget = newParent.GetTarget(info.linkedTargetID);
+            Joint.connectedAnchor = _currentLinkedTarget.ConnectionPosition;
+            Joint.connectedBody = newParent.GameComponent.BodyRigidbody;
+            _currentLinkedTarget.SetLink(this);
+            Joint.enabled = true;
+        }
+
     }
     void OnJointBreak2D(Joint2D brokenJoint)
     {

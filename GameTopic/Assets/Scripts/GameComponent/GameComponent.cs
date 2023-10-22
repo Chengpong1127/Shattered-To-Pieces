@@ -31,7 +31,7 @@ public class GameComponent : AbilityEntity, IGameComponent
 
     #endregion
 
-    public virtual async void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
+    public virtual void ConnectToParent(IGameComponent parentComponent, ConnectionInfo info)
     {
         if (parentComponent == null) throw new ArgumentNullException("parentComponent");
         if (info == null) throw new ArgumentNullException("info");
@@ -42,7 +42,6 @@ public class GameComponent : AbilityEntity, IGameComponent
         BodyTransform.position = parentComponent.BodyTransform.position;
         connector.ConnectToComponent(parent.Connector, info);
         NetworkObject.ChangeOwnership(parent.NetworkObject.OwnerClientId);
-        await UniTask.NextFrame();
 
         (GetRoot() as GameComponent)?.OnRootConnectionChanged?.Invoke();
         GameEvents.GameComponentEvents.OnGameComponentConnected.Invoke(this, Parent as GameComponent);
