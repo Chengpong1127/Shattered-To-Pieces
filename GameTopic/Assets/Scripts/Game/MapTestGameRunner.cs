@@ -6,7 +6,7 @@ public class MapTestGameRunner : SimpleGameRunner
 {
     public Transform[] ComponentSpawnPoint;
     public GameObject[] Components;
-    private float repeatRate = 5.0f; 
+    private float repeatRate = 15.0f; 
     private List<GameObject> spawnedObjects = new List<GameObject>();
     private int[] shuffledIndices;
     private int currentIndex = 0;
