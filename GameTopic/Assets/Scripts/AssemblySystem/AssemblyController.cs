@@ -14,7 +14,7 @@ public class AssemblyController : NetworkBehaviour
 
     private ulong? SelectedComponentID { get; set; }
     private ulong? tempSelectedParentComponentID { get; set; }
-    private ConnectionInfo tempConnectionInfo { get; set; }
+    private ConnectionInfo tempSelectedConnectionInfo { get; set; }
 
     /// <summary>
     /// This event will be invoked when a game component is started to drag.
@@ -126,7 +126,7 @@ public class AssemblyController : NetworkBehaviour
         var gameComponent = Utils.GetLocalGameObjectByNetworkID(componentID).GetComponent<GameComponent>();
         await CancelLastSelection();
         tempSelectedParentComponentID = gameComponent.Parent == null ? null : (gameComponent.Parent as GameComponent).NetworkObjectId;
-        tempConnectionInfo = gameComponent.Parent == null ? null : (gameComponent.Connector.Dump() as ConnectionInfo);
+        tempSelectedConnectionInfo = gameComponent.Parent == null ? null : (gameComponent.Connector.Dump() as ConnectionInfo);
         gameComponent.Connector.Disconnect();
         gameComponent.DisconnectAllChildren();
         SelectedComponentID = gameComponent.NetworkObjectId;
@@ -147,9 +147,9 @@ public class AssemblyController : NetworkBehaviour
             component.SetSelected(false);
             OnGameComponentSelectedEnd?.Invoke(component);
             if (tempSelectedParentComponentID.HasValue){
-                TryConnection_ServerRpc(tempSelectedParentComponentID.Value, tempConnectionInfo);
+                TryConnection_ServerRpc(tempSelectedParentComponentID.Value, tempSelectedConnectionInfo);
                 tempSelectedParentComponentID = null;
-                tempConnectionInfo = null;
+                tempSelectedConnectionInfo = null;
             }else{
                 component.SetSelected(false);
                 OnGameComponentSelectedEnd?.Invoke(component);
@@ -169,12 +169,12 @@ public class AssemblyController : NetworkBehaviour
     private void TryConnection(ulong parentComponentID, ConnectionInfo connectionInfo){
         var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<GameComponent>();
         var parentComponent = Utils.GetLocalGameObjectByNetworkID(parentComponentID)?.GetComponent<IGameComponent>();
-        if (component.Parent != parentComponent || connectionInfo.linkedTargetID != (component.Connector.Dump() as ConnectionInfo).linkedTargetID){
-            component.DisconnectFromParent();
-            component.ConnectToParent(parentComponent, connectionInfo);
-        }else{
+        if (component.Parent == parentComponent && connectionInfo.linkedTargetID == tempSelectedConnectionInfo.linkedTargetID){
             component.Connector.Disconnect();
             component.Connector.ConnectToComponent(parentComponent.Connector, connectionInfo);
+        }else{
+            component.DisconnectFromParent();
+            component.ConnectToParent(parentComponent, connectionInfo);
         }
         component.SetSelected(false);
         SetAvailableForConnection(tempConnectableComponentIDs, false);

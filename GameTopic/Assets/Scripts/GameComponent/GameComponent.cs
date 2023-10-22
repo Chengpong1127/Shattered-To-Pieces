@@ -43,18 +43,9 @@ public class GameComponent : AbilityEntity, IGameComponent
         connector.ConnectToComponent(parent.Connector, info);
         NetworkObject.ChangeOwnership(parent.NetworkObject.OwnerClientId);
         await UniTask.NextFrame();
-        ConnectToParent_ClientRpc(parent.NetworkObjectId, info);
 
         (GetRoot() as GameComponent)?.OnRootConnectionChanged?.Invoke();
         GameEvents.GameComponentEvents.OnGameComponentConnected.Invoke(this, Parent as GameComponent);
-    }
-    [ClientRpc]
-    private void ConnectToParent_ClientRpc(ulong parentID, ConnectionInfo info){
-        if (!IsServer){
-            var parent = Utils.GetLocalGameObjectByNetworkID(parentID)?.GetComponent<IGameComponent>();
-            connector.ConnectToComponent(parent.Connector, info);
-        }
-
     }
 
     public virtual void DisconnectFromParent()
@@ -66,15 +57,7 @@ public class GameComponent : AbilityEntity, IGameComponent
         connector.Disconnect();
 
         GameEvents.GameComponentEvents.OnGameComponentDisconnected.Invoke(this, Parent as GameComponent);
-        DisconnectFromParent_ClientRpc();
         root?.OnRootConnectionChanged?.Invoke();
-    }
-    [ClientRpc]
-    private void DisconnectFromParent_ClientRpc(){
-        if (!IsServer){
-            connector.Disconnect();
-        }
-        
     }
 
     public IInfo Dump(){
