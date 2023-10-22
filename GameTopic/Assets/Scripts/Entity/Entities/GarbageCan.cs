@@ -26,7 +26,7 @@ public class GarbageCan: GameComponent{
         Target.SetTargetDisplay(true);
     }
     [ClientRpc]
-    public override void SetAvailableForConnectionClientRpc(bool available)
+    public override void SetAvailableForConnection_ClientRpc(bool available, ulong displayClientID)
     {
     }
 }

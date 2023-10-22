@@ -18,7 +18,7 @@ public class AssemblyCurtainControl : MonoBehaviour {
 
 
     private void SetTargetTransform(){
-        var player = Utils.GetLocalPlayerDevice();
+        var player = Utils.GetLocalPlayer();
         Target = player.GetTracedTransform();
     }
 }

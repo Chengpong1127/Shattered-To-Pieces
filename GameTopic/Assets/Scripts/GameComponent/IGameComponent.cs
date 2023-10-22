@@ -34,7 +34,6 @@ public interface IGameComponent: ITreeNode, IAssemblyable
     /// </summary>
     public void DisconnectAllChildren();
     public void SetSelected(bool assemblyMode);
-    public void SetAvailableForConnectionClientRpc(bool draggingMode);
     public void Die();
 }
 

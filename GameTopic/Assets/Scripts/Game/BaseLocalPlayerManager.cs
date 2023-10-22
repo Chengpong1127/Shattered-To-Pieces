@@ -61,7 +61,7 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     }
     private async void PlayerSpawnedHandler(ulong playerID){
         if(playerID == OwnerClientId){
-            Player = Utils.GetLocalPlayerDevice();
+            Player = Utils.GetLocalPlayer();
             await UniTask.WaitUntil(() => Player.IsAlive.Value);
             StateMachine.ChangeState(LocalPlayerStates.Playing);
         }

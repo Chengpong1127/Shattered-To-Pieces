@@ -21,7 +21,7 @@ public class GameComponent : AbilityEntity, IGameComponent
     public string ComponentName { get; set; }
     public Transform AssemblyTransform => BodyTransform;
     public bool CanSelected = true;
-    public bool IsSelected { get => BodyRigidbody.bodyType == RigidbodyType2D.Kinematic; }
+    public bool IsSelected { get; private set; } = false;
 
     #region Inspector
     [Tooltip("The connector of the game component.")]
@@ -99,22 +99,8 @@ public class GameComponent : AbilityEntity, IGameComponent
         AssemblyTransform.localScale = new Vector3(componentInfo.ToggleXScale ? -1 : 1, 1, 1);
     }
     public void SetSelected(bool selected){
-        switch (selected){
-            case true:
-                SetSelectedClientRpc(true);
-                BodyColliders.ToList().ForEach((collider) => collider.isTrigger = true);
-                BodyRigidbody.bodyType = RigidbodyType2D.Kinematic;
-                BodyRigidbody.angularVelocity = 0;
-                BodyRigidbody.velocity = Vector2.zero;
-                break;
-            case false:
-                SetSelectedClientRpc(false);
-                BodyColliders.ToList().ForEach((collider) => collider.isTrigger = false);
-                BodyRigidbody.bodyType = RigidbodyType2D.Dynamic;
-                BodyRigidbody.angularVelocity = 0;
-                BodyRigidbody.velocity = Vector2.zero;
-                break;
-        }
+        SetSelectedClientRpc(selected);
+        IsSelected = selected;
     }
     [ClientRpc]
     private void SetSelectedClientRpc(bool selected){
@@ -136,16 +122,17 @@ public class GameComponent : AbilityEntity, IGameComponent
         }
     }
     [ClientRpc]
-    public virtual void SetAvailableForConnectionClientRpc(bool available){
-        switch(available){
-            case true:
-                connector.SetNonConnectedTargetsDisplay(true);
-                break;
-            case false:
-                connector.SetAllTargetDisplay(false);
-                break;
+    public virtual void SetAvailableForConnection_ClientRpc(bool available, ulong displayClientID){
+        if (displayClientID == Utils.GetLocalPlayer().OwnerClientId){
+            switch(available){
+                case true:
+                    connector.SetNonConnectedTargetsDisplay(true);
+                    break;
+                case false:
+                    connector.SetAllTargetDisplay(false);
+                    break;
+            }
         }
-        
     }
 
     protected override void Awake()

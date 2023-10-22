@@ -65,7 +65,6 @@ public class Device: IDevice
         await UniTask.WaitForFixedUpdate();
         RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID];
         await ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList); 
-        await UniTask.NextFrame();
         tempDictionary.Values.ToList().ForEach((component) => {
             component.SetSelected(false);
         });

@@ -30,7 +30,7 @@ public static class Utils{
     }
     
     private static BasePlayer localPlayerDevice;
-    public static BasePlayer GetLocalPlayerDevice(){
+    public static BasePlayer GetLocalPlayer(){
         if(localPlayerDevice == null){
             localPlayerDevice = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<BasePlayer>();
         }
