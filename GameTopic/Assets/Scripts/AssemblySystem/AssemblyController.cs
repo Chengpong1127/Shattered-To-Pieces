@@ -97,7 +97,11 @@ public class AssemblyController : NetworkBehaviour
         if (IsOwner){
             var targets = Utils.GetGameObjectsUnderMouse<Target>();
             if (targets.Length > 0){
-                TryConnection_ServerRpc(targets.First().OwnerConnector.GameComponent.NetworkObjectId, targets.First().TargetID);
+                ConnectionInfo connectionInfo = new ConnectionInfo
+                {
+                    linkedTargetID = targets.First().TargetID,
+                };
+                TryConnection_ServerRpc(targets.First().OwnerConnector.GameComponent.NetworkObjectId, connectionInfo);
                 return;
             }
             var components = Utils.GetGameObjectsUnderMouse<GameComponent>();
@@ -123,7 +127,7 @@ public class AssemblyController : NetworkBehaviour
         await CancelLastSelection();
         tempSelectedParentComponentID = gameComponent.Parent == null ? null : (gameComponent.Parent as GameComponent).NetworkObjectId;
         tempConnectionInfo = gameComponent.Parent == null ? null : (gameComponent.Connector.Dump() as ConnectionInfo);
-        //gameComponent.DisconnectFromParent();
+        gameComponent.Connector.Disconnect();
         gameComponent.DisconnectAllChildren();
         SelectedComponentID = gameComponent.NetworkObjectId;
         
@@ -143,7 +147,7 @@ public class AssemblyController : NetworkBehaviour
             component.SetSelected(false);
             OnGameComponentSelectedEnd?.Invoke(component);
             if (tempSelectedParentComponentID.HasValue){
-                TryConnection_ServerRpc(tempSelectedParentComponentID.Value, tempConnectionInfo.linkedTargetID);
+                TryConnection_ServerRpc(tempSelectedParentComponentID.Value, tempConnectionInfo);
                 tempSelectedParentComponentID = null;
                 tempConnectionInfo = null;
             }else{
@@ -157,19 +161,15 @@ public class AssemblyController : NetworkBehaviour
         }
     }
     [ServerRpc]
-    private void TryConnection_ServerRpc(ulong parentComponentID, int targetID){
+    private void TryConnection_ServerRpc(ulong parentComponentID, ConnectionInfo info){
         if (SelectedComponentID.HasValue && parentComponentID != SelectedComponentID.Value){
-            TryConnection(parentComponentID, targetID);
+            TryConnection(parentComponentID, info);
         }
     }
-    private void TryConnection(ulong parentComponentID, int targetID){
+    private void TryConnection(ulong parentComponentID, ConnectionInfo connectionInfo){
         var component = Utils.GetLocalGameObjectByNetworkID(SelectedComponentID.Value)?.GetComponent<GameComponent>();
         var parentComponent = Utils.GetLocalGameObjectByNetworkID(parentComponentID)?.GetComponent<IGameComponent>();
-        var connectionInfo = new ConnectionInfo
-        {
-            linkedTargetID = targetID,
-        };
-        if (component.Parent != parentComponent || targetID != (component.Connector.Dump() as ConnectionInfo).linkedTargetID){
+        if (component.Parent != parentComponent || connectionInfo.linkedTargetID != (component.Connector.Dump() as ConnectionInfo).linkedTargetID){
             component.DisconnectFromParent();
             component.ConnectToParent(parentComponent, connectionInfo);
         }else{
