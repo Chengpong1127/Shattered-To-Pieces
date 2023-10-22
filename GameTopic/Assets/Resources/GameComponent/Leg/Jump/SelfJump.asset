@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 289355e3f1c3a4a75a77f4a28bec5d30, type: 3}
   m_Name: SelfJump
   m_EditorClassIdentifier: 
-  AbilityName: Jump
+  AbilityName: SelfJump
   AbilityTags:
     AssetTag: {fileID: 0}
     CancelAbilitiesWithTags: []
