@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 392658167
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3c6d4323b2fa742e5b2417e6b068e15a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -865,11 +865,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 174b4c691442c4c7fab309adaf4cdfe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &4408897233033228148 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-  m_PrefabInstance: {fileID: 7457094575805867617}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4959903464909743101 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2569851066582173084, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -902,7 +897,7 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 31f9dc9e81759497894eac5fbb7f5084, type: 2}
   CanSelected: 1
-  assemblyTransform: {fileID: 4408897233033228148}
+  HaveConnected: 0
 --- !u!114 &7784025365141811698
 MonoBehaviour:
   m_ObjectHideFlags: 0

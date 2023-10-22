@@ -85,6 +85,8 @@ public class Connector : NetworkBehaviour, IConnector
         Joint.connectedBody = newParent.GameComponent.BodyRigidbody;
         _currentLinkedTarget.SetLink(this);
         Joint.enabled = true;
+        GameComponent.HaveConnected = true;
+        Debug.Log(1);
     }
     [ClientRpc]
     private void ConnectToComponent_ClientRpc(ulong parentID, ConnectionInfo info){
@@ -97,6 +99,8 @@ public class Connector : NetworkBehaviour, IConnector
             Joint.connectedBody = newParent.GameComponent.BodyRigidbody;
             _currentLinkedTarget.SetLink(this);
             Joint.enabled = true;
+            GameComponent.HaveConnected=true;
+            Debug.Log(1);
         }
 
     }

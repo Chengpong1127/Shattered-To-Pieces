@@ -23,6 +23,7 @@ public class GameComponent : AbilityEntity, IGameComponent
     public bool CanSelected = true;
     public bool IsSelected { get; private set; } = false;
 
+    public bool HaveConnected=false;
     #region Inspector
     [Tooltip("The connector of the game component.")]
     [SerializeField]
