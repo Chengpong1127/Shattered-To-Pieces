@@ -21,7 +21,7 @@ public class GameComponent : AbilityEntity, IGameComponent
     public string ComponentName { get; set; }
     public Transform AssemblyTransform => BodyTransform;
     public bool CanSelected = true;
-
+    public bool IsSelected { get => BodyRigidbody.bodyType == RigidbodyType2D.Kinematic; }
 
     #region Inspector
     [Tooltip("The connector of the game component.")]

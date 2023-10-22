@@ -68,6 +68,7 @@ public class AssemblyablePlayer: BasePlayer{
         return colliders.Select(collider => collider.GetComponentInParent<GameComponent>())
             .Where(component => component != null)
             .Where(component => component.GetRoot() is IDeviceRoot deviceRoot && deviceRoot.Device == SelfDevice || component.GetRoot() is not IDeviceRoot)
+            .Where(component => component.IsSelected == false)
             .Select(component => component.NetworkObjectId)
             .ToArray();
     }
