@@ -28,49 +28,50 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
 
     public class MoveAbilitySpec : RunnerAbilitySpec
     {
+        public IMovable Movable => SelfEntity as IMovable;
         public float Speed;
         public MoveDirection Direction;
         public string AnimationName;
         public float EnergyCostPerSecond;
+        private float currentSpeed;
         public MoveAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
         }
 
         public override void CancelAbility()
         {
-            var velocity = SelfEntity.BodyRigidbody.velocity;
-            velocity.x = 0;
-            SelfEntity.BodyRigibodySetVelocity_ClientRpc(velocity);
             if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, false);
+            Movable.StopMove(currentSpeed);
+            currentSpeed = 0;
             EndAbility();
         }
 
         protected override IEnumerator ActivateAbility()
         {
+            currentSpeed = 0;
             if (SelfEntity is IGroundCheckable groundCheckable)
             {
                 if (!groundCheckable.IsGrounded) yield break;
             }
+            if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, true);
+            switch (Direction)
+            {
+                case MoveDirection.Left:
+                    currentSpeed = -Speed;
+                    break;
+                case MoveDirection.Right:
+                    currentSpeed = Speed;
+                    break;
+            }
+            Movable.StartMove(currentSpeed);
             while(isActive){
-                if (EnergyManager.HasEnergy(EnergyCostPerSecond * Time.fixedDeltaTime * 2))
-                    EnergyManager.CostEnergy(EnergyCostPerSecond * Time.fixedDeltaTime);
+                if (EnergyManager.HasEnergy(EnergyCostPerSecond * Time.deltaTime * 2))
+                    EnergyManager.CostEnergy(EnergyCostPerSecond * Time.deltaTime);
                 else{
                     CancelAbility();
                     yield break;
                 }
-                if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, true);
-                var velocity = SelfEntity.BodyRigidbody.velocity;
-                switch (Direction)
-                {
-                    case MoveDirection.Left:
-                        velocity.x = -Speed;
-                        break;
-                    case MoveDirection.Right:
-                        velocity.x = Speed;
-                        break;
-                }
-                SelfEntity.BodyRigibodySetVelocity_ClientRpc(velocity);
-                yield return new WaitForFixedUpdate();
+                yield return null;
             }
         }
     }

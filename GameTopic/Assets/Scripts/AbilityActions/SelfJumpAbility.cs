@@ -44,7 +44,6 @@ public class SelfJumpAbility : DisplayableAbilityScriptableObject
             }
             if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, true);
             SelfEntity.BodyRigibodyAddForce_ClientRpc(SelfEntity.BodyTransform.up * Power, ForceMode2D.Impulse);
-            //SelfEntity.BodyRigidbody.AddForce(SelfEntity.BodyTransform.up * Power, ForceMode2D.Impulse);
             yield return null;
         }
     }

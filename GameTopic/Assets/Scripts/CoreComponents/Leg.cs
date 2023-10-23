@@ -5,11 +5,12 @@ using UnityEngine;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
+using Unity.Netcode;
 
-public class Leg : BaseCoreComponent , IBodyControlable, IGroundCheckable {
+public class Leg : BaseCoreComponent , IBodyControlable, IGroundCheckable, IMovable {
     public BaseCoreComponent body { get; private set; }
     public Collider2D GroundTriggerCollider;
-
+    private NetworkVariable<float> Speed = new NetworkVariable<float>(0);
     public bool IsGrounded { get; private set; }
 
     protected override void Awake() {
@@ -43,4 +44,26 @@ public class Leg : BaseCoreComponent , IBodyControlable, IGroundCheckable {
         await trigger.OnTriggerExit2DAsync(cancellationToken);
         IsGrounded = false;
     }
+
+    private void FixedUpdate() {
+        if (IsOwner) {
+            Move();
+        }
+    }
+    private void Move(){
+        if (Speed.Value != 0) {
+            BodyRigidbody.velocity = new Vector2(Speed.Value, BodyRigidbody.velocity.y);
+        }
+    }
+
+    public void StartMove(float speed)
+    {
+        Speed.Value += speed;
+    }
+
+    public void StopMove(float speed)
+    {
+        Speed.Value -= speed;
+    }
+
 }
