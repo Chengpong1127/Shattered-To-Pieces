@@ -12,6 +12,7 @@ public class MapTestGameRunner : SimpleGameRunner
     private int currentIndex = 0;
     private void Start()
     {
+        GameEvents.GameComponentEvents.OnGameComponentConnected += HandleGameComponentConnected;
         StartCoroutine(RepeatSetRandomComponents());
     }
     private int[] GetShuffledIndices(int length)
@@ -63,12 +64,13 @@ public class MapTestGameRunner : SimpleGameRunner
     {
         foreach (var obj in spawnedObjects)
         {
-            if (!obj.GetComponent<GameComponent>().HaveConnected)
-            {
-                Destroy(obj);
-                obj.GetComponent<NetworkObject>()?.Despawn();
-            }
+            Destroy(obj);
+            obj.GetComponent<NetworkObject>()?.Despawn();
         }
         spawnedObjects.Clear();
+    }
+    private void HandleGameComponentConnected(GameComponent child, GameComponent parent)
+    {
+        spawnedObjects.Remove(child.gameObject);
     }
 }

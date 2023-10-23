@@ -846,8 +846,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.0022999644, y: 0.00009998679, z: 0}
-    m_Extent: {x: 1.0053, y: 0.99909997, z: 0}
+    m_Center: {x: -0.001249969, y: -0.0013499856, z: 0}
+    m_Extent: {x: 1.00295, y: 1.00595, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -1268,8 +1268,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -4.7443495, y: -7.8884497, z: 0}
-    m_Extent: {x: 11.20335, y: 10.76555, z: 0}
+    m_Center: {x: -4.7391996, y: -7.8974996, z: 0}
+    m_Extent: {x: 11.1996, y: 10.755799, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -3257,6 +3257,10 @@ PrefabInstance:
     - target: {fileID: 2306778877802237659, guid: 4f20def6595fac943a90a391fd7b0072, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2502194619762522477, guid: 4f20def6595fac943a90a391fd7b0072, type: 3}
+      propertyPath: m_SurfaceArc
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 2705822002324676890, guid: 4f20def6595fac943a90a391fd7b0072, type: 3}
       propertyPath: m_Tiles.Array.size
