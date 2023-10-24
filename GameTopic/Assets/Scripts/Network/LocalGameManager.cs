@@ -19,6 +19,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         Lobby,
         GameRoom,
     }
+    public BaseSceneLoader SceneLoader;
     private StateMachine<GameState> GameStateMachine;
     public LobbyManager LobbyManager;
 
@@ -112,6 +113,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     public void EnterRoom(string roomName, NetworkType networkType, string ServerAddress = null){
         GameStateMachine.ChangeState(GameState.GameRoom);
         var operation = SceneManager.LoadSceneAsync(roomName);
+        SceneLoader?.LoadScene(operation);
         operation.completed += _ => OnEnterRoom(networkType, ServerAddress);
     }
 
@@ -125,7 +127,8 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
     public void RequestExitRoom(){
         GameStateMachine.ChangeState(GameState.Home);
-        SceneManager.LoadSceneAsync("StartScene");
+        var operation = SceneManager.LoadSceneAsync("StartScene");
+        SceneLoader?.LoadScene(operation);
     }
     #endregion
 }
