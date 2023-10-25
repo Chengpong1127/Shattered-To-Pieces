@@ -34,7 +34,7 @@ public class AddTileAbility : DisplayableAbilityScriptableObject
         protected override IEnumerator ActivateAbility()
         {
             var targetPoints = (SelfEntity as ITileTargeter).GetTargetTileCoordinates();
-            targetPoints.ToList().ForEach(point => BaseGameRunner.ServerGameRunnerInstance.MapManager.SetTile(point, TileName));
+            targetPoints.ToList().ForEach(point => BaseGameRunner.ServerGameRunnerInstance.MapManager.SetTile(point, TileName, false));
             yield return null;
         }
     }

@@ -5,9 +5,14 @@ public class MapManager: NetworkBehaviour{
     [SerializeField]
     private Tilemap _currentTileMap;
     public Tilemap CurrentTileMap => _currentTileMap;
-    public void SetTile(Vector2Int position, string tileName){
+    public void SetTile(Vector2Int position, string tileName, bool force){
         if (!IsServer) Debug.LogError("Only server can set tile");
-        SetTile_ClientRpc(position, tileName);
+        if (force) SetTile_ClientRpc(position, tileName);
+        else {
+            if (_currentTileMap.GetTile((Vector3Int)position) == null){
+                SetTile_ClientRpc(position, tileName);
+            }
+        }
     }
     [ClientRpc]
     private void SetTile_ClientRpc(Vector2Int position, string tileName){
