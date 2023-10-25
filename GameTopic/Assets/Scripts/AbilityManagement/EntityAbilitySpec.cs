@@ -10,6 +10,15 @@ public abstract class EntityAbilitySpec: AbstractAbilitySpec{
         SelfEntity = owner.GetComponent<Entity>() ?? throw new System.ArgumentNullException("There is no Entity component in the game object");
     }
 
+    public override bool CanActivateAbility()
+    {
+        if (SelfEntity is GameComponent gameComponent){
+            return base.CanActivateAbility() && !gameComponent.IsSelected;
+        }else{
+            return base.CanActivateAbility();
+        }
+    }
+
     protected override IEnumerator PreActivate()
     {
         if (Ability.Cooldown != null) {

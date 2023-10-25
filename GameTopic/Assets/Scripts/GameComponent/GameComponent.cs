@@ -150,4 +150,11 @@ public class GameComponent : AbilityEntity, IGameComponent
     protected void JointBreakHandler_ServerRpc(){
         DisconnectFromParent();
     }
+
+    public override void Die()
+    {
+        DisconnectAllChildren();
+        DisconnectFromParent();
+        base.Die();
+    }
 }

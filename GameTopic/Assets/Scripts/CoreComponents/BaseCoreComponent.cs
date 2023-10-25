@@ -53,13 +53,6 @@ public class BaseCoreComponent : GameComponent, ICoreComponent
         }
     }
 
-    public override void  Die()
-    {
-        DisconnectFromParent();
-        DisconnectAllChildren();
-        base.Die();
-    }
-
     [ClientRpc]
     public void SetVisible_ClientRpc(bool visible, ClientRpcParams clientRpcParams = default)
     {
