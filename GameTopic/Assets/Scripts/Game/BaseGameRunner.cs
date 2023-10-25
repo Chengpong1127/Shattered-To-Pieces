@@ -11,6 +11,8 @@ using System;
 /// The game runner is responsible for running the game. It will be run on the server.
 /// </summary>
 public class BaseGameRunner: NetworkBehaviour{
+
+    public MapManager MapManager;
     public event Action<GameResult> OnGameOver;
     public StateMachine<GameStates> StateMachine;
     public BaseGameEventHandler[] GameEventHandlers;

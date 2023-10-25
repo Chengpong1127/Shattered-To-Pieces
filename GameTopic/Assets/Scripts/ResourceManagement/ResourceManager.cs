@@ -7,6 +7,7 @@ using AttributeSystem.Authoring;
 using AttributeSystem.Components;
 using AbilitySystem.Authoring;
 using System.Linq;
+using UnityEngine.Tilemaps;
 
 public class ResourceManager: Singleton<ResourceManager>
 {
@@ -116,6 +117,15 @@ public class ResourceManager: Singleton<ResourceManager>
             Debug.LogWarning("Find more than one ability with the same name: " + name);
         }
         return result.First();
+    }
+
+    public Tile LoadTile(string name){
+        var path = Path.Combine("Tiles", name);
+        var tile = Resources.Load<Tile>(path);
+        if(tile == null){
+            Debug.LogWarning("Cannot load tile: " + path);
+        }
+        return tile;
     }
 
 }

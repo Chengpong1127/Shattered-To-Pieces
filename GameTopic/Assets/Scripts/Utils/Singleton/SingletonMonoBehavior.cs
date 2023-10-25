@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using Unity.Netcode;
 
 public abstract class SingletonMonoBehavior<T>: MonoBehaviour where T : MonoBehaviour {
     private static T _instance;
