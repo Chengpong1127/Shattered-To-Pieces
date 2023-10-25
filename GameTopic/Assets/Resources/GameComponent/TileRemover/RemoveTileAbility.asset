@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9e4cc1aed5fd4197890a905ee966248, type: 3}
-  m_Name: AddTileAbility
+  m_Script: {fileID: 11500000, guid: 4667f9d0d0c8745369c2c9c2ef09cb90, type: 3}
+  m_Name: RemoveTileAbility
   m_EditorClassIdentifier: 
-  AbilityName: AddTileAbility
+  AbilityName: RemoveTileAbility
   AbilityTags:
     AssetTag: {fileID: 0}
     CancelAbilitiesWithTags: []
@@ -34,4 +34,3 @@ MonoBehaviour:
   Icon: {fileID: 0}
   Description: 
   IsPlaceImage: 0
-  TileName: AddTile

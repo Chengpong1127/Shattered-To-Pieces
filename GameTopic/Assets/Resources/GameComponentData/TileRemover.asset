@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7edbe836890bd452e9486843fcac7c64, type: 3}
-  m_Name: ControlRoom
+  m_Name: TileRemover
   m_EditorClassIdentifier: 
-  DisplayName: ControlRoom
-  DisplayImage: {fileID: 21300000, guid: 3c6d4323b2fa742e5b2417e6b068e15a, type: 3}
+  DisplayName: TileRemover
+  DisplayImage: {fileID: 0}
   Description: 
-  Price: 0
-  Type: 0
-  ResourcePath: ControlRoom
-  DisplayAtShop: 0
+  Price: 50
+  Type: 3
+  ResourcePath: TileRemover
+  DisplayAtShop: 1

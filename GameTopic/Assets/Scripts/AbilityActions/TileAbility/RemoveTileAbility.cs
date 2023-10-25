@@ -4,24 +4,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
-[CreateAssetMenu(fileName = "AddTileAbility", menuName = "Ability/AddTileAbility")]
-public class AddTileAbility : DisplayableAbilityScriptableObject
+[CreateAssetMenu(fileName = "RemoveTileAbility", menuName = "Ability/RemoveTileAbility")]
+public class RemoveTileAbility : DisplayableAbilityScriptableObject
 {
     [SerializeField]
-    public string TileName;
     public override AbstractAbilitySpec CreateSpec(AbilitySystemCharacter owner)
     {
-        return new AddTileAbilitySpec(this, owner)
-        {
-            TileName = TileName
-        };
+        return new AddTileAbilitySpec(this, owner);
     }
 
     public class AddTileAbilitySpec : RunnerAbilitySpec
     {
-        public string TileName;
         public AddTileAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
         }
@@ -34,13 +28,13 @@ public class AddTileAbility : DisplayableAbilityScriptableObject
         {
             var targetPoints = (SelfEntity as ITileTargeter).GetTargetTileCoordinates();
             var mapManager = BaseGameRunner.ServerGameRunnerInstance.MapManager;
-            return base.CanActivateAbility() && targetPoints.Any(point => !mapManager.CurrentTileMap.HasTile((Vector3Int)point));
+            return base.CanActivateAbility() && targetPoints.Any(point => mapManager.CurrentTileMap.HasTile((Vector3Int)point));
         }
 
         protected override IEnumerator ActivateAbility()
         {
             var targetPoints = (SelfEntity as ITileTargeter).GetTargetTileCoordinates();
-            targetPoints.ToList().ForEach(point => BaseGameRunner.ServerGameRunnerInstance.MapManager.SetTile(point, TileName, false));
+            targetPoints.ToList().ForEach(point => BaseGameRunner.ServerGameRunnerInstance.MapManager.RemoveTile(point, false));
             yield return null;
         }
     }
