@@ -69,7 +69,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c4f25b21df2854a408a96dbd63f58a65, type: 2}
   Abilities: []
   CanSelected: 1
-  assemblyTransform: {fileID: 6508652183922362645}
 --- !u!114 &1647381966340234252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,6 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TagList:
   - {fileID: 11400000, guid: f8b02541872494b4e9f0893f63e0278f, type: 2}
+  - {fileID: 11400000, guid: 0f79ad37aa16e4b778b491db63f795d4, type: 2}
 --- !u!1 &6248433714480983650
 GameObject:
   m_ObjectHideFlags: 0

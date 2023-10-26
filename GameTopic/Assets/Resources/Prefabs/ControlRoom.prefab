@@ -596,12 +596,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4486550233622886721, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: TagList.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4486550233622886721, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: TagList.Array.data[1]
       value: 
       objectReference: {fileID: 11400000, guid: 29f937277f2e34887b73293c2c9c48c0, type: 2}
+    - target: {fileID: 4486550233622886721, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: TagList.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0f79ad37aa16e4b778b491db63f795d4, type: 2}
     - target: {fileID: 6045977369764336406, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: flipTransform
       value: 

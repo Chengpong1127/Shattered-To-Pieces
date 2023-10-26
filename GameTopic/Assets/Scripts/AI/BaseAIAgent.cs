@@ -13,6 +13,10 @@ public abstract class BaseAIAgent: Entity{
         await UniTask.WaitUntil(() => IsServer || IsClient);
         if (IsServer){
             BehaviorTree = GetBehaviorTree();
+#if UNITY_EDITOR
+            Debugger debugger = (Debugger)this.gameObject.AddComponent(typeof(Debugger));
+            debugger.BehaviorTree = BehaviorTree;
+#endif
             BehaviorTree.Start();
         }
     }

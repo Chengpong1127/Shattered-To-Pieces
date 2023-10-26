@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2fba16d457a3478b980dfc1a6d18b14, type: 3}
-  m_Name: Player
+  m_Name: GameComponent
   m_EditorClassIdentifier: 
-  TagName: Player
-  _parent: {fileID: 11400000, guid: 0f79ad37aa16e4b778b491db63f795d4, type: 2}
+  TagName: GameComponent
+  _parent: {fileID: 0}
