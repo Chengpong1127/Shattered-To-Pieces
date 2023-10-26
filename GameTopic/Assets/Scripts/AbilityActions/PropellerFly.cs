@@ -43,8 +43,8 @@ public class PropellerFly : DisplayableAbilityScriptableObject {
                     CancelAbility();
                     yield break;
                 }
-                var gameComponent = SelfEntity as GameComponent;
-                SelfEntity.BodyRigibodyAddForce_ClientRpc(gameComponent.AssemblyTransform.TransformDirection(Vector3.up) * Power, ForceMode2D.Force);
+                var forceAddable = SelfEntity as IForceAddable;
+                forceAddable.AddForce(SelfEntity.BodyTransform.TransformDirection(Vector3.up) * Power, ForceMode2D.Force);
                 yield return new WaitForFixedUpdate();
             }
             animator.SetBool("Fly", false);

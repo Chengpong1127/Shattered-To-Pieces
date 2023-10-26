@@ -7,15 +7,13 @@ using Cysharp.Threading.Tasks;
 using System;
 using Unity.Netcode;
 
-public class Leg : BaseCoreComponent , IBodyControlable, IGroundCheckable, IMovable {
-    public BaseCoreComponent body { get; private set; }
+public class Leg : BaseCoreComponent, IGroundCheckable, IMovable, IForceAddable {
     public Collider2D GroundTriggerCollider;
     private NetworkVariable<float> Speed = new NetworkVariable<float>(0);
     public bool IsGrounded { get; private set; }
 
     protected override void Awake() {
         GroundCheck();
-        body = this;
         base.Awake();
     }
     private async void GroundCheck() {
@@ -66,4 +64,16 @@ public class Leg : BaseCoreComponent , IBodyControlable, IGroundCheckable, IMova
         Speed.Value -= speed;
     }
 
+    public void AddForce(Vector2 force, ForceMode2D mode)
+    {
+        AddForce_ClientRpc(force, mode);
+    }
+    [ClientRpc]
+    private void AddForce_ClientRpc(Vector2 force, ForceMode2D mode)
+    {
+        if (IsOwner)
+        {
+            BodyRigidbody.AddForce(force, mode);
+        }
+    }
 }

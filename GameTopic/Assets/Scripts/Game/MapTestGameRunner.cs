@@ -9,7 +9,6 @@ public class MapTestGameRunner : SimpleGameRunner
     private float repeatRate = 15.0f; 
     private List<GameObject> spawnedObjects = new List<GameObject>();
     private int[] shuffledIndices;
-    private int currentIndex = 0;
     private void Start()
     {
         GameEvents.GameComponentEvents.OnGameComponentConnected += HandleGameComponentConnected;
