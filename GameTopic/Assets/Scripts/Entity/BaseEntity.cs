@@ -9,6 +9,7 @@ public abstract class BaseEntity : NetworkBehaviour
     public virtual Collider2D[] BodyColliders => bodyColliders;
     public virtual Animator BodyAnimator => bodyAnimator;
     public virtual Renderer[] BodyRenderers => bodyRenderers;
+    public virtual Taggable Taggable { get; private set; }
 
     [Header("BaseEntity Setting")]
     [SerializeField]
@@ -25,6 +26,8 @@ public abstract class BaseEntity : NetworkBehaviour
         if (BodyRigidbody == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyRigidbody.");
         if (BodyColliders == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyColliders.");
         if (BodyRenderers == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set BodyRenderers.");
+        Taggable = GetComponent<Taggable>() ?? gameObject.AddComponent<Taggable>();
+        if (Taggable == null) Debug.LogWarning($"The BaseEntity: {gameObject.name} doesn't set Taggable.");
     }
 
     protected virtual void Start()
@@ -44,11 +47,5 @@ public abstract class BaseEntity : NetworkBehaviour
     public virtual void Die(){
         GameEvents.GameComponentEvents.OnEntityDied?.Invoke(this);
         NetworkObject?.Despawn(true);
-    }
-    [ClientRpc]
-    public void BodyRigibodyAddForce_ClientRpc(Vector2 force, ForceMode2D mode){
-        if (IsOwner){
-            BodyRigidbody.AddForce(force, mode);
-        }
     }
 }

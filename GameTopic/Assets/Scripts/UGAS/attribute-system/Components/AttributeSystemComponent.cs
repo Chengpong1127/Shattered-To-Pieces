@@ -25,6 +25,17 @@ namespace AttributeSystem.Components
         private bool mAttributeDictStale;
         public Dictionary<AttributeScriptableObject, int> mAttributeIndexCache { get; private set; } = new Dictionary<AttributeScriptableObject, int>();
 
+        public Dictionary<AttributeScriptableObject, AttributeValue> GetFullAttributeDictionary()
+        {
+            var attributeCache = GetAttributeCache();
+            var attributeDictionary = new Dictionary<AttributeScriptableObject, AttributeValue>();
+            foreach (var attribute in attributeCache)
+            {
+                attributeDictionary.Add(attribute.Key, AttributeValues[attribute.Value]);
+            }
+            return attributeDictionary;
+        }
+
         /// <summary>
         /// Marks attribute cache dirty, so it can be recreated next time it is required
         /// </summary>

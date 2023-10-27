@@ -8,40 +8,9 @@ using System;
 using Unity.Netcode;
 
 public class Leg : BaseCoreComponent, IGroundCheckable, IMovable, IForceAddable {
-    public Collider2D GroundTriggerCollider;
     private NetworkVariable<float> Speed = new NetworkVariable<float>(0);
-    public bool IsGrounded { get; private set; }
-
-    protected override void Awake() {
-        GroundCheck();
-        base.Awake();
-    }
-    private async void GroundCheck() {
-        var cancellationToken = this.GetCancellationTokenOnDestroy();
-        while(cancellationToken.IsCancellationRequested == false){
-            try{
-                await ListenGround(cancellationToken);
-                await ListenUnground(cancellationToken);
-            }catch(OperationCanceledException){
-                return;
-            }
-        }
-    }
-    private async UniTask ListenGround(CancellationToken cancellationToken) {
-        var trigger = GroundTriggerCollider.GetAsyncTriggerStay2DTrigger();
-        
-        while(!IsGrounded && !cancellationToken.IsCancellationRequested) {
-            var collider = await trigger.OnTriggerStay2DAsync(cancellationToken);
-            if (collider.GetComponentInParent<Taggable>()?.HasTag("Ground") ?? false) {
-                IsGrounded = true;
-            }
-        }
-    }
-    private async UniTask ListenUnground(CancellationToken cancellationToken) {
-        var trigger = GroundTriggerCollider.GetAsyncTriggerExit2DTrigger();
-        await trigger.OnTriggerExit2DAsync(cancellationToken);
-        IsGrounded = false;
-    }
+    public GroundDetector GroundDetector;
+    public bool IsGrounded => GroundDetector.IsGrounded;
 
     private void FixedUpdate() {
         if (IsOwner) {

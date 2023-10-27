@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: 7483554079074856978}
   - component: {fileID: 2145324664234197593}
   - component: {fileID: 2446663237967859991}
+  - component: {fileID: 664830136213406852}
   m_Layer: 0
   m_Name: GarbageCan
   m_TagString: Untagged
@@ -368,6 +369,20 @@ MonoBehaviour:
     TriggerNameHash: -707381567
     TransitionIndex: 0
   m_Animator: {fileID: 2145324664234197593}
+--- !u!114 &664830136213406852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4933520086631457118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c916066ff1d04fa0abd137adbc2c20d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TagList:
+  - {fileID: 11400000, guid: f8b02541872494b4e9f0893f63e0278f, type: 2}
 --- !u!1 &5688576151544982449
 GameObject:
   m_ObjectHideFlags: 0
