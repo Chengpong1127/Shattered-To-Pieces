@@ -42,10 +42,12 @@ public class BasicAI : BaseAIAgent
         if (TargetPlayer != null) BehaviorTree.Blackboard["TargetPlayer"] = TargetPlayer;
         else BehaviorTree.Blackboard["TargetPlayer"] = "null";
         BehaviorTree.Blackboard["TargetPlayerDistance"] = Vector2.Distance(BodyTransform.position, (BehaviorTree.Blackboard["TargetPlayer"] as Entity)?.BodyTransform.position ?? Vector2.zero);
+        BehaviorTree.Blackboard["TargetPlayerPosition"] = (BehaviorTree.Blackboard["TargetPlayer"] as Entity)?.BodyTransform.position ?? Vector2.zero;
         base.UpdateBlackboard();
     }
     protected Action.Result ChasePlayer(bool shouldCancel = false){
         if (shouldCancel) return Action.Result.FAILED;
+        if ((float)BehaviorTree.Blackboard["TargetPlayerDistance"] <= AttackRange) return Action.Result.SUCCESS;
         var targetPlayer = BehaviorTree.Blackboard["TargetPlayer"] as Entity;
         Move(targetPlayer.transform.position.x > transform.position.x ? 1 : -1);
         return Action.Result.PROGRESS;
