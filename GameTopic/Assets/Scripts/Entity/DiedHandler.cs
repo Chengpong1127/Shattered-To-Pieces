@@ -1,15 +1,17 @@
 using UnityEngine;
-
+[RequireComponent(typeof(BaseEntity))]
 public class DiedHandler : MonoBehaviour
 {
     public GameObject DiedEffect;
     public int EffectTime = 1;
-    public void OnDestroy()
+
+    void Awake()
     {
-        if (DiedEffect != null)
-        {
-            var effect = Instantiate(DiedEffect, transform.position, Quaternion.identity);
-            Destroy(effect, EffectTime);
-        }
+        GetComponent<BaseEntity>().OnEntityDied += HandleEntityDied;
+    }
+    public void HandleEntityDied()
+    {
+        var effect = Instantiate(DiedEffect, transform.position, Quaternion.identity);
+        Destroy(effect, EffectTime);
     }
 }

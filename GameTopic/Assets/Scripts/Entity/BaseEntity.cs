@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
+using System;
 
 public abstract class BaseEntity : NetworkBehaviour
 {
@@ -10,6 +11,9 @@ public abstract class BaseEntity : NetworkBehaviour
     public virtual Animator BodyAnimator => bodyAnimator;
     public virtual Renderer[] BodyRenderers => bodyRenderers;
     public virtual Taggable Taggable { get; private set; }
+
+
+    public event Action OnEntityDied;
 
     [Header("BaseEntity Setting")]
     [SerializeField]
@@ -45,6 +49,7 @@ public abstract class BaseEntity : NetworkBehaviour
     /// This method will immediately destroy the BodyTransform of an entity.
     /// </summary>
     public virtual void Die(){
+        OnEntityDied?.Invoke();
         GameEvents.GameComponentEvents.OnEntityDied?.Invoke(this);
         NetworkObject?.Despawn(true);
     }
