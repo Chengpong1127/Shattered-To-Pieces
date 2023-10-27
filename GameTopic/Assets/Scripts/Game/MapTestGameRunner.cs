@@ -7,11 +7,11 @@ public class MapTestGameRunner : SimpleGameRunner
     public Transform[] ComponentSpawnPoint;
     public GameObject[] Components;
     private float repeatRate = 15.0f; 
-    private List<GameObject> spawnedObjects = new List<GameObject>();
+    public List<GameObject> spawnedObjects = new List<GameObject>();
     private int[] shuffledIndices;
-    private void Start()
+    public void Start()
     {
-        GameEvents.GameComponentEvents.OnGameComponentConnected += HandleGameComponentConnected;
+        GameEvents.GameComponentEvents.OnGameComponentSelected += HandleGameComponentConnected;
         StartCoroutine(RepeatSetRandomComponents());
     }
     private int[] GetShuffledIndices(int length)
@@ -31,7 +31,7 @@ public class MapTestGameRunner : SimpleGameRunner
         }
         return indices;
     }
-    private IEnumerator RepeatSetRandomComponents()
+    public IEnumerator RepeatSetRandomComponents()
     {
         while (true)
         {
@@ -68,8 +68,9 @@ public class MapTestGameRunner : SimpleGameRunner
         }
         spawnedObjects.Clear();
     }
-    private void HandleGameComponentConnected(GameComponent child, GameComponent parent)
+    public void HandleGameComponentConnected(GameComponent obj, bool isSelect)
     {
-        spawnedObjects.Remove(child.gameObject);
+        if(isSelect)
+        spawnedObjects.Remove(obj.gameObject);
     }
 }

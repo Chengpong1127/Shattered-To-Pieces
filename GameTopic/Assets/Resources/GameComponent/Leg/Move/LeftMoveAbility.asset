@@ -34,7 +34,7 @@ MonoBehaviour:
   Icon: {fileID: 0}
   Description: 
   IsPlaceImage: 0
-  Speed: 6
+  Speed: 5
   Direction: 0
   AnimationName: MoveLeft
   EnergyCostPerSecond: 0.2
