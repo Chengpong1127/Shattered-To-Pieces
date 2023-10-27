@@ -30,4 +30,5 @@ MonoBehaviour:
   EnergyCost: 0
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
-  InitialisationGE: []
+  InitialisationGE:
+  - {fileID: 11400000, guid: a8c3d58c14a334cb7808d10d138eb22e, type: 2}

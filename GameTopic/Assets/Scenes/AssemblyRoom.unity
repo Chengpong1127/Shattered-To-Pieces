@@ -3952,16 +3952,16 @@ MonoBehaviour:
   bodyAnimator: {fileID: 0}
   bodyRenderers:
   - {fileID: 1270316491}
-  CollisionDamageThreshold: 80
+  CollisionDamageThreshold: 30
   CollisionDamageEffect: {fileID: 0}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
   InitializationAbilities:
-  - {fileID: 11400000, guid: c4f25b21df2854a408a96dbd63f58a65, type: 2}
+  - {fileID: 11400000, guid: 7be4f74ed3b654f41ad62d47f6163542, type: 2}
   JumpForce: 10
   MoveSpeed: 1
-  AttackRange: 3
-  AttackCooldown: 1
+  AttackRange: 2
+  AttackCooldown: 2
   AttackEffect: {fileID: 11400000, guid: 979eb7c0f5ae544139ee3f3aa4275a81, type: 2}
 --- !u!114 &631581429
 MonoBehaviour:
@@ -4053,6 +4053,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TagList:
   - {fileID: 11400000, guid: f8b02541872494b4e9f0893f63e0278f, type: 2}
+  - {fileID: 11400000, guid: 181e8426b597f4b72a53fdf8320d9a1b, type: 2}
 --- !u!1 &682583601
 GameObject:
   m_ObjectHideFlags: 0
