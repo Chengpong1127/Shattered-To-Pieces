@@ -1518,7 +1518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkManager: {fileID: 0}
-  PlayerCount: 1
+  PlayerCount: 2
   UseRelay: 0
 --- !u!114 &1585596239
 MonoBehaviour:
@@ -1551,6 +1551,7 @@ MonoBehaviour:
   - {fileID: 2708867030092840634, guid: 19bb51c8ceb19421399ed91f24e22259, type: 3}
   - {fileID: 2770778711403383764, guid: 5fcded3730d6b467b92fad63c4267484, type: 3}
   - {fileID: 7154359948559284025, guid: ecabc1b6c97e24b05a67c7498c45793c, type: 3}
+  spawnedObjects: []
 --- !u!114 &1585596240
 MonoBehaviour:
   m_ObjectHideFlags: 0

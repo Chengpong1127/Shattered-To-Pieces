@@ -96,6 +96,7 @@ public class AssemblyController : NetworkBehaviour
     private void SelectHandler(InputAction.CallbackContext context){
         if (IsOwner){
             var targets = Utils.GetGameObjectsUnderMouse<Target>();
+            var components = Utils.GetGameObjectsUnderMouse<GameComponent>();
             if (targets.Length > 0){
                 ConnectionInfo connectionInfo = new ConnectionInfo
                 {
@@ -104,11 +105,13 @@ public class AssemblyController : NetworkBehaviour
                 TryConnection_ServerRpc(targets.First().OwnerConnector.GameComponent.NetworkObjectId, connectionInfo);
                 return;
             }
-            var components = Utils.GetGameObjectsUnderMouse<GameComponent>();
-            if (components.Length > 0){
+            else if (components.Length > 0){
                 SelectComponentHandler_ServerRpc(components
                     .Where(component => component.CanSelected)
                     .Select(c => c.NetworkObjectId).ToArray());
+            }
+            else{
+                CancelLastSelection_ServerRpc();
             }
         }
     }
@@ -131,8 +134,7 @@ public class AssemblyController : NetworkBehaviour
         gameComponent.DisconnectAllChildren();
         SelectedComponentID = gameComponent.NetworkObjectId;
         
-        tempConnectableComponentIDs = GetConnectableGameObject();
-        tempConnectableComponentIDs = tempConnectableComponentIDs.Where(id => id != SelectedComponentID).ToArray();
+        tempConnectableComponentIDs = GetConnectableGameObject().Where(id => id != SelectedComponentID).ToArray();
         SetAvailableForConnection(tempConnectableComponentIDs, true);
         
         gameComponent.NetworkObject.ChangeOwnership(OwnerClientId);
@@ -156,6 +158,8 @@ public class AssemblyController : NetworkBehaviour
                 component.NetworkObject.RemoveOwnership();
                 SelectedComponentID = null;
             }
+            if (tempConnectableComponentIDs != null) SetAvailableForConnection(tempConnectableComponentIDs, false);
+            tempConnectableComponentIDs = null;
             await UniTask.WaitUntil(() => !SelectedComponentID.HasValue);
             await UniTask.NextFrame();
         }
