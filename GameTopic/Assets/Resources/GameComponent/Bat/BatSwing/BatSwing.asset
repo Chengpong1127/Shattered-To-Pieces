@@ -28,7 +28,7 @@ MonoBehaviour:
     TargetTags:
       RequireTags: []
       IgnoreTags: []
-  EnergyCost: 1
+  EnergyCost: 2
   Cost: {fileID: 0}
   Cooldown: {fileID: 11400000, guid: 738306c016b184e2e80d97a860f4f571, type: 2}
   Image: {fileID: 21300000, guid: 7a90c7303de674406b115b613e2c8d66, type: 3}
