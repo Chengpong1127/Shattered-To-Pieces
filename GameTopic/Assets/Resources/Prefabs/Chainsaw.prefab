@@ -260,6 +260,14 @@ PrefabInstance:
       propertyPath: bodyAnimator
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8272447847809035679, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_BreakForce
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272447847809035679, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_BreakTorque
+      value: 2000
+      objectReference: {fileID: 0}
     - target: {fileID: 8890015344360057443, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -401,6 +409,8 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: afbe5320ee1837743917693eefa29f29, type: 2}
   CanSelected: 1
+  IsSelected:
+    m_InternalValue: 0
   EntityTriggerCollider: {fileID: 6804235984704648300}
 --- !u!114 &8213995011429553717
 MonoBehaviour:

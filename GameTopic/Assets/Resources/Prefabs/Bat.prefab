@@ -444,6 +444,14 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 1.684
       objectReference: {fileID: 0}
+    - target: {fileID: 8272447847809035679, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_BreakForce
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272447847809035679, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_BreakTorque
+      value: 2000
+      objectReference: {fileID: 0}
     - target: {fileID: 8890015344360057443, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
@@ -590,6 +598,8 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 667df11ad0ce8446ca762310a262fbb6, type: 2}
   CanSelected: 1
+  IsSelected:
+    m_InternalValue: 0
   EntityTriggerCollider: {fileID: 1767429543466599302}
 --- !u!114 &6318985712159059288
 MonoBehaviour:
