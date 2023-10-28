@@ -27,7 +27,7 @@ public class StartSceneProccess : MonoBehaviour
     [SerializeField] GameObject LobbyLayoutParent;
     List<LobbyPlayerInfo> infos = new List<LobbyPlayerInfo>();
     bool IsPlayerReady = false;
-
+    bool rgeistListener = false;
 
     private void Awake() {
         HostBtn.onClick.AddListener(SubmitHostName);
@@ -38,6 +38,7 @@ public class StartSceneProccess : MonoBehaviour
     }
 
     private void OnDestroy() {
+        if (!rgeistListener) { return; }
         LocalGameManager.Instance.LobbyManager.OnPlayerJoinOrLeave -= RegistPlayerInfo;
         LocalGameManager.Instance.LobbyManager.OnPlayerReady -= UpdatePlayerInfo;
         LocalGameManager.Instance.LobbyManager.OnPlayerUnready -= UpdatePlayerInfo;
@@ -155,6 +156,7 @@ public class StartSceneProccess : MonoBehaviour
 
 
     void RegistListener() {
+        rgeistListener = true;
         LocalGameManager.Instance.LobbyManager.OnPlayerJoinOrLeave -= RegistPlayerInfo;
         LocalGameManager.Instance.LobbyManager.OnPlayerReady -= UpdatePlayerInfo;
         LocalGameManager.Instance.LobbyManager.OnPlayerUnready -= UpdatePlayerInfo;
