@@ -12,6 +12,7 @@ public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
     public AssemblyController assemblyController => ControlledPlayer.AssemblyController;
 
     public int PlayerInitMoney { get; set; } = 1000;
+    public event Action<IGameComponent> OnBuyingGameComponent;
 
     public AbilityManager AbilityManager => ControlledDevice.AbilityManager;
 
@@ -92,7 +93,9 @@ public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
 
     public IGameComponent CreateNewGameComponent(GameComponentData componentData, Vector2 position)
     {
-        return _gameComponentFactory.CreateGameComponentObject(componentData.ResourcePath, Vector3.zero);
+        IGameComponent component = _gameComponentFactory.CreateGameComponentObject(componentData.ResourcePath, position);
+        OnBuyingGameComponent?.Invoke(component);
+        return component;
     }
 
     public void LoadDevice(int DeviceID)
