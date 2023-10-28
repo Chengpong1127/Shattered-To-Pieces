@@ -21,7 +21,7 @@ public class GameComponent : AbilityEntity, IGameComponent
     public string ComponentName { get; set; }
     public Transform AssemblyTransform => BodyTransform;
     public bool CanSelected = true;
-    public bool IsSelected { get; private set; } = false;
+    public NetworkVariable<bool> IsSelected = new(false);
 
     #region Inspector
     [Tooltip("The connector of the game component.")]
@@ -81,11 +81,9 @@ public class GameComponent : AbilityEntity, IGameComponent
         AssemblyTransform.localScale = new Vector3(componentInfo.ToggleXScale ? -1 : 1, 1, 1);
     }
     public void SetSelected(bool selected){
-        SetSelectedClientRpc(selected);
-        IsSelected = selected;
+        IsSelected.Value = selected;
     }
-    [ClientRpc]
-    private void SetSelectedClientRpc(bool selected){
+    private void SelectionHandler(bool selected){
         switch (selected){
             case true:
                 BodyColliders.ToList().ForEach((collider) => collider.isTrigger = true);
@@ -122,6 +120,7 @@ public class GameComponent : AbilityEntity, IGameComponent
         base.Awake();
         connector ??= GetComponent<IConnector>() ?? throw new ArgumentNullException(nameof(connector));
         connector.OnJointBreak += JointBreakHandler;
+        IsSelected.OnValueChanged += (previousValue, newValue) => SelectionHandler(newValue);
     }
     
 
