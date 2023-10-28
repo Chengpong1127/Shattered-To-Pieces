@@ -98,6 +98,8 @@ public class AssemblyController : NetworkBehaviour
             var targets = Utils.GetGameObjectsUnderMouse<Target>();
             var components = Utils.GetGameObjectsUnderMouse<GameComponent>();
             if (targets.Length > 0){
+                Vector3 mouseWorldPosition = Utils.GetMouseWorldPosition();
+                targets = targets.OrderBy(target => Vector3.Distance(target.transform.position, mouseWorldPosition)).ToArray();
                 ConnectionInfo connectionInfo = new ConnectionInfo
                 {
                     linkedTargetID = targets.First().TargetID,
