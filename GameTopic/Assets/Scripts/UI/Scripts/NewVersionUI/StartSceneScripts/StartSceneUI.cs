@@ -40,6 +40,12 @@ public class StartSceneUI : MonoBehaviour
         ListRoomBtn.OnClick += () => { UpdateConnectRoom(); UIanimator.SetTrigger("ListRoom"); };
         HostBtn.OnClick += () => { UIanimator.SetTrigger("CreatRoom"); };
         Back.OnClick += () => { UIanimator.SetTrigger("Back"); };
+
+        // RoomNameInput.onSubmit += () => { LocalGameManager.Instance.CreateLobby(hn); };
+        RoomNameInput.onSubmit.AddListener((hostName) => {
+            LocalGameManager.Instance.CreateLobby(hostName);
+            UIanimator.SetTrigger("EnterRoom");
+        });
     }
 
 
@@ -96,6 +102,7 @@ public class StartSceneUI : MonoBehaviour
         var lobby = lobbies.Where(lb => { return lb.Name == roomName; }).FirstOrDefault();
         if (lobby == null) { Debug.Log("Choose room is null"); UIanimator.SetTrigger("Back"); return; }
         LocalGameManager.Instance.JoinLobby(lobby);
+        UIanimator.SetTrigger("EnterRoom");
     }
     void RegistPlayerInfo(Player player) {
         RegistPlayerInfo();
