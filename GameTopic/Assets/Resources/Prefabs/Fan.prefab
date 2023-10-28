@@ -309,7 +309,7 @@ MonoBehaviour:
   bodyAnimator: {fileID: 8648572613100063812}
   bodyRenderers:
   - {fileID: 1353910435260644711}
-  CollisionDamageThreshold: 80
+  CollisionDamageThreshold: 1000
   CollisionDamageEffect: {fileID: 0}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
@@ -318,7 +318,6 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: c76e7e721e5ee1c43a4ce3741049367a, type: 2}
   CanSelected: 1
-  assemblyTransform: {fileID: 7463319265100932557}
 --- !u!114 &2862088518758928107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,11 +338,6 @@ MonoBehaviour:
 --- !u!50 &3663819237459685398 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 4234352918938833372, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-  m_PrefabInstance: {fileID: 584326266991813066}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7463319265100932557 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8036947247156528135, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
   m_PrefabInstance: {fileID: 584326266991813066}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &7527148094400919723 stripped

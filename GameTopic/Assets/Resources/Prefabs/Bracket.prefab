@@ -62,17 +62,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5235308971284393972, guid: 4d2523c3e60af40f89b9759e6944c4f1, type: 3}
   m_PrefabInstance: {fileID: 1443855452334384265}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6678300757159349119 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5235308971284393974, guid: 4d2523c3e60af40f89b9759e6944c4f1, type: 3}
-  m_PrefabInstance: {fileID: 1443855452334384265}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22820bff0638fb240bf8a033875c29a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4938637893686564182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -95,7 +84,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 4f42034ff506d4cc9909134e7e6e2eff, type: 3}
     - target: {fileID: 2973098028539147263, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2973098028539147263, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_SortingLayerID
@@ -205,13 +194,9 @@ PrefabInstance:
       propertyPath: targetList.Array.size
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7963432778198175788, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-      propertyPath: targetList.Array.data[0]
-      value: 
-      objectReference: {fileID: 6678300757159349119}
     - target: {fileID: 8211648019079314832, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: CollisionDamageThreshold
-      value: 80
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 8211648019079314832, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: bodyRenderers.Array.size

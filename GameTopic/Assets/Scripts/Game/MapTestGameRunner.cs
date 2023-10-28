@@ -11,8 +11,11 @@ public class MapTestGameRunner : SimpleGameRunner
     private int[] shuffledIndices;
     public void Start()
     {
-        GameEvents.GameComponentEvents.OnGameComponentSelected += HandleGameComponentConnected;
-        StartCoroutine(RepeatSetRandomComponents());
+        if (IsServer)
+        {
+            GameEvents.GameComponentEvents.OnGameComponentSelected += HandleGameComponentConnected;
+            StartCoroutine(RepeatSetRandomComponents());
+        }
     }
     private int[] GetShuffledIndices(int length)
     {

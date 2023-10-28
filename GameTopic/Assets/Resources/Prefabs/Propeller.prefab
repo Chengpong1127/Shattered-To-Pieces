@@ -72,7 +72,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 392658167
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 8c1fd529729f1e9429f832e8b0247d1a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -270,7 +270,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8272447847809035679, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_BreakForce
-      value: 1000
+      value: 3000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272447847809035679, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_BreakTorque
+      value: 3000
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2973098028539147263, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -322,7 +326,7 @@ MonoBehaviour:
   bodyAnimator: {fileID: 2110575414034398442}
   bodyRenderers:
   - {fileID: 33972817680193244}
-  CollisionDamageThreshold: 400
+  CollisionDamageThreshold: 1000
   CollisionDamageEffect: {fileID: 0}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
@@ -331,7 +335,8 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 521235a91f9f0384dbcaf94e93e94fa6, type: 2}
   CanSelected: 1
-  assemblyTransform: {fileID: 6660055799483216435}
+  IsSelected:
+    m_InternalValue: 0
 --- !u!114 &2528714835101031990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,11 +399,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
   m_Animator: {fileID: 2110575414034398442}
---- !u!4 &6660055799483216435 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-  m_PrefabInstance: {fileID: 449838639023225638}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7617518997779054369 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8036947247156528135, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}

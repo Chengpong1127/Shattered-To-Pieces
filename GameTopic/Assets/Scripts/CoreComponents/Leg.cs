@@ -9,6 +9,9 @@ using Unity.Netcode;
 
 public class Leg : BaseCoreComponent, IGroundCheckable, IMovable, IForceAddable {
     private NetworkVariable<float> Speed = new NetworkVariable<float>(0);
+    public float MovingSpeed;
+    private MoveDirection? CurrentDirection = null;
+
     public GroundDetector GroundDetector;
     public bool IsGrounded => GroundDetector.IsGrounded;
 
@@ -23,16 +26,6 @@ public class Leg : BaseCoreComponent, IGroundCheckable, IMovable, IForceAddable 
         }
     }
 
-    public void StartMove(float speed)
-    {
-        Speed.Value += speed;
-    }
-
-    public void StopMove(float speed)
-    {
-        Speed.Value -= speed;
-    }
-
     public void AddForce(Vector2 force, ForceMode2D mode)
     {
         AddForce_ClientRpc(force, mode);
@@ -43,6 +36,34 @@ public class Leg : BaseCoreComponent, IGroundCheckable, IMovable, IForceAddable 
         if (IsOwner)
         {
             BodyRigidbody.AddForce(force, mode);
+        }
+    }
+
+    public void SetMovingSpeed(float speed)
+    {
+        MovingSpeed = speed;
+    }
+
+    public void SetMoveDirection(MoveDirection direction)
+    {
+        if (CurrentDirection == null){
+            CurrentDirection = direction;
+            Speed.Value = direction == MoveDirection.Left ? -MovingSpeed : MovingSpeed;
+            return;
+        }
+        else if (CurrentDirection == direction) return;
+        else if (CurrentDirection != direction){
+            CurrentDirection = null;
+            Speed.Value = 0;
+            return;
+        }
+    }
+
+    public void StopMoveDirection(MoveDirection direction)
+    {
+        if (CurrentDirection == direction){
+            CurrentDirection = null;
+            Speed.Value = 0;
         }
     }
 }

@@ -13,7 +13,7 @@ public abstract class EntityAbilitySpec: AbstractAbilitySpec{
     public override bool CanActivateAbility()
     {
         if (SelfEntity is GameComponent gameComponent){
-            return base.CanActivateAbility() && !gameComponent.IsSelected;
+            return base.CanActivateAbility() && !gameComponent.IsSelected.Value;
         }else{
             return base.CanActivateAbility();
         }

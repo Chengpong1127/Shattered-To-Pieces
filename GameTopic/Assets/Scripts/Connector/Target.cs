@@ -16,6 +16,7 @@ public class Target : MonoBehaviour
 
     private Connector LinkedConnector = null;
     private Renderer Renderer = null;
+    public SpriteRenderer CircleRenderer = null;
     public Vector3 ConnectionPosition => transform.localPosition;
 
     private void Awake() {
@@ -49,6 +50,7 @@ public class Target : MonoBehaviour
     {
         Renderer.enabled = display;
         BodyCollider.enabled = display;
+        CircleRenderer.enabled = display;
     }
 
 }

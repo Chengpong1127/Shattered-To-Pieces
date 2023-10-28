@@ -72,7 +72,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 392658167
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: dd5dedaee204e45d9b46dcb4821e48b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -429,7 +429,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 392658167
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 9e4ab586aa057470ca49fe04d8029be5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -678,7 +678,7 @@ MonoBehaviour:
   bodyRenderers:
   - {fileID: 3552658760420736364}
   - {fileID: 2560736522442253250}
-  CollisionDamageThreshold: 400
+  CollisionDamageThreshold: 1000
   CollisionDamageEffect: {fileID: 0}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
@@ -687,7 +687,6 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 7baa1cdab01668841b814009aac8f23f, type: 2}
   CanSelected: 1
-  assemblyTransform: {fileID: 4366935879820701512}
 --- !u!114 &7826500067801894997
 MonoBehaviour:
   m_ObjectHideFlags: 0

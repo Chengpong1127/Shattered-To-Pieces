@@ -1,5 +1,10 @@
 using UnityEngine;
 public interface IMovable{
-    public void StartMove(float speed);
-    public void StopMove(float speed);
+    public void SetMovingSpeed(float speed);
+    public void SetMoveDirection(MoveDirection direction);
+    public void StopMoveDirection(MoveDirection direction);
+}
+public enum MoveDirection{
+    Left,
+    Right,
 }

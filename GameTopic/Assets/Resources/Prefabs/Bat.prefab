@@ -72,7 +72,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 392658167
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 7a90c7303de674406b115b613e2c8d66, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -444,6 +444,14 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 1.684
       objectReference: {fileID: 0}
+    - target: {fileID: 8272447847809035679, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_BreakForce
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272447847809035679, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_BreakTorque
+      value: 2000
+      objectReference: {fileID: 0}
     - target: {fileID: 8890015344360057443, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
@@ -531,11 +539,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
   m_Animator: {fileID: 2491090600287931855}
---- !u!4 &1924151084018908080 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-  m_PrefabInstance: {fileID: 4674900902612726437}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2210190192269421485 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6795010306233276680, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
@@ -586,7 +589,7 @@ MonoBehaviour:
   bodyAnimator: {fileID: 2491090600287931855}
   bodyRenderers:
   - {fileID: 5471085482766566025}
-  CollisionDamageThreshold: 400
+  CollisionDamageThreshold: 1000
   CollisionDamageEffect: {fileID: 0}
   AttributeSystemComponent: {fileID: 6213903921903726249}
   AbilitySystemCharacter: {fileID: 2210190192269421485}
@@ -595,7 +598,8 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 667df11ad0ce8446ca762310a262fbb6, type: 2}
   CanSelected: 1
-  assemblyTransform: {fileID: 1924151084018908080}
+  IsSelected:
+    m_InternalValue: 0
   EntityTriggerCollider: {fileID: 1767429543466599302}
 --- !u!114 &6318985712159059288
 MonoBehaviour:

@@ -529,6 +529,14 @@ PrefabInstance:
       propertyPath: bodyRenderers.Array.data[0]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8272447847809035679, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_BreakForce
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272447847809035679, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_BreakTorque
+      value: 2000
+      objectReference: {fileID: 0}
     - target: {fileID: 8890015344360057443, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -662,7 +670,7 @@ MonoBehaviour:
   bodyAnimator: {fileID: 7420761787124502513}
   bodyRenderers:
   - {fileID: 3495737879382773150}
-  CollisionDamageThreshold: 80
+  CollisionDamageThreshold: 1000
   CollisionDamageEffect: {fileID: 0}
   AttributeSystemComponent: {fileID: 0}
   AbilitySystemCharacter: {fileID: 0}
@@ -671,6 +679,8 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 36c3d4c272a4f884289894bd5088f535, type: 2}
   CanSelected: 1
+  IsSelected:
+    m_InternalValue: 0
   SpwanPoint: {fileID: 6980042773701143263}
   Power: 5
 --- !u!114 &7581761390865271426

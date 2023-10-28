@@ -9,16 +9,14 @@ using System.ComponentModel;
 
 public static class Utils{
     public static GameObject GetGameObjectUnderMouse(){
-        Vector2 mousePosition = Mouse.current.position.ReadValue();
-        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector3 worldPoint = GetMouseWorldPosition();
 
         RaycastHit2D hit;
         hit = Physics2D.Raycast(worldPoint, Vector2.zero);
         return hit.collider != null ? hit.collider.gameObject : null;
     }
     public static T[] GetGameObjectsUnderMouse<T>(){
-        Vector2 mousePosition = Mouse.current.position.ReadValue();
-        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector3 worldPoint = GetMouseWorldPosition();
 
         RaycastHit2D[] hits;
         hits = Physics2D.RaycastAll(worldPoint, Vector2.zero);
@@ -27,6 +25,11 @@ public static class Utils{
             .Select(hit => hit.collider.gameObject.GetComponentInParent<T>())
             .Where(component => component != null);
         return targets.ToArray();
+    }
+    public static Vector3 GetMouseWorldPosition(){
+        Vector2 mousePosition = Mouse.current.position.ReadValue();
+        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(mousePosition);
+        return worldPoint;
     }
     
     private static BasePlayer localPlayerDevice;
