@@ -33,7 +33,6 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
         public MoveDirection Direction;
         public string AnimationName;
         public float EnergyCostPerSecond;
-        private float currentSpeed;
         public MoveAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
         }
@@ -41,29 +40,19 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
         public override void CancelAbility()
         {
             if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, false);
-            Movable.StopMove(currentSpeed);
-            currentSpeed = 0;
+            Movable.StopMoveDirection(Direction);
             EndAbility();
         }
 
         protected override IEnumerator ActivateAbility()
         {
-            currentSpeed = 0;
+            Movable.SetMovingSpeed(Speed);
             if (SelfEntity is IGroundCheckable groundCheckable)
             {
                 if (!groundCheckable.IsGrounded) yield break;
             }
             if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, true);
-            switch (Direction)
-            {
-                case MoveDirection.Left:
-                    currentSpeed = -Speed;
-                    break;
-                case MoveDirection.Right:
-                    currentSpeed = Speed;
-                    break;
-            }
-            Movable.StartMove(currentSpeed);
+            Movable.SetMoveDirection(Direction);
             while(isActive){
                 if (EnergyManager.HasEnergy(EnergyCostPerSecond * Time.deltaTime * 2))
                     EnergyManager.CostEnergy(EnergyCostPerSecond * Time.deltaTime);
@@ -74,10 +63,5 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
                 yield return null;
             }
         }
-    }
-    public enum MoveDirection
-    {
-        Left,
-        Right,
     }
 }
