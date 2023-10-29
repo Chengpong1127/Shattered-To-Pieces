@@ -25,7 +25,7 @@ public class Device: IDevice
         };
         GameEvents.GameComponentEvents.OnGameComponentDisconnected += (component, parent) => {
             AbilityManager
-                .Where(ability => ability.OwnerGameComponent.Equals(component))
+                .Where(ability => ability.OwnerGameComponentID.Equals(component))
                 .ToList()
                 .ForEach(ability => ability.AbilitySpec.CancelAbility());
         };
@@ -37,10 +37,10 @@ public class Device: IDevice
         var deviceInfo = new DeviceInfo();
         var (info, nodeMapping) = tree.Dump<GameComponentInfo>();
         deviceInfo.TreeInfo = info;
-        var gameComponentIDMapping = new Dictionary<IGameComponent, int>();
+        var gameComponentIDMapping = new Dictionary<ulong, int>();
         foreach (var (key, value) in nodeMapping){
             Debug.Assert(key is IGameComponent);
-            gameComponentIDMapping.Add(key as IGameComponent, value);
+            gameComponentIDMapping.Add((key as GameComponent).NetworkObjectId, value);
         }
         deviceInfo.AbilityManagerInfo = new AbilityManagerInfo(AbilityManager, gameComponentIDMapping);
         return deviceInfo;

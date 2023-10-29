@@ -13,14 +13,14 @@ public class GameComponentAbility{
     /// The game component that own this ability.
     /// </summary>
     /// <value></value>
-    public readonly ICoreComponent OwnerGameComponent;
+    public readonly ulong OwnerGameComponentID;
 
     public AbstractAbilityScriptableObject AbilityScriptableObject;
     public RunnerAbilitySpec AbilitySpec;
 
-    public GameComponentAbility(int index, ICoreComponent owner, AbstractAbilityScriptableObject abilityScriptableObject, RunnerAbilitySpec abilitySpec){
+    public GameComponentAbility(int index, GameComponent owner, AbstractAbilityScriptableObject abilityScriptableObject, RunnerAbilitySpec abilitySpec){
         AbilityIndex = index;
-        OwnerGameComponent = owner ?? throw new ArgumentNullException(nameof(owner));
+        OwnerGameComponentID = owner.NetworkObjectId;
         AbilityScriptableObject = abilityScriptableObject ?? throw new ArgumentNullException(nameof(abilityScriptableObject));
         AbilitySpec = abilitySpec ?? throw new ArgumentNullException(nameof(abilitySpec));
     }
@@ -30,13 +30,13 @@ public class GameComponentAbility{
     {
         return obj is GameComponentAbility ability 
             && AbilityIndex == ability.AbilityIndex 
-            && OwnerGameComponent == ability.OwnerGameComponent
+            && OwnerGameComponentID == ability.OwnerGameComponentID
             && AbilityScriptableObject == ability.AbilityScriptableObject
             && AbilitySpec == ability.AbilitySpec;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(AbilityIndex, OwnerGameComponent, AbilityScriptableObject, AbilitySpec);
+        return HashCode.Combine(AbilityIndex, OwnerGameComponentID, AbilityScriptableObject, AbilitySpec);
     }
 }

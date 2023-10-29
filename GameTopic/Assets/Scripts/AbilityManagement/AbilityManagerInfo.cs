@@ -9,7 +9,7 @@ public class AbilityManagerInfo: IInfo{
     public AbilityManagerInfo(){
         
     }
-    public AbilityManagerInfo(AbilityManager manager, Dictionary<IGameComponent, int> componentIDMap){
+    public AbilityManagerInfo(AbilityManager manager, Dictionary<ulong, int> componentIDMap){
         EntryPaths = new string[manager.AbilityInputEntryNumber];
         EntryAbilities = new List<(int, int)>[manager.AbilityInputEntryNumber];
         OutOfEntryAbilities = new();
@@ -17,12 +17,12 @@ public class AbilityManagerInfo: IInfo{
             EntryPaths[i] = manager.AbilityInputEntries[i].InputPath;
             EntryAbilities[i] = new();
             foreach(var ability in manager.AbilityInputEntries[i].Abilities){
-                EntryAbilities[i].Add((componentIDMap[ability.OwnerGameComponent], ability.AbilityIndex));
+                EntryAbilities[i].Add((componentIDMap[ability.OwnerGameComponentID], ability.AbilityIndex));
             }
         }
         
         foreach(var ability in manager.GetAbilitiesOutOfEntry()){
-            OutOfEntryAbilities.Add((componentIDMap[ability.OwnerGameComponent], ability.AbilityIndex));
+            OutOfEntryAbilities.Add((componentIDMap[ability.OwnerGameComponentID], ability.AbilityIndex));
         }
 
     }
