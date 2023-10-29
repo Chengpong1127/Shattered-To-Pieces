@@ -36,7 +36,6 @@ public class BaseLocalPlayerManager : NetworkBehaviour
             Debug.LogError("There is no connection manager in local player manager.");
         }
         GameRunner ??= FindObjectOfType<BaseGameRunner>() ?? throw new Exception("GameRunner is null");
-
     }
     /// <summary>
     /// Start the player setup. This method need to be invoked after enter a scene.

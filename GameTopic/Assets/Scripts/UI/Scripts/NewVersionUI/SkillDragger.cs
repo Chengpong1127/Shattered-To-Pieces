@@ -17,6 +17,7 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     public SkillDropper NonSetDropper { get; set; } = null;
     public DisplayableAbilityScriptableObject DASO { get;set; } = null;
     public int draggerID { get; set; } = -1;
+    private GameComponent Owner = null;
 
     private void Awake() {
         selfRectTransform = GetComponent<RectTransform>();
@@ -35,12 +36,12 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         Dropper = null;
         displayImg.raycastTarget = false;
         selfLayout.ignoreLayout = true;
+        GameEvents.UIEvents.OnGameComponentAbilitySelected.Invoke(Owner);
     }
 
     public void OnEndDrag(PointerEventData eventData) {
+        GameEvents.UIEvents.OnGameComponentAbilitySelectedEnd.Invoke(Owner);
         displayImg.raycastTarget = true;
-
-        var data = DASO;
         DASO = null; // clear skilldata avoid duplicate skill appear.
 
         if (Dropper != null) { Dropper.AddSkill(OwnerDropper.BoxID, draggerID); }
@@ -52,18 +53,11 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     public void UpdateDisplay(DisplayableAbilityScriptableObject newData) {
         DASO = newData;
         if (DASO == null) { ShowDisplay(false); return; }
-
-        // displayImg.sprite = DASO.IsPlaceImage ? DASO.Image : null;
-        // if(DASO.IsPlaceImage) { displayImg.sprite = DASO.Image; }
-        // try {
-        //     displayImg.sprite = DASO.Image;
-        // } catch {
-        //     // displayImg.sprite = null;
-        //     Debug.Log("Sprite Setting Boom!");
-        // }
         displayImg.sprite = DASO.Image;
-
         ShowDisplay(true);
+    }
+    public void SetOwner(GameComponent owner){
+        Owner = owner;
     }
     void ShowDisplay(bool b) {
         gameObject.SetActive(b);

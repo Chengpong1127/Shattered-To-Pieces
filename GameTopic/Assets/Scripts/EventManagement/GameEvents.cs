@@ -124,4 +124,13 @@ public static class GameEvents{
         public static Action<GameComponent, GameComponent> OnGameComponentDisconnected = delegate { };
         public static Action<BaseEntity> OnEntityDied = delegate { };
     }
+
+    public static class UIEvents{
+        /// <summary>
+        /// Triggered after a GameComponentAbility is selected.
+        /// Parameters: (ability owner)
+        /// </summary>
+        public static Action<GameComponent> OnGameComponentAbilitySelected = delegate { };
+        public static Action<GameComponent> OnGameComponentAbilitySelectedEnd = delegate { };
+    }
 }

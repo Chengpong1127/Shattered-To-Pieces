@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5831604369233212856}
   - component: {fileID: 3371779403875330055}
   - component: {fileID: 4088894706831831336}
+  - component: {fileID: 3575015380654813772}
   - component: {fileID: 6756344615798454499}
   m_Layer: 0
   m_Name: GameEventHandlers
@@ -109,6 +110,18 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 0
     m_RotationOrder: 4
+--- !u!114 &3575015380654813772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5219266265802030087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db8969b29fee0448989c8f89f26efb76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6756344615798454499
 MonoBehaviour:
   m_ObjectHideFlags: 0

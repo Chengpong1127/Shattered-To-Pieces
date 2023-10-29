@@ -1019,17 +1019,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1922714733992683038, guid: 449752f588887416aa7c9aebf287df97, type: 3}
   m_PrefabInstance: {fileID: 779277034}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &834301265 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5831604369233212856, guid: 449752f588887416aa7c9aebf287df97, type: 3}
-  m_PrefabInstance: {fileID: 779277034}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42748494bc10b4f76947647e037c0931, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &835948142
 GameObject:
   m_ObjectHideFlags: 0
@@ -1533,10 +1522,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MapManager: {fileID: 1585596240}
-  GameEventHandlers:
-  - {fileID: 834301265}
-  - {fileID: 834301265}
-  - {fileID: 834301265}
   SpawnPoints:
   - {fileID: 697734081}
   - {fileID: 1899204885}

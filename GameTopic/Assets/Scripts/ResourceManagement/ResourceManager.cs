@@ -128,4 +128,13 @@ public class ResourceManager: Singleton<ResourceManager>
         return tile;
     }
 
+    public GameObject LoadUIPrefab(string name){
+        var path = Path.Combine("UI", name);
+        var prefab = Resources.Load<GameObject>(path);
+        if(prefab == null){
+            Debug.LogWarning("Cannot load UI prefab: " + path);
+        }
+        return prefab;
+    }
+
 }

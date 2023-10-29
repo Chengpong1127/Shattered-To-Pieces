@@ -87,17 +87,10 @@ public class SkillBinder : NetworkBehaviour {
         setAbilityAction?.Invoke(origin, newID, abilityID);
     }
 
-    public void SetDisply(int id, List<DisplayableAbilityScriptableObject> abilities) {
-        if(id == -1) {
-            NonDropper.SetDisplay(abilities);
-        } else if (Droppers.Count > id) {
-            Droppers[id].SetDisplay(abilities);
-        }
-    }
-
-    public void SetDisply(int boxID, int abilityID, DisplayableAbilityScriptableObject DASO) {
-        if (boxID == -1) { NonDropper.SetDisplay(abilityID, DASO); }
-        else { Droppers[boxID].SetDisplay(abilityID, DASO); }
+    public void SetDisply(int boxID, int abilityID, DisplayableAbilityScriptableObject DASO, ulong ownerID) {
+        GameComponent owner = DASO == null? null : Utils.GetLocalGameObjectByNetworkID(ownerID).GetComponent<GameComponent>();
+        if (boxID == -1) { NonDropper.SetDisplay(abilityID, DASO, owner); }
+        else { Droppers[boxID].SetDisplay(abilityID, DASO, owner); }
     }
 
 
@@ -126,13 +119,13 @@ public class SkillBinder : NetworkBehaviour {
             int abilityID = 0;
             int entryID = 0;
             NonDropper.draggerList.ForEach(d => {
-                RefreshSkillBox_ClientRpc(-1, abilityID, null);
+                RefreshSkillBox_ClientRpc(-1, abilityID, null, 0);
                 abilityID++;
             });
             Droppers.ForEach(d => {
                 abilityID = 0;
                 d.draggerList.ForEach(d => {
-                    RefreshSkillBox_ClientRpc(entryID, abilityID, null);
+                    RefreshSkillBox_ClientRpc(entryID, abilityID, null, 0);
                     abilityID++;
                 });
                 entryID++;
@@ -143,28 +136,28 @@ public class SkillBinder : NetworkBehaviour {
             for (int i = 0; i < 10; ++i) {
                 abilityID = 0;
                 abilityManager.AbilityInputEntries[i].Abilities.ForEach(a => {
-                    RefreshSkillBox_ClientRpc(i, abilityID, a.AbilityScriptableObject.AbilityName);
+                    RefreshSkillBox_ClientRpc(i, abilityID, a.AbilityScriptableObject.AbilityName, a.OwnerGameComponentID);
                     abilityID++;
                 });
             }
 
             abilityID = 0;
             abilityManager.GetAbilitiesOutOfEntry().ForEach(a => {
-                RefreshSkillBox_ClientRpc(-1, abilityID, a.AbilityScriptableObject.AbilityName);
+                RefreshSkillBox_ClientRpc(-1, abilityID, a.AbilityScriptableObject.AbilityName, a.OwnerGameComponentID);
                 abilityID++;
             });
         }
     }
 
     [ClientRpc]
-    void RefreshSkillBox_ClientRpc(int BoxID, int abilityID, string abilityName) {
+    void RefreshSkillBox_ClientRpc(int BoxID, int abilityID, string abilityName, ulong ownerID) {
         if(!IsOwner) { return; }
         var ability = abilityName != null ? ResourceManager.Instance.GetAbilityScriptableObjectByName(abilityName) : null;
         var DASO = ability as DisplayableAbilityScriptableObject;
 
         // Debug.Log("AbilityName : " + abilityName + " get ability : " + ability != null);
 
-        this.SetDisply(BoxID, abilityID, DASO);
+        this.SetDisply(BoxID, abilityID, DASO, ownerID);
     }
 
     void UpdateSkillBoxKeyText(int entryID) {

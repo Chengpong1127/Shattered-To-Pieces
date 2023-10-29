@@ -5,6 +5,11 @@ public class MapManager: NetworkBehaviour{
     [SerializeField]
     private Tilemap _currentTileMap;
     public Tilemap CurrentTileMap => _currentTileMap;
+    private void Awake() {
+        if (_currentTileMap == null){
+            Debug.LogError("Tilemap has not been assigned");
+        }
+    }
     public void SetTile(Vector2Int position, string tileName, bool force){
         if (!IsServer) Debug.LogError("Only server can set tile");
         if (force) SetTile_ClientRpc(position, tileName);

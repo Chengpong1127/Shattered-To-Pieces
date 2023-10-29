@@ -15,7 +15,7 @@ public class BaseGameRunner: NetworkBehaviour{
     public MapManager MapManager;
     public event Action<GameResult> OnGameOver;
     public StateMachine<GameStates> StateMachine;
-    public BaseGameEventHandler[] GameEventHandlers;
+    public BaseGameEventHandler[] GameEventHandlers { get; private set; }
     public static BaseGameRunner ServerGameRunnerInstance { get; private set; }
     public enum GameStates{
         Initializing,
@@ -30,6 +30,7 @@ public class BaseGameRunner: NetworkBehaviour{
     public event Action<ulong> OnPlayerSpawned;
     void Awake()
     {
+        GameEventHandlers = GetComponentsInChildren<BaseGameEventHandler>();
         StateMachine = new StateMachine<GameStates>(this);
         StateMachine.ChangeState(GameStates.Initializing);
         GameEventHandlers.ToList().ForEach(handler => handler.enabled = false);
@@ -40,7 +41,8 @@ public class BaseGameRunner: NetworkBehaviour{
                 Debug.LogError("There is more than one game runner in the scene.");
             }
             ServerGameRunnerInstance = this;
-            GameEventHandlers.ToList().ForEach(handler => handler.enabled = true);
+            EnableGameEventHandler();
+            EnableGameEventHandler_ClientRpc();
             StateMachine.ChangeState(GameStates.CreatingPlayers);
             await CreateAllPlayers();
             StateMachine.ChangeState(GameStates.Gaming);
@@ -49,6 +51,25 @@ public class BaseGameRunner: NetworkBehaviour{
             Debug.LogError("GameRunner is not running on server");
         }
     } 
+    [ClientRpc]
+    private void EnableGameEventHandler_ClientRpc(){
+        EnableGameEventHandler();
+    }
+    private void EnableGameEventHandler(){
+        GameEventHandlers.ToList().ForEach(handler => {
+            switch(handler.HandlerRunningMode){
+                case BaseGameEventHandler.RunningMode.OnlyServer:
+                    handler.enabled = IsServer;
+                    break;
+                case BaseGameEventHandler.RunningMode.OnlyClient:
+                    handler.enabled = IsClient;
+                    break;
+                case BaseGameEventHandler.RunningMode.Both:
+                    handler.enabled = true;
+                    break;
+            }
+        });
+    }
     /// <summary>
     /// Server loads all players.
     /// </summary>
