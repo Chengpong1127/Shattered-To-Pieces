@@ -74,7 +74,7 @@ public class AssemblyUI : MonoBehaviour , ISellElementSubmitable {
         // room?.CreateNewGameComponent(gcd, Vector2.zero);// IDK position value.
         if (room == null) { return; }
 
-        room.CreateNewGameComponent(componentList[(int)Shop.displayComponentType][elementID], Vector2.zero);
+        room.CreateNewGameComponent(componentList[(int)Shop.displayComponentType][elementID], new Vector2(0.5f,0));
     }
     void OpenDescriptionBox(int elementID) {
         descriptionBox.SetDisplay(
