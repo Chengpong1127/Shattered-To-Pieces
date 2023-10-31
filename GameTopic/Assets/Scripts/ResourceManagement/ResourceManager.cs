@@ -137,4 +137,12 @@ public class ResourceManager: Singleton<ResourceManager>
         return prefab;
     }
 
+    public MapInfo[] LoadAllMapInfo(){
+        var mapInfos = Resources.LoadAll<MapInfo>("MapInfos");
+        return mapInfos;
+    }
+
+    public MapInfo LoadMapInfo(string name){
+        return LoadAllMapInfo().ToList().Find((mapInfo) => mapInfo.MapName == name);
+    }
 }

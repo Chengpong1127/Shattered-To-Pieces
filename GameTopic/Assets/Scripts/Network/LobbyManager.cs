@@ -23,27 +23,38 @@ public class LobbyManager
     public LobbyManager(Player player){
         SelfPlayer = player;
     }
-    public async UniTask<Lobby> CreateLobby(string lobbyName, int maxPlayers){
+    public async UniTask<Lobby> CreateLobby(string lobbyName, MapInfo defaultMapInfo){
         SelfPlayer.Data = GetDefaultPlayerData();
         var createLobbyOptions = new CreateLobbyOptions(){
             IsPrivate = false,
             IsLocked = false,
             Player = SelfPlayer,
-            Data = GetDefaultLobbyData()
+            Data = GetDefaultLobbyData(defaultMapInfo.MapName)
             };
-        CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
+        CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, defaultMapInfo.MapPlayerCount, createLobbyOptions);
         await BindHostLobbyHandler(CurrentLobby);
         Identity = LobbyIdentity.Host;
         OnPlayerJoinOrLeave?.Invoke();
         return CurrentLobby;
     }
 
+    public async UniTask<Lobby> ChangeLobbyMap(MapInfo mapInfo){
+        CurrentLobby = await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions { 
+            Data = new Dictionary<string, DataObject> { 
+                { "MapName", new DataObject(
+                    DataObject.VisibilityOptions.Public, 
+                    mapInfo.MapName) 
+                }
+            } });
+        return CurrentLobby;
+    }
 
-    private Dictionary<string, DataObject> GetDefaultLobbyData(){
+
+    private Dictionary<string, DataObject> GetDefaultLobbyData(string mapName){
         return new Dictionary<string, DataObject>(){
             {"Ready", new DataObject(DataObject.VisibilityOptions.Public, "false")},
             {"HostNetworkInfo", new DataObject(DataObject.VisibilityOptions.Public, NetworkTool.GetLocalNetworkHost().ToJson())},
-            {"Map", new DataObject(DataObject.VisibilityOptions.Public, "MapTest")},
+            {"MapName", new DataObject(DataObject.VisibilityOptions.Public, mapName)},
         };
     }
     private Dictionary<string, PlayerDataObject> GetDefaultPlayerData(){
@@ -79,16 +90,22 @@ public class LobbyManager
     private async UniTask BindHostLobbyHandler(Lobby lobby){
         LobbyEventCallbacks lobbyEventCallbacks = new LobbyEventCallbacks();
         lobbyEventCallbacks.DataChanged += DataChangedHandler;
-        lobbyEventCallbacks.PlayerJoined += _ => OnPlayerJoinOrLeave?.Invoke();
-        lobbyEventCallbacks.PlayerLeft += _ => OnPlayerJoinOrLeave?.Invoke();
+        lobbyEventCallbacks.PlayerJoined += async (joinedPlayerList) => {
+            CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
+            OnPlayerJoinOrLeave?.Invoke();
+        };
+        lobbyEventCallbacks.PlayerJoined += async (joinedPlayerList) => {
+            CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
+            OnPlayerJoinOrLeave?.Invoke();
+        };
         lobbyEventCallbacks.PlayerDataChanged += PlayerDataChangedHandler;
         lobbyEventCallbacks.PlayerDataAdded += PlayerDataChangedHandler;
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
     }
 
-    private void PlayerDataChangedHandler(Dictionary<int, Dictionary<string, ChangedOrRemovedLobbyValue<PlayerDataObject>>> data)
+    private async void PlayerDataChangedHandler(Dictionary<int, Dictionary<string, ChangedOrRemovedLobbyValue<PlayerDataObject>>> data)
     {
-        Debug.Log("Player Data Changed");
+        CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
         foreach(var (key, value) in data)
         {
             var player = CurrentLobby.Players[key];
@@ -109,10 +126,16 @@ public class LobbyManager
     private async UniTask BindClinetLobbyHandler(Lobby lobby){
         LobbyEventCallbacks lobbyEventCallbacks = new LobbyEventCallbacks();
         lobbyEventCallbacks.DataChanged += DataChangedHandler;
-        lobbyEventCallbacks.PlayerJoined += _ => OnPlayerJoinOrLeave?.Invoke();
-        lobbyEventCallbacks.PlayerLeft += _ => OnPlayerJoinOrLeave?.Invoke();
-        lobbyEventCallbacks.PlayerDataChanged += PlayerDataChangedHandler;
+        lobbyEventCallbacks.PlayerJoined += async (joinedPlayerList) => {
+            CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
+            OnPlayerJoinOrLeave?.Invoke();
+        };
+        lobbyEventCallbacks.PlayerJoined += async (joinedPlayerList) => {
+            CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
+            OnPlayerJoinOrLeave?.Invoke();
+        };
         lobbyEventCallbacks.PlayerDataAdded += PlayerDataChangedHandler;
+        lobbyEventCallbacks.PlayerDataChanged += PlayerDataChangedHandler;
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
     }
 
@@ -122,7 +145,7 @@ public class LobbyManager
                 Identity = Identity,
                 Player = SelfPlayer,
                 HostAddress = GetLobbyHostIP(),
-                MapName = CurrentLobby.Data["Map"].Value
+                MapName = CurrentLobby.Data["MapName"].Value
             };
             OnLobbyReady?.Invoke(lobbyReadyInfo);
         }
@@ -175,7 +198,7 @@ public class LobbyManager
             Identity = Identity,
             Player = SelfPlayer,
             HostAddress = GetLobbyHostIP(),
-            MapName = CurrentLobby.Data["Map"].Value
+            MapName = CurrentLobby.Data["MapName"].Value
         };
         OnLobbyReady?.Invoke(lobbyReadyInfo);
     }

@@ -48,6 +48,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     public async void CreateLobby(string lobbyName){
         GameStateMachine.ChangeState(GameState.Lobby);
         LobbyManager.OnPlayerJoinOrLeave += () => {
+            LobbyManager = LobbyManager;
             Debug.Log("Player Join or Leave");
         };
         LobbyManager.OnPlayerReady += player => {
@@ -58,7 +59,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         };
 
         LobbyManager.OnLobbyReady += LobbyReadyHandler;
-        await LobbyManager.CreateLobby(lobbyName, 4);
+        await LobbyManager.CreateLobby(lobbyName, ResourceManager.Instance.LoadMapInfo("FightingMap"));
         Debug.Log("Lobby Created with ID: " + LobbyManager.CurrentLobby.Id);
     }
     private void LobbyReadyHandler(LobbyManager.PlayerLobbyReadyInfo playerLobbyReadyInfo){
@@ -68,7 +69,9 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         }else{
             networkType = NetworkType.Client;
         }
-        EnterRoom(playerLobbyReadyInfo.MapName, networkType, playerLobbyReadyInfo.HostAddress);
+
+        var mapInfo = ResourceManager.Instance.LoadMapInfo(playerLobbyReadyInfo.MapName);
+        EnterRoom(mapInfo.MapSceneName, networkType, playerLobbyReadyInfo.HostAddress);
     }
 
     public async UniTask<Lobby[]> GetAllAvailableLobby(){
