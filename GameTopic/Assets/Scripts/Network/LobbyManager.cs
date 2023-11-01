@@ -51,6 +51,11 @@ public class LobbyManager
         return CurrentLobby;
     }
 
+    public async void LeaveLobby(){
+        await LobbyService.Instance.RemovePlayerAsync(CurrentLobby.Id, SelfPlayer.Id);
+        CurrentLobby = null;
+    }
+
 
     private Dictionary<string, DataObject> GetDefaultLobbyData(string mapName){
         return new Dictionary<string, DataObject>(){
@@ -92,17 +97,21 @@ public class LobbyManager
     private async UniTask BindHostLobbyHandler(Lobby lobby){
         LobbyEventCallbacks lobbyEventCallbacks = new LobbyEventCallbacks();
         lobbyEventCallbacks.DataChanged += DataChangedHandler;
-        lobbyEventCallbacks.PlayerJoined += async (joinedPlayerList) => {
-            CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
-            OnPlayerJoinOrLeave?.Invoke();
-        };
-        lobbyEventCallbacks.PlayerJoined += async (joinedPlayerList) => {
-            CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
-            OnPlayerJoinOrLeave?.Invoke();
-        };
+        lobbyEventCallbacks.PlayerJoined += _ => PlayerJoinOrLeaveHandler();
+        lobbyEventCallbacks.PlayerLeft += _ => PlayerJoinOrLeaveHandler();
         lobbyEventCallbacks.PlayerDataChanged += PlayerDataChangedHandler;
         lobbyEventCallbacks.PlayerDataAdded += PlayerDataChangedHandler;
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
+    }
+
+    private async void PlayerJoinOrLeaveHandler(){
+        CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
+        if (CurrentLobby.HostId == SelfPlayer.Id){
+            Identity = LobbyIdentity.Host;
+        } else {
+            Identity = LobbyIdentity.Client;
+        }
+        OnPlayerJoinOrLeave?.Invoke();
     }
 
     private async void PlayerDataChangedHandler(Dictionary<int, Dictionary<string, ChangedOrRemovedLobbyValue<PlayerDataObject>>> data)
@@ -128,14 +137,8 @@ public class LobbyManager
     private async UniTask BindClinetLobbyHandler(Lobby lobby){
         LobbyEventCallbacks lobbyEventCallbacks = new LobbyEventCallbacks();
         lobbyEventCallbacks.DataChanged += DataChangedHandler;
-        lobbyEventCallbacks.PlayerJoined += async (joinedPlayerList) => {
-            CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
-            OnPlayerJoinOrLeave?.Invoke();
-        };
-        lobbyEventCallbacks.PlayerJoined += async (joinedPlayerList) => {
-            CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
-            OnPlayerJoinOrLeave?.Invoke();
-        };
+        lobbyEventCallbacks.PlayerJoined += _ => PlayerJoinOrLeaveHandler();
+        lobbyEventCallbacks.PlayerLeft += _ => PlayerJoinOrLeaveHandler();
         lobbyEventCallbacks.PlayerDataAdded += PlayerDataChangedHandler;
         lobbyEventCallbacks.PlayerDataChanged += PlayerDataChangedHandler;
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
