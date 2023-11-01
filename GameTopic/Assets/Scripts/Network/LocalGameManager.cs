@@ -48,7 +48,6 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     public async void CreateLobby(string lobbyName){
         GameStateMachine.ChangeState(GameState.Lobby);
         LobbyManager.OnPlayerJoinOrLeave += () => {
-            LobbyManager = LobbyManager;
             Debug.Log("Player Join or Leave");
         };
         LobbyManager.OnPlayerReady += player => {
