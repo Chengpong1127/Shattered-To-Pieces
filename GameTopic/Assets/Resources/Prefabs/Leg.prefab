@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2373278129963147350}
   - component: {fileID: 5981861964978868201}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 317009716938353895}
   - component: {fileID: 7584931007153504725}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5501991310232810135}
   - component: {fileID: 8600567707534542262}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1366835777530302840}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,6 +444,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c961840a329ca4129ac1bea657e4caf1, type: 2}
   - {fileID: 11400000, guid: 2f8920414d228404bb93c440b7c47c03, type: 2}
   CanSelected: 1
+  IsSelected:
+    m_InternalValue: 0
+  MovingSpeed: 0
   GroundDetector: {fileID: 906033211176756921}
 --- !u!114 &3265591722640971428
 MonoBehaviour:
@@ -587,6 +590,10 @@ PrefabInstance:
     - target: {fileID: 8671108426918252621, guid: 10086c332c1ad473e83d2225392d3463, type: 3}
       propertyPath: m_Name
       value: GroundDetector
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671108426918252621, guid: 10086c332c1ad473e83d2225392d3463, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9025044645107073230, guid: 10086c332c1ad473e83d2225392d3463, type: 3}
       propertyPath: m_LocalPosition.x

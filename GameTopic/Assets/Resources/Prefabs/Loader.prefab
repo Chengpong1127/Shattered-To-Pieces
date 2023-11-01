@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3255940943305527325}
   - component: {fileID: 2560736522442253250}
   - component: {fileID: 4713359432784464724}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Shovel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,7 +289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6696951977719143328}
   - component: {fileID: 6239783164339374282}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -368,7 +368,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4640807973775075347}
   - component: {fileID: 3552658760420736364}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -687,6 +687,8 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 7baa1cdab01668841b814009aac8f23f, type: 2}
   CanSelected: 1
+  IsSelected:
+    m_InternalValue: 0
 --- !u!114 &7826500067801894997
 MonoBehaviour:
   m_ObjectHideFlags: 0

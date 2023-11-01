@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2029541537721939873}
   - component: {fileID: 5081521119534702214}
   - component: {fileID: 4069215428026139534}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,7 +316,8 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 8fa6ff37f92d40a448795971caf2695f, type: 2}
   CanSelected: 1
-  assemblyTransform: {fileID: 7463319265100932557}
+  IsSelected:
+    m_InternalValue: 0
   g_light: {fileID: 7679782485449668584}
   clear: 1
 --- !u!114 &2863403886417388595

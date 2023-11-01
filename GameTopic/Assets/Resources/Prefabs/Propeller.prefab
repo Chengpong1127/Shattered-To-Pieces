@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5772794922914886267}
   - component: {fileID: 33972817680193244}
   - component: {fileID: 28404043995762385}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: propeller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8378898946261337926}
   - component: {fileID: 6457929896305472472}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

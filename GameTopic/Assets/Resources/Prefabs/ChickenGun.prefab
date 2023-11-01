@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5425998639157580298}
   - component: {fileID: 3495737879382773150}
   - component: {fileID: 8991321372696566275}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,7 +391,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6980042773701143263}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

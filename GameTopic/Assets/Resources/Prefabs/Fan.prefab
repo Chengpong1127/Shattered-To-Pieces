@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8402110529282734366}
   - component: {fileID: 1353910435260644711}
   - component: {fileID: 2827001194664871367}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5594186893031217407}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FanSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -318,6 +318,8 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: c76e7e721e5ee1c43a4ce3741049367a, type: 2}
   CanSelected: 1
+  IsSelected:
+    m_InternalValue: 0
 --- !u!114 &2862088518758928107
 MonoBehaviour:
   m_ObjectHideFlags: 0
