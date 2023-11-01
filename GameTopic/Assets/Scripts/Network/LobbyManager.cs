@@ -39,8 +39,10 @@ public class LobbyManager
     }
 
     public async UniTask<Lobby> ChangeLobbyMap(MapInfo mapInfo){
+        Debug.Assert(Identity == LobbyIdentity.Host, "Only Host can change map");
         CurrentLobby = await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions { 
-            Data = new Dictionary<string, DataObject> { 
+            MaxPlayers = mapInfo.MapPlayerCount,
+            Data = new Dictionary<string, DataObject> {
                 { "MapName", new DataObject(
                     DataObject.VisibilityOptions.Public, 
                     mapInfo.MapName) 
@@ -184,7 +186,7 @@ public class LobbyManager
                 isAllReady = false;
             }
         });
-        if (!isAllReady){
+        if (!isAllReady || CurrentLobby.Players.Count < CurrentLobby.MaxPlayers){
             return;
         }
         await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions { 
