@@ -1,4 +1,4 @@
 using System;
-public interface IEntityTriggerable{
-    public event Action<Entity> OnTriggerEntity;
+public interface IEntityCollisionable{
+    public event Action<Entity> OnCollisionEntity;
 }

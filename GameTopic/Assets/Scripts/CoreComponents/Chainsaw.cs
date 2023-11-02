@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine;
 
-public class Chainsaw : EntityTriggerableComponent {
+public class Chainsaw : EntityCollisionableComponent
+{
 
 }

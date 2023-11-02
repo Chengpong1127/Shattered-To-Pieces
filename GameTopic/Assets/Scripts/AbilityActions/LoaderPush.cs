@@ -20,10 +20,10 @@ public class LoaderPush : DisplayableAbilityScriptableObject {
         public float Power;
 
         Animator entityAnimator;
-        IEntityTriggerable entityTriggerable;
+        IEntityCollisionable entityCollisionable;
         public LoaderPushSpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner) {
             entityAnimator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
-            entityTriggerable = (SelfEntity as IEntityTriggerable) ?? throw new System.ArgumentNullException("The entity should have entity triggerable.");
+            entityCollisionable = (SelfEntity as IEntityCollisionable) ?? throw new System.ArgumentNullException("The entity should have entity triggerable.");
         }
 
         public override void CancelAbility() {
@@ -55,7 +55,7 @@ public class LoaderPush : DisplayableAbilityScriptableObject {
                 .normalized * Power
                 );
 
-            entityTriggerable.OnTriggerEntity -= TriggerAction;
+            entityCollisionable.OnCollisionEntity -= TriggerAction;
         }
     }
 }
