@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FightingMap
   m_EditorClassIdentifier: 
   MapName: FightingMap
-  MapSceneName: MapTest
+  MapSceneName: FightingMap
   MapDescription: 
   MapPlayerCount: 2
   Available: 1

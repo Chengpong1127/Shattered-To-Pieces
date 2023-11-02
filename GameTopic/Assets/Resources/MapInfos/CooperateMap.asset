@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ab2ec01be4a1416aa9bd3d436a88136, type: 3}
   m_Name: CooperateMap
   m_EditorClassIdentifier: 
-  MapName: 
-  MapSceneName: 
+  MapName: CooperateMap
+  MapSceneName: CoorperationMap
   MapDescription: 
-  MapPlayerCount: 0
-  Available: 0
+  MapPlayerCount: 1
+  Available: 1
