@@ -103,7 +103,6 @@ public class SkillBinder : NetworkBehaviour {
 
     [ServerRpc]
     void BindAbilityToEntry_ServerRpc(int origin, int newID, int abilityID) {
-        Debug.Log(newID + " " + abilityID + " " + origin);
         var ability = origin != -1 ?
             abilityManager.AbilityInputEntries[origin].Abilities[abilityID] :
             abilityManager.GetAbilitiesOutOfEntry()[abilityID];
