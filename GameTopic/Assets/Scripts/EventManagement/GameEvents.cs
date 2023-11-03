@@ -12,11 +12,6 @@ public static class GameEvents{
 
     public static class AssemblyRoomEvents{
         /// <summary>
-        /// Event for when the room mode is changed. 
-        /// </summary>
-        public static Action<AssemblyRoomMode> OnSetRoomMode = delegate { };
-
-        /// <summary>
         /// Called when the device is loaded. 
         /// </summary>
         public static Action OnLoadedDevice = delegate { };

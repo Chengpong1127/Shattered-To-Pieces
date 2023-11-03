@@ -118,6 +118,11 @@ public class WorkShop : MonoBehaviour
         roomMode = (roomMode == AssemblyRoomMode.PlayMode) ? AssemblyRoomMode.ConnectionMode : AssemblyRoomMode.PlayMode;
     }
 
+    private enum AssemblyRoomMode {
+        PlayMode,
+        ConnectionMode
+    }
+
     /// <summary>
     /// Set all file name to the file list whilch display in load file menu.
     /// </summary>
