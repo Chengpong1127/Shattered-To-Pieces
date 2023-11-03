@@ -6,8 +6,9 @@ using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine;
 
-public class EntityTriggerableComponent : BaseCoreComponent, IEntityTriggerable {
-    public event Action<Entity> OnTriggerEntity;
+public class EntityCollisionableComponent : BaseCoreComponent, IEntityCollisionable
+{
+    public event Action<Entity> OnCollisionEntity;
     public Collider2D EntityTriggerCollider;
 
     protected override void Awake() {
@@ -16,19 +17,19 @@ public class EntityTriggerableComponent : BaseCoreComponent, IEntityTriggerable 
         
     }
     private async void ListenTrigger(CancellationToken cancellationToken){
-        var trigger = EntityTriggerCollider.GetAsyncTriggerStay2DTrigger();
-        Collider2D collider;
+        var trigger = EntityTriggerCollider.GetAsyncCollisionEnter2DTrigger();
+        Collision2D collider;
         while(!cancellationToken.IsCancellationRequested){
 
             try{
-                collider = await trigger.OnTriggerStay2DAsync(cancellationToken);
+                collider = await trigger.OnCollisionEnter2DAsync(cancellationToken);
             }catch(OperationCanceledException){
                 return;
             }
-            var entity = collider.GetComponentInParent<Entity>();
+            var entity = collider.gameObject.GetComponentInParent<Entity>();
             if (entity != null) {
                 if (entity is BaseCoreComponent coreComponent && HasTheSameRootWith(coreComponent)) continue;
-                OnTriggerEntity?.Invoke(entity);
+                OnCollisionEntity?.Invoke(entity);
             }
         }
         

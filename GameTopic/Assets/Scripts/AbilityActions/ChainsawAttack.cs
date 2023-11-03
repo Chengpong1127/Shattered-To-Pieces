@@ -19,10 +19,10 @@ public class ChainsawAttack : DisplayableAbilityScriptableObject {
         public GameplayEffectScriptableObject DamageEffect;
 
         Animator entityAnimator;
-        IEntityTriggerable entityTriggerable;
+        IEntityCollisionable entityTriggerable;
         public ChainsawAttackSpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner) {
             entityAnimator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
-            entityTriggerable = (SelfEntity as IEntityTriggerable) ?? throw new System.ArgumentNullException("The entity should have entity triggerable.");
+            entityTriggerable = (SelfEntity as IEntityCollisionable) ?? throw new System.ArgumentNullException("The entity should have entity triggerable.");
         }
 
         public override void CancelAbility() {
@@ -34,18 +34,16 @@ public class ChainsawAttack : DisplayableAbilityScriptableObject {
         }
 
         protected override IEnumerator ActivateAbility() {
-            SelfEntity.BodyColliders.ToList().ForEach(collider => collider.isTrigger = true);
             entityAnimator.SetTrigger("ATKTrigger");
-            entityTriggerable.OnTriggerEntity += TriggerAction;
+            entityTriggerable.OnCollisionEntity += TriggerAction;
             yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"));
             yield return new WaitUntil(() => !entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"));
-            entityTriggerable.OnTriggerEntity -= TriggerAction;
-            SelfEntity.BodyColliders.ToList().ForEach(collider => collider.isTrigger = false);
+            entityTriggerable.OnCollisionEntity -= TriggerAction;
         }
 
         private void TriggerAction(Entity other) {
             GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(SelfEntity, other, DamageEffect);
-            entityTriggerable.OnTriggerEntity -= TriggerAction;
+            entityTriggerable.OnCollisionEntity -= TriggerAction;
         }
     }
 }

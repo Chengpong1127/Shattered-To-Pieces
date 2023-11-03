@@ -6410,9 +6410,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 392658167
+  m_SortingLayer: 1
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: c3f9bb55fe9c51d4fb7d23f102b0c1a2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -6436,7 +6436,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransitionStateInfoList: []
+  TransitionStateInfoList:
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 2081823275
+    DestinationState: -2071282801
+    TransitionDuration: 0.25
+    TriggerNameHash: -707381567
+    TransitionIndex: 0
   m_Animator: {fileID: 1156907287}
 --- !u!95 &1156907287
 Animator:
@@ -9975,9 +9982,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: 392658167
+  m_SortingLayer: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 20606e1c7f21fff48b5cd80a81e84740, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

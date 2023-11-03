@@ -21,13 +21,13 @@ public class BatRotation : DisplayableAbilityScriptableObject
     public class BatRotationSpec : RunnerAbilitySpec
     {
         private Animator entityAnimator;
-        private IEntityTriggerable entityTriggerable;
+        private IEntityCollisionable entityTriggerable;
         public GameplayEffectScriptableObject DamageEffect;
 
         public BatRotationSpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
             entityAnimator = (SelfEntity as BaseCoreComponent)?.BodyAnimator;
-            entityTriggerable = (SelfEntity as IEntityTriggerable) ?? throw new System.ArgumentNullException("The entity should have entity triggerable.");
+            entityTriggerable = (SelfEntity as IEntityCollisionable) ?? throw new System.ArgumentNullException("The entity should have entity triggerable.");
         }
 
         public override void CancelAbility()
@@ -37,17 +37,15 @@ public class BatRotation : DisplayableAbilityScriptableObject
 
         protected override IEnumerator ActivateAbility()
         {
-            SelfEntity.BodyColliders.ToList().ForEach(collider => collider.isTrigger = true);
             entityAnimator.Play("Swing");
-            entityTriggerable.OnTriggerEntity += TriggerAction;
+            entityTriggerable.OnCollisionEntity += TriggerAction;
             yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Swing"));
             yield return new WaitUntil(() => !entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Swing"));
-            entityTriggerable.OnTriggerEntity -= TriggerAction;
-            SelfEntity.BodyColliders.ToList().ForEach(collider => collider.isTrigger = false);
+            entityTriggerable.OnCollisionEntity -= TriggerAction;
         }
 
         private void TriggerAction(Entity other){
-            entityTriggerable.OnTriggerEntity -= TriggerAction;
+            entityTriggerable.OnCollisionEntity -= TriggerAction;
             GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(SelfEntity, other, DamageEffect);
         }
     }
