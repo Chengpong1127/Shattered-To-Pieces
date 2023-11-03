@@ -37,9 +37,10 @@ public static class NetworkTool{
         var ip1Bytes = IPAddress.Parse(ip1).GetAddressBytes();
         var ip2Bytes = IPAddress.Parse(ip2).GetAddressBytes();
         var maskBytes = IPAddress.Parse(mask).GetAddressBytes();
-        return ip1Bytes.Zip(ip2Bytes, (b1, b2) => b1 & b2)
-                        .Zip(maskBytes, (b1, b2) => b1 & b2)
-                        .SequenceEqual(ip1Bytes.Zip(ip2Bytes, (b1, b2) => b1 & b2));
+        
+        var ip1Subnet = ip1Bytes.Zip(maskBytes, (ip1Byte, maskByte) => (byte)(ip1Byte & maskByte)).ToArray();
+        var ip2Subnet = ip2Bytes.Zip(maskBytes, (ip2Byte, maskByte) => (byte)(ip2Byte & maskByte)).ToArray();
+        return ip1Subnet.SequenceEqual(ip2Subnet);
     }
 }
 
