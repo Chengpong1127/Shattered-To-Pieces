@@ -263,8 +263,7 @@ public class AssemblyController : NetworkBehaviour
         foreach (var componentID in componentIDs)
         {
             var component = Utils.GetLocalGameObjectByNetworkID(componentID)?.GetComponent<GameComponent>();
-            Debug.Assert(component != null, "component is null");
-            component.SetAvailableForConnection_ClientRpc(available, OwnerClientId);
+            if (component != null) component.SetAvailableForConnection_ClientRpc(available, OwnerClientId);
         }
     }
 }
