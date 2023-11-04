@@ -9,7 +9,7 @@ public class MapTestGameRunner : SimpleGameRunner
     private float repeatRate = 15.0f; 
     public List<GameObject> spawnedObjects = new List<GameObject>();
     private int[] shuffledIndices;
-    public void Start()
+    public virtual void Start()
     {
         if (IsServer)
         {

@@ -6,7 +6,7 @@ public class CooperationMapRunner : MapTestGameRunner
 {
     public GameObject Leg;
     public Transform[] SetLegSpawnPoint;
-    private void Start()
+    public override void Start()
     {
         GameEvents.GameComponentEvents.OnGameComponentSelected += HandleGameComponentConnected;
         foreach(Transform t in SetLegSpawnPoint)

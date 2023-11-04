@@ -3,20 +3,14 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Rubbergun :BaseCoreComponent,IAimable, IBodyControlable
+public class Rubbergun :BaseCoreComponent,IAimable
 {
     [SerializeField]
     public GameObject bullet;
     [SerializeField]
     public Transform ShootPoint;
     public Vector2 AimStartPoint => BodyTransform.position;
-    public BaseCoreComponent body { get; private set; }
 
-    protected override void Awake()
-    {
-        body = this;
-        base.Awake();
-    }
     public void EndAim(Vector2 aimVector)
     {
         var b=Instantiate(bullet,new Vector3(ShootPoint.position.x, ShootPoint.position.y, 0),Quaternion.identity);
