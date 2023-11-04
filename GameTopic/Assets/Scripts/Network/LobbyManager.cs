@@ -78,6 +78,7 @@ public class LobbyManager
     private Dictionary<string, DataObject> GetDefaultLobbyData(string mapName){
         return new Dictionary<string, DataObject>(){
             {"Ready", new DataObject(DataObject.VisibilityOptions.Public, "false")},
+            {"Gaming", new DataObject(DataObject.VisibilityOptions.Public, "false")},
             {"HostNetworkInfo", new DataObject(DataObject.VisibilityOptions.Public, NetworkTool.GetLocalNetworkHost().ToJson())},
             {"MapName", new DataObject(DataObject.VisibilityOptions.Public, mapName)},
         };
@@ -117,12 +118,27 @@ public class LobbyManager
 
     private async UniTask BindHostLobbyHandler(Lobby lobby){
         LobbyEventCallbacks lobbyEventCallbacks = new LobbyEventCallbacks();
-        lobbyEventCallbacks.DataChanged += DataChangedHandler;
+        lobbyEventCallbacks.DataAdded += _ => DataChangedHandler();
+        lobbyEventCallbacks.DataChanged += _ => DataChangedHandler();
+        lobbyEventCallbacks.DataRemoved += _ => DataChangedHandler();
         lobbyEventCallbacks.PlayerJoined += _ => PlayerJoinOrLeaveHandler();
         lobbyEventCallbacks.PlayerLeft += _ => PlayerJoinOrLeaveHandler();
         lobbyEventCallbacks.PlayerDataChanged += PlayerDataChangedHandler;
         lobbyEventCallbacks.PlayerDataAdded += PlayerDataChangedHandler;
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
+    }
+
+    public async void StartGame(){
+        if (Identity != LobbyIdentity.Host){
+            throw new Exception("Only Host can set starting game");
+        }
+        CurrentLobby = await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions { 
+            Data = new Dictionary<string, DataObject> { 
+                { "Gaming", new DataObject(
+                    DataObject.VisibilityOptions.Public, 
+                    "true") 
+                }
+            } });
     }
 
     private async void PlayerJoinOrLeaveHandler(){
@@ -157,7 +173,9 @@ public class LobbyManager
 
     private async UniTask BindClinetLobbyHandler(Lobby lobby){
         LobbyEventCallbacks lobbyEventCallbacks = new LobbyEventCallbacks();
-        lobbyEventCallbacks.DataChanged += DataChangedHandler;
+        lobbyEventCallbacks.DataAdded += _ => DataChangedHandler();
+        lobbyEventCallbacks.DataChanged += _ => DataChangedHandler();
+        lobbyEventCallbacks.DataRemoved += _ => DataChangedHandler();
         lobbyEventCallbacks.PlayerJoined += _ => PlayerJoinOrLeaveHandler();
         lobbyEventCallbacks.PlayerLeft += _ => PlayerJoinOrLeaveHandler();
         lobbyEventCallbacks.PlayerDataAdded += PlayerDataChangedHandler;
@@ -165,8 +183,9 @@ public class LobbyManager
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
     }
 
-    private void DataChangedHandler(Dictionary<string, ChangedOrRemovedLobbyValue<DataObject>> data){
-        if (data["Ready"].Value.Value == "true"){
+    private async void DataChangedHandler(){
+        CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
+        if (CurrentLobby.Data["Ready"].Value == "true"){
             var lobbyReadyInfo = new PlayerLobbyReadyInfo(){
                 Identity = Identity,
                 Player = SelfPlayer,
