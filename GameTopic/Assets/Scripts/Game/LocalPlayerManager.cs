@@ -37,9 +37,9 @@ public class LocalPlayerManager : NetworkBehaviour
     /// <summary>
     /// Start the player setup. This method need to be invoked after enter a scene.
     /// </summary>
-    public void StartPlayerSetup(NetworkType type, string ServerAddress = null){
+    public void StartPlayerSetup(NetworkType type, MapInfo mapinfo, string ServerAddress){
         StateMachine.ChangeState(LocalPlayerStates.Loading);
-        connectionManager.StartConnection(type, ServerAddress);
+        connectionManager.StartConnection(type, ServerAddress, mapinfo.MapPlayerCount);
         connectionManager.OnAllClientConnected += () => {
             if(IsServer){
                 SetRunner();
@@ -54,6 +54,7 @@ public class LocalPlayerManager : NetworkBehaviour
     }
     [ClientRpc]
     private void SetGaming_ClientRpc(){
+        Player = Utils.GetLocalPlayer();
         StateMachine.ChangeState(LocalPlayerStates.Gaming);
     }
     public virtual void ExitGame(){

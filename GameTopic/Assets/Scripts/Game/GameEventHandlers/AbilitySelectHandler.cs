@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class AbilitySelectHandler: BaseGameEventHandler{
     private Dictionary<GameComponent, Vector3> _originalScaleMap = new();
-    private void Awake() {
-        HandlerRunningMode = RunningMode.Both;
-    }
-    private void OnEnable() {
-        GameEvents.UIEvents.OnGameComponentAbilitySelected += GameComponentAbilitySelectedHandler;
-        GameEvents.UIEvents.OnGameComponentAbilitySelectedEnd += GameComponentAbilitySelectedEndHandler;
-    }
-    private void OnDisable() {
-        GameEvents.UIEvents.OnGameComponentAbilitySelected -= GameComponentAbilitySelectedHandler;
-        GameEvents.UIEvents.OnGameComponentAbilitySelectedEnd -= GameComponentAbilitySelectedEndHandler;
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if (IsClient)
+        {
+            GameEvents.UIEvents.OnGameComponentAbilitySelected += GameComponentAbilitySelectedHandler;
+            GameEvents.UIEvents.OnGameComponentAbilitySelectedEnd += GameComponentAbilitySelectedEndHandler;
+        }
     }
 
     private void GameComponentAbilitySelectedHandler(GameComponent gameComponent) {

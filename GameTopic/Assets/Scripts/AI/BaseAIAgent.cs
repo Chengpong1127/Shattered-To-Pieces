@@ -8,9 +8,7 @@ using System.Linq;
 public abstract class BaseAIAgent: Entity{
     public Root BehaviorTree;
     public abstract Root GetBehaviorTree();
-    protected override async void Start() {
-        base.Start();
-        await UniTask.WaitUntil(() => IsServer || IsClient);
+    public override void OnNetworkSpawn() {
         if (IsServer){
             BehaviorTree = GetBehaviorTree();
 #if UNITY_EDITOR

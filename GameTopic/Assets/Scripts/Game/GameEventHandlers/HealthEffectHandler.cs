@@ -10,14 +10,13 @@ public class HealthEffectHandler: BaseGameEventHandler
     public float Duration = 0.2f;
     public Color RecoveryColor = Color.green;
     public Color DamageColor = Color.red;
-
-    void OnEnable()
+    public override void OnNetworkSpawn()
     {
-        GameEvents.AttributeEvents.OnEntityHealthChanged += OnEntityHealthChanged;
-    }
-    void OnDisable()
-    {
-        GameEvents.AttributeEvents.OnEntityHealthChanged -= OnEntityHealthChanged;
+        base.OnNetworkSpawn();
+        if (IsServer)
+        {
+            GameEvents.AttributeEvents.OnEntityHealthChanged += OnEntityHealthChanged;
+        }
     }
     private void OnEntityHealthChanged(BaseEntity baseEntity, float oldHealth, float newHealth){
         OnEntityHealthChanged_ClientRpc(baseEntity.NetworkObjectId, oldHealth, newHealth);

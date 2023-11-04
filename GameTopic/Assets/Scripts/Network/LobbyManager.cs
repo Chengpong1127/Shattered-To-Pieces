@@ -24,6 +24,9 @@ public class LobbyManager
         SelfPlayer = player;
     }
     public async UniTask<Lobby> CreateLobby(string lobbyName, MapInfo defaultMapInfo){
+        if (CurrentLobby != null){
+            throw new Exception("Already in a lobby");
+        }
         SelfPlayer.Data = GetDefaultPlayerData();
         var createLobbyOptions = new CreateLobbyOptions(){
             IsPrivate = false,
@@ -38,6 +41,14 @@ public class LobbyManager
         return CurrentLobby;
     }
 
+    public void HostDeleteLobby(){
+        if (Identity != LobbyIdentity.Host){
+            throw new Exception("Only Host can delete lobby");
+        }
+        LobbyService.Instance.DeleteLobbyAsync(CurrentLobby.Id);
+        CurrentLobby = null;
+    }
+
     public async UniTask<Lobby> ChangeLobbyMap(MapInfo mapInfo){
         Debug.Assert(Identity == LobbyIdentity.Host, "Only Host can change map");
         CurrentLobby = await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions { 
@@ -48,7 +59,14 @@ public class LobbyManager
                     mapInfo.MapName) 
                 }
             } });
+        LobbyHeartbeat(CurrentLobby.Id);
         return CurrentLobby;
+    }
+    private async void LobbyHeartbeat(string lobbyId){
+        while(CurrentLobby != null && CurrentLobby.Id == lobbyId){
+            await LobbyService.Instance.SendHeartbeatPingAsync(lobbyId);
+            await UniTask.WaitForSeconds(15);
+        }
     }
 
     public async void LeaveLobby(){
@@ -84,6 +102,9 @@ public class LobbyManager
     }
 
     public async UniTask JoinLobby(Lobby lobby){
+        if (CurrentLobby != null){
+            throw new Exception("Already in a lobby");
+        }
         SelfPlayer.Data = GetDefaultPlayerData();
         var joinLobbyOptions = new JoinLobbyByIdOptions(){
             Player = SelfPlayer,
