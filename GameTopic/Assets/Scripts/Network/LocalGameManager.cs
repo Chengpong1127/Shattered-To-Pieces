@@ -62,8 +62,10 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         Debug.Log("Lobby Created with ID: " + LobbyManager.CurrentLobby.Id);
     }
     private void LobbyReadyHandler(LobbyManager.PlayerLobbyReadyInfo playerLobbyReadyInfo){
+        LobbyManager.OnLobbyReady -= LobbyReadyHandler;
         NetworkType networkType;
         if (playerLobbyReadyInfo.Identity == LobbyManager.LobbyIdentity.Host){
+            LobbyManager.StartGame();
             networkType = NetworkType.Host;
         }else{
             networkType = NetworkType.Client;

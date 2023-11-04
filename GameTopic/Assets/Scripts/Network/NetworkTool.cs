@@ -12,6 +12,7 @@ public static class NetworkTool{
             .SelectMany(x => x.UnicastAddresses)
             .Where(x => x.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
             .Select(x => (x.Address.ToString(), x.IPv4Mask.ToString()))
+            .Where(x => x.Item1 != "127.0.0.1")
             .ToArray();
         return new NetworkHost{
             IPAndSubnetMask = ipAndSubnetMask
