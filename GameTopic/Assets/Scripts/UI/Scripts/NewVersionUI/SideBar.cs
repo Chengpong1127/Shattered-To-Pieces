@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class SideBar : MonoBehaviour
 {
     [SerializeField] List<Label> labels;
+    [SerializeField] Animator LabelStatusAni;
     [SerializeField] List<TitleTextSprite> TitleTextSprites;
     [SerializeField] TitleTextImage TitleTextImage;
     [SerializeField] List<Image> DarkRenderImage;
@@ -28,6 +29,8 @@ public class SideBar : MonoBehaviour
         labels.ForEach(label => {
             label.sideBar = this;
             label.LabelID = ID++;
+            label.EnterHover += () => { LabelStatusAni.SetTrigger("EnterHover"); };
+            label.ExitHover += () => { LabelStatusAni.SetTrigger("ExitHover"); };
         });
 
         ID = 0;
