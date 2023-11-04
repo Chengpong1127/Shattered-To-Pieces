@@ -168,19 +168,12 @@ public class SkillBinder : NetworkBehaviour {
     }
     [ClientRpc]
     void SetSkillBoxKeyText_ClientRpc(int entryID, string keyStr) {
-        if(!IsOwner) { return; }
-        SetSkillBoxKeyText(entryID, keyStr);
-    }
-    void SetSkillBoxKeyText(int entryID, string keyStr) {
-        if(Droppers.Count <= entryID) { return; }
-        var result = keyStr.Split('/');
-        Droppers[entryID].BindingKeyText.text = result[result.Length - 1];
-        // var result2 = keyStr != null ? InputControlPath.ToHumanReadableString(keyStr) : "";
-        // Droppers[entryID].BindingKeyText.text = result2;
+        if (IsOwner){
+            Droppers[entryID].BindingKeyText.text = InputControlPath.ToHumanReadableString(keyStr, InputControlPath.HumanReadableStringOptions.OmitDevice);
+        }
     }
 
     void RebindKeyText(int entryID) {
-        // AbilityRebinder.StartRebinding(entryID);
         if(!IsOwner) { return; }
         gamePlayer = GetComponentInParent<GamePlayer>();
         rebinder = gamePlayer?.AbilityRebinder;
