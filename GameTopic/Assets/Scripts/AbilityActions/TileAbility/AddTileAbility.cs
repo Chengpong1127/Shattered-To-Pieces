@@ -33,14 +33,14 @@ public class AddTileAbility : DisplayableAbilityScriptableObject
         public override bool CanActivateAbility()
         {
             var targetPoints = (SelfEntity as ITileTargeter).GetTargetTileCoordinates();
-            var mapManager = BaseGameRunner.ServerGameRunnerInstance.MapManager;
+            var mapManager = GameRunner.ServerGameRunnerInstance.MapManager;
             return base.CanActivateAbility() && targetPoints.Any(point => !mapManager.CurrentTileMap.HasTile((Vector3Int)point));
         }
 
         protected override IEnumerator ActivateAbility()
         {
             var targetPoints = (SelfEntity as ITileTargeter).GetTargetTileCoordinates();
-            targetPoints.ToList().ForEach(point => BaseGameRunner.ServerGameRunnerInstance.MapManager.SetTile(point, TileName, false));
+            targetPoints.ToList().ForEach(point => GameRunner.ServerGameRunnerInstance.MapManager.SetTile(point, TileName, false));
             yield return null;
         }
     }

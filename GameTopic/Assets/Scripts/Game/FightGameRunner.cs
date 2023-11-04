@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-public class FightGameRunner: BaseGameRunner{
+public class FightGameRunner: GameRunner{
     protected override void PlayerDiedHandler(BasePlayer player)
     {
         base.PlayerDiedHandler(player);

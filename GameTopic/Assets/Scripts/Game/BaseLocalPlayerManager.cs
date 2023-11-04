@@ -10,7 +10,7 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     public BasePlayer Player { get; private set; }
     [SerializeField]
     protected BaseConnectionManager connectionManager;
-    public BaseGameRunner GameRunner;
+    public GameRunner GameRunner;
     public event Action OnPlayerExitRoom;
     public StateMachine<LocalPlayerStates> StateMachine;
     public enum LocalPlayerStates
@@ -35,7 +35,7 @@ public class BaseLocalPlayerManager : NetworkBehaviour
         {
             Debug.LogError("There is no connection manager in local player manager.");
         }
-        GameRunner ??= FindObjectOfType<BaseGameRunner>() ?? throw new Exception("GameRunner is null");
+        GameRunner ??= FindObjectOfType<GameRunner>() ?? throw new Exception("GameRunner is null");
     }
     /// <summary>
     /// Start the player setup. This method need to be invoked after enter a scene.

@@ -11,15 +11,12 @@ using System;
 /// The game runner is responsible for running the game. It will be run on the server.
 /// </summary>
 public class BaseGameRunner: NetworkBehaviour{
-
-    public MapManager MapManager;
     public event Action<GameResult> OnGameOver;
     public StateMachine<GameStates> StateMachine;
     public BaseGameEventHandler[] GameEventHandlers { get; private set; }
-    public static BaseGameRunner ServerGameRunnerInstance { get; private set; }
     public enum GameStates{
         Initializing,
-        CreatingPlayers,
+        Loading,
         Gaming,
         GameOver
     }
@@ -35,22 +32,21 @@ public class BaseGameRunner: NetworkBehaviour{
         StateMachine.ChangeState(GameStates.Initializing);
         GameEventHandlers.ToList().ForEach(handler => handler.enabled = false);
     }
-    public async void RunGame(){
+    public virtual async void RunGame(){
         if (IsServer){
-            if (ServerGameRunnerInstance != null){
-                Debug.LogError("There is more than one game runner in the scene.");
-            }
-            ServerGameRunnerInstance = this;
-            EnableGameEventHandler();
-            EnableGameEventHandler_ClientRpc();
-            StateMachine.ChangeState(GameStates.CreatingPlayers);
-            await CreateAllPlayers();
+            StateMachine.ChangeState(GameStates.Loading);
+            await PrepareGame();
             StateMachine.ChangeState(GameStates.Gaming);
         }
         else{
             Debug.LogError("GameRunner is not running on server");
         }
     } 
+    protected virtual async UniTask PrepareGame(){
+        EnableGameEventHandler();
+        EnableGameEventHandler_ClientRpc();
+        await CreateAllPlayers();
+    }
     [ClientRpc]
     private void EnableGameEventHandler_ClientRpc(){
         EnableGameEventHandler();
@@ -94,10 +90,9 @@ public class BaseGameRunner: NetworkBehaviour{
 
     protected virtual void PlayerDiedHandler(BasePlayer player){
     }
-    public void GameOver(GameResult result){
+    public virtual void GameOver(GameResult result){
         StateMachine.ChangeState(GameStates.GameOver);
         OnGameOver?.Invoke(result);
-        ServerGameRunnerInstance = null;
     }
 
 }

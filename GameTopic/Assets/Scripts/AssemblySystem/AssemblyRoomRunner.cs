@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-public class AssemblyRoomRunner: BaseGameRunner, IAssemblyRoom{
+public class AssemblyRoomRunner: GameRunner, IAssemblyRoom{
     public GamePlayer ControlledPlayer => PlayerMap.Values.First() as GamePlayer;
     public Device ControlledDevice => ControlledPlayer.SelfDevice;
 
