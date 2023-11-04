@@ -32,12 +32,12 @@ public static class Utils{
         return worldPoint;
     }
     
-    private static BasePlayer localPlayerDevice;
+    private static BasePlayer localPlayer;
     public static BasePlayer GetLocalPlayer(){
-        if(localPlayerDevice == null){
-            localPlayerDevice = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<BasePlayer>();
+        if(localPlayer == null){
+            localPlayer = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<BasePlayer>();
         }
-        return localPlayerDevice;
+        return localPlayer;
     }
     public static BasePlayer ServerGetBasePlayer(ulong playerID){
         Debug.Assert(NetworkManager.Singleton.IsServer, "ServerGetPlayerDevice can only be called on server");

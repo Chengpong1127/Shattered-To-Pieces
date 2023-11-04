@@ -13,7 +13,6 @@ using System;
 public class BaseGameRunner: NetworkBehaviour{
     public event Action<GameResult> OnGameOver;
     public StateMachine<GameStates> StateMachine;
-    public BaseGameEventHandler[] GameEventHandlers { get; private set; }
     public enum GameStates{
         Idle,
         Loading,
@@ -27,10 +26,8 @@ public class BaseGameRunner: NetworkBehaviour{
     public event Action<ulong> OnPlayerSpawned;
     void Awake()
     {
-        GameEventHandlers = GetComponentsInChildren<BaseGameEventHandler>();
         StateMachine = new StateMachine<GameStates>(this);
         StateMachine.ChangeState(GameStates.Idle);
-        GameEventHandlers.ToList().ForEach(handler => handler.enabled = false);
     }
     public virtual async void RunGame(){
         if (IsServer){
@@ -43,28 +40,8 @@ public class BaseGameRunner: NetworkBehaviour{
         }
     } 
     protected virtual async UniTask PrepareGame(){
-        EnableGameEventHandler();
-        EnableGameEventHandler_ClientRpc();
         await CreateAllPlayers();
-    }
-    [ClientRpc]
-    private void EnableGameEventHandler_ClientRpc(){
-        EnableGameEventHandler();
-    }
-    private void EnableGameEventHandler(){
-        GameEventHandlers.ToList().ForEach(handler => {
-            switch(handler.HandlerRunningMode){
-                case BaseGameEventHandler.RunningMode.OnlyServer:
-                    handler.enabled = IsServer;
-                    break;
-                case BaseGameEventHandler.RunningMode.OnlyClient:
-                    handler.enabled = IsClient;
-                    break;
-                case BaseGameEventHandler.RunningMode.Both:
-                    handler.enabled = true;
-                    break;
-            }
-        });
+        await UniTask.WaitForSeconds(1);
     }
     /// <summary>
     /// Server loads all players.

@@ -7,15 +7,13 @@ using System;
 using UnityEngine.InputSystem.LowLevel;
 
 public class GameEffectManager: BaseGameEventHandler{
-    void OnEnable()
+    public override void OnNetworkSpawn()
     {
-        GameEvents.GameEffectManagerEvents.RequestModifyAttribute += ModifyAttribute;
-        GameEvents.GameEffectManagerEvents.RequestGiveGameEffect += ApplyGameplayEffect;
-    }
-    void OnDisable()
-    {
-        GameEvents.GameEffectManagerEvents.RequestModifyAttribute -= ModifyAttribute;
-        GameEvents.GameEffectManagerEvents.RequestGiveGameEffect -= ApplyGameplayEffect;
+        base.OnNetworkSpawn();
+        if (IsServer){
+            GameEvents.GameEffectManagerEvents.RequestModifyAttribute += ModifyAttribute;
+            GameEvents.GameEffectManagerEvents.RequestGiveGameEffect += ApplyGameplayEffect;
+        }
     }
     private void ModifyAttribute(Entity sender, Entity receiver, GameplayEffectModifier modifier){
         var effect = ResourceManager.Instance.LoadEmptyGameplayEffect();

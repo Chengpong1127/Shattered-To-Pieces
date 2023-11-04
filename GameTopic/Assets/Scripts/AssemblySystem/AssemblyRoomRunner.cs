@@ -58,7 +58,7 @@ public class AssemblyRoomRunner: GameRunner, IAssemblyRoom{
     }
     public int CurrentDeviceID { get; private set; } = 0;
 
-    private void Initializing_Enter(){
+    private void Loading_Enter(){
         _gameComponentFactory = new NetworkGameComponentFactory();
     }
 

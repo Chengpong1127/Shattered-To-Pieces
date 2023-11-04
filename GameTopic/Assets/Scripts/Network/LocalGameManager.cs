@@ -70,7 +70,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         }
         Debug.Log("Lobby Start Game. Host Address: " + playerLobbyReadyInfo.HostAddress + " NetworkType: " + networkType);
         var mapInfo = ResourceManager.Instance.LoadMapInfo(playerLobbyReadyInfo.MapName);
-        EnterRoom(mapInfo.MapSceneName, networkType, playerLobbyReadyInfo.HostAddress);
+        EnterRoom(mapInfo, networkType, playerLobbyReadyInfo.HostAddress);
     }
 
     public async UniTask<Lobby[]> GetAllAvailableLobby(){
@@ -112,17 +112,18 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     #endregion
 
     #region GameRoom
-    public void EnterRoom(string roomName, NetworkType networkType, string ServerAddress = null){
+
+    public void EnterRoom(MapInfo mapInfo, NetworkType networkType, string ServerAddress = null){
         GameStateMachine.ChangeState(GameState.GameRoom);
-        var operation = SceneManager.LoadSceneAsync(roomName);
+        var operation = SceneManager.LoadSceneAsync(mapInfo.MapSceneName);
         SceneLoader?.LoadScene(operation);
-        operation.completed += _ => OnEnterRoom(networkType, ServerAddress);
+        operation.completed += _ => OnEnterRoom(networkType, mapInfo, ServerAddress);
     }
 
-    private void OnEnterRoom(NetworkType networkType, string ServerAddress = null){
+    private void OnEnterRoom(NetworkType networkType, MapInfo mapInfo, string ServerAddress = null){
         var playerManager = FindObjectOfType<LocalPlayerManager>();
         playerManager.OnPlayerExitRoom += RequestExitRoom;
-        playerManager.StartPlayerSetup(networkType, ServerAddress);
+        playerManager.StartPlayerSetup(networkType, mapInfo, ServerAddress);
     }
 
 

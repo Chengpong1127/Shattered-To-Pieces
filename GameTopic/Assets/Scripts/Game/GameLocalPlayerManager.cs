@@ -5,13 +5,11 @@ using Cysharp.Threading.Tasks;
 
 public class GameLocalPlayerManager: LocalPlayerManager{
     public CinemachineVirtualCamera VirtualCamera;
-    public Minimap Minimap;
 
     [SerializeField] EndGameUI EndGame;
 
     private void SetCamera(){
         VirtualCamera.Follow = Player.GetTracedTransform();
-        if (Minimap != null) Minimap.player = Player.GetTracedTransform();
     }
     private void Loading_Exit(){
         SetCamera();

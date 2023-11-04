@@ -10,13 +10,13 @@ public class GameComponentSelectedHandler : BaseGameEventHandler
     public float BlinkDuration = 0.5f;
     public AnimationCurve BlinkCurve;
     private Dictionary<GameComponent, CancellationTokenSource> GameComponentToToken = new();
-    void OnEnable()
+    public override void OnNetworkSpawn()
     {
-        GameEvents.GameComponentEvents.OnGameComponentSelected += OnGameComponentSelected;
-    }
-    void OnDisable()
-    {
-        GameEvents.GameComponentEvents.OnGameComponentSelected -= OnGameComponentSelected;
+        base.OnNetworkSpawn();
+        if (IsClient)
+        {
+            GameEvents.GameComponentEvents.OnGameComponentSelected += OnGameComponentSelected;
+        }
     }
 
     public void OnGameComponentSelected(GameComponent gameComponent, bool selected)

@@ -1,11 +1,8 @@
-using JetBrains.Annotations;
 using Unity.Netcode;
+using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 public abstract class BaseGameEventHandler: NetworkBehaviour{
-    public RunningMode HandlerRunningMode = RunningMode.OnlyServer;
-    public enum RunningMode{
-        OnlyServer,
-        OnlyClient,
-        Both
-    }
+    protected GameRunner CurrentGameRunner => GameRunner.ServerGameRunnerInstance;
+    protected LocalPlayerManager LocalPlayerManager => LocalPlayerManager.RoomInstance;
 }

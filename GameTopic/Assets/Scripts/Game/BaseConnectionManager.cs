@@ -11,7 +11,7 @@ public class BaseConnectionManager: MonoBehaviour{
     /// <summary>
     /// The number of players in the game.
     /// </summary>
-    public int PlayerCount = 1;
+    public int PlayerCount { get; private set;}
 
     public bool UseRelay = false;
     private UnityTransport RelayTransport;
@@ -24,7 +24,8 @@ public class BaseConnectionManager: MonoBehaviour{
         NetworkManager.Shutdown();
     }
 
-    public virtual void StartConnection(NetworkType type, string ServerAddress){
+    public virtual void StartConnection(NetworkType type, string ServerAddress, int PlayerCount){
+        this.PlayerCount = PlayerCount;
         if (!string.IsNullOrEmpty(ServerAddress)){
             RelayTransport.ConnectionData.Address = ServerAddress;
             UnityTransport.ConnectionData.Address = ServerAddress;
