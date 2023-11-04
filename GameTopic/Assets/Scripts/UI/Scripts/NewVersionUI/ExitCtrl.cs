@@ -18,7 +18,7 @@ public class ExitCtrl : MonoBehaviour
         OnClick += (b) => {
             if (b) {
                 // call exit game function.
-                var manager = FindObjectOfType<BaseLocalPlayerManager>();
+                var manager = FindObjectOfType<LocalPlayerManager>();
                 if(manager == null) {
                     Debug.LogError("BaseLocalPlayerManager not found, can't exit game.");
                     gameObject.SetActive(false);

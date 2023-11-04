@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AssemblyRoomLocalPlayerManager: BaseLocalPlayerManager{
+public class AssemblyRoomLocalPlayerManager: LocalPlayerManager{
     private void Start() {
         if (FindAnyObjectByType(typeof(LocalGameManager)) == null)
         {

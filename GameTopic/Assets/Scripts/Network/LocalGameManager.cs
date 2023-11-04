@@ -120,7 +120,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     }
 
     private void OnEnterRoom(NetworkType networkType, string ServerAddress = null){
-        var playerManager = FindObjectOfType<BaseLocalPlayerManager>();
+        var playerManager = FindObjectOfType<LocalPlayerManager>();
         playerManager.OnPlayerExitRoom += RequestExitRoom;
         playerManager.StartPlayerSetup(networkType, ServerAddress);
     }

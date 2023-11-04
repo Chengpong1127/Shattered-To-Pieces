@@ -3,7 +3,7 @@ using Cinemachine;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 
-public class GameLocalPlayerManager: BaseLocalPlayerManager{
+public class GameLocalPlayerManager: LocalPlayerManager{
     public CinemachineVirtualCamera VirtualCamera;
     public Minimap Minimap;
 

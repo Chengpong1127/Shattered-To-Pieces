@@ -15,7 +15,7 @@ public class BaseGameRunner: NetworkBehaviour{
     public StateMachine<GameStates> StateMachine;
     public BaseGameEventHandler[] GameEventHandlers { get; private set; }
     public enum GameStates{
-        Initializing,
+        Idle,
         Loading,
         Gaming,
         GameOver
@@ -29,7 +29,7 @@ public class BaseGameRunner: NetworkBehaviour{
     {
         GameEventHandlers = GetComponentsInChildren<BaseGameEventHandler>();
         StateMachine = new StateMachine<GameStates>(this);
-        StateMachine.ChangeState(GameStates.Initializing);
+        StateMachine.ChangeState(GameStates.Idle);
         GameEventHandlers.ToList().ForEach(handler => handler.enabled = false);
     }
     public virtual async void RunGame(){

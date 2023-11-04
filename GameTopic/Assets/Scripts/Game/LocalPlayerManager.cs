@@ -4,9 +4,9 @@ using Cysharp.Threading.Tasks;
 using System;
 using MonsterLove.StateMachine;
 
-public class BaseLocalPlayerManager : NetworkBehaviour
+public class LocalPlayerManager : NetworkBehaviour
 {
-    public static BaseLocalPlayerManager RoomInstance { get; private set; }
+    public static LocalPlayerManager RoomInstance { get; private set; }
     public BasePlayer Player { get; private set; }
     [SerializeField]
     protected BaseConnectionManager connectionManager;
@@ -17,7 +17,7 @@ public class BaseLocalPlayerManager : NetworkBehaviour
     {
         Initializing,
         Loading,
-        Playing,
+        Gaming,
         Exiting
     }
 
@@ -31,10 +31,7 @@ public class BaseLocalPlayerManager : NetworkBehaviour
             Debug.LogError("There is more than one local player manager in the scene.");
         }
         RoomInstance = this;
-        if (connectionManager == null)
-        {
-            Debug.LogError("There is no connection manager in local player manager.");
-        }
+        Debug.Assert(connectionManager != null, "There is no connection manager in local player manager.");
         GameRunner ??= FindObjectOfType<GameRunner>() ?? throw new Exception("GameRunner is null");
     }
     /// <summary>
@@ -49,21 +46,15 @@ public class BaseLocalPlayerManager : NetworkBehaviour
             }
         };
     }
-    private void SetRunner(){
-        GameRunner.OnPlayerSpawned += PlayerSpawnedHandlerClientRpc;
+    private async void SetRunner(){
         GameRunner.OnGameOver += GameOverHandler_ClientRpc;
         GameRunner.RunGame();
+        await UniTask.WaitUntil(() => GameRunner.StateMachine.State == GameRunner.GameStates.Gaming);
+        SetGaming_ClientRpc();
     }
     [ClientRpc]
-    private void PlayerSpawnedHandlerClientRpc(ulong playerID){
-        PlayerSpawnedHandler(playerID);
-    }
-    private async void PlayerSpawnedHandler(ulong playerID){
-        if(playerID == OwnerClientId){
-            Player = Utils.GetLocalPlayer();
-            await UniTask.WaitUntil(() => Player.IsAlive.Value);
-            StateMachine.ChangeState(LocalPlayerStates.Playing);
-        }
+    private void SetGaming_ClientRpc(){
+        StateMachine.ChangeState(LocalPlayerStates.Gaming);
     }
     public virtual void ExitGame(){
         StateMachine.ChangeState(LocalPlayerStates.Exiting);

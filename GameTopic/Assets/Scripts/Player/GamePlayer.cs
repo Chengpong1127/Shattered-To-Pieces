@@ -16,7 +16,7 @@ public class GamePlayer: AssemblyablePlayer{
     private float _cameraZoomDuration = 0.5f;
     protected override async void Start(){
         base.Start();
-        await UniTask.WaitUntil(() => BaseLocalPlayerManager.RoomInstance.StateMachine.State == BaseLocalPlayerManager.LocalPlayerStates.Playing);
+        await UniTask.WaitUntil(() => LocalPlayerManager.RoomInstance.StateMachine.State == LocalPlayerManager.LocalPlayerStates.Gaming);
         AssemblyUI.SetActive(false);
         SkillUI.SetActive(false);
         if (IsOwner)
