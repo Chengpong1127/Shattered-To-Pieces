@@ -51,7 +51,7 @@ public static class Utils{
         if(NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkID, out var networkObject)){
             return networkObject.gameObject;
         }else{
-            throw new System.ArgumentException("NetworkObject with id " + networkID + " not found");
+            return null;
         }
     }
 }
