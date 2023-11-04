@@ -2455,6 +2455,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1611922819209139533, guid: fc360802f490dbe479a47119b60a5da5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4790366592560398121}
+    - targetCorrespondingSourceObject: {fileID: 5675784442258208608, guid: fc360802f490dbe479a47119b60a5da5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4896741001639303107}
   m_SourcePrefab: {fileID: 100100000, guid: fc360802f490dbe479a47119b60a5da5, type: 3}
 --- !u!224 &953064233232709921 stripped
 RectTransform:
@@ -2477,6 +2480,32 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4669601732013800825, guid: fc360802f490dbe479a47119b60a5da5, type: 3}
   m_PrefabInstance: {fileID: 8487777350110278314}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4255562343092635082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5675784442258208608, guid: fc360802f490dbe479a47119b60a5da5, type: 3}
+  m_PrefabInstance: {fileID: 8487777350110278314}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4896741001639303107
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4255562343092635082}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 92f48e6ea052add4b9023b33d64420ba, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &6268289149912317654 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2537720403604311164, guid: fc360802f490dbe479a47119b60a5da5, type: 3}
@@ -2554,6 +2583,7 @@ MonoBehaviour:
   - {fileID: 5597954663874835146}
   - {fileID: 5327977382814725384}
   - {fileID: 1230258504719095386}
+  LabelStatusAni: {fileID: 4896741001639303107}
   TitleTextSprites:
   - FirstCharacter: {fileID: 119964919, guid: aa97db5eb2068e041bd635ca2b690ad5, type: 3}
     OtherCharacter: {fileID: -962164136, guid: ea885d5d4a3f4f44ab0eee451010f32a, type: 3}
@@ -2591,6 +2621,7 @@ MonoBehaviour:
   - {fileID: 6431765180329828073}
   - {fileID: 8962225951731643336}
   - {fileID: 7729459431566658542}
+  displayComponentType: 1
 --- !u!1001 &9179919529885261481
 PrefabInstance:
   m_ObjectHideFlags: 0

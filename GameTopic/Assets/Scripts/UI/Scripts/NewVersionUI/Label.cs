@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -9,7 +10,10 @@ public class Label : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, 
     public SideBar sideBar { get; set; }
     public int LabelID { get; set; }
 
+    public Action EnterHover = null;
+    public Action ExitHover = null;
     Animator animator;
+
 
     private void Awake() {
         animator = GetComponent<Animator>();
@@ -24,9 +28,11 @@ public class Label : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, 
 
     public void OnPointerEnter(PointerEventData eventData) {
         animator?.SetTrigger("PointerEnter");
+        EnterHover?.Invoke();
     }
     public void OnPointerExit(PointerEventData eventData) {
         animator?.SetTrigger("PointerExit");
+        ExitHover?.Invoke();
     }
 }
 
