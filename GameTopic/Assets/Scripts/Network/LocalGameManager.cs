@@ -113,6 +113,11 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
     #region GameRoom
 
+    public void EnterAssemblyRoom(){
+        var info = ResourceManager.Instance.LoadMapInfo("AssemblyRoom");
+        EnterRoom(info, NetworkType.Host);
+    }
+
     public void EnterRoom(MapInfo mapInfo, NetworkType networkType, string ServerAddress = null){
         GameStateMachine.ChangeState(GameState.GameRoom);
         var operation = SceneManager.LoadSceneAsync(mapInfo.MapSceneName);
@@ -120,7 +125,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         operation.completed += _ => OnEnterRoom(networkType, mapInfo, ServerAddress);
     }
 
-    private void OnEnterRoom(NetworkType networkType, MapInfo mapInfo, string ServerAddress = null){
+    private void OnEnterRoom(NetworkType networkType, MapInfo mapInfo, string ServerAddress){
         var playerManager = FindObjectOfType<LocalPlayerManager>();
         playerManager.OnPlayerExitRoom += RequestExitRoom;
         playerManager.StartPlayerSetup(networkType, mapInfo, ServerAddress);

@@ -41,7 +41,6 @@ public class BaseGameRunner: NetworkBehaviour{
     } 
     protected virtual async UniTask PrepareGame(){
         await CreateAllPlayers();
-        await UniTask.WaitForSeconds(1);
     }
     /// <summary>
     /// Server loads all players.

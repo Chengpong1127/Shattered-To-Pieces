@@ -3096,8 +3096,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: StartSceneManager, Scripts
+      - m_Target: {fileID: 1996016600}
+        m_TargetAssemblyTypeName: LocalGameManager, Scripts
         m_MethodName: EnterAssemblyRoom
         m_Mode: 1
         m_Arguments:
