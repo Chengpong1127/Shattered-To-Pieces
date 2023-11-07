@@ -33,27 +33,12 @@ namespace AbilitySystem.Authoring
 
             protected override IEnumerator ActivateAbility()
             {
-                // Apply cost and cooldown (if any)
-                if (this.Ability.Cooldown)
-                {
-                    var cdSpec = this.Owner.MakeOutgoingSpec(this.Ability.Cooldown);
-                    this.Owner.ApplyGameplayEffectSpecToSelf(cdSpec);
-                }
-
-                if (this.Ability.Cost)
-                {
-                    var costSpec = this.Owner.MakeOutgoingSpec(this.Ability.Cost);
-                    this.Owner.ApplyGameplayEffectSpecToSelf(costSpec);
-                }
-
                 InitialiseStatsAbilityScriptableObject abilitySO = this.Ability as InitialiseStatsAbilityScriptableObject;
-                this.Owner.AttributeSystem.UpdateAttributeCurrentValues();
 
                 for (var i = 0; i < abilitySO.InitialisationGE.Length; i++)
                 {
                     var effectSpec = this.Owner.MakeOutgoingSpec(abilitySO.InitialisationGE[i]);
                     this.Owner.ApplyGameplayEffectSpecToSelf(effectSpec);
-                    this.Owner.AttributeSystem.UpdateAttributeCurrentValues();
                 }
 
                 yield break;

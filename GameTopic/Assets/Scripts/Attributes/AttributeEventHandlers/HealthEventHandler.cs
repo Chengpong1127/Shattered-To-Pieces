@@ -6,26 +6,25 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Gameplay Ability System/Attribute Event Handler/HealthEventHandler")]
 public class HealthEventHandler : ClampAttributeEventHandler
 {
-    public override void PreAttributeChange(AttributeSystemComponent attributeSystem, List<AttributeValue> prevAttributeValues, ref List<AttributeValue> currentAttributeValues){
-        bool changed = false;
-        if (attributeSystem.mAttributeIndexCache.TryGetValue(PrimaryAttribute, out var healthIndex)){
-            if (currentAttributeValues[healthIndex].CurrentValue != prevAttributeValues[healthIndex].CurrentValue){
-                changed = true;
+    override protected void ClampAttributeToMin(AttributeSystemComponent AttributeSystemComponent, AttributeScriptableObject primaryAttribute, AttributeScriptableObject maxAttribute)
+    {
+        base.ClampAttributeToMin(AttributeSystemComponent, primaryAttribute, maxAttribute);
+        AttributeSystemComponent.GetAttributeValue(primaryAttribute, out var primaryAttributeValue);
+        AttributeSystemComponent.GetAttributeValue(maxAttribute, out var minAttributeValue);
+        if (primaryAttributeValue.CurrentValue <= minAttributeValue.CurrentValue){
+            var owner = AttributeSystemComponent.GetComponent<Entity>();
+            if (owner.IsInitialized) owner.Die();
+        }
+    }
+    public override void AttributeChangedHandler(AttributeSystemComponent AttributeSystemComponent, AttributeScriptableObject attribute, AttributeValue prevAttributeValue, AttributeValue currentAttributeValue)
+    {
+        base.AttributeChangedHandler(AttributeSystemComponent, attribute, prevAttributeValue, currentAttributeValue);
+        if(attribute == PrimaryAttribute){
+            AttributeSystemComponent.GetAttributeValue(PrimaryAttribute, out var attributeValue);
+            if (attributeValue.CurrentValue != prevAttributeValue.CurrentValue)
+            {
+                GameEvents.AttributeEvents.OnEntityHealthChanged.Invoke(AttributeSystemComponent.GetComponent<Entity>(), prevAttributeValue.CurrentValue, currentAttributeValue.CurrentValue);
             }
         }
-        base.PreAttributeChange(attributeSystem, prevAttributeValues, ref currentAttributeValues);
-        if (changed && attributeSystem.mAttributeIndexCache.TryGetValue(PrimaryAttribute, out healthIndex)){
-            GameEvents.AttributeEvents.OnEntityHealthChanged.Invoke(attributeSystem.GetComponent<Entity>(), prevAttributeValues[healthIndex].CurrentValue, currentAttributeValues[healthIndex].CurrentValue);
-        }
-
-
-
-        if (attributeSystem.GetAttributeValue(PrimaryAttribute, out var primaryValue) && attributeSystem.GetAttributeValue(MinAttribute, out var minValue)){
-            var owner = attributeSystem.GetComponent<Entity>();
-            if (primaryValue.CurrentValue <= minValue.CurrentValue && owner.IsInitialized){
-                owner.Die();
-            }
-        }
-            
     }
 }

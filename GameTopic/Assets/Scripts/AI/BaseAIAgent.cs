@@ -26,7 +26,7 @@ public abstract class BaseAIAgent: Entity{
 
     protected virtual void UpdateBlackboard()
     {
-        var attributeMap = AttributeSystemComponent.GetFullAttributeDictionary();
+        var attributeMap = AttributeSystemComponent.GetAttributeDictionaryCopy();
         attributeMap.ToList().ForEach(pair => BehaviorTree.Blackboard[pair.Key.Name] = pair.Value.CurrentValue);
     }
 

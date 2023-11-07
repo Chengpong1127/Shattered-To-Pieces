@@ -13,43 +13,43 @@ public class ClampAttributeEventHandler : AbstractAttributeEventHandler
     protected AttributeScriptableObject MaxAttribute;
     [SerializeField]
     protected AttributeScriptableObject MinAttribute;
-    public override void PreAttributeChange(AttributeSystemComponent attributeSystem, List<AttributeValue> prevAttributeValues, ref List<AttributeValue> currentAttributeValues)
-    {
-        var attributeCacheDict = attributeSystem.mAttributeIndexCache;
-        if (MaxAttribute != null)
-            ClampAttributeToMax(PrimaryAttribute, MaxAttribute, currentAttributeValues, attributeCacheDict);
-        if (MinAttribute != null)
-            ClampAttributeToMin(PrimaryAttribute, MinAttribute, currentAttributeValues, attributeCacheDict);
-        if (MaxAttribute == null && MinAttribute == null)
-            Debug.LogWarning("ClampAttributeEventHandler: MaxAttribute and MinAttribute are both null, this event handler will do nothing.");
-    }
 
-    protected virtual void ClampAttributeToMax(AttributeScriptableObject Attribute1, AttributeScriptableObject Attribute2, List<AttributeValue> attributeValues, Dictionary<AttributeScriptableObject, int> attributeCacheDict)
+    public override void AttributeChangedHandler(AttributeSystemComponent AttributeSystemComponent, AttributeScriptableObject attribute, AttributeValue prevAttributeValue, AttributeValue currentAttributeValue)
     {
-        if (attributeCacheDict.TryGetValue(Attribute1, out var primaryAttributeIndex)
-            && attributeCacheDict.TryGetValue(Attribute2, out var maxAttributeIndex))
-        {
-            var primaryAttribute = attributeValues[primaryAttributeIndex];
-            var maxAttribute = attributeValues[maxAttributeIndex];
-
-            // Clamp current and base values
-            if (primaryAttribute.CurrentValue > maxAttribute.CurrentValue) primaryAttribute.CurrentValue = maxAttribute.CurrentValue;
-            if (primaryAttribute.BaseValue > maxAttribute.BaseValue) primaryAttribute.BaseValue = maxAttribute.BaseValue;
-            attributeValues[primaryAttributeIndex] = primaryAttribute;
+        if (attribute == PrimaryAttribute){
+            if (MaxAttribute != null)
+            {
+                ClampAttributeToMax(AttributeSystemComponent, PrimaryAttribute, MaxAttribute);
+            }
+            if (MinAttribute != null)
+            {
+                ClampAttributeToMin(AttributeSystemComponent, PrimaryAttribute, MinAttribute);
+            }
         }
     }
-    protected virtual void ClampAttributeToMin(AttributeScriptableObject Attribute1, AttributeScriptableObject Attribute2, List<AttributeValue> attributeValues, Dictionary<AttributeScriptableObject, int> attributeCacheDict)
-    {
-        if (attributeCacheDict.TryGetValue(Attribute1, out var primaryAttributeIndex)
-            && attributeCacheDict.TryGetValue(Attribute2, out var minAttributeIndex))
-        {
-            var primaryAttribute = attributeValues[primaryAttributeIndex];
-            var minAttribute = attributeValues[minAttributeIndex];
 
-            // Clamp current and base values
-            if (primaryAttribute.CurrentValue < minAttribute.CurrentValue) primaryAttribute.CurrentValue = minAttribute.CurrentValue;
-            if (primaryAttribute.BaseValue < minAttribute.BaseValue) primaryAttribute.BaseValue = minAttribute.BaseValue;
-            attributeValues[primaryAttributeIndex] = primaryAttribute;
+    protected virtual void ClampAttributeToMax(AttributeSystemComponent AttributeSystemComponent, AttributeScriptableObject primaryAttribute, AttributeScriptableObject maxAttribute)
+    {
+        AttributeSystemComponent.GetAttributeValue(primaryAttribute, out var primaryAttributeValue);
+        AttributeSystemComponent.GetAttributeValue(maxAttribute, out var maxAttributeValue);
+        if (primaryAttributeValue.CurrentValue > maxAttributeValue.CurrentValue)
+        {
+            primaryAttributeValue.CurrentValue = maxAttributeValue.CurrentValue;
+            AttributeSystemComponent.ResetAttributeModifiers(primaryAttribute);
         }
+        primaryAttributeValue.BaseValue = Mathf.Min(primaryAttributeValue.BaseValue, maxAttributeValue.BaseValue);
+        AttributeSystemComponent.SetAttributeValue(primaryAttribute, primaryAttributeValue);
+    }
+    protected virtual void ClampAttributeToMin(AttributeSystemComponent AttributeSystemComponent, AttributeScriptableObject primaryAttribute, AttributeScriptableObject minAttribute)
+    {
+        AttributeSystemComponent.GetAttributeValue(primaryAttribute, out var primaryAttributeValue);
+        AttributeSystemComponent.GetAttributeValue(minAttribute, out var minAttributeValue);
+        if (primaryAttributeValue.CurrentValue < minAttributeValue.CurrentValue)
+        {
+            primaryAttributeValue.CurrentValue = minAttributeValue.CurrentValue;
+            AttributeSystemComponent.ResetAttributeModifiers(primaryAttribute);
+        }
+        primaryAttributeValue.BaseValue = Mathf.Max(primaryAttributeValue.BaseValue, minAttributeValue.BaseValue);
+        AttributeSystemComponent.SetAttributeValue(primaryAttribute, primaryAttributeValue);
     }
 }
