@@ -27,8 +27,8 @@ MonoBehaviour:
     TargetTags:
       RequireTags: []
       IgnoreTags: []
+  EnergyCost: 0
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
   InitialisationGE:
   - {fileID: 11400000, guid: 1e4b37f45a3aa4db2b2b01991b354fd1, type: 2}
-  - {fileID: 11400000, guid: 5b55c73cba9804b4081e0e78424eeecd, type: 2}

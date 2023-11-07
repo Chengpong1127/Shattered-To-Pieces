@@ -17,11 +17,11 @@ MonoBehaviour:
     DurationModifier: {fileID: 0}
     DurationMultiplier: 0
     Modifiers:
-    - Attribute: {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
+    - Attribute: {fileID: 11400000, guid: e0d843f15ad51485c8b6d6f25aa2554f, type: 2}
       ModifierOperator: 0
       ModifierMagnitude: {fileID: 11400000, guid: 5c69ab17e675944bcb250d5d684d897e, type: 2}
       Multiplier: 80
-    - Attribute: {fileID: 11400000, guid: e0d843f15ad51485c8b6d6f25aa2554f, type: 2}
+    - Attribute: {fileID: 11400000, guid: 6b05cd33ce728431489a85d6b6af8e43, type: 2}
       ModifierOperator: 0
       ModifierMagnitude: {fileID: 11400000, guid: 5c69ab17e675944bcb250d5d684d897e, type: 2}
       Multiplier: 80
