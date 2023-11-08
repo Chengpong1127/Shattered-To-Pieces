@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Label : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
+public class GameLabel : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
     [field:SerializeField] public LabelColor labelColor;
     public SideBar sideBar { get; set; }
     public int LabelID { get; set; }

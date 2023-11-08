@@ -13,17 +13,14 @@ public class RegenerationHandler : AbstractAttributeEventHandler
     private AttributeScriptableObject HealthAttribute;
     [SerializeField]
     private GameplayEffectScriptableObject StopRegenerationEffect;
-    public override void PreAttributeChange(AttributeSystemComponent attributeSystem, List<AttributeValue> prevAttributeValues, ref List<AttributeValue> currentAttributeValues)
-    {
-        var attributeCacheDict = attributeSystem.mAttributeIndexCache;
-        if (attributeCacheDict.TryGetValue(HealthAttribute, out var primaryAttributeIndex))
-        {
-            var prevValue = prevAttributeValues[primaryAttributeIndex].CurrentValue;
-            var currentValue = currentAttributeValues[primaryAttributeIndex].CurrentValue;
 
-            if (currentValue < prevValue)
+    public override void AttributeChangedHandler(AttributeSystemComponent AttributeSystemComponent, AttributeScriptableObject attribute, AttributeValue prevAttributeValue, AttributeValue currentAttributeValue)
+    {
+        if (attribute == HealthAttribute)
+        {
+            if (currentAttributeValue.CurrentValue < prevAttributeValue.CurrentValue)
             {
-                var owner = attributeSystem.GetComponent<Entity>();
+                var owner = AttributeSystemComponent.GetComponent<Entity>();
                 GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(owner, owner, StopRegenerationEffect);
             }
         }

@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using AttributeSystem.Authoring;
 using UnityEngine;
+using System.Linq;
+using System;
+using Unity.Netcode;
+using Cysharp.Threading.Tasks;
 
 namespace AttributeSystem.Components
 {
@@ -19,29 +23,11 @@ namespace AttributeSystem.Components
         [SerializeField]
         private List<AttributeScriptableObject> Attributes;
 
-        [SerializeField]
-        private List<AttributeValue> AttributeValues;
+        private Dictionary<AttributeScriptableObject, AttributeValue> AttributeDictionary = new();
 
-        private bool mAttributeDictStale;
-        public Dictionary<AttributeScriptableObject, int> mAttributeIndexCache { get; private set; } = new Dictionary<AttributeScriptableObject, int>();
-
-        public Dictionary<AttributeScriptableObject, AttributeValue> GetFullAttributeDictionary()
+        public Dictionary<AttributeScriptableObject, AttributeValue> GetAttributeDictionaryCopy()
         {
-            var attributeCache = GetAttributeCache();
-            var attributeDictionary = new Dictionary<AttributeScriptableObject, AttributeValue>();
-            foreach (var attribute in attributeCache)
-            {
-                attributeDictionary.Add(attribute.Key, AttributeValues[attribute.Value]);
-            }
-            return attributeDictionary;
-        }
-
-        /// <summary>
-        /// Marks attribute cache dirty, so it can be recreated next time it is required
-        /// </summary>
-        public void MarkAttributesDirty()
-        {
-            this.mAttributeDictStale = true;
+            return AttributeDictionary.ToDictionary(entry => entry.Key, entry => entry.Value);
         }
 
         /// <summary>
@@ -53,32 +39,36 @@ namespace AttributeSystem.Components
         /// <returns>True if attribute was found, false otherwise.</returns>
         public bool GetAttributeValue(AttributeScriptableObject attribute, out AttributeValue value)
         {
-            // If dictionary is stale, rebuild it
-            var attributeCache = GetAttributeCache();
-
-
-            // We use a cache to store the index of the attribute in the list, so we don't
-            // have to iterate through it every time
-            if (attributeCache.TryGetValue(attribute, out var index))
-            {
-                value = AttributeValues[index];
-                return true;
-            }
-
-
-            // No matching attribute found
-            value = new AttributeValue();
-            return false;
+            return AttributeDictionary.TryGetValue(attribute, out value);
         }
+
+
 
         public void SetAttributeBaseValue(AttributeScriptableObject attribute, float value)
         {
-            // If dictionary is stale, rebuild it
-            var attributeCache = GetAttributeCache();
-            if (!attributeCache.TryGetValue(attribute, out var index)) return;
-            var attributeValue = AttributeValues[index];
-            attributeValue.BaseValue = value;
-            AttributeValues[index] = attributeValue;
+            if (AttributeDictionary.TryGetValue(attribute, out var attributeValue))
+            {
+                var oldValue = attributeValue.Clone();
+                attributeValue.BaseValue = value;
+                AttributeDictionary[attribute] = attributeValue;
+                UpdateCurrentValue(attribute);
+                TriggerChangedEvents(attribute, oldValue, attributeValue);
+            }else{
+                Debug.LogWarning($"Attribute {attribute} not found in AttributeDictionary");
+            }
+        }
+
+        public void SetAttributeValue(AttributeScriptableObject attribute, AttributeValue value)
+        {
+            if (AttributeDictionary.ContainsKey(attribute))
+            {
+                var oldValue = AttributeDictionary[attribute].Clone();
+                AttributeDictionary[attribute] = value;
+                UpdateCurrentValue(attribute);
+                TriggerChangedEvents(attribute, oldValue, value);
+            }else{
+                Debug.LogWarning($"Attribute {attribute} not found in AttributeDictionary");
+            }
         }
 
         /// <summary>
@@ -91,167 +81,61 @@ namespace AttributeSystem.Components
         /// <returns>True, if attribute was found.</returns>
         public bool UpdateAttributeModifiers(AttributeScriptableObject attribute, AttributeModifier modifier, out AttributeValue value)
         {
-            // If dictionary is stale, rebuild it
-            var attributeCache = GetAttributeCache();
-
-            // We use a cache to store the index of the attribute in the list, so we don't
-            // have to iterate through it every time
-            if (attributeCache.TryGetValue(attribute, out var index))
+            if (AttributeDictionary.TryGetValue(attribute, out value))
             {
-                // Get a copy of the attribute value struct
-                value = AttributeValues[index];
+                var oldValue = value.Clone();
                 value.Modifier = value.Modifier.Combine(modifier);
-
-                // Structs are copied by value, so the modified attribute needs to be reassigned to the array
-                AttributeValues[index] = value;
+                AttributeDictionary[attribute] = value;
+                UpdateCurrentValue(attribute);
+                TriggerChangedEvents(attribute, oldValue, value);
                 return true;
             }
-
-            // No matching attribute found
-            value = new AttributeValue();
             return false;
-        }
-
-        /// <summary>
-        /// Add attributes to this attribute system.  Duplicates are ignored.
-        /// </summary>
-        /// <param name="attributes">Attributes to add</param>
-        public void AddAttributes(params AttributeScriptableObject[] attributes)
-        {
-            // If this attribute already exists, we don't need to add it.  For that, we need to make sure the cache is up to date.
-            var attributeCache = GetAttributeCache();
-
-            for (var i = 0; i < attributes.Length; i++)
-            {
-                if (attributeCache.ContainsKey(attributes[i]))
-                {
-                    continue;
-                }
-
-                this.Attributes.Add(attributes[i]);
-                attributeCache.Add(attributes[i], this.Attributes.Count - 1);
-                AttributeValues.Add(new AttributeValue()
-                {
-                    Attribute = attributes[i],
-                    Modifier = new AttributeModifier()
-                    {
-                        Add = 0f,
-                        Multiply = 0f,
-                        Override = 0f
-                    }
-                });
-            }
-        }
-
-        /// <summary>
-        /// Remove attributes from this attribute system.
-        /// </summary>
-        /// <param name="attributes">Attributes to remove</param>
-        public void RemoveAttributes(params AttributeScriptableObject[] attributes)
-        {
-            for (var i = 0; i < attributes.Length; i++)
-            {
-                this.Attributes.Remove(attributes[i]);
-            }
-
-            // Update attribute cache
-            GetAttributeCache();
-        }
-
-        public void ResetAll()
-        {
-            for (var i = 0; i < this.AttributeValues.Count; i++)
-            {
-                var defaultAttribute = new AttributeValue();
-                defaultAttribute.Attribute = this.AttributeValues[i].Attribute;
-                this.AttributeValues[i] = defaultAttribute;
-            }
         }
 
         public void ResetAttributeModifiers()
         {
-            for (var i = 0; i < this.AttributeValues.Count; i++)
-            {
-                var attributeValue = this.AttributeValues[i];
-                attributeValue.Modifier = default;
-                this.AttributeValues[i] = attributeValue;
-            }
+            AttributeDictionary.Values.ToList().ForEach(v => v.ResetModifier());
+        }
+        public void ResetAttributeModifiers(AttributeScriptableObject attributeScriptableObject)
+        {
+            AttributeDictionary[attributeScriptableObject].ResetModifier();
         }
 
-        private void InitialiseAttributeValues()
+        private void InitialiseAttributeValues(List<AttributeScriptableObject> attributes)
         {
-            this.AttributeValues = new List<AttributeValue>();
-            for (var i = 0; i < Attributes.Count; i++)
+            AttributeDictionary.Clear();
+            attributes.ForEach(a => AttributeDictionary.Add(a, GetDefaultAttributeValue(a)));
+        }
+        private AttributeValue GetDefaultAttributeValue(AttributeScriptableObject attribute){
+            return new AttributeValue()
             {
-                this.AttributeValues.Add(new AttributeValue()
+                Attribute = attribute,
+                Modifier = new AttributeModifier()
                 {
-                    Attribute = this.Attributes[i],
-                    Modifier = new AttributeModifier()
-                    {
-                        Add = 0f,
-                        Multiply = 0f,
-                        Override = 0f
-                    }
+                    Add = 0f,
+                    Multiply = 0f,
+                    Override = 0f
                 }
-                );
-            }
+            };
         }
-
-        private List<AttributeValue> prevAttributeValues = new List<AttributeValue>();
-        public void UpdateAttributeCurrentValues()
+        private void TriggerChangedEvents(AttributeScriptableObject attribute, AttributeValue oldValue, AttributeValue newValue)
         {
-            prevAttributeValues.Clear();
-            for (var i = 0; i < this.AttributeValues.Count; i++)
-            {
-                var _attribute = this.AttributeValues[i];
-                prevAttributeValues.Add(_attribute);
-                this.AttributeValues[i] = _attribute.Attribute.CalculateCurrentAttributeValue(_attribute, this.AttributeValues);
-            }
-
-            for (var i = 0; i < this.AttributeSystemEvents.Count; i++)
-            {
-                this.AttributeSystemEvents[i].PreAttributeChange(this, prevAttributeValues, ref this.AttributeValues);
+            if (oldValue.BaseValue != newValue.BaseValue || oldValue.CurrentValue != newValue.CurrentValue){
+                AttributeSystemEvents.ForEach(e => e.AttributeChangedHandler(this, attribute, oldValue, newValue));
             }
         }
-
-        private Dictionary<AttributeScriptableObject, int> GetAttributeCache()
-        {
-            if (mAttributeDictStale)
+        private void UpdateCurrentValue(AttributeScriptableObject attribute){
+            if (AttributeDictionary.TryGetValue(attribute, out var attributeValue))
             {
-                mAttributeIndexCache.Clear();
-                for (var i = 0; i < AttributeValues.Count; i++)
-                {
-                    mAttributeIndexCache.Add(AttributeValues[i].Attribute, i);
-                }
-                this.mAttributeDictStale = false;
+                AttributeDictionary[attribute] = attribute.CalculateCurrentAttributeValue(attributeValue);
+            }else{
+                Debug.LogWarning($"Attribute {attribute} not found in AttributeDictionary");
             }
-            return mAttributeIndexCache;
         }
-
         private void Awake()
         {
-            InitialiseAttributeValues();
-            this.MarkAttributesDirty();
-            GetAttributeCache();
+            InitialiseAttributeValues(Attributes);
         }
-
-        private void LateUpdate()
-        {
-            UpdateAttributeCurrentValues();
-        }
-
-        public void AddAttributeEventHandlers(params AbstractAttributeEventHandler[] handlers)
-        {
-            AttributeSystemEvents.AddRange(handlers);
-        }
-        public void RemoveAttributeEventHandlers(params AbstractAttributeEventHandler[] handlers)
-        {
-            for (var i = 0; i < handlers.Length; i++)
-            {
-                AttributeSystemEvents.Remove(handlers[i]);
-            }
-        }
-
     }
-
 }

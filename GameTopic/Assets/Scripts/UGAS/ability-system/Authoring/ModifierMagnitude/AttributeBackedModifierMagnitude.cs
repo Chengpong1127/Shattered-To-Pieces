@@ -34,7 +34,7 @@ namespace AbilitySystem.ModifierMagnitude
         public override float? CalculateMagnitude(GameplayEffectSpec spec)
         {
 
-            return ScalingFunction.Evaluate(GetCapturedAttribute(spec).GetValueOrDefault().CurrentValue);
+            return ScalingFunction.Evaluate(GetCapturedAttribute(spec).CurrentValue);
         }
 
         private AttributeValue? GetCapturedAttribute(GameplayEffectSpec spec)

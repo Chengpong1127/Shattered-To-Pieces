@@ -37,7 +37,7 @@ namespace AttributeSystem.Authoring
             return attributeValue;
         }
 
-        public virtual AttributeValue CalculateCurrentAttributeValue(AttributeValue attributeValue, List<AttributeValue> otherAttributeValues)
+        public virtual AttributeValue CalculateCurrentAttributeValue(AttributeValue attributeValue)
         {
             attributeValue.CurrentValue = (attributeValue.BaseValue + attributeValue.Modifier.Add) * (attributeValue.Modifier.Multiply + 1);
 

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class SideBar : MonoBehaviour
 {
-    [SerializeField] List<Label> labels;
+    [SerializeField] List<GameLabel> labels;
     [SerializeField] Animator LabelStatusAni;
     [SerializeField] List<TitleTextSprite> TitleTextSprites;
     [SerializeField] TitleTextImage TitleTextImage;

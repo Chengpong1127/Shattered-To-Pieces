@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler {
     
@@ -37,6 +38,7 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         displayImg.raycastTarget = false;
         selfLayout.ignoreLayout = true;
         GameEvents.UIEvents.OnGameComponentAbilitySelected.Invoke(Owner);
+        transform.DOScale(Vector3.one * 1.2f, 0.2f);
     }
 
     public void OnEndDrag(PointerEventData eventData) {
@@ -48,6 +50,7 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         else { NonSetDropper?.AddSkill(OwnerDropper.BoxID, draggerID); }
 
         selfLayout.ignoreLayout = false;
+        transform.DOScale(Vector3.one, 0.2f);
     }
 
     public void UpdateDisplay(DisplayableAbilityScriptableObject newData) {
