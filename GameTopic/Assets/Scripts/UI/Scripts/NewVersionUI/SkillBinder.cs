@@ -11,15 +11,14 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class SkillBinder : NetworkBehaviour {
-    [SerializeField] Button EditBTN;
 
     [SerializeField] SkillDropper NonDropper;
     [SerializeField] List<SkillDropper> Droppers;
     public UnityAction<int, int, int> setAbilityAction { get; set; }
     // set entry stuff.
+    [SerializeField]
     private BasePlayer player;
     private AbilityManager abilityManager;
-    private GamePlayer gamePlayer;
     private AbilityRebinder rebinder;
     public override void OnDestroy() {
         base.OnDestroy();
@@ -34,27 +33,26 @@ public class SkillBinder : NetworkBehaviour {
         }
     }
 
-    private void Start() {
-        // Dropper setting.
+    private void Awake() {
         NonDropper.Binder = this;
         NonDropper.draggerList.ForEach(d => {
             d.NonSetDropper = NonDropper;
             d.DraggingParentTransform = this.transform.parent;
-            // d.UpdateDisplay(null);
         });
         int id = 0;
         Droppers.ForEach(d => {
             d.draggerList.ForEach(d => {
                 d.NonSetDropper = NonDropper;
                 d.DraggingParentTransform = this.transform.parent;
-                // d.UpdateDisplay(null);
             });
             d.Binder = this;
             d.BoxID = id;
             d.RebindBTN.onClick.AddListener(() => RebindKeyText(d.BoxID));
             id++;
         });
+    }
 
+    private void Start() {
         // Bind Actions
         this.setAbilityAction += BindAbilityToEntry;
         GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText(eID);
@@ -77,12 +75,6 @@ public class SkillBinder : NetworkBehaviour {
             UpdateSkillBoxKeyText(i);
         }
     }
-
-    public void SwitchActive(bool b) {
-        if (!IsOwner) { this.gameObject.SetActive(false); return; }
-        this.gameObject.SetActive(b);
-    }
-
     public void Bind(int origin, int newID, int abilityID) {
         setAbilityAction?.Invoke(origin, newID, abilityID);
     }
@@ -111,7 +103,6 @@ public class SkillBinder : NetworkBehaviour {
     [ServerRpc(RequireOwnership = false)]
     void RefreshAllSkillBox_ServerRpc() {
         if (IsServer) {
-            player = GetComponentInParent<BasePlayer>();
             abilityManager = player.SelfDevice.AbilityManager;
 
             // clear all skills
@@ -169,15 +160,14 @@ public class SkillBinder : NetworkBehaviour {
     [ClientRpc]
     void SetSkillBoxKeyText_ClientRpc(int entryID, string keyStr) {
         if (IsOwner){
-            Droppers[entryID].BindingKeyText.text = InputControlPath.ToHumanReadableString(keyStr, InputControlPath.HumanReadableStringOptions.OmitDevice);
+            Droppers[entryID].SetKeyText(keyStr);
         }
     }
 
     void RebindKeyText(int entryID) {
         if(!IsOwner) { return; }
-        gamePlayer = GetComponentInParent<GamePlayer>();
+        var gamePlayer = player as GamePlayer;
         rebinder = gamePlayer?.AbilityRebinder;
-        if(rebinder == null) { return; }
 
         rebinder.StartRebinding(entryID);
     }

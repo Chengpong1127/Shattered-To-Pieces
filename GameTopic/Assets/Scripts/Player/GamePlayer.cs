@@ -5,7 +5,7 @@ using Cinemachine;
 using Cysharp.Threading.Tasks;
 
 public class GamePlayer: AssemblyablePlayer{
-    public GameObject SkillUI;
+    public SkillBinder SkillUI;
     private CinemachineVirtualCamera VirtualCamera;
     [SerializeField]
     private AnimationCurve _cameraZoomInCurve;
@@ -15,8 +15,8 @@ public class GamePlayer: AssemblyablePlayer{
     private float _cameraZoomDuration = 0.5f;
     protected override async void Start(){
         base.Start();
+        SkillUI.gameObject.SetActive(false);
         await UniTask.WaitUntil(() => LocalPlayerManager.RoomInstance.StateMachine.State == LocalPlayerManager.LocalPlayerStates.Gaming);
-        SkillUI.SetActive(false);
         if (IsOwner)
         {
             VirtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
@@ -27,8 +27,7 @@ public class GamePlayer: AssemblyablePlayer{
     {
         base.SetAssemblyMode_ClientRpc(enabled);
         if(IsOwner){
-            //AssemblyUI.SetActive(enabled);
-            SkillUI.SetActive(enabled);
+            SkillUI.gameObject.SetActive(enabled);
             if (VirtualCamera != null)
                 ZoomCamera(enabled ? _cameraZoomInCurve : _cameraZoomOutCurve);
         }

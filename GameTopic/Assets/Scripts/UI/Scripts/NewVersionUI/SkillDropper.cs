@@ -4,11 +4,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using DG.Tweening;
+using Cysharp.Threading.Tasks;
 
 public class SkillDropper : MonoBehaviour, IDropHandler {
     [SerializeField] public GameObject RBDisplayer;
     [SerializeField] public List<SkillDragger> draggerList;
-    [SerializeField] public TMP_Text BindingKeyText;
+    [SerializeField] private TMP_Text BindingKeyText;
     [SerializeField] public Button RebindBTN;
 
     public SkillBinder Binder;
@@ -49,5 +52,16 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
         if(draggerList.Count <= draggerID) { return; }
         draggerList[draggerID].UpdateDisplay(displayData);
         draggerList[draggerID].SetOwner(owner);
+    }
+
+    public void SetKeyText(string effectiveKey) {
+        var displayKey = InputControlPath.ToHumanReadableString(effectiveKey, InputControlPath.HumanReadableStringOptions.OmitDevice);
+        if (BindingKeyText.text != displayKey){
+            BindingKeyText.text = displayKey;
+            ScaleAnimation();
+        }
+    }
+    private async void ScaleAnimation(){
+        await transform.DOPunchScale(Vector3.one * 0.2f, 0.2f).ToUniTask();
     }
 }
