@@ -2,9 +2,11 @@ using UnityEngine;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using MonsterLove.StateMachine;
+using System;
 
 public class GamePanel : MonoBehaviour
 {
+    public event Action<string> OnSendMessage;
     public StateMachine<GamePanelState> StateMachine;
     void Awake()
     {
@@ -26,6 +28,10 @@ public class GamePanel : MonoBehaviour
     }
     protected virtual async UniTask ExitSceneAnimation(){
         await transform.DOScale(0, 0.5f).SetEase(Ease.InBack).ToUniTask();
+    }
+
+    public void PanelSendMessage(string message){
+        OnSendMessage?.Invoke(message);
     }
 
 

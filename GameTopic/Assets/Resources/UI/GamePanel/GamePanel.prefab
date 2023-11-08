@@ -207,14 +207,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5192909260680010643, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
       propertyPath: m_Name
-      value: GameButton
+      value: CancelButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5960458701900561261, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
+      propertyPath: m_Type
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5960458701900561261, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: df5954f3ba5ecb24e96fbba1e460b642, type: 3}
+      objectReference: {fileID: 21300120, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+    - target: {fileID: 5960458701900561261, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
+      propertyPath: m_Color.b
+      value: 0.09549664
+      objectReference: {fileID: 0}
+    - target: {fileID: 5960458701900561261, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
+      propertyPath: m_Color.g
+      value: 0.09549664
+      objectReference: {fileID: 0}
+    - target: {fileID: 5960458701900561261, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
+      propertyPath: m_Color.r
+      value: 0.6981132
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1411537189027080404, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}

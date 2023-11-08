@@ -5,7 +5,6 @@ using Cinemachine;
 using Cysharp.Threading.Tasks;
 
 public class GamePlayer: AssemblyablePlayer{
-    public GameObject AssemblyUI;
     public GameObject SkillUI;
     private CinemachineVirtualCamera VirtualCamera;
     [SerializeField]
@@ -17,7 +16,6 @@ public class GamePlayer: AssemblyablePlayer{
     protected override async void Start(){
         base.Start();
         await UniTask.WaitUntil(() => LocalPlayerManager.RoomInstance.StateMachine.State == LocalPlayerManager.LocalPlayerStates.Gaming);
-        AssemblyUI.SetActive(false);
         SkillUI.SetActive(false);
         if (IsOwner)
         {
