@@ -18,19 +18,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4117721736128081652, guid: 3df0a360ba421c049b2914a0ce5fe60c, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4117721736128081652, guid: 3df0a360ba421c049b2914a0ce5fe60c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4117721736128081652, guid: 3df0a360ba421c049b2914a0ce5fe60c, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4117721736128081652, guid: 3df0a360ba421c049b2914a0ce5fe60c, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4117721736128081652, guid: 3df0a360ba421c049b2914a0ce5fe60c, type: 3}
       propertyPath: m_SizeDelta.x
@@ -117,5 +117,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c954a17d660182246a0534ee6a783842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasTransform: {fileID: 0}
-  displayText: {fileID: 0}
+  DraggingParentTransform: {fileID: 0}

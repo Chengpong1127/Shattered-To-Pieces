@@ -107,7 +107,7 @@ MonoBehaviour:
     m_InternalValue: 0
   AssemblyRange: 5
   AssemblyController: {fileID: 983135910985303398}
-  SkillUI: {fileID: 2031401437555429989}
+  SkillUI: {fileID: 641512269827364640}
   _cameraZoomInCurve:
     serializedVersion: 2
     m_Curve:
@@ -1006,6 +1006,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2595540295932920230, guid: 7c4d57297bf6439498059ad9e391f95b, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1152744538070609611}
     - target: {fileID: 2603467112993627159, guid: 7c4d57297bf6439498059ad9e391f95b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1653,11 +1657,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c4d57297bf6439498059ad9e391f95b, type: 3}
---- !u!1 &2031401437555429989 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3518110650455000291, guid: 7c4d57297bf6439498059ad9e391f95b, type: 3}
+--- !u!114 &641512269827364640 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2595540295932920230, guid: 7c4d57297bf6439498059ad9e391f95b, type: 3}
   m_PrefabInstance: {fileID: 3234193829554165382}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc68eff2a13c55f46ad67167071052e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2434447374362433856 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 948798107550175174, guid: 7c4d57297bf6439498059ad9e391f95b, type: 3}
