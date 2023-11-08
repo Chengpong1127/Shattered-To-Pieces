@@ -1,18 +1,20 @@
 using TMPro;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.UI;
 public class EnergyDisplay : NetworkBehaviour
 {
-    public TMP_Text energyText;
     public EnergyManager energyManager;
+    public Image energyBar;
     private void Start() {
-        if (!IsOwner){
-            energyText.enabled = false;
+        if (!IsOwner)
+        {
+            energyBar.enabled=false;
         }
     }
     private void Update() {
         if (IsOwner){
-            energyText.text = ((int)energyManager.Energy.Value).ToString();
+            energyBar.fillAmount = energyManager.Energy.Value / 10;
         }
     }
 
