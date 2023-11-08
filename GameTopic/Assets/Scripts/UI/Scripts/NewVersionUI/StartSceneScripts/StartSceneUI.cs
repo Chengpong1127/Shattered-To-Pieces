@@ -54,6 +54,7 @@ public class StartSceneUI : MonoBehaviour
     }
 
     private void OnDestroy() {
+        if(LocalGameManager.Instance == null || LocalGameManager.Instance.LobbyManager == null) { return; }
         LocalGameManager.Instance.LobbyManager.OnPlayerJoinOrLeave -= RegistPlayerInfo;
         LocalGameManager.Instance.LobbyManager.OnPlayerReady -= RegistPlayerInfo;
         LocalGameManager.Instance.LobbyManager.OnPlayerUnready -= RegistPlayerInfo;
