@@ -61,13 +61,15 @@ public class SkillBinder : NetworkBehaviour {
         GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += (am, _) => ServerRequestUpdateAllSkillBox(am);
     }
 
-    private void OnEnable() {
+    public void LoadUI(){
         if (IsOwner) {
             RefreshAllSkillBox_ServerRpc();
             UpdateAllSkillBoxKeyText_ServerRpc();
-
-
         }
+    }
+
+    private void OnEnable() {
+        LoadUI();
     }
     [ServerRpc]
     private void UpdateAllSkillBoxKeyText_ServerRpc() {

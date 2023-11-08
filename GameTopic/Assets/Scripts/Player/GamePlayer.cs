@@ -20,6 +20,7 @@ public class GamePlayer: AssemblyablePlayer{
         if (IsOwner)
         {
             VirtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+            SkillUI.LoadUI();
         }
     }
     [ClientRpc]

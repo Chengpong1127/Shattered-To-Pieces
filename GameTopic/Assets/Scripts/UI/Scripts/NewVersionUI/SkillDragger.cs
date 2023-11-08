@@ -55,21 +55,14 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
 
     public void UpdateDisplay(DisplayableAbilityScriptableObject newData) {
         DASO = newData;
-        if (DASO == null) { ShowDisplay(false); return; }
-        displayImg.sprite = DASO.Image;
-        ShowDisplay(true);
+        if (DASO == null) { gameObject.SetActive(false); return; }
+        if (displayImg.sprite != DASO.Image){
+            displayImg.sprite = DASO.Image;
+            transform.DOPunchScale(Vector3.one * 0.2f, 0.2f);
+        }
+        gameObject.SetActive(true);
     }
     public void SetOwner(GameComponent owner){
         Owner = owner;
-    }
-    void ShowDisplay(bool b) {
-        gameObject.SetActive(b);
-        // if (b) {
-        //     displayImg.color = Color.white;
-        //     displayImg.raycastTarget = true;
-        // } else {
-        //     displayImg.color = Color.clear;
-        //     displayImg.raycastTarget = false;
-        // }
     }
 }

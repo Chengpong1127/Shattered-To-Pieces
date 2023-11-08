@@ -22,6 +22,7 @@ public class AbilityRebinder : IAbilityRebinder
             rebindingOperation.Dispose();
             if (actionEnabled) rebindingOperation.action.Enable(); 
             rebindingOperation = null;
+            GameEvents.RebindEvents.OnCancelRebinding?.Invoke();
         }
     }
 

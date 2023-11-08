@@ -71,6 +71,7 @@ public static class GameEvents{
         /// Parameters: (index, path)
         /// </summary>
         public static Action<int, string> OnFinishRebinding = delegate { };
+        public static Action OnCancelRebinding = delegate { };
     }
 
     public static class GameEffectManagerEvents{
