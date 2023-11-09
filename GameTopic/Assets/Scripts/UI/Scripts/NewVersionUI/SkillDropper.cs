@@ -30,6 +30,20 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
         });
         BindingKeyText.text = "Non";
         GameEvents.RebindEvents.OnCancelRebinding += StopRebind;
+        GameEvents.AbilityRunnerEvents.OnLocalInputStartAbility += StartAbilityHandler;
+        GameEvents.AbilityRunnerEvents.OnLocalInputCancelAbility += CancelAbilityHandler;
+        
+    }
+
+    private async void StartAbilityHandler(int abilityID){
+        if (abilityID == BoxID){
+            await DOTween.To(() => RebindBTNImg.color, x => RebindBTNImg.color = x, Color.gray, 0.2f).ToUniTask();
+        }
+    }
+    private async void CancelAbilityHandler(int abilityID){
+        if (abilityID == BoxID){
+            await DOTween.To(() => RebindBTNImg.color, x => RebindBTNImg.color = x, Color.white, 0.2f).ToUniTask();
+        }
     }
 
     public void OnDrop(PointerEventData eventData) {

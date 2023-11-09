@@ -15,8 +15,7 @@ public class BasicSceneLoader: BaseSceneLoader{
     public override async void LoadScene(AsyncOperation asyncOperation){
         Panel.gameObject.SetActive(true);
         Panel.color = new Color(Panel.color.r, Panel.color.g, Panel.color.b, 0);
-        DOTween.ToAlpha(() => Panel.color, color => Panel.color = color, 1, FadeInDuration);
-        await UniTask.WaitForSeconds(FadeInDuration);
+        await DOTween.ToAlpha(() => Panel.color, color => Panel.color = color, 1, FadeInDuration).ToUniTask();
         LoadingSlider.enabled = true;
         while (!asyncOperation.isDone){
             LoadingSlider.value = asyncOperation.progress;
@@ -24,8 +23,7 @@ public class BasicSceneLoader: BaseSceneLoader{
         }
         LoadingSlider.enabled = false;
         Panel.color = new Color(Panel.color.r, Panel.color.g, Panel.color.b, 1);
-        DOTween.ToAlpha(() => Panel.color, color => Panel.color = color, 0, FadeOutDuration);
-        await UniTask.WaitForSeconds(FadeOutDuration);
+        await DOTween.ToAlpha(() => Panel.color, color => Panel.color = color, 0, FadeOutDuration).ToUniTask();
         Panel.gameObject.SetActive(false);
     }
 }

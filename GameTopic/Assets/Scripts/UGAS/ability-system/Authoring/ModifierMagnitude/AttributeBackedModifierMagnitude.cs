@@ -37,7 +37,7 @@ namespace AbilitySystem.ModifierMagnitude
             return ScalingFunction.Evaluate(GetCapturedAttribute(spec).CurrentValue);
         }
 
-        private AttributeValue? GetCapturedAttribute(GameplayEffectSpec spec)
+        private AttributeValue GetCapturedAttribute(GameplayEffectSpec spec)
         {
             if (CaptureAttributeWhen == ECaptureAttributeWhen.OnApplication && CaptureAttributeFrom == ECaptureAttributeFrom.Source)
             {

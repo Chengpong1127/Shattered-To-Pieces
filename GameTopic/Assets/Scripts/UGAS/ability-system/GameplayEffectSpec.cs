@@ -23,7 +23,7 @@ namespace AbilitySystem
         public float Level { get; private set; }
         public AbilitySystemCharacter Source { get; private set; }
         public AbilitySystemCharacter Target { get; private set; }
-        public AttributeValue? SourceCapturedAttribute = null;
+        public AttributeValue SourceCapturedAttribute = null;
 
         public static GameplayEffectSpec CreateNew(GameplayEffectScriptableObject GameplayEffect, AbilitySystemCharacter Source, float Level = 1)
         {
