@@ -1,5 +1,6 @@
 using AbilitySystem;
 using AbilitySystem.Authoring;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -22,6 +23,19 @@ public class PropellerFly : DisplayableAbilityScriptableObject {
     public class PropellerFlySpec : RunnerAbilitySpec {
         public float Power;
         public float EnergyCostPerSecond;
+        bool _IsAniamtorFly = false;
+        bool SetAnimatorSwitch = false;
+
+
+        bool IsAnimatorFly {
+            get { return _IsAniamtorFly; }
+            set {
+                _IsAniamtorFly = value;
+                if (SetAnimatorSwitch) { return; }
+                SetAnimatorSwitch = true;
+                SelfEntity.StartCoroutine(SetAnimatorValue());
+            }
+        }
 
         Animator animator;
         public PropellerFlySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner) {
@@ -30,12 +44,12 @@ public class PropellerFly : DisplayableAbilityScriptableObject {
 
         public override void CancelAbility()
         {
-            animator.SetBool("Fly", false);
+            IsAnimatorFly = false;
             EndAbility();
         }
 
         protected override IEnumerator ActivateAbility() {
-            if(isActive) { animator.SetBool("Fly",true); }
+            if(isActive) { IsAnimatorFly = true; }
             while (isActive) {
                 if (EnergyManager.HasEnergy(EnergyCostPerSecond * Time.fixedDeltaTime * 2))
                     EnergyManager.CostEnergy(EnergyCostPerSecond * Time.fixedDeltaTime);
@@ -47,7 +61,15 @@ public class PropellerFly : DisplayableAbilityScriptableObject {
                 forceAddable.AddForce(SelfEntity.BodyTransform.TransformDirection(Vector3.up) * Power, ForceMode2D.Force);
                 yield return new WaitForFixedUpdate();
             }
-            animator.SetBool("Fly", false);
+            IsAnimatorFly = false;
+        }
+
+        IEnumerator SetAnimatorValue() {
+            yield return new WaitForFixedUpdate();
+
+            animator.SetBool("Fly", _IsAniamtorFly);
+            SetAnimatorSwitch = false;
+            yield return null;
         }
     }
 }

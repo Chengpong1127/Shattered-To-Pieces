@@ -8,7 +8,17 @@ using System;
 using Unity.Netcode;
 
 public class Leg : BaseCoreComponent, IGroundCheckable, IMovable, IForceAddable {
-    private NetworkVariable<float> Speed = new NetworkVariable<float>(0);
+    private NetworkVariable<float> _Speed = new NetworkVariable<float>(0);
+    bool SetAnimatorSwitch = false;
+    private float Speed {
+        get { return _Speed.Value; }
+        set {
+            _Speed.Value = value;
+            if (SetAnimatorSwitch) { return; }
+            SetAnimatorSwitch = true;
+            Invoke("SetAnimatorValue", 0.1f);
+        }
+    }
     public float MovingSpeed;
     private MoveDirection? CurrentDirection = null;
 
@@ -21,8 +31,8 @@ public class Leg : BaseCoreComponent, IGroundCheckable, IMovable, IForceAddable 
         }
     }
     private void Move(){
-        if (Speed.Value != 0) {
-            BodyRigidbody.velocity = new Vector2(Speed.Value, BodyRigidbody.velocity.y);
+        if (Speed != 0) {
+            BodyRigidbody.velocity = new Vector2(Speed, BodyRigidbody.velocity.y);
         }
     }
 
@@ -48,13 +58,13 @@ public class Leg : BaseCoreComponent, IGroundCheckable, IMovable, IForceAddable 
     {
         if (CurrentDirection == null){
             CurrentDirection = direction;
-            Speed.Value = direction == MoveDirection.Left ? -MovingSpeed : MovingSpeed;
+            Speed = direction == MoveDirection.Left ? -MovingSpeed : MovingSpeed;
             return;
         }
         else if (CurrentDirection == direction) return;
         else if (CurrentDirection != direction){
             CurrentDirection = null;
-            Speed.Value = 0;
+            Speed = 0;
             return;
         }
     }
@@ -63,7 +73,12 @@ public class Leg : BaseCoreComponent, IGroundCheckable, IMovable, IForceAddable 
     {
         if (CurrentDirection == direction){
             CurrentDirection = null;
-            Speed.Value = 0;
+            Speed = 0;
         }
+    }
+
+    void SetAnimatorValue() {
+        BodyAnimator.SetFloat("Speed", Math.Abs(Speed));
+        SetAnimatorSwitch = false;
     }
 }
