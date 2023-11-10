@@ -39,7 +39,6 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
 
         public override void CancelAbility()
         {
-            if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, false);
             Movable.StopMoveDirection(Direction);
             EndAbility();
         }
@@ -51,7 +50,6 @@ public class SelfMoveAbility : DisplayableAbilityScriptableObject
             {
                 if (!groundCheckable.IsGrounded) yield break;
             }
-            if (AnimationName != "") SelfEntity.BodyAnimator?.SetBool(AnimationName, true);
             Movable.SetMoveDirection(Direction);
             while(isActive){
                 if (EnergyManager.HasEnergy(EnergyCostPerSecond * Time.deltaTime * 2))
