@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 
 public class EndGameUI : MonoBehaviour {
-    [SerializeField] public TMP_Text resultTMP;
+    [SerializeField] public Animator animator;
     private void Awake() {
         gameObject.SetActive(false);
     }
