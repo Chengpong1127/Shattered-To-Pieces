@@ -7007,7 +7007,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkManager: {fileID: 0}
-  PlayerCount: 1
   UseRelay: 0
 --- !u!114 &1281276215
 MonoBehaviour:
@@ -10801,6 +10800,7 @@ GameObject:
   - component: {fileID: 2137544976}
   - component: {fileID: 2137544979}
   - component: {fileID: 2137544978}
+  - component: {fileID: 2137544980}
   m_Layer: 0
   m_Name: Tilemap
   m_TagString: Untagged
@@ -10965,6 +10965,20 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!114 &2137544980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137544974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c916066ff1d04fa0abd137adbc2c20d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TagList:
+  - {fileID: 11400000, guid: f8b02541872494b4e9f0893f63e0278f, type: 2}
 --- !u!1 &2139259990
 GameObject:
   m_ObjectHideFlags: 0
