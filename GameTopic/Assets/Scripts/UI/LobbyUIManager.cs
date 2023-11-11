@@ -3,6 +3,8 @@ using TMPro;
 using System.Linq;
 using Unity.Services.Lobbies.Models;
 using Cysharp.Threading.Tasks;
+using System;
+using Unity.Services.Lobbies;
 
 public class LobbyUIManager : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class LobbyUIManager : MonoBehaviour
     [SerializeField]
     private ReadyButtonController _readyButtonController;
     private LobbyManager _lobbyManager;
+    public event Action OnExitLobby;
     void Awake()
     {
         Debug.Assert(_lobbyName != null);
@@ -28,10 +31,23 @@ public class LobbyUIManager : MonoBehaviour
         _lobbyName.text = lobbyManager.CurrentLobby.Name;
         UpdatePlayerList();
 
-        _lobbyManager.OnLobbyChanged += changed => {
-            if(changed.PlayerJoined.Changed || changed.PlayerLeft.Changed || changed.PlayerData.Changed)
-                UpdatePlayerList();
-        };
+        _lobbyManager.OnLobbyChanged += LobbyChangedHandler;
+    }
+
+    public void ExitLobbyMode(){
+        _lobbyManager.OnLobbyChanged -= LobbyChangedHandler;
+        _lobbyManager = null;
+    }
+
+    private void LobbyChangedHandler(ILobbyChanges changed){
+        if(changed.PlayerJoined.Changed || changed.PlayerLeft.Changed || changed.PlayerData.Changed)
+            UpdatePlayerList();
+        if(changed.LobbyDeleted && _lobbyManager.Identity != LobbyManager.LobbyIdentity.Host)
+            OnExitLobby?.Invoke();
+    }
+
+    public void ExitLobby_ButtonAction(){
+        OnExitLobby?.Invoke();
     }
 
     private async void OnReadyButtonPressed(ReadyButtonController.ReadyButtonState state){

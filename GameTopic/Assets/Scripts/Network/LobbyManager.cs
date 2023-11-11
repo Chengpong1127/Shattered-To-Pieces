@@ -28,7 +28,7 @@ public class LobbyManager
         if (CurrentLobby != null){
             throw new Exception("Already in a lobby");
         }
-        SelfPlayer.Data = GetDefaultPlayerData(SelfPlayer.Profile.Name);
+        SelfPlayer.Data = GetDefaultPlayerData("Player");
         var createLobbyOptions = new CreateLobbyOptions(){
             IsPrivate = false,
             IsLocked = false,
@@ -71,7 +71,11 @@ public class LobbyManager
     }
 
     public async void LeaveLobby(){
-        await LobbyService.Instance.RemovePlayerAsync(CurrentLobby.Id, SelfPlayer.Id);
+        if (Identity == LobbyIdentity.Host){
+            await LobbyService.Instance.DeleteLobbyAsync(CurrentLobby.Id);
+        }else{
+            await LobbyService.Instance.RemovePlayerAsync(CurrentLobby.Id, SelfPlayer.Id);
+        }
         CurrentLobby = null;
     }
 
@@ -131,7 +135,9 @@ public class LobbyManager
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
     }
     private void OnLobbyChangedHandler(ILobbyChanges lobbyChanges){
-        lobbyChanges.ApplyToLobby(CurrentLobby);
+        if (!lobbyChanges.LobbyDeleted){
+            lobbyChanges.ApplyToLobby(CurrentLobby);
+        }
         OnLobbyChanged?.Invoke(lobbyChanges);
     }
 
@@ -149,7 +155,6 @@ public class LobbyManager
     }
 
     private void PlayerJoinOrLeaveHandler(){
-        //CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
         if (CurrentLobby.HostId == SelfPlayer.Id){
             Identity = LobbyIdentity.Host;
         } else {
@@ -160,7 +165,6 @@ public class LobbyManager
 
     private void PlayerDataChangedHandler(Dictionary<int, Dictionary<string, ChangedOrRemovedLobbyValue<PlayerDataObject>>> data)
     {
-        //CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
         foreach(var (key, value) in data)
         {
             var player = CurrentLobby.Players[key];
@@ -188,11 +192,14 @@ public class LobbyManager
         lobbyEventCallbacks.PlayerLeft += _ => PlayerJoinOrLeaveHandler();
         lobbyEventCallbacks.PlayerDataAdded += PlayerDataChangedHandler;
         lobbyEventCallbacks.PlayerDataChanged += PlayerDataChangedHandler;
-        await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
+        try{
+            await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobby.Id, lobbyEventCallbacks);
+        }catch(LobbyServiceException e){
+            Debug.Log(e.Message);
+        }
     }
 
     private void DataChangedHandler(){
-        //CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
         if (CurrentLobby.Data["Ready"].Value == "true"){
             var lobbyReadyInfo = new PlayerLobbyReadyInfo(){
                 Identity = Identity,

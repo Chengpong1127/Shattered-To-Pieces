@@ -13,7 +13,7 @@ public class StartSceneUIManager : MonoBehaviour
     [SerializeField]
     private LobbyUIManager LobbyUIManager;
     [SerializeField]
-    private GameObject NonLobbyPanel;
+    private GameObject HomePanel;
     
 
     void Awake()
@@ -21,12 +21,12 @@ public class StartSceneUIManager : MonoBehaviour
         Debug.Assert(LobbyListPanel != null);
         Debug.Assert(CreateLobbyPanel != null);
         Debug.Assert(LobbyUIManager != null);
-        Debug.Assert(NonLobbyPanel != null);
+        Debug.Assert(HomePanel != null);
 
         LobbyListPanel.gameObject.SetActive(true);
         CreateLobbyPanel.gameObject.SetActive(true);
-        LobbyUIManager.gameObject.SetActive(false);
-        NonLobbyPanel.SetActive(true);
+        LobbyUIManager.OnExitLobby += OnExitLobbyHandler;
+        HomePanel.SetActive(true);
     }
     void Start()
     {
@@ -34,16 +34,18 @@ public class StartSceneUIManager : MonoBehaviour
     }
     void OnDestroy()
     {
-        LocalGameManager.Instance.StateMachine.Changed -= GameStateMachineChangedHandler;
+        if (LocalGameManager.Instance.StateMachine != null)
+            LocalGameManager.Instance.StateMachine.Changed -= GameStateMachineChangedHandler;
     }
     private void GameStateMachineChangedHandler(LocalGameManager.GameState state){
         switch(state){
             case LocalGameManager.GameState.Home:
-                NonLobbyPanel.SetActive(true);
+                LobbyUIManager.gameObject.SetActive(false);
+                HomePanel.SetActive(true);
                 break;
             case LocalGameManager.GameState.Lobby:
-                NonLobbyPanel.SetActive(false);
-                PlayerJoinLobbyHandler();
+                HomePanel.SetActive(false);
+                PlayerEnterLobbyHandler();
                 break;
             
         }
@@ -67,7 +69,7 @@ public class StartSceneUIManager : MonoBehaviour
         CreateLobbyPanel.EnterScene();
         CreateLobbyPanel.GetComponentInChildren<CreateLobbyPanelController>().OnCreateLobby += OnCreateLobbyHandler;
     }
-    private void PlayerJoinLobbyHandler(){
+    private void PlayerEnterLobbyHandler(){
         LobbyUIManager.gameObject.SetActive(true);
         LobbyUIManager.SetLobbyManager(LocalGameManager.Instance.LobbyManager);
     }
@@ -78,5 +80,9 @@ public class StartSceneUIManager : MonoBehaviour
     private void OnCreateLobbyHandler(string lobbyName){
         LocalGameManager.Instance.CreateLobby(lobbyName);
         CreateLobbyPanel.ExitScene();
+    }
+    private void OnExitLobbyHandler(){
+        LobbyUIManager.ExitLobbyMode();
+        LocalGameManager.Instance.PlayerExitLobby();
     }
 }
