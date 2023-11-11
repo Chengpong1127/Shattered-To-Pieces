@@ -29,7 +29,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         Debug.Assert(SceneLoader != null);
         StateMachine = new StateMachine<GameState>(this);
         StateMachine.ChangeState(GameState.Init);
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(gameObject);
         _startSceneName = SceneManager.GetActiveScene().name;
 
         var player = await PlayerSignIn();
@@ -111,8 +111,11 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         Debug.Log("Player Unready");
     }
 
-    public void PlayerLeave(){
-        
+    public void PlayerExitLobby(){
+        Debug.Assert(StateMachine.State == GameState.Lobby);
+        LobbyManager.LeaveLobby();
+        StateMachine.ChangeState(GameState.Home);
+        Debug.Log("Player Exit Lobby");
     }
 
     #endregion

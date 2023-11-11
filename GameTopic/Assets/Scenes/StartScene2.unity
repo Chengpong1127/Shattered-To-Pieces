@@ -534,7 +534,7 @@ GameObject:
   - component: {fileID: 890207785}
   - component: {fileID: 890207784}
   m_Layer: 5
-  m_Name: NonLobbyPanel
+  m_Name: HomePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -904,7 +904,7 @@ MonoBehaviour:
   LobbyListPanel: {fileID: 645675039}
   CreateLobbyPanel: {fileID: 882131783}
   LobbyUIManager: {fileID: 2371712266450945764}
-  NonLobbyPanel: {fileID: 890207782}
+  HomePanel: {fileID: 890207782}
 --- !u!1001 &1386232281
 PrefabInstance:
   m_ObjectHideFlags: 0
