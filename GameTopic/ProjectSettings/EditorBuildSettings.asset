@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CoorperationMap.unity
     guid: c4df3a42ed49eff45b11f72b2bbccc57
+  - enabled: 1
+    path: Assets/Scenes/StartScene2.unity
+    guid: 402d4b649fd9142339a387cf3a47051a
   m_configObjects: {}

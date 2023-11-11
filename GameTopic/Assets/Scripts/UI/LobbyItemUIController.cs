@@ -4,7 +4,7 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 
-public class SingleLobbyItemController : MonoBehaviour
+public class LobbyItemUIController : MonoBehaviour
 {
     [SerializeField]
     private TMP_Text _lobbyName;
@@ -12,11 +12,13 @@ public class SingleLobbyItemController : MonoBehaviour
     private TMP_Text _lobbyPlayerCount;
     [SerializeField]
     private Button _joinButton;
-    public event Action<string> OnPressJoin;
+    public event Action<Lobby> OnPressJoin;
     private Lobby _lobby;
     void Awake()
     {
-        _joinButton.onClick.AddListener(() => OnPressJoin?.Invoke(_lobby.Id));
+        Debug.Assert(_lobbyName != null);
+        Debug.Assert(_lobbyPlayerCount != null);
+        Debug.Assert(_joinButton != null);
     }
 
     public void SetLobby(Lobby lobby){
@@ -27,5 +29,9 @@ public class SingleLobbyItemController : MonoBehaviour
 
     private void SetLobbyPlayerCount(int count,  int maxCount){
         _lobbyPlayerCount.text = count.ToString() + "/" + maxCount.ToString();
+    }
+
+    public void JoinLobby_ButtonAction(){
+        OnPressJoin?.Invoke(_lobby);
     }
 }

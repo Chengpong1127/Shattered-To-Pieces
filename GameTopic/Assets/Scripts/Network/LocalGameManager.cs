@@ -13,24 +13,28 @@ using Cysharp.Threading.Tasks;
 
 public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     
-    private enum GameState{
+    public enum GameState{
         Init,
         Home,
         Lobby,
         GameRoom,
     }
     public BaseSceneLoader SceneLoader;
-    private StateMachine<GameState> GameStateMachine;
+    public StateMachine<GameState> StateMachine;
     public LobbyManager LobbyManager;
+    private string _startSceneName;
 
     async void Start()
     {
-        GameStateMachine = new StateMachine<GameState>(this);
-        GameStateMachine.ChangeState(GameState.Init);
+        Debug.Assert(SceneLoader != null);
+        StateMachine = new StateMachine<GameState>(this);
+        StateMachine.ChangeState(GameState.Init);
         DontDestroyOnLoad(this);
+        _startSceneName = SceneManager.GetActiveScene().name;
+
         var player = await PlayerSignIn();
         LobbyManager = new LobbyManager(player);
-        GameStateMachine.ChangeState(GameState.Home);
+        StateMachine.ChangeState(GameState.Home);
     }
 
     public async UniTask<Player> PlayerSignIn(){
@@ -40,13 +44,13 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
             Debug.Log("Signed In with ID: " + AuthenticationService.Instance.PlayerId);
         };
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        var player = new Player(AuthenticationService.Instance.PlayerId);
+        var player = new Player(AuthenticationService.Instance.PlayerId, profile: new PlayerProfile("Player"));
         return player;
     }
     #region Lobby
 
     public async void CreateLobby(string lobbyName){
-        GameStateMachine.ChangeState(GameState.Lobby);
+        StateMachine.ChangeState(GameState.Lobby);
         LobbyManager.OnPlayerJoinOrLeave += () => {
             Debug.Log("Player Join or Leave");
         };
@@ -80,7 +84,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     }
 
     public async void JoinLobby(Lobby lobby){
-        GameStateMachine.ChangeState(GameState.Lobby);
+        StateMachine.ChangeState(GameState.Lobby);
         LobbyManager.OnPlayerReady += player => {
             Debug.Log("Player " + player.Id + " is ready");
         };
@@ -97,13 +101,13 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     }
 
     public void PlayerReady(){
-        Debug.Assert(GameStateMachine.State == GameState.Lobby);
-        LobbyManager.PlayerReady();
+        Debug.Assert(StateMachine.State == GameState.Lobby);
+        LobbyManager.PlayerReady().Forget();
         Debug.Log("Player Ready");
     }
     public void PlayerUnready(){
-        Debug.Assert(GameStateMachine.State == GameState.Lobby);
-        LobbyManager.PlayerUnready();
+        Debug.Assert(StateMachine.State == GameState.Lobby);
+        LobbyManager.PlayerUnready().Forget();
         Debug.Log("Player Unready");
     }
 
@@ -121,7 +125,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     }
 
     public void EnterRoom(MapInfo mapInfo, NetworkType networkType, string ServerAddress = null){
-        GameStateMachine.ChangeState(GameState.GameRoom);
+        StateMachine.ChangeState(GameState.GameRoom);
         var operation = SceneManager.LoadSceneAsync(mapInfo.MapSceneName);
         SceneLoader?.LoadScene(operation);
         operation.completed += _ => OnEnterRoom(networkType, mapInfo, ServerAddress);
@@ -136,8 +140,8 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
 
     public void RequestExitRoom(){
-        GameStateMachine.ChangeState(GameState.Home);
-        var operation = SceneManager.LoadSceneAsync("StartScene");
+        StateMachine.ChangeState(GameState.Home);
+        var operation = SceneManager.LoadSceneAsync(_startSceneName);
         SceneLoader?.LoadScene(operation);
     }
     #endregion

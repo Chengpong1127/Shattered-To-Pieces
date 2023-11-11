@@ -7,10 +7,10 @@ public class PendantController : MonoBehaviour
 {
     [SerializeField]
     private GameObject ExitPanelPrefab;
-    private GamePanel ExitPanel;
+    private JumpOutPanel ExitPanel;
     void Awake()
     {
-        ExitPanel = Instantiate(ExitPanelPrefab, transform.parent).GetComponent<GamePanel>();
+        ExitPanel = Instantiate(ExitPanelPrefab, transform.parent).GetComponent<JumpOutPanel>();
         ExitPanel.OnSendMessage += SendMessageHandler;
     }
     private void SendMessageHandler(string message)
