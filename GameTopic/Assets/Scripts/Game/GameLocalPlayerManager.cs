@@ -21,7 +21,7 @@ public class GameLocalPlayerManager: LocalPlayerManager{
         Debug.Log($"GameOver. You are at rank: {rank}.");
 
         EndGame.gameObject.SetActive(true);
-        EndGame.resultTMP.text = rank == 1 ? "Win" : "Lose";
+        EndGame.animator.SetTrigger(rank == 1 ? "Win" : "Lose");
 
         await UniTask.WaitForSeconds(5);
         ExitGame();
