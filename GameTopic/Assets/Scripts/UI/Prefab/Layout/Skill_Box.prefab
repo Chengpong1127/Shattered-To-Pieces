@@ -440,6 +440,7 @@ MonoBehaviour:
   - {fileID: 8067872924784965906}
   BindingKeyText: {fileID: 626679199090991626}
   RebindBTNImg: {fileID: 2132571047028451038}
+  button: {fileID: 6274028017333924596}
 --- !u!114 &6274028017333924596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,19 +484,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 671946196667746696}
-        m_TargetAssemblyTypeName: SkillDropper, Scripts
-        m_MethodName: RebindKeyHandler_ButtonAction
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!95 &3687403358027491603
 Animator:
   serializedVersion: 5

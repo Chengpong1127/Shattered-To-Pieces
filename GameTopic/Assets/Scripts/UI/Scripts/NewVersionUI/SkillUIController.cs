@@ -57,6 +57,14 @@ public class SkillUIController : NetworkBehaviour {
         GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry -= (am, _) => ServerRequestUpdateAllSkillBox(am);
     }
 
+    public async UniTask Initialize(){
+        // init each dropper animation every 0.1s
+        foreach (var dropper in Droppers) {
+            dropper.InitializeAnimation().Forget();
+            await UniTask.Delay(50);
+        }
+    }
+
     public void ShowSkillUI(){
         Droppers.ForEach(d => d.Show());
         NonDropper.Show();

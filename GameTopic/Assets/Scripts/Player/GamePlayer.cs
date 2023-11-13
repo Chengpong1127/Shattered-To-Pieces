@@ -22,7 +22,11 @@ public class GamePlayer: AssemblyablePlayer{
             VirtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
             SkillUI.LoadUI();
             SkillUI.gameObject.SetActive(true);
+            await SkillUI.Initialize();
+
+            await UniTask.WaitForSeconds(0.5f);
             SkillUI.HideSkillUI();
+
         }
     }
     [ClientRpc]
