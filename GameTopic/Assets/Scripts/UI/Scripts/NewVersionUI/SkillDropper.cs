@@ -8,25 +8,29 @@ using UnityEngine.InputSystem;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using DG.Tweening.Core;
+using System;
+using UnityEditor.Experimental.GraphView;
 
 public class SkillDropper : MonoBehaviour, IDropHandler {
-    [SerializeField] public GameObject RBDisplayer;
+    [SerializeField] private GameObject RBDisplayer;
     [SerializeField] public List<SkillDragger> draggerList;
     [SerializeField] private TMP_Text BindingKeyText;
-    [SerializeField] public Button RebindBTN;
-    [SerializeField] public Image RebindBTNImg;
+    [SerializeField] private Image RebindBTNImg;
+    public event Action<int> OnRebindStart;
+    public event Action<int, int, int> OnAddNewSkill;
 
     private TweenerCore<Color, Color, DG.Tweening.Plugins.Options.ColorOptions> colorTween;
-
-    public SkillBinder Binder;
-    public int BoxID { get; set; } = -1;
+    public int SelfBoxID { get; set; } = -1;
 
     private void Awake() {
-        int i = 0;
+        Debug.Assert(RBDisplayer != null);
+        Debug.Assert(draggerList != null);
+        Debug.Assert(BindingKeyText != null);
+        Debug.Assert(RebindBTNImg != null);
+
         draggerList.ForEach(d => {
             d.OwnerDropper = this;
-            d.draggerID = i;
-            i++;
+            d.draggerID = draggerList.IndexOf(d);
         });
         BindingKeyText.text = "Non";
         GameEvents.RebindEvents.OnCancelRebinding += StopRebind;
@@ -35,13 +39,24 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
         
     }
 
+    public void Show(){
+        RebindBTNImg.raycastTarget = true;
+        draggerList.ForEach(d => d.Show());
+        DOTween.To(() => RebindBTNImg.color.a, x => RebindBTNImg.color = new Color(RebindBTNImg.color.r, RebindBTNImg.color.g, RebindBTNImg.color.b, x), 1f, 0.2f);
+    }
+    public void Hide(){
+        RebindBTNImg.raycastTarget = false;
+        draggerList.ForEach(d => d.Hide());
+        DOTween.To(() => RebindBTNImg.color.a, x => RebindBTNImg.color = new Color(RebindBTNImg.color.r, RebindBTNImg.color.g, RebindBTNImg.color.b, x), 0.3f, 0.2f);
+    }
+
     private async void StartAbilityHandler(int abilityID){
-        if (abilityID == BoxID){
+        if (abilityID == SelfBoxID){
             await DOTween.To(() => RebindBTNImg.color, x => RebindBTNImg.color = x, Color.gray, 0.2f).ToUniTask();
         }
     }
     private async void CancelAbilityHandler(int abilityID){
-        if (abilityID == BoxID){
+        if (abilityID == SelfBoxID){
             await DOTween.To(() => RebindBTNImg.color, x => RebindBTNImg.color = x, Color.white, 0.2f).ToUniTask();
         }
     }
@@ -54,7 +69,7 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
     }
 
     public void AddSkill(int originBoxID, int skillIndex) {
-        Binder?.Bind(originBoxID, BoxID, skillIndex);
+        OnAddNewSkill?.Invoke(originBoxID, SelfBoxID, skillIndex);
     }
     public void SetDisplay(int draggerID, DisplayableAbilityScriptableObject displayData, GameComponent owner) {
         if(draggerList.Count <= draggerID) { return; }
@@ -78,6 +93,10 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
         );
         await DOTween.To(() => RebindBTNImg.color, x => RebindBTNImg.color = x, Color.white, 0.2f).ToUniTask();
         
+    }
+    public void RebindKeyHandler_ButtonAction(){
+        OnRebindStart?.Invoke(SelfBoxID);
+        StartRebind();
     }
     public async void StartRebind(){
         await UniTask.NextFrame();

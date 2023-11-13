@@ -5,21 +5,50 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using Unity.Netcode;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class SkillBinder : NetworkBehaviour {
+public class SkillUIController : NetworkBehaviour {
 
     [SerializeField] SkillDropper NonDropper;
     [SerializeField] List<SkillDropper> Droppers;
-    public UnityAction<int, int, int> setAbilityAction { get; set; }
-    // set entry stuff.
     [SerializeField]
     private BasePlayer player;
     private AbilityManager abilityManager;
-    private AbilityRebinder rebinder;
+
+    private void Awake() {
+        Debug.Assert(NonDropper != null);
+        Debug.Assert(Droppers != null);
+        Debug.Assert(player != null);
+
+
+        NonDropper.OnAddNewSkill += BindAbilityToEntry;
+        NonDropper.draggerList.ForEach(d => {
+            d.NonSetDropper = NonDropper;
+            d.DraggingParentTransform = this.transform.parent;
+        });
+        Droppers.ForEach(d => {
+            d.draggerList.ForEach(d => {
+                d.NonSetDropper = NonDropper;
+                d.DraggingParentTransform = this.transform.parent;
+            });
+            d.OnAddNewSkill += BindAbilityToEntry;
+            d.SelfBoxID = Droppers.IndexOf(d);
+            d.OnRebindStart += RebindKeyText;
+        });
+    }
+
+    private void Start() {
+        LoadUI();
+        GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText(eID);
+        GameEvents.AbilityManagerEvents.OnAbilityManagerUpdated += ServerRequestUpdateAllSkillBox;
+        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += (am, _, _) => ServerRequestUpdateAllSkillBox(am);
+        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += (am, _) => ServerRequestUpdateAllSkillBox(am);
+    }
+
     public override void OnDestroy() {
         base.OnDestroy();
         GameEvents.AbilityManagerEvents.OnSetBinding -= (eID, _) => UpdateSkillBoxKeyText(eID);
@@ -27,38 +56,20 @@ public class SkillBinder : NetworkBehaviour {
         GameEvents.AbilityManagerEvents.OnSetAbilityToEntry -= (am, _, _) => ServerRequestUpdateAllSkillBox(am);
         GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry -= (am, _) => ServerRequestUpdateAllSkillBox(am);
     }
+
+    public void ShowSkillUI(){
+        Droppers.ForEach(d => d.Show());
+        NonDropper.Show();
+    }
+    public void HideSkillUI(){
+        Droppers.ForEach(d => d.Hide());
+        NonDropper.Hide();
+    }
+
     private void ServerRequestUpdateAllSkillBox(AbilityManager updatedAbilityManager){
         if (abilityManager == updatedAbilityManager){
             RefreshAllSkillBox_ServerRpc();
         }
-    }
-
-    private void Awake() {
-        NonDropper.Binder = this;
-        NonDropper.draggerList.ForEach(d => {
-            d.NonSetDropper = NonDropper;
-            d.DraggingParentTransform = this.transform.parent;
-        });
-        int id = 0;
-        Droppers.ForEach(d => {
-            d.draggerList.ForEach(d => {
-                d.NonSetDropper = NonDropper;
-                d.DraggingParentTransform = this.transform.parent;
-            });
-            d.Binder = this;
-            d.BoxID = id;
-            d.RebindBTN.onClick.AddListener(() => RebindKeyText(d.BoxID));
-            id++;
-        });
-    }
-
-    private void Start() {
-        // Bind Actions
-        this.setAbilityAction += BindAbilityToEntry;
-        GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText(eID);
-        GameEvents.AbilityManagerEvents.OnAbilityManagerUpdated += ServerRequestUpdateAllSkillBox;
-        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += (am, _, _) => ServerRequestUpdateAllSkillBox(am);
-        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += (am, _) => ServerRequestUpdateAllSkillBox(am);
     }
 
     public void LoadUI(){
@@ -68,28 +79,19 @@ public class SkillBinder : NetworkBehaviour {
         }
     }
 
-    private void OnEnable() {
-        LoadUI();
-    }
     [ServerRpc]
     private void UpdateAllSkillBoxKeyText_ServerRpc() {
         for(int i = 0; i < 10; ++i) {
             UpdateSkillBoxKeyText(i);
         }
     }
-    public void Bind(int origin, int newID, int abilityID) {
-        setAbilityAction?.Invoke(origin, newID, abilityID);
-    }
 
-    public void SetDisply(int boxID, int abilityID, DisplayableAbilityScriptableObject DASO, ulong ownerID) {
+    private void SetDisplay(int boxID, int abilityID, DisplayableAbilityScriptableObject DASO, ulong ownerID) {
         GameComponent owner = DASO == null? null : Utils.GetLocalGameObjectByNetworkID(ownerID).GetComponent<GameComponent>();
         if (boxID == -1) { NonDropper.SetDisplay(abilityID, DASO, owner); }
         else { Droppers[boxID].SetDisplay(abilityID, DASO, owner); }
     }
-
-
-    // set entry stuff.
-    void BindAbilityToEntry(int origin, int newID, int abilityID) {
+    private void BindAbilityToEntry(int origin, int newID, int abilityID) {
         if (IsOwner) {
             BindAbilityToEntry_ServerRpc(origin, newID, abilityID);
         }
@@ -147,9 +149,8 @@ public class SkillBinder : NetworkBehaviour {
         var ability = abilityName != null ? ResourceManager.Instance.GetAbilityScriptableObjectByName(abilityName) : null;
         var DASO = ability as DisplayableAbilityScriptableObject;
 
-        // Debug.Log("AbilityName : " + abilityName + " get ability : " + ability != null);
 
-        this.SetDisply(BoxID, abilityID, DASO, ownerID);
+        this.SetDisplay(BoxID, abilityID, DASO, ownerID);
     }
 
     void UpdateSkillBoxKeyText(int entryID) {
@@ -167,10 +168,10 @@ public class SkillBinder : NetworkBehaviour {
     }
 
     void RebindKeyText(int entryID) {
-        if(!IsOwner) { return; }
-        var gamePlayer = player as GamePlayer;
-        rebinder = gamePlayer?.AbilityRebinder;
-
-        rebinder.StartRebinding(entryID);
+        if(IsOwner) {
+            var gamePlayer = player as GamePlayer;
+            gamePlayer?.AbilityRebinder.StartRebinding(entryID);
+        }
+        
     }
 }

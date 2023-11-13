@@ -8,10 +8,9 @@ using DG.Tweening;
 
 public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler {
     
-    // [SerializeField] TMP_Text displayText;
-    Image displayImg;
-    RectTransform selfRectTransform;
-    LayoutElement selfLayout;
+    private Image displayImg;
+    private RectTransform selfRectTransform;
+    private LayoutElement selfLayout;
     public Transform DraggingParentTransform;
     public SkillDropper Dropper { get; set; } = null;
     public SkillDropper OwnerDropper { get; set; } = null;
@@ -24,6 +23,15 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         selfRectTransform = GetComponent<RectTransform>();
         displayImg = GetComponent<Image>();
         selfLayout = GetComponent<LayoutElement>();
+    }
+
+    public void Show() {
+        displayImg.raycastTarget = true;
+        DOTween.To(() => displayImg.color.a, x => displayImg.color = new Color(displayImg.color.r, displayImg.color.g, displayImg.color.b, x), 1f, 0.2f);
+    }
+    public void Hide() {
+        displayImg.raycastTarget = false;
+        DOTween.To(() => displayImg.color.a, x => displayImg.color = new Color(displayImg.color.r, displayImg.color.g, displayImg.color.b, x), 0.3f, 0.2f);
     }
 
     public void OnDrag(PointerEventData eventData) {
@@ -46,11 +54,11 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         displayImg.raycastTarget = true;
         DASO = null; // clear skilldata avoid duplicate skill appear.
 
-        if (Dropper != null) { Dropper.AddSkill(OwnerDropper.BoxID, draggerID); }
-        else { NonSetDropper?.AddSkill(OwnerDropper.BoxID, draggerID); }
-
+        if (Dropper != null) { Dropper.AddSkill(OwnerDropper.SelfBoxID, draggerID); }
+        else { NonSetDropper?.AddSkill(OwnerDropper.SelfBoxID, draggerID); }
         selfLayout.ignoreLayout = false;
         transform.DOScale(Vector3.one, 0.2f);
+        
     }
 
     public void UpdateDisplay(DisplayableAbilityScriptableObject newData) {
@@ -65,4 +73,5 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     public void SetOwner(GameComponent owner){
         Owner = owner;
     }
+
 }
