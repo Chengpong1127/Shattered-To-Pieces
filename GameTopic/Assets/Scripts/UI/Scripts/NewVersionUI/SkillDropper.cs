@@ -40,7 +40,6 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
         GameEvents.AbilityRunnerEvents.OnLocalInputCancelAbility += CancelAbilityHandler;
 
         transform.localScale = Vector3.zero;
-        
     }
 
     public async UniTask InitializeAnimation(){

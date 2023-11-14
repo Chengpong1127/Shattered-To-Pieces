@@ -58,11 +58,11 @@ public class SkillUIController : NetworkBehaviour {
     }
 
     public async UniTask Initialize(){
-        // init each dropper animation every 0.1s
         foreach (var dropper in Droppers) {
             dropper.InitializeAnimation().Forget();
-            await UniTask.Delay(50);
+            await UniTask.Delay(200);
         }
+        NonDropper.InitializeAnimation().Forget();
     }
 
     public void ShowSkillUI(){
