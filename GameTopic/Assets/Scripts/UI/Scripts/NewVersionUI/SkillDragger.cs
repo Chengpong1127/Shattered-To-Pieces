@@ -48,10 +48,15 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     }
 
     public void OnDrag(PointerEventData eventData) {
-        Vector3 globalMouseePos;
-        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(selfRectTransform, eventData.position, eventData.pressEventCamera, out globalMouseePos)) {
-            selfRectTransform.position = globalMouseePos;
-        }
+        selfRectTransform.anchoredPosition += eventData.delta;
+
+
+
+
+        // Vector3 globalMouseePos;
+        // if (RectTransformUtility.ScreenPointToWorldPointInRectangle(selfRectTransform, eventData.position, eventData.pressEventCamera, out globalMouseePos)) {
+        //     selfRectTransform.position = globalMouseePos;
+        // }
     }
 
     public void OnBeginDrag(PointerEventData eventData) {
