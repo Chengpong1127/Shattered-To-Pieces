@@ -96,7 +96,7 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
     }
     public void SetDisplay(int draggerID, DisplayableAbilityScriptableObject displayData, GameComponent owner) {
         if(draggerList.Count <= draggerID) { return; }
-        draggerList[draggerID].UpdateDisplay(displayData);
+        draggerList[draggerID].SetSkill(displayData);
         draggerList[draggerID].SetOwner(owner);
     }
 
