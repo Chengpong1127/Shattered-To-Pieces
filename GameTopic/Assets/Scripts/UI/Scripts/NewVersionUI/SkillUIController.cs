@@ -1,15 +1,7 @@
 using Cysharp.Threading.Tasks;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Reflection;
 using Unity.Netcode;
-using Unity.Services.Lobbies.Models;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class SkillUIController : NetworkBehaviour {
 
@@ -24,6 +16,10 @@ public class SkillUIController : NetworkBehaviour {
         Debug.Assert(Droppers != null);
         Debug.Assert(player != null);
 
+        GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText(eID);
+        GameEvents.AbilityManagerEvents.OnAbilityManagerUpdated += ServerRequestUpdateAllSkillBox;
+        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += (am, _, _) => ServerRequestUpdateAllSkillBox(am);
+        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += (am, _) => ServerRequestUpdateAllSkillBox(am);
 
         NonDropper.OnAddNewSkill += BindAbilityToEntry;
         NonDropper.draggerList.ForEach(d => {
@@ -41,13 +37,6 @@ public class SkillUIController : NetworkBehaviour {
         });
     }
 
-    private void Start() {
-        LoadUI();
-        GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText(eID);
-        GameEvents.AbilityManagerEvents.OnAbilityManagerUpdated += ServerRequestUpdateAllSkillBox;
-        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += (am, _, _) => ServerRequestUpdateAllSkillBox(am);
-        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += (am, _) => ServerRequestUpdateAllSkillBox(am);
-    }
 
     public override void OnDestroy() {
         base.OnDestroy();
@@ -60,7 +49,7 @@ public class SkillUIController : NetworkBehaviour {
     public async UniTask Initialize(){
         foreach (var dropper in Droppers) {
             dropper.InitializeAnimation().Forget();
-            await UniTask.Delay(200);
+            await UniTask.Delay(100);
         }
         NonDropper.InitializeAnimation().Forget();
     }
@@ -75,9 +64,8 @@ public class SkillUIController : NetworkBehaviour {
     }
 
     private void ServerRequestUpdateAllSkillBox(AbilityManager updatedAbilityManager){
-        if (abilityManager == updatedAbilityManager){
+        if (abilityManager == updatedAbilityManager)
             RefreshAllSkillBox_ServerRpc();
-        }
     }
 
     public void LoadUI(){
@@ -102,6 +90,8 @@ public class SkillUIController : NetworkBehaviour {
     private void BindAbilityToEntry(int origin, int newID, int abilityID) {
         if (IsOwner) {
             BindAbilityToEntry_ServerRpc(origin, newID, abilityID);
+
+            // TODO: Predict the ability binding.
         }
     }
 
@@ -114,41 +104,38 @@ public class SkillUIController : NetworkBehaviour {
     }
     [ServerRpc(RequireOwnership = false)]
     void RefreshAllSkillBox_ServerRpc() {
-        if (IsServer) {
-            abilityManager = player.SelfDevice.AbilityManager;
+        abilityManager = player.SelfDevice.AbilityManager;
+        ClearAllSkills();
+        ShowSkills();
+    }
 
-            // clear all skills
-            int abilityID = 0;
-            int entryID = 0;
-            NonDropper.draggerList.ForEach(d => {
-                RefreshSkillBox_ClientRpc(-1, abilityID, null, 0);
-                abilityID++;
+    void ClearAllSkills() {
+        NonDropper.draggerList.ForEach(d => {
+            RefreshSkillBox_ClientRpc(-1, NonDropper.draggerList.IndexOf(d), null, 0);
+        });
+        Droppers.ForEach(dropper => {
+            dropper.draggerList.ForEach(dragger => {
+                RefreshSkillBox_ClientRpc(Droppers.IndexOf(dropper), dropper.draggerList.IndexOf(dragger), null, 0);
             });
-            Droppers.ForEach(d => {
-                abilityID = 0;
-                d.draggerList.ForEach(d => {
-                    RefreshSkillBox_ClientRpc(entryID, abilityID, null, 0);
-                    abilityID++;
-                });
-                entryID++;
-            });
+        });
+    }
 
-            // show skills
-            abilityID = 0;
-            for (int i = 0; i < 10; ++i) {
-                abilityID = 0;
-                abilityManager.AbilityInputEntries[i].Abilities.ForEach(a => {
-                    RefreshSkillBox_ClientRpc(i, abilityID, a.AbilityScriptableObject.AbilityName, a.OwnerGameComponentID);
-                    abilityID++;
-                });
-            }
+    void ShowSkills() {
+        int abilityID = 0;
 
+        for (int i = 0; i < 10; ++i) {
             abilityID = 0;
-            abilityManager.GetAbilitiesOutOfEntry().ForEach(a => {
-                RefreshSkillBox_ClientRpc(-1, abilityID, a.AbilityScriptableObject.AbilityName, a.OwnerGameComponentID);
+            abilityManager.AbilityInputEntries[i].Abilities.ForEach(a => {
+                RefreshSkillBox_ClientRpc(i, abilityID, a.AbilityScriptableObject.AbilityName, a.OwnerGameComponentID);
                 abilityID++;
             });
         }
+
+        abilityID = 0;
+        abilityManager.GetAbilitiesOutOfEntry().ForEach(a => {
+            RefreshSkillBox_ClientRpc(-1, abilityID, a.AbilityScriptableObject.AbilityName, a.OwnerGameComponentID);
+            abilityID++;
+        });
     }
 
     [ClientRpc]

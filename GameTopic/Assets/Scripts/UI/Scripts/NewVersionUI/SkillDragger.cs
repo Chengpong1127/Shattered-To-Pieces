@@ -73,10 +73,12 @@ public class SkillDragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         DASO = newData;
         if (DASO == null) {
             gameObject.SetActive(false);
+            displayImg.sprite = null;
         }else{
             if (displayImg.sprite != DASO.Image){
                 displayImg.sprite = DASO.Image;
-                transform.DOPunchScale(Vector3.one * 0.2f, 0.2f);
+                if (!DOTween.IsTweening(transform))
+                    transform.DOPunchScale(Vector3.one * 0.2f, 0.2f);
             }
             EnergyCostText.text = DASO.EnergyCost.ToString();
             gameObject.SetActive(true);

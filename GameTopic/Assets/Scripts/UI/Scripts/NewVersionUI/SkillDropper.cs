@@ -46,7 +46,7 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
         RebindBTNImg.color = new Color(RebindBTNImg.color.r, RebindBTNImg.color.g, RebindBTNImg.color.b, 0.5f);
         await UniTask.WhenAll(
             transform.DOScale(Vector3.one, 0.2f).ToUniTask(),
-            DOTween.To(() => RebindBTNImg.color, x => RebindBTNImg.color = x, Color.white, 0.2f).ToUniTask()
+            RebindBTNImg.DOFade(1f, 0.2f).ToUniTask()
         );
     }
 
@@ -54,32 +54,32 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
         RebindBTNImg.raycastTarget = true;
         button.interactable = true;
         draggerList.ForEach(d => d.Show());
-        await DOTween.To(() => RebindBTNImg.color.a, x => RebindBTNImg.color = new Color(RebindBTNImg.color.r, RebindBTNImg.color.g, RebindBTNImg.color.b, x), 1f, 0.2f).ToUniTask();
+        await RebindBTNImg.DOFade(1f, 0.2f).ToUniTask();
     }
     public async void Hide(){
         RebindBTNImg.raycastTarget = false;
         button.interactable = false;
         draggerList.ForEach(d => d.Hide());
-        await DOTween.To(() => RebindBTNImg.color.a, x => RebindBTNImg.color = new Color(RebindBTNImg.color.r, RebindBTNImg.color.g, RebindBTNImg.color.b, x), 0.5f, 0.2f).ToUniTask();
+        await RebindBTNImg.DOFade(0.5f, 0.2f).ToUniTask();
     }
 
     private async void StartAbilityHandler(int abilityID){
         if (abilityID == SelfBoxID){
             if (IsShowing){
-                await DOTween.To(() => RebindBTNImg.color, x => RebindBTNImg.color = x, Color.gray, 0.2f).ToUniTask();
+                await RebindBTNImg.DOColor(Color.gray, 0.2f).ToUniTask();
             }
             else{
-                await DOTween.To(() => RebindBTNImg.color, x => RebindBTNImg.color = x, new Color(Color.gray.r, Color.gray.g, Color.gray.b, 0.5f), 0.2f).ToUniTask();
+                await RebindBTNImg.DOColor(new Color(Color.gray.r, Color.gray.g, Color.gray.b, 0.5f), 0.2f).ToUniTask();
             }
         }
     }
     private async void CancelAbilityHandler(int abilityID){
         if (abilityID == SelfBoxID){
             if (IsShowing){
-                await DOTween.To(() => RebindBTNImg.color, x => RebindBTNImg.color = x, Color.white, 0.2f).ToUniTask();
+                await RebindBTNImg.DOColor(Color.white, 0.2f).ToUniTask();
             }
             else{
-                await DOTween.To(() => RebindBTNImg.color, x => RebindBTNImg.color = x, new Color(Color.white.r, Color.white.g, Color.white.b, 0.5f), 0.2f).ToUniTask();
+                await RebindBTNImg.DOColor(new Color(Color.white.r, Color.white.g, Color.white.b, 0.5f), 0.2f).ToUniTask();
             }
         }
     }
@@ -110,11 +110,12 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
         
     }
     private async UniTask SetKeyAnimation(){
+        if (DOTween.IsTweening(transform)) { return; }
         await UniTask.WhenAll(
             transform.DOPunchScale(Vector3.one * 0.2f, 0.2f).ToUniTask(),
-            DOTween.To(() => RebindBTNImg.color, x => RebindBTNImg.color = x, Color.green, 0.2f).ToUniTask()
+            RebindBTNImg.DOColor(Color.green, 0.2f).ToUniTask()
         );
-        await DOTween.To(() => RebindBTNImg.color, x => RebindBTNImg.color = x, Color.white, 0.2f).ToUniTask();
+        await RebindBTNImg.DOColor(Color.white, 0.2f).ToUniTask();
         
     }
     public void RebindKeyHandler_ButtonAction(){
@@ -123,13 +124,11 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
     }
     public async void StartRebind(){
         await UniTask.NextFrame();
-        colorTween = DOTween.To(() => RebindBTNImg.color, x => RebindBTNImg.color = x, Color.red, 0.5f)
-            .SetLoops(-1, LoopType.Yoyo);
+        colorTween = RebindBTNImg.DOColor(Color.red, 0.5f).SetLoops(-1, LoopType.Yoyo);
     }
     public void StopRebind(){
         if (colorTween != null){
-            colorTween.Kill();
-            RebindBTNImg.color = Color.white;
+            colorTween.Rewind();
         }
     }
 

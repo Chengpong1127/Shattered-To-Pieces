@@ -4,12 +4,11 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Unity.Netcode;
+using DG.Tweening.Core;
+using DG.Tweening;
 public class GameComponentSelectedHandler : BaseGameEventHandler
 {
-    public Color TargetColor = new Color(1, 1, 1, 0.5f);
-    public float BlinkDuration = 0.5f;
-    public AnimationCurve BlinkCurve;
-    private Dictionary<GameComponent, CancellationTokenSource> GameComponentToToken = new();
+    private Dictionary<SpriteRenderer, TweenerCore<Color, Color, DG.Tweening.Plugins.Options.ColorOptions>> _colorTweenMap = new();
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -29,54 +28,30 @@ public class GameComponentSelectedHandler : BaseGameEventHandler
         switch (selected)
         {
             case true:
-                if (!GameComponentToToken.ContainsKey(gameComponent))
-                {
-                    var tokenSource = new CancellationTokenSource();
-                    GameComponentToToken.Add(gameComponent, tokenSource);
-                    StartSelectionAnimation(gameComponent, tokenSource.Token);
-                }
+                gameComponent.BodyRenderers.ToList().ForEach(renderer => {
+                    if (renderer is SpriteRenderer spriteRenderer){
+                        if (!_colorTweenMap.ContainsKey(spriteRenderer)) {
+                            _colorTweenMap[spriteRenderer] = (renderer as SpriteRenderer)
+                                .DOFade(0.5f, 0.3f)
+                                .SetEase(Ease.InOutSine)
+                                .SetLoops(-1, LoopType.Yoyo);
+                        }
+                    }
+                });
                 break;
             case false:
-                if (GameComponentToToken.ContainsKey(gameComponent))
-                {
-                    var tokenSource = GameComponentToToken[gameComponent];
-                    tokenSource.Cancel();
-                    GameComponentToToken.Remove(gameComponent);
-                }
+                gameComponent.BodyRenderers.ToList().ForEach(renderer => {
+                    if (renderer is SpriteRenderer spriteRenderer){
+                        if (_colorTweenMap.ContainsKey(spriteRenderer)) {
+                            _colorTweenMap[spriteRenderer].SmoothRewind();
+                            _colorTweenMap.Remove(spriteRenderer);
+                        }
+                    }
+                });
                 break;
         }
     }
 
-    private void StartSelectionAnimation(GameComponent gameComponent, CancellationToken token)
-    {
-        var renderers = gameComponent.BodyRenderers;
-        renderers.Select(renderer => renderer as SpriteRenderer).
-            Where(renderer => renderer != null).
-            ToList().ForEach(async renderer => {
-                Color originalColor = renderer.color;
-                Color targetColor = TargetColor;
-                try{
-                    while (true)
-                    {
-                        await RunColorAnimation(renderer, originalColor, targetColor, token);
-                    }
-                }catch (System.OperationCanceledException){
-                    renderer.color = originalColor;
-                }catch (System.Exception){
-                    return;
-                }
-                renderer.color = originalColor;
-            });
-    }
-    private async UniTask RunColorAnimation(SpriteRenderer renderer, Color originalColor, Color targetColor, CancellationToken token)
-    {
-        float elapsedTime = 0f;
-        while (elapsedTime < 1)
-        {
-            renderer.color = Color.Lerp(originalColor, targetColor, BlinkCurve.Evaluate(elapsedTime));
-            elapsedTime += Time.deltaTime / BlinkDuration;
-            await UniTask.Yield(PlayerLoopTiming.Update, token);
-        }
-    }
+
 
 }

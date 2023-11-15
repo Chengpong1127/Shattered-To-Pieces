@@ -8,7 +8,8 @@ public class GameLocalPlayerManager: LocalPlayerManager{
 
     [SerializeField] EndGameUI EndGame;
 
-    private void SetCamera(){
+    private async void SetCamera(){
+        await UniTask.WaitUntil(() => Player.GetTracedTransform() != null);
         VirtualCamera.Follow = Player.GetTracedTransform();
     }
     private void Loading_Exit(){

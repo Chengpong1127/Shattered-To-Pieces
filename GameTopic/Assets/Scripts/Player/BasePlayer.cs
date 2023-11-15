@@ -106,6 +106,6 @@ public class BasePlayer : NetworkBehaviour
 
     public Transform GetTracedTransform(){
         var obj = Utils.GetLocalGameObjectByNetworkID(RootNetworkObjectID.Value);
-        return obj.transform;
+        return obj?.transform;
     }
 }
