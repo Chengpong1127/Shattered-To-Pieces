@@ -8,7 +8,6 @@ public class GameLoadingAnimation : BaseGameEventHandler
         await UniTask.WaitUntil(() => IsClient || IsServer);
         if (IsClient)
         {
-            Debug.Log("Start");
             LocalPlayerManager.StateMachine.Changed += OnManagerStateChanged;
         }
     }
@@ -16,7 +15,6 @@ public class GameLoadingAnimation : BaseGameEventHandler
     private void OnManagerStateChanged(LocalPlayerManager.LocalPlayerStates newState){
         if (newState == LocalPlayerManager.LocalPlayerStates.Gaming){
             LoadingAnimator.SetTrigger("End");
-            Debug.Log("End");
         }
     }
 }
