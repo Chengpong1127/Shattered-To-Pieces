@@ -836,7 +836,7 @@ MonoBehaviour:
   MaxHealthAttribute: {fileID: 11400000, guid: e0d843f15ad51485c8b6d6f25aa2554f, type: 2}
   isDisplay: 1
   RendererList:
-  - {fileID: 0}
+  - {fileID: 6671657134145695577}
 --- !u!95 &312347848609835718
 Animator:
   serializedVersion: 5

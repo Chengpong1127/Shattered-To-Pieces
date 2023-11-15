@@ -11,6 +11,7 @@ public class Loader : BaseCoreComponent, IEntityCollisionable
         var entity = other.GetComponent<Entity>();
         if (entity != null) {
             if (entity is BaseCoreComponent coreComponent && HasTheSameRootWith(coreComponent)) return;
+            else entity.gameObject.GetComponent<Connector>().Disconnect();
             OnCollisionEntity?.Invoke(entity);
         }
     }
