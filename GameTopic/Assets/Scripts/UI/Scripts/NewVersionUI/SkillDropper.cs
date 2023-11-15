@@ -9,7 +9,6 @@ using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using DG.Tweening.Core;
 using System;
-using UnityEditor.Experimental.GraphView;
 
 public class SkillDropper : MonoBehaviour, IDropHandler {
     [SerializeField] public List<SkillDragger> draggerList;
@@ -97,7 +96,7 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
     }
     public void SetDisplay(int draggerID, DisplayableAbilityScriptableObject displayData, GameComponent owner) {
         if(draggerList.Count <= draggerID) { return; }
-        draggerList[draggerID].UpdateDisplay(displayData);
+        draggerList[draggerID].SetSkill(displayData);
         draggerList[draggerID].SetOwner(owner);
     }
 
