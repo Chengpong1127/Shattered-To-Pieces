@@ -78,6 +78,7 @@ public class StartSceneUIManager : MonoBehaviour
         LocalGameManager.Instance.EnterAssemblyRoom();
     }
     private void OnCreateLobbyHandler(string lobbyName){
+        if (lobbyName == "") lobbyName = "Room";
         LocalGameManager.Instance.CreateLobby(lobbyName);
         CreateLobbyPanel.ExitScene();
     }
