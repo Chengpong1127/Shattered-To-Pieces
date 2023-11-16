@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 299067806116307587}
   - component: {fileID: 1505228325927325571}
   - component: {fileID: 833192562924498308}
+  - component: {fileID: 5843828596503208279}
   m_Layer: 5
   m_Name: SingleLobbyItem
   m_TagString: Untagged
@@ -325,6 +326,19 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &5843828596503208279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5110626049913700950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f5a77c6a9cf48e29888671c33b4570, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemTransform: {fileID: 3352288446653536968}
 --- !u!1 &6424223770758494292
 GameObject:
   m_ObjectHideFlags: 0

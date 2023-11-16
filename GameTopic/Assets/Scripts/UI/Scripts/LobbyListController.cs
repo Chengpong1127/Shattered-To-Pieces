@@ -5,6 +5,7 @@ using Unity.Services.Lobbies.Models;
 using System.Linq;
 using System;
 using TMPro;
+using Cysharp.Threading.Tasks;
 
 public class LobbyListController : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class LobbyListController : MonoBehaviour
     [SerializeField]
     private GameObject LoadingObject;
     private List<LobbyItemUIController> _lobbyItems = new();
+    private List<ListItemAnimation> _listItemAnimations = new();
     void Awake()
     {
         Debug.Assert(LobbyItemPrefab != null);
@@ -24,6 +26,7 @@ public class LobbyListController : MonoBehaviour
     }
     public void StartDisplay(){
         _lobbyItems.ForEach(lobbyItem => Destroy(lobbyItem.gameObject));
+        _listItemAnimations.Clear();
         _lobbyItems.Clear();
         NoLobbyText.enabled = false;
         LoadingObject.SetActive(true);
@@ -37,10 +40,26 @@ public class LobbyListController : MonoBehaviour
         }else{
             lobbies.ForEach(lobby =>{
                 var lobbyItem = Instantiate(LobbyItemPrefab, transform).GetComponent<LobbyItemUIController>();
+                var itemAnimation = lobbyItem.GetComponent<ListItemAnimation>();
+                if (itemAnimation != null)
+                {
+                    _listItemAnimations.Add(itemAnimation);
+                }
                 lobbyItem.SetLobby(lobby);
                 lobbyItem.OnPressJoin += OnPlayerSelectLobby;
                 _lobbyItems.Add(lobbyItem);
+                lobbyItem.gameObject.SetActive(false);
             });
+            ShowListAnimation();
+        }
+    }
+    private async void ShowListAnimation()
+    {
+        foreach (var item in _listItemAnimations)
+        {
+            item.gameObject.SetActive(true);
+            item.ShowAnimation();
+            await UniTask.WaitForSeconds(0.1f);
         }
     }
 }
