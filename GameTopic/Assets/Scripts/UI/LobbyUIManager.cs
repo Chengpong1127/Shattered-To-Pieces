@@ -5,6 +5,7 @@ using Unity.Services.Lobbies.Models;
 using Cysharp.Threading.Tasks;
 using System;
 using Unity.Services.Lobbies;
+using UnityEngine.UI;
 
 public class LobbyUIManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class LobbyUIManager : MonoBehaviour
     private PlayerListController _playerListController;
     [SerializeField]
     private ReadyButtonController _readyButtonController;
+    [SerializeField]
+    private TMP_Text _playerCountText;
     private LobbyManager _lobbyManager;
     public event Action OnExitLobby;
     void Awake()
@@ -22,6 +25,7 @@ public class LobbyUIManager : MonoBehaviour
         Debug.Assert(_lobbyName != null);
         Debug.Assert(_playerListController != null);
         Debug.Assert(_readyButtonController != null);
+        Debug.Assert(_playerCountText != null);
 
         _readyButtonController.OnReadyButtonPressed += OnReadyButtonPressed;
     }
@@ -29,6 +33,7 @@ public class LobbyUIManager : MonoBehaviour
         _lobbyManager = lobbyManager;
         await UniTask.WaitUntil(() => lobbyManager.CurrentLobby != null);
         _lobbyName.text = lobbyManager.CurrentLobby.Name;
+        _playerCountText.text = GetPlayerCountText(lobbyManager.CurrentLobby);
         UpdatePlayerList();
 
         _lobbyManager.OnLobbyChanged += LobbyChangedHandler;
@@ -44,6 +49,7 @@ public class LobbyUIManager : MonoBehaviour
             UpdatePlayerList();
         if(changed.LobbyDeleted && _lobbyManager.Identity != LobbyManager.LobbyIdentity.Host)
             OnExitLobby?.Invoke();
+        _playerCountText.text = GetPlayerCountText(_lobbyManager.CurrentLobby);
     }
 
     public void ExitLobby_ButtonAction(){
@@ -69,5 +75,9 @@ public class LobbyUIManager : MonoBehaviour
         var readyPlayers = _lobbyManager.CurrentLobby.Players.Where(player => player.Data["Ready"].Value == "true").ToList();
         var localPlayerIndex = _lobbyManager.CurrentLobby.Players.FindIndex(player => player.Id == _lobbyManager.SelfPlayer.Id);
         _playerListController.SetPlayerList(_lobbyManager.CurrentLobby.Players, readyPlayers, localPlayerIndex);
+    }
+
+    private string GetPlayerCountText(Lobby lobby){
+        return lobby.Players.Count.ToString() + "/" + lobby.MaxPlayers.ToString();
     }
 }
