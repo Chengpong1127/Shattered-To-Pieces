@@ -1,36 +1,29 @@
 using UnityEngine;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
+using UnityEngine.UI;
 
-public class JumpOutPanel : BaseGamePanel
+public class BackgroundWidget : GameWidget
 {
-    public CanvasGroup Background;
-    public Transform PanelTransform;
-    protected override void Awake()
+    [SerializeField]
+    private Image BackgroundImage;
+    [SerializeField]
+    private Transform MainPanel;
+
+    protected override async UniTask ShowAnimation()
     {
-        base.Awake();
-        PanelTransform.localScale = Vector3.zero;
-        Background.alpha = 0;
-        Background.interactable = false;
-        Background.blocksRaycasts = false;
-        gameObject.SetActive(false);
-    }
-    protected override async UniTask EnterSceneAnimation(){
-        gameObject.SetActive(true);
-        Background.interactable = true;
-        Background.blocksRaycasts = true;
+        BackgroundImage.color = new Color(0, 0, 0, 0);
+        MainPanel.localScale = Vector3.zero;
         await UniTask.WhenAll(
-            Background.DOFade(1, 0.2f).ToUniTask(),
-            PanelTransform.DOScale(1, 0.5f).SetEase(Ease.OutBack).ToUniTask()
+            BackgroundImage.DOFade(0.5f, Duration).ToUniTask(),
+            MainPanel.DOScale(1, Duration).SetEase(EaseType).ToUniTask()
         );
     }
-    protected override async UniTask ExitSceneAnimation(){
+    protected override async UniTask CloseAnimation()
+    {
         await UniTask.WhenAll(
-            Background.DOFade(0, 0.2f).ToUniTask(),
-            PanelTransform.DOScale(0, 0.5f).SetEase(Ease.InBack).ToUniTask()
+            BackgroundImage.DOFade(0, Duration).ToUniTask(),
+            MainPanel.DOScale(0, Duration).SetEase(EaseType).ToUniTask()
         );
-        Background.interactable = false;
-        Background.blocksRaycasts = false;
-        gameObject.SetActive(false);
     }
 }

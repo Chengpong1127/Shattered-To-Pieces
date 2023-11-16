@@ -6,9 +6,9 @@ using UnityEngine;
 public class StartSceneUIManager : MonoBehaviour
 {
     [SerializeField]
-    private BaseGamePanel LobbyListPanel;
+    private GameWidget LobbyListPanel;
     [SerializeField]
-    private BaseGamePanel CreateLobbyPanel;
+    private GameWidget CreateLobbyPanel;
 
     [SerializeField]
     private LobbyUIManager LobbyUIManager;
@@ -54,7 +54,7 @@ public class StartSceneUIManager : MonoBehaviour
 
     public async void ShowLobbyList_ButtonAction()
     {
-        LobbyListPanel.EnterScene();
+        LobbyListPanel.Show();
         LobbyListController lobbyListController = LobbyListPanel.GetComponentInChildren<LobbyListController>();
         lobbyListController.OnPlayerSelectLobby += PlayerSelectLobbyHandler;
         lobbyListController.StartDisplay();
@@ -62,11 +62,11 @@ public class StartSceneUIManager : MonoBehaviour
         lobbyListController.SetLobbyList(Lobbies.ToList());
     }
     private void PlayerSelectLobbyHandler(Lobby lobby){
-        LobbyListPanel.ExitScene();
+        LobbyListPanel.Close();
         LocalGameManager.Instance.JoinLobby(lobby);
     }
     public void ShowCreateLobby_ButtonAction(){
-        CreateLobbyPanel.EnterScene();
+        CreateLobbyPanel.Show();
         CreateLobbyPanel.GetComponentInChildren<CreateLobbyPanelController>().OnCreateLobby += OnCreateLobbyHandler;
     }
     private void PlayerEnterLobbyHandler(){
@@ -80,7 +80,7 @@ public class StartSceneUIManager : MonoBehaviour
     private void OnCreateLobbyHandler(string lobbyName){
         if (lobbyName == "") lobbyName = "Room";
         LocalGameManager.Instance.CreateLobby(lobbyName);
-        CreateLobbyPanel.ExitScene();
+        CreateLobbyPanel.Close();
     }
     private void OnExitLobbyHandler(){
         LobbyUIManager.ExitLobbyMode();

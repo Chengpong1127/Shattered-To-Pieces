@@ -7,10 +7,10 @@ public class PendantController : MonoBehaviour
 {
     [SerializeField]
     private GameObject ExitPanelPrefab;
-    private JumpOutPanel ExitPanel;
+    private BackgroundWidget ExitPanel;
     void Awake()
     {
-        ExitPanel = Instantiate(ExitPanelPrefab, transform.parent).GetComponent<JumpOutPanel>();
+        ExitPanel = Instantiate(ExitPanelPrefab, transform.parent).GetComponent<BackgroundWidget>();
         ExitPanel.OnSendMessage += SendMessageHandler;
     }
     private void SendMessageHandler(string message)
@@ -21,7 +21,7 @@ public class PendantController : MonoBehaviour
                 LocalPlayerManager.RoomInstance.ExitGame();
                 break;
             case "Cancel":
-                ExitPanel.ExitScene();
+                ExitPanel.Close();
                 break;
             default:
                 break;
@@ -33,7 +33,7 @@ public class PendantController : MonoBehaviour
     }
     public void OnExitClick()
     {
-        ExitPanel.EnterScene();
+        ExitPanel.Show();
     }
     public void OnDuckClick()
     {
