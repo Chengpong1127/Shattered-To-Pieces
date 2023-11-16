@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using MonsterLove.StateMachine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Unity.Services.Lobbies;
 
 
 public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
@@ -49,21 +50,17 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     }
     #region Lobby
 
-    public async void CreateLobby(string lobbyName){
+    public async UniTask<bool> CreateLobby(string lobbyName){
+        try{
+            await LobbyManager.CreateLobby(lobbyName, ResourceManager.Instance.LoadMapInfo("FightingMap"));
+        }catch(LobbyServiceException e){
+            Debug.Log(e.Message);
+            return false;
+        }
         StateMachine.ChangeState(GameState.Lobby);
-        LobbyManager.OnPlayerJoinOrLeave += () => {
-            Debug.Log("Player Join or Leave");
-        };
-        LobbyManager.OnPlayerReady += player => {
-            Debug.Log("Player " + player.Id + " is ready");
-        };
-        LobbyManager.OnPlayerUnready += player => {
-            Debug.Log("Player " + player.Id + " is unready");
-        };
-
         LobbyManager.OnLobbyReady += LobbyReadyHandler;
-        await LobbyManager.CreateLobby(lobbyName, ResourceManager.Instance.LoadMapInfo("FightingMap"));
         Debug.Log("Lobby Created with ID: " + LobbyManager.CurrentLobby.Id);
+        return true;
     }
     private void LobbyReadyHandler(LobbyManager.PlayerLobbyReadyInfo playerLobbyReadyInfo){
         LobbyManager.OnLobbyReady -= LobbyReadyHandler;
@@ -83,21 +80,17 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         return await LobbyManager.GetAllAvailableLobby();
     }
 
-    public async void JoinLobby(Lobby lobby){
+    public async UniTask<bool> JoinLobby(Lobby lobby){
+        try {
+            await LobbyManager.JoinLobby(lobby);
+        }catch(LobbyServiceException e){
+            Debug.Log(e.Message);
+            return false;
+        }
         StateMachine.ChangeState(GameState.Lobby);
-        LobbyManager.OnPlayerReady += player => {
-            Debug.Log("Player " + player.Id + " is ready");
-        };
-        LobbyManager.OnPlayerReady += player => {
-            Debug.Log("Player " + player.Id + " is ready");
-        };
-        LobbyManager.OnPlayerUnready += player => {
-            Debug.Log("Player " + player.Id + " is unready");
-        };
-        await LobbyManager.JoinLobby(lobby);
-
         LobbyManager.OnLobbyReady += LobbyReadyHandler;
         Debug.Log("Lobby Joined with ID: " + LobbyManager.CurrentLobby.Id);
+        return true;
     }
 
     public void PlayerReady(){
@@ -114,6 +107,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     public void PlayerExitLobby(){
         Debug.Assert(StateMachine.State == GameState.Lobby);
         LobbyManager.LeaveLobby();
+        LobbyManager.OnLobbyReady -= LobbyReadyHandler;
         StateMachine.ChangeState(GameState.Home);
         Debug.Log("Player Exit Lobby");
     }

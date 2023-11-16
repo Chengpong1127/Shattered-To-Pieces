@@ -61,9 +61,9 @@ public class StartSceneUIManager : MonoBehaviour
         var Lobbies = await LocalGameManager.Instance.GetAllAvailableLobby();
         lobbyListController.SetLobbyList(Lobbies.ToList());
     }
-    private void PlayerSelectLobbyHandler(Lobby lobby){
+    private async void PlayerSelectLobbyHandler(Lobby lobby){
         LobbyListPanel.Close();
-        LocalGameManager.Instance.JoinLobby(lobby);
+        await LocalGameManager.Instance.JoinLobby(lobby);
     }
     public void ShowCreateLobby_ButtonAction(){
         CreateLobbyPanel.Show();
