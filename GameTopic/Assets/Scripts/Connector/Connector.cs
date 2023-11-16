@@ -100,6 +100,9 @@ public class Connector : NetworkBehaviour, IConnector
         }
 
     }
+    public void BreakConnection(){
+        OnJointBreak?.Invoke();
+    }
     void OnJointBreak2D(Joint2D brokenJoint)
     {
         OnJointBreak?.Invoke();
