@@ -35,7 +35,13 @@ public class LobbyManager
             Player = SelfPlayer,
             Data = GetDefaultLobbyData(defaultMapInfo.MapName)
             };
-        CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, defaultMapInfo.MapPlayerCount, createLobbyOptions);
+        try{
+            CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, defaultMapInfo.MapPlayerCount, createLobbyOptions);
+        }catch(LobbyServiceException e){
+            CurrentLobby = null;
+            throw e;
+        }
+        
         await BindHostLobbyHandler(CurrentLobby);
         Identity = LobbyIdentity.Host;
         OnPlayerJoinOrLeave?.Invoke();

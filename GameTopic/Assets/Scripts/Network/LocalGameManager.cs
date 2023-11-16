@@ -50,17 +50,17 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     }
     #region Lobby
 
-    public async UniTask<bool> CreateLobby(string lobbyName){
+    public async UniTask CreateLobby(string lobbyName){
         try{
             await LobbyManager.CreateLobby(lobbyName, ResourceManager.Instance.LoadMapInfo("FightingMap"));
+            StateMachine.ChangeState(GameState.Lobby);
+            LobbyManager.OnLobbyReady += LobbyReadyHandler;
+            Debug.Log("Lobby Created with ID: " + LobbyManager.CurrentLobby.Id);
         }catch(LobbyServiceException e){
             Debug.Log(e.Message);
-            return false;
+            StateMachine.ChangeState(GameState.Home);
+            throw e;
         }
-        StateMachine.ChangeState(GameState.Lobby);
-        LobbyManager.OnLobbyReady += LobbyReadyHandler;
-        Debug.Log("Lobby Created with ID: " + LobbyManager.CurrentLobby.Id);
-        return true;
     }
     private void LobbyReadyHandler(LobbyManager.PlayerLobbyReadyInfo playerLobbyReadyInfo){
         LobbyManager.OnLobbyReady -= LobbyReadyHandler;
@@ -80,17 +80,17 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         return await LobbyManager.GetAllAvailableLobby();
     }
 
-    public async UniTask<bool> JoinLobby(Lobby lobby){
+    public async UniTask JoinLobby(Lobby lobby){
         try {
             await LobbyManager.JoinLobby(lobby);
+            StateMachine.ChangeState(GameState.Lobby);
+            LobbyManager.OnLobbyReady += LobbyReadyHandler;
+            Debug.Log("Lobby Joined with ID: " + LobbyManager.CurrentLobby.Id);
         }catch(LobbyServiceException e){
             Debug.Log(e.Message);
-            return false;
+            StateMachine.ChangeState(GameState.Home);
+            throw e;
         }
-        StateMachine.ChangeState(GameState.Lobby);
-        LobbyManager.OnLobbyReady += LobbyReadyHandler;
-        Debug.Log("Lobby Joined with ID: " + LobbyManager.CurrentLobby.Id);
-        return true;
     }
 
     public void PlayerReady(){

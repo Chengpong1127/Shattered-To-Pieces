@@ -17,14 +17,13 @@ public abstract class GameWidget : MonoBehaviour
 
     public event Action<string> OnSendMessage;
     public StateMachine<GamePanelState> StateMachine;
-    public bool IsShowing => StateMachine.State == GamePanelState.Show;
-    public bool IsClose => StateMachine.State == GamePanelState.Close;
+    public bool IsShowing => StateMachine == null ? false : StateMachine.State == GamePanelState.Show;
+    public bool IsClose => StateMachine == null ? true : StateMachine.State == GamePanelState.Close;
     protected virtual void Awake()
     {
         CanvasGroup = GetComponent<CanvasGroup>();
         StateMachine = StateMachine<GamePanelState>.Initialize(this);
         StateMachine.ChangeState(GamePanelState.Close);
-        gameObject.SetActive(false);
     }
 
     public async void Show(){

@@ -14,6 +14,8 @@ public class StartSceneUIManager : MonoBehaviour
     private LobbyUIManager LobbyUIManager;
     [SerializeField]
     private GameObject HomePanel;
+    [SerializeField]
+    private NotificationWindowController NotificationWindowController;
     
 
     void Awake()
@@ -22,9 +24,7 @@ public class StartSceneUIManager : MonoBehaviour
         Debug.Assert(CreateLobbyPanel != null);
         Debug.Assert(LobbyUIManager != null);
         Debug.Assert(HomePanel != null);
-
-        LobbyListPanel.gameObject.SetActive(true);
-        CreateLobbyPanel.gameObject.SetActive(true);
+        Debug.Assert(NotificationWindowController != null);
         LobbyUIManager.OnExitLobby += OnExitLobbyHandler;
         HomePanel.SetActive(true);
     }
@@ -40,12 +40,10 @@ public class StartSceneUIManager : MonoBehaviour
     private void GameStateMachineChangedHandler(LocalGameManager.GameState state){
         switch(state){
             case LocalGameManager.GameState.Home:
-                LobbyUIManager.gameObject.SetActive(false);
-                HomePanel.SetActive(true);
+                EnterHome();
                 break;
             case LocalGameManager.GameState.Lobby:
-                HomePanel.SetActive(false);
-                PlayerEnterLobbyHandler();
+                EnterLobby();
                 break;
             
         }
@@ -62,14 +60,25 @@ public class StartSceneUIManager : MonoBehaviour
         lobbyListController.SetLobbyList(Lobbies.ToList());
     }
     private async void PlayerSelectLobbyHandler(Lobby lobby){
-        LobbyListPanel.Close();
-        await LocalGameManager.Instance.JoinLobby(lobby);
+        LobbyListPanel.GetComponentInChildren<LobbyListController>().OnPlayerSelectLobby -= PlayerSelectLobbyHandler;
+        try{
+            await LocalGameManager.Instance.JoinLobby(lobby);
+            LobbyListPanel.Close();
+        }catch(LobbyServiceException){
+            await NotificationWindowController.ShowNotification("Join Lobby Failed", "Please try again later");
+            LobbyListPanel.Close();
+        }
     }
     public void ShowCreateLobby_ButtonAction(){
         CreateLobbyPanel.Show();
         CreateLobbyPanel.GetComponentInChildren<CreateLobbyPanelController>().OnCreateLobby += OnCreateLobbyHandler;
     }
-    private void PlayerEnterLobbyHandler(){
+    private void EnterHome(){
+        HomePanel.SetActive(true);
+        LobbyUIManager.gameObject.SetActive(false);
+    }
+    private void EnterLobby(){
+        HomePanel.SetActive(false);
         LobbyUIManager.gameObject.SetActive(true);
         LobbyUIManager.SetLobbyManager(LocalGameManager.Instance.LobbyManager);
     }
@@ -77,10 +86,18 @@ public class StartSceneUIManager : MonoBehaviour
     public void EnterAssemblyRoom_ButtonAction(){
         LocalGameManager.Instance.EnterAssemblyRoom();
     }
-    private void OnCreateLobbyHandler(string lobbyName){
+    private async void OnCreateLobbyHandler(string lobbyName){
+        CreateLobbyPanel.GetComponentInChildren<CreateLobbyPanelController>().OnCreateLobby -= OnCreateLobbyHandler;
         if (lobbyName == "") lobbyName = "Room";
-        LocalGameManager.Instance.CreateLobby(lobbyName);
-        CreateLobbyPanel.Close();
+        try{
+            await LocalGameManager.Instance.CreateLobby(lobbyName);
+            CreateLobbyPanel.Close();
+        }catch(LobbyServiceException e){
+            Debug.Log(e.Message);
+            await NotificationWindowController.ShowNotification("Create Lobby Failed", "Please try again later");
+            CreateLobbyPanel.Close();
+        }
+        
     }
     private void OnExitLobbyHandler(){
         LobbyUIManager.ExitLobbyMode();
