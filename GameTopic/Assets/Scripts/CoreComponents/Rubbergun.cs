@@ -14,6 +14,7 @@ public class Rubbergun :BaseCoreComponent,IAimable
     public void EndAim(Vector2 aimVector)
     {
         var b=Instantiate(bullet,new Vector3(ShootPoint.position.x, ShootPoint.position.y, 0),Quaternion.identity);
+        b.GetComponentInChildren<SpriteRenderer>().flipX = (this.transform.localScale.x>0)?true:false;
         b.GetComponent<NetworkObject>()?.Spawn();
         b.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         b.GetComponent<Rigidbody2D>().velocity = aimVector * 0.05f;

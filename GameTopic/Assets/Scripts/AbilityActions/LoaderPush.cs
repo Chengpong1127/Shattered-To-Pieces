@@ -18,7 +18,8 @@ public class LoaderPush : DisplayableAbilityScriptableObject {
 
     public class LoaderPushSpec : RunnerAbilitySpec {
         public float Power;
-
+        ContactFilter2D contactFilter;
+        List<Collider2D> colliders;
         Animator entityAnimator;
         IEntityCollisionable entityCollisionable;
         public LoaderPushSpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner) {
@@ -37,7 +38,15 @@ public class LoaderPush : DisplayableAbilityScriptableObject {
         protected override IEnumerator ActivateAbility() {
             entityAnimator.SetTrigger("PushTrigger");
             //entityTriggerable.OnTriggerEntity += TriggerAction;
+            colliders.Clear();
             yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Push"));
+            SelfEntity.BodyColliders[0].OverlapCollider(contactFilter, colliders);
+            foreach (var collider in colliders) {
+                var et = collider.gameObject.GetComponentInParent<Entity>();
+                if(et == null) { continue; }
+                if (et is BaseCoreComponent coreComponent && (SelfEntity as BaseCoreComponent).HasTheSameRootWith(coreComponent)) continue;
+                et.gameObject.GetComponent<Connector>().Disconnect();
+            }
             //entityTriggerable.OnTriggerEntity -= TriggerAction;
             // pull Loader back animation
             yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));

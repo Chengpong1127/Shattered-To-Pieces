@@ -11,6 +11,7 @@ public class RubberBullet : MonoBehaviour
         if(collision.gameObject.name == "Square"||collision.gameObject.tag=="Ground")
         {
             var rubber=Instantiate(Rubber,this.transform.position,Rubber.transform.rotation);
+            rubber.GetComponentInChildren<SpriteRenderer>().flipX = this.GetComponentInChildren<SpriteRenderer>().flipX;
             rubber.GetComponent<NetworkObject>().Spawn();
             Destroy(this.transform.parent.gameObject);
             this.transform.parent.GetComponent<NetworkObject>().Despawn();

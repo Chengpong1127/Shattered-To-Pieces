@@ -18,4 +18,4 @@ MonoBehaviour:
   Price: 150
   Type: 3
   ResourcePath: Fan
-  DisplayAtShop: 1
+  DisplayAtShop: 0

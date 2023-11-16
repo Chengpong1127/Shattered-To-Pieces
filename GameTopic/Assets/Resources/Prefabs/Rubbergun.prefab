@@ -100,14 +100,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 6508652183922362645, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -208,12 +200,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 75ca7161e00ecc44292e48f59e1d150d, type: 2}
     - target: {fileID: 8890015344360057443, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 8890015344360057443, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 8890015344360057443, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.81
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8890015344360057443, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.67
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
@@ -260,17 +260,13 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 75ca7161e00ecc44292e48f59e1d150d, type: 2}
   CanSelected: 1
-  assemblyTransform: {fileID: 7463319265100932557}
+  IsSelected:
+    m_InternalValue: 0
   bullet: {fileID: 3979252462806164896, guid: 5c22d5dc4f8f98e428396d364d700796, type: 3}
   ShootPoint: {fileID: 1728030149172613677}
 --- !u!50 &3663819237459685398 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 4234352918938833372, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
-  m_PrefabInstance: {fileID: 584326266991813066}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7463319265100932557 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8036947247156528135, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
   m_PrefabInstance: {fileID: 584326266991813066}
   m_PrefabAsset: {fileID: 0}
 --- !u!61 &7967503516917120030 stripped
