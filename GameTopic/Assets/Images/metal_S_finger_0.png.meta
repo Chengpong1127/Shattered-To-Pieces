@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3c6d4323b2fa742e5b2417e6b068e15a
+guid: ecf249c954ab32f44bfed44bb699c8a6
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,17 +43,17 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 3
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 9
+  spritePivot: {x: 0.72168094, y: 0.67999023}
   spritePixelsToUnits: 1000
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 308, y: 480, z: 117, w: 17}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: -1
+  spriteTessellationDetail: 0
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -108,40 +108,39 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: conrolRoom_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1074
-        height: 2353
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8f6914516b6820149a17b90e373bee42
-      internalID: 458650112
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    outline: []
+    sprites: []
+    outline:
+    - - {x: 94.5, y: 148.5}
+      - {x: 94.5, y: 167.5}
+      - {x: 92.5, y: 177.5}
+      - {x: 82.5, y: 186.5}
+      - {x: 54.75186, y: 224.88275}
+      - {x: 38.5, y: 256.5}
+      - {x: 28.5, y: 262.5}
+      - {x: 11.5, y: 283.5}
+      - {x: -0.5, y: 305.5}
+      - {x: -3.5, y: 326.5}
+      - {x: 2.5, y: 339.5}
+      - {x: 16.5, y: 347.5}
+      - {x: 32.5, y: 348.5}
+      - {x: 43.5, y: 344.5}
+      - {x: 68.5, y: 317.5}
+      - {x: 80.5, y: 293.5}
+      - {x: 102.5, y: 270.5}
+      - {x: 128.5, y: 233.5}
+      - {x: 160.5, y: 201.5}
+      - {x: 188.5, y: 133.5}
+      - {x: 182.5, y: 114.5}
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      conrolRoom_0: 458650112
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
