@@ -19,9 +19,13 @@ public class LoaderPush : DisplayableAbilityScriptableObject {
     public class LoaderPushSpec : RunnerAbilitySpec {
         public float Power;
         ContactFilter2D contactFilter;
-        List<Collider2D> colliders;
+        List<Collider2D> colliders=new List<Collider2D>() ;
+        List<KeyValuePair<FixedJoint2D, float>> forceRecorder = new List<KeyValuePair<FixedJoint2D, float>>();
         Animator entityAnimator;
         IEntityCollisionable entityCollisionable;
+
+
+        bool skillPlaying = false;
         public LoaderPushSpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner) {
             entityAnimator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
             entityCollisionable = (SelfEntity as IEntityCollisionable) ?? throw new System.ArgumentNullException("The entity should have entity triggerable.");
@@ -38,18 +42,34 @@ public class LoaderPush : DisplayableAbilityScriptableObject {
         protected override IEnumerator ActivateAbility() {
             entityAnimator.SetTrigger("PushTrigger");
             //entityTriggerable.OnTriggerEntity += TriggerAction;
-            colliders.Clear();
+            
             yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Push"));
-            SelfEntity.BodyColliders[0].OverlapCollider(contactFilter, colliders);
-            foreach (var collider in colliders) {
-                var et = collider.gameObject.GetComponentInParent<Entity>();
-                if(et == null) { continue; }
-                if (et is BaseCoreComponent coreComponent && (SelfEntity as BaseCoreComponent).HasTheSameRootWith(coreComponent)) continue;
-                et.gameObject.GetComponent<Connector>().Disconnect();
-            }
+            skillPlaying = true;
+            SelfEntity.StartCoroutine(ApplyBreakComponent());
             //entityTriggerable.OnTriggerEntity -= TriggerAction;
             // pull Loader back animation
             yield return new WaitUntil(() => entityAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
+            skillPlaying = false;
+        }
+
+        IEnumerator ApplyBreakComponent()
+        {
+            while (skillPlaying)
+            {
+                colliders.Clear();
+                forceRecorder.Clear();
+                SelfEntity.BodyColliders[0].OverlapCollider(contactFilter, colliders);
+                foreach (var collider in colliders)
+                {
+                    var et = collider.gameObject.GetComponentInParent<Entity>();
+                    if (et == null) { continue; }
+                    if (et is BaseCoreComponent coreComponent && (SelfEntity as BaseCoreComponent).HasTheSameRootWith(coreComponent)) continue;
+
+                    et.gameObject.GetComponent<Connector>().BreakConnection();
+                }
+                yield return new WaitForFixedUpdate();
+            }
+            yield return null;
         }
 
         private void TriggerAction(Entity other) {
