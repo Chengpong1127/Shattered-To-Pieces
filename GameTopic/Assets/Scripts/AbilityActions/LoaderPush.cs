@@ -23,12 +23,13 @@ public class LoaderPush : DisplayableAbilityScriptableObject {
         List<KeyValuePair<FixedJoint2D, float>> forceRecorder = new List<KeyValuePair<FixedJoint2D, float>>();
         Animator entityAnimator;
         IEntityCollisionable entityCollisionable;
-
+        Loader abilityOwner = null;
 
         bool skillPlaying = false;
         public LoaderPushSpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner) {
             entityAnimator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
             entityCollisionable = (SelfEntity as IEntityCollisionable) ?? throw new System.ArgumentNullException("The entity should have entity triggerable.");
+            abilityOwner = SelfEntity as Loader ?? throw new System.ArgumentNullException("The entity should have Loader.");
         }
 
         public override void CancelAbility() {

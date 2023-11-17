@@ -1,12 +1,13 @@
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.UI;
 
 public class ReadyButtonController : MonoBehaviour
 {
     public event Action<ReadyButtonState> OnReadyButtonPressed;
     [SerializeField]
-    private TMP_Text _readyButtonText;
+    private Text _readyButtonText;
     public ReadyButtonState ButtonState {get; private set;}
 
     void Awake()

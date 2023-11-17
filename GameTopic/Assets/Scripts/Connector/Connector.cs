@@ -101,8 +101,13 @@ public class Connector : NetworkBehaviour, IConnector
 
     }
     public void BreakConnection(){
+        BreakConnectionClientRpc();
+    }
+    [ClientRpc]
+    void BreakConnectionClientRpc() {
         OnJointBreak?.Invoke();
     }
+
     void OnJointBreak2D(Joint2D brokenJoint)
     {
         OnJointBreak?.Invoke();
