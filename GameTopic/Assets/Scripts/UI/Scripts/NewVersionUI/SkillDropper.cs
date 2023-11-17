@@ -140,5 +140,8 @@ public class SkillDropper : MonoBehaviour, IDropHandler {
     void OnDestroy()
     {
         StopRebind();
+        GameEvents.RebindEvents.OnCancelRebinding -= StopRebind;
+        GameEvents.AbilityRunnerEvents.OnLocalInputStartAbility -= StartAbilityHandler;
+        GameEvents.AbilityRunnerEvents.OnLocalInputCancelAbility -= CancelAbilityHandler;
     }
 }

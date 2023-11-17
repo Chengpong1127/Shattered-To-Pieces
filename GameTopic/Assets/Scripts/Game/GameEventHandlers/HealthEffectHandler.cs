@@ -18,6 +18,14 @@ public class HealthEffectHandler: BaseGameEventHandler
             GameEvents.AttributeEvents.OnEntityHealthChanged += OnEntityHealthChanged;
         }
     }
+
+    public override void OnDestroy() {
+        if (IsServer)
+        {
+            GameEvents.AttributeEvents.OnEntityHealthChanged -= OnEntityHealthChanged;
+        }
+        base.OnDestroy();
+    }
     private void OnEntityHealthChanged(BaseEntity baseEntity, float oldHealth, float newHealth){
         OnEntityHealthChanged_ClientRpc(baseEntity.NetworkObjectId, oldHealth, newHealth);
     }

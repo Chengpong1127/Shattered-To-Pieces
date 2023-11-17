@@ -24,6 +24,12 @@ public class PlayerStatus : NetworkBehaviour
         GameEvents.AttributeEvents.OnEntityHealthChanged += UpdateBloodBar;
         player = GetComponentInParent<GamePlayer>();
     }
+    public override void OnDestroy() {
+        if (!IsOwner){
+            GameEvents.AttributeEvents.OnEntityHealthChanged -= UpdateBloodBar;
+        }
+        base.OnDestroy();
+    }
 
     [ClientRpc]
     public void SetBloodBarLength_ClientRpc(float progress) {

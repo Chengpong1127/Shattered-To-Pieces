@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 public class ClientBtn : MonoBehaviour
 {
@@ -66,6 +67,6 @@ public class ClientBtn : MonoBehaviour
         var lobbies = await LocalGameManager.Instance.GetAllAvailableLobby();
         var lobby = lobbies.Where(lb => { return lb.Name == roomName; }).FirstOrDefault();
         if(lobby == null) { Debug.Log("Choose room is null"); return; }
-        LocalGameManager.Instance.JoinLobby(lobby);
+        LocalGameManager.Instance.JoinLobby(lobby).Forget();
     }
 }

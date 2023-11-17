@@ -11,6 +11,13 @@ public class GameLoadingAnimation : BaseGameEventHandler
             LocalPlayerManager.StateMachine.Changed += OnManagerStateChanged;
         }
     }
+    public override void OnDestroy() {
+        if (IsClient)
+        {
+            LocalPlayerManager.StateMachine.Changed -= OnManagerStateChanged;
+        }
+        base.OnDestroy();
+    }
 
     private void OnManagerStateChanged(LocalPlayerManager.LocalPlayerStates newState){
         if (newState == LocalPlayerManager.LocalPlayerStates.Gaming){

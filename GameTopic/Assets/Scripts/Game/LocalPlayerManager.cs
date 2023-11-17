@@ -40,11 +40,13 @@ public class LocalPlayerManager : NetworkBehaviour
     public void StartPlayerSetup(NetworkType type, MapInfo mapinfo, string ServerAddress){
         StateMachine.ChangeState(LocalPlayerStates.Loading);
         connectionManager.StartConnection(type, ServerAddress, mapinfo.MapPlayerCount);
-        connectionManager.OnAllClientConnected += () => {
-            if(IsServer){
-                SetRunner();
-            }
-        };
+        connectionManager.OnAllClientConnected += AllClientConnectedHandler;
+    }
+    private void AllClientConnectedHandler(){
+        connectionManager.OnAllClientConnected -= AllClientConnectedHandler;
+        if(IsServer){
+            SetRunner();
+        }
     }
     private async void SetRunner(){
         GameRunner.OnGameOver += GameOverHandler_ClientRpc;

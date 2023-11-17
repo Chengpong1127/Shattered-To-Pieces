@@ -51,6 +51,13 @@ public class GameComponentSelectedHandler : BaseGameEventHandler
                 break;
         }
     }
+    public override void OnDestroy() {
+        if (IsClient)
+        {
+            GameEvents.GameComponentEvents.OnGameComponentSelected -= OnGameComponentSelected;
+        }
+        base.OnDestroy();
+    }
 
 
 

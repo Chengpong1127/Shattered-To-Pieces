@@ -15,6 +15,13 @@ public class GameEffectManager: BaseGameEventHandler{
             GameEvents.GameEffectManagerEvents.RequestGiveGameEffect += ApplyGameplayEffect;
         }
     }
+    public override void OnDestroy() {
+        if (IsServer){
+            GameEvents.GameEffectManagerEvents.RequestModifyAttribute -= ModifyAttribute;
+            GameEvents.GameEffectManagerEvents.RequestGiveGameEffect -= ApplyGameplayEffect;
+        }
+        base.OnDestroy();
+    }
     private void ModifyAttribute(Entity sender, Entity receiver, GameplayEffectModifier modifier){
         var effect = ResourceManager.Instance.LoadEmptyGameplayEffect();
         effect.gameplayEffect.Modifiers = new GameplayEffectModifier[]{modifier};

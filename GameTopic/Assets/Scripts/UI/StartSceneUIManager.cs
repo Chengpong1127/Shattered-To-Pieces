@@ -31,11 +31,13 @@ public class StartSceneUIManager : MonoBehaviour
     void Start()
     {
         LocalGameManager.Instance.StateMachine.Changed += GameStateMachineChangedHandler;
+        EnterHome();
     }
     void OnDestroy()
     {
         if (LocalGameManager.Instance.StateMachine != null)
             LocalGameManager.Instance.StateMachine.Changed -= GameStateMachineChangedHandler;
+        LobbyUIManager.OnExitLobby -= OnExitLobbyHandler;
     }
     private void GameStateMachineChangedHandler(LocalGameManager.GameState state){
         switch(state){

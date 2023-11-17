@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using Unity.Services.Lobbies.Models;
 using Unity.VisualScripting;
@@ -43,11 +44,10 @@ public class StartSceneUI : MonoBehaviour
 
         // RoomNameInput.onSubmit += () => { LocalGameManager.Instance.CreateLobby(hn); };
         RoomNameInput.onSubmit.AddListener((hostName) => {
-            LocalGameManager.Instance.CreateLobby(hostName);
+            LocalGameManager.Instance.CreateLobby(hostName).Forget();
             UIanimator.SetTrigger("EnterRoom");
         });
     }
-
 
     void Start() {
         StartCoroutine(RegistEvent());

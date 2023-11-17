@@ -14,6 +14,14 @@ public class AbilitySelectHandler: BaseGameEventHandler{
             GameEvents.UIEvents.OnGameComponentAbilitySelectedEnd += GameComponentAbilitySelectedEndHandler;
         }
     }
+    public override void OnDestroy() {
+        if (IsClient)
+        {
+            GameEvents.UIEvents.OnGameComponentAbilitySelected -= GameComponentAbilitySelectedHandler;
+            GameEvents.UIEvents.OnGameComponentAbilitySelectedEnd -= GameComponentAbilitySelectedEndHandler;
+        }
+        base.OnDestroy();
+    }
 
     private void GameComponentAbilitySelectedHandler(GameComponent gameComponent) {
         gameComponent.BodyRenderers.ToList().ForEach(renderer => {
@@ -31,7 +39,6 @@ public class AbilitySelectHandler: BaseGameEventHandler{
             if (renderer is SpriteRenderer spriteRenderer){
                 if (_colorTweenMap.ContainsKey(spriteRenderer)) {
                     _colorTweenMap[spriteRenderer].SmoothRewind();
-                    //_colorTweenMap[spriteRenderer].Kill();
                     _colorTweenMap.Remove(spriteRenderer);
                 }
             }
