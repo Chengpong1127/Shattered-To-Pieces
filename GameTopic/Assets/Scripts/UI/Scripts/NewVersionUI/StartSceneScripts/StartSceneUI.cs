@@ -102,7 +102,7 @@ public class StartSceneUI : MonoBehaviour
         var lobbies = await LocalGameManager.Instance.GetAllAvailableLobby();
         var lobby = lobbies.Where(lb => { return lb.Name == roomName; }).FirstOrDefault();
         if (lobby == null) { Debug.Log("Choose room is null"); UIanimator.SetTrigger("Back"); return; }
-        LocalGameManager.Instance.JoinLobby(lobby);
+        LocalGameManager.Instance.JoinLobby(lobby).Forget();
         UIanimator.SetTrigger("EnterRoom");
     }
     void RegistPlayerInfo(Player player) {
