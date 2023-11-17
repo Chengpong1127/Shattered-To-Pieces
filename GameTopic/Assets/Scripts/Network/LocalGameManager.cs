@@ -37,6 +37,10 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         LobbyManager = new LobbyManager(player);
         StateMachine.ChangeState(GameState.Home);
     }
+    void OnApplicationQuit()
+    {
+        Destroy(gameObject);
+    }
 
     public async UniTask<Player> PlayerSignIn(){
         await UnityServices.InitializeAsync();

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
@@ -93,7 +94,7 @@ public class StartSceneProccess : MonoBehaviour
         var lobbies = await LocalGameManager.Instance.GetAllAvailableLobby();
         var lobby = lobbies.Where(lb => { return lb.Name == roomName; }).FirstOrDefault();
         if (lobby == null) { Debug.Log("Choose room is null"); return; }
-        LocalGameManager.Instance.JoinLobby(lobby);
+        LocalGameManager.Instance.JoinLobby(lobby).Forget();
     }
 
     #endregion
@@ -104,7 +105,7 @@ public class StartSceneProccess : MonoBehaviour
     void SubmitHostName() {
         var hn = HostNameInputField.text;
         RegistListener();
-        LocalGameManager.Instance.CreateLobby(hn);
+        LocalGameManager.Instance.CreateLobby(hn).Forget();
     }
     #endregion
 
