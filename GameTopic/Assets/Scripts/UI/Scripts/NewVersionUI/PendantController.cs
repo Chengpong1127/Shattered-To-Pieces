@@ -12,6 +12,7 @@ public class PendantController : MonoBehaviour
     {
         ExitPanel = Instantiate(ExitPanelPrefab, transform.parent).GetComponent<BackgroundWidget>();
         ExitPanel.OnSendMessage += SendMessageHandler;
+        ExitPanel.gameObject.SetActive(false);
     }
     private void SendMessageHandler(string message)
     {
