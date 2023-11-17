@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3c6d4323b2fa742e5b2417e6b068e15a
+guid: 0dfa2b4b1d72f5b4c892fed32e6915e9
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,17 +43,17 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 3
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 9
+  spritePivot: {x: 0.45701468, y: 0.7824233}
   spritePixelsToUnits: 1000
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 0, y: 1425, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: -1
+  spriteTessellationDetail: 0
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -108,40 +108,31 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: conrolRoom_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1074
-        height: 2353
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8f6914516b6820149a17b90e373bee42
-      internalID: 458650112
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    outline: []
+    sprites: []
+    outline:
+    - - {x: 537, y: 546.5}
+      - {x: 152, y: 279.5}
+      - {x: 121, y: 259.5}
+      - {x: 88, y: 248.5}
+      - {x: 14, y: 261.5}
+      - {x: -13, y: 283.5}
+      - {x: -27, y: 308.5}
+      - {x: -46, y: 283.5}
+      - {x: -76, y: 260.5}
+      - {x: -119, y: 248.5}
+      - {x: -537, y: 251.5}
+      - {x: -537, y: 1176.5}
+      - {x: 537, y: 1176.5}
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      conrolRoom_0: 458650112
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3c6d4323b2fa742e5b2417e6b068e15a
+guid: 32d72d887998549449cef695fd0729dc
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,17 +43,17 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 3
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 9
+  spritePivot: {x: 0.28071344, y: 0}
   spritePixelsToUnits: 1000
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 161, y: 0, z: 632, w: 1848}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: -1
+  spriteTessellationDetail: 0
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -108,40 +108,28 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: conrolRoom_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1074
-        height: 2353
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8f6914516b6820149a17b90e373bee42
-      internalID: 458650112
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    outline: []
+    sprites: []
+    outline:
+    - - {x: -135, y: -1176.5}
+      - {x: -376, y: -1176.5}
+      - {x: -209, y: -690.5}
+      - {x: -205, y: -680.5}
+      - {x: -199, y: -671.5}
+      - {x: -177, y: -678.5}
+      - {x: -129, y: -688.5}
+      - {x: -97, y: -688.5}
+      - {x: -95, y: -702.5}
+      - {x: -95, y: -977.5}
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      conrolRoom_0: 458650112
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
