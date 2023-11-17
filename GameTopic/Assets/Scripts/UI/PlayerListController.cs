@@ -20,7 +20,8 @@ public class PlayerListController : MonoBehaviour
         playerItemControllers.ForEach(playerItem => Destroy(playerItem.gameObject));
         playerItemControllers = players.Select(player =>
         {
-            var playerItem = Instantiate(_playerItemPrefab, transform).GetComponent<PlayerItemController>();
+            var playerItem = Instantiate(_playerItemPrefab,transform).GetComponent<PlayerItemController>();
+            playerItem.transform.Translate(Vector2.down * 50f);
             playerItem.SetPlayer(player.Data["PlayerName"].Value, readyPlayers.Contains(player));
             return playerItem;
         }).ToList();

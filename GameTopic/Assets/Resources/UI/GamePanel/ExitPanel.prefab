@@ -424,6 +424,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1411537189027080404, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
+    - {fileID: 6601865136523177938, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 922874698849569548, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
       insertIndex: -1
@@ -566,6 +567,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1411537189027080404, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
+    - {fileID: 6601865136523177938, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 922874698849569548, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
       insertIndex: -1
@@ -670,7 +672,8 @@ PrefabInstance:
       value: ExitPanel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4867618908365620361, guid: 395d52593b5d24933a9c37bc16aeb2ca, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3747344485739517439, guid: 395d52593b5d24933a9c37bc16aeb2ca, type: 3}
       insertIndex: -1

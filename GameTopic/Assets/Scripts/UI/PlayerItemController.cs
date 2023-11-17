@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class PlayerItemController : MonoBehaviour
 {
     [SerializeField]
-    private TMP_Text _playerName;
+    private Text _playerName;
     [SerializeField]
     private Image ReadyImage;
     [SerializeField]
@@ -19,13 +19,11 @@ public class PlayerItemController : MonoBehaviour
     }
 
     public void SetPlayer(string playerName, bool isReady){
-        _playerName.fontStyle = FontStyles.Normal;
         _playerName.text = playerName;
         ReadyImage.enabled = isReady;
         UnreadyImage.enabled = !isReady;
     }
 
     public void SetLocalPlayer(){
-        _playerName.fontStyle = FontStyles.Bold;
     }
 }

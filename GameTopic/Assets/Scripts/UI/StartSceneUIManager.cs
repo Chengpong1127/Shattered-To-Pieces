@@ -73,6 +73,7 @@ public class StartSceneUIManager : MonoBehaviour
     }
     public void ShowCreateLobby_ButtonAction(){
         CreateLobbyPanel.Show();
+        CreateLobbyPanel.GetComponentInChildren<RainbowText>().StarRainbow();
         CreateLobbyPanel.GetComponentInChildren<CreateLobbyPanelController>().OnCreateLobby += OnCreateLobbyHandler;
     }
     private void EnterHome(){

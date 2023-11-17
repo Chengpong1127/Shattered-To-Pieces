@@ -105,7 +105,8 @@ PrefabInstance:
       value: LobbyListPanel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4867618908365620361, guid: 395d52593b5d24933a9c37bc16aeb2ca, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3747344485739517439, guid: 395d52593b5d24933a9c37bc16aeb2ca, type: 3}
       insertIndex: 0
@@ -156,6 +157,30 @@ PrefabInstance:
     - target: {fileID: 3828042609545394776, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3937012713320843040, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
+      propertyPath: m_Color.b
+      value: 0.09349413
+      objectReference: {fileID: 0}
+    - target: {fileID: 3937012713320843040, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
+      propertyPath: m_Color.g
+      value: 0.09349413
+      objectReference: {fileID: 0}
+    - target: {fileID: 3937012713320843040, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
+      propertyPath: m_Color.r
+      value: 0.103773594
+      objectReference: {fileID: 0}
+    - target: {fileID: 3937012713320843040, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 652f7165b7c30ab46af6c4aad90a639b, type: 2}
+    - target: {fileID: 3937012713320843040, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5073017676834461350, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5734119342464896957, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
       propertyPath: m_Pivot.x
@@ -237,6 +262,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7333331458669084153, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333331458669084153, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 43a7d98bd4222b64e933596512dc09ad, type: 3}
     - target: {fileID: 7933774606005509767, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -273,11 +306,54 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6359949178533618268, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 49200529515719476, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8766497997486882574}
   m_SourcePrefab: {fileID: 100100000, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
+--- !u!1 &639317064706539567 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 49200529515719476, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}
+  m_PrefabInstance: {fileID: 608413545233017627}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8766497997486882574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639317064706539567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.13207549, g: 0.11899254, b: 0.11899254, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 652f7165b7c30ab46af6c4aad90a639b, type: 2}
+    m_FontSize: 30
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 60
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: There is no lobby here.
 --- !u!224 &5179750676929406118 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5734119342464896957, guid: 69659cff3731a4ee4a352e0d9765d5ee, type: 3}

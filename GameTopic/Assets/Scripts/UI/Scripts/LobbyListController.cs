@@ -13,7 +13,7 @@ public class LobbyListController : MonoBehaviour
     [SerializeField]
     private GameObject LobbyItemPrefab;
     [SerializeField]
-    private TMP_Text NoLobbyText;
+    private Text NoLobbyText;
     [SerializeField]
     private GameObject LoadingObject;
     private List<LobbyItemUIController> _lobbyItems = new();

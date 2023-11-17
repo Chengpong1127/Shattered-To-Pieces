@@ -680,7 +680,10 @@ PrefabInstance:
       value: Pendant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4876814718707023830, guid: 57568e207e9237241bc415c2205c6d4b, type: 3}
+    - {fileID: 4566483127120273354, guid: 57568e207e9237241bc415c2205c6d4b, type: 3}
+    - {fileID: 7900258417135081744, guid: 57568e207e9237241bc415c2205c6d4b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57568e207e9237241bc415c2205c6d4b, type: 3}

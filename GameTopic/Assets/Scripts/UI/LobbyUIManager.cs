@@ -10,14 +10,14 @@ using UnityEngine.UI;
 public class LobbyUIManager : MonoBehaviour
 {
     [SerializeField]
-    private TMP_Text _lobbyName;
+    private Text _lobbyName;
 
     [SerializeField]
     private PlayerListController _playerListController;
     [SerializeField]
     private ReadyButtonController _readyButtonController;
     [SerializeField]
-    private TMP_Text _playerCountText;
+    private Text _playerCountText;
     private LobbyManager _lobbyManager;
     public event Action OnExitLobby;
     void Awake()
