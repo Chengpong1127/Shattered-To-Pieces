@@ -2477,6 +2477,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6591762748681157131, guid: f8204632a0a604f009c5619199b1e0ad, type: 3}
+      propertyPath: m_Padding.m_Top
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 7388778730991245925, guid: f8204632a0a604f009c5619199b1e0ad, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
