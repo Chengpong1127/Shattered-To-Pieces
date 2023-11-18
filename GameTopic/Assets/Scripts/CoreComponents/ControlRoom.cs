@@ -33,15 +33,26 @@ public class ControlRoom : BaseCoreComponent, IDeviceRoot {
     }
 
     void StartAbilityListener(int skillID) {
-        if(currentRunningAbility == 0) { BodyAnimator.SetTrigger("OnUseSkill"); }
+        if (!IsOwner) { return; }
+        StartAbilityListenerServerRpc();
+    }
+    [ServerRpc]
+    void StartAbilityListenerServerRpc() {
+        if (currentRunningAbility == 0) { BodyAnimator.SetTrigger("OnUseSkill"); }
         currentRunningAbility++;
         useAbility = true;
     }
+
     void CancelAbilityListener(int skillID) {
+        if (!IsOwner) { return; }
+        CancelAbilityListenerServerRpc();
+    }
+    [ServerRpc]
+    void CancelAbilityListenerServerRpc() {
         currentRunningAbility--;
         if (currentRunningAbility == 0) {
             BodyAnimator.SetTrigger("Idle");
-            if(longStayCoroutine != null) { StopCoroutine(longStayCoroutine); }
+            if (longStayCoroutine != null) { StopCoroutine(longStayCoroutine); }
             longStayCoroutine = StartCoroutine(LongStayProcess());
         }
     }
