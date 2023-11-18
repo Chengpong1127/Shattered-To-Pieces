@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 3992947936425102134}
   - component: {fileID: 5235308971284393975}
   - component: {fileID: 5235308971284393961}
-  - component: {fileID: 8646560648828286337}
-  - component: {fileID: 7835150854294992878}
   m_Layer: 31
   m_Name: Target
   m_TagString: Untagged
@@ -49,6 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22820bff0638fb240bf8a033875c29a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BodyCollider: {fileID: 5235308971284393975}
+  Renderer: {fileID: 5235308971284393961}
   CircleRenderer: {fileID: 8198343784772073351}
 --- !u!58 &5235308971284393975
 CircleCollider2D:
@@ -137,41 +137,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &8646560648828286337
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5235308971284393973}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: bea2d5eb044c2ee41babd620051de311, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7835150854294992878
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5235308971284393973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 8646560648828286337}
 --- !u!1 &8952941447619576576
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,7 +176,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8952941447619576576}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1

@@ -3,31 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using DG.Tweening;
 
 public class Target : MonoBehaviour
 {
     public int TargetID { get; set; }
     public Connector OwnerConnector { get; set; } = null;
     public bool IsConnected  => LinkedConnector != null;
-    public Collider2D BodyCollider { get; private set; } = null;
+    public Collider2D BodyCollider;
 
     public event Action<Connector> OnLinked;
     public event Action<Connector> OnUnlinked;
 
     private Connector LinkedConnector = null;
-    private Renderer Renderer = null;
-    public SpriteRenderer CircleRenderer = null;
+    [SerializeField]
+    private SpriteRenderer Renderer;
+    [SerializeField]
+    private SpriteRenderer CircleRenderer;
     public Vector3 ConnectionPosition => transform.localPosition;
 
     private void Awake() {
-        Renderer = GetComponent<Renderer>();
-        if (Renderer == null) {
-            Debug.LogWarning("Target: Renderer is null");
-        }
-        BodyCollider = GetComponent<Collider2D>();
-        if (BodyCollider == null) {
-            Debug.LogWarning("Target: BodyCollider is null");
-        }
+        Debug.Assert(BodyCollider != null);
+        Debug.Assert(Renderer != null);
+        Debug.Assert(CircleRenderer != null);
+        
+    }
+    void Start()
+    {
         SetTargetDisplay(false);
     }
 
@@ -51,6 +53,13 @@ public class Target : MonoBehaviour
         Renderer.enabled = display;
         BodyCollider.enabled = display;
         CircleRenderer.enabled = display;
+
+        if (display){
+            Renderer.DOFade(1, 0);
+            Renderer.DOFade(0.5f, 1f).SetLoops(-1, LoopType.Yoyo);
+        }else{
+            Renderer.DOKill();
+        }
     }
 
 }
