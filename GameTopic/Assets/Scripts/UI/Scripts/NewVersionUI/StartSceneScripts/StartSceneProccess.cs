@@ -105,7 +105,7 @@ public class StartSceneProccess : MonoBehaviour
     void SubmitHostName() {
         var hn = HostNameInputField.text;
         RegistListener();
-        LocalGameManager.Instance.CreateLobby(hn).Forget();
+        //LocalGameManager.Instance.CreateLobby(hn).Forget();
     }
     #endregion
 

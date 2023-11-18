@@ -54,9 +54,9 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     }
     #region Lobby
 
-    public async UniTask CreateLobby(string lobbyName){
+    public async UniTask CreateLobby(string lobbyName, MapInfo mapInfo){
         try{
-            await LobbyManager.CreateLobby(lobbyName, ResourceManager.Instance.LoadMapInfo("FightingMap"));
+            await LobbyManager.CreateLobby(lobbyName, mapInfo);
             StateMachine.ChangeState(GameState.Lobby);
             LobbyManager.OnLobbyReady += LobbyReadyHandler;
             Debug.Log("Lobby Created with ID: " + LobbyManager.CurrentLobby.Id);

@@ -93,11 +93,11 @@ public class StartSceneUIManager : MonoBehaviour
     public void EnterAssemblyRoom_ButtonAction(){
         LocalGameManager.Instance.EnterAssemblyRoom();
     }
-    private async void OnCreateLobbyHandler(string lobbyName){
+    private async void OnCreateLobbyHandler(string lobbyName, MapInfo mapInfo){
         if (lobbyName == "") lobbyName = "Room";
         try{
             LoadingUIController.ShowLoading();
-            await LocalGameManager.Instance.CreateLobby(lobbyName);
+            await LocalGameManager.Instance.CreateLobby(lobbyName, mapInfo);
             CreateLobbyPanelController.Close();
             LoadingUIController.FinishLoading();
         }catch(LobbyServiceException e){

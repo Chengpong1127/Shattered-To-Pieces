@@ -44,7 +44,7 @@ public class StartSceneUI : MonoBehaviour
 
         // RoomNameInput.onSubmit += () => { LocalGameManager.Instance.CreateLobby(hn); };
         RoomNameInput.onSubmit.AddListener((hostName) => {
-            LocalGameManager.Instance.CreateLobby(hostName).Forget();
+            //LocalGameManager.Instance.CreateLobby(hostName).Forget();
             UIanimator.SetTrigger("EnterRoom");
         });
     }
