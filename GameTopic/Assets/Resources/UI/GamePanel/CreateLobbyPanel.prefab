@@ -1127,6 +1127,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lobbyNameInput: {fileID: 7367683236114461379}
+  _gameWidget: {fileID: 4751873186912811363}
+  _rainbowText: {fileID: 1063923324279057390}
+--- !u!114 &4751873186912811363 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1147821849040208613, guid: 395d52593b5d24933a9c37bc16aeb2ca, type: 3}
+  m_PrefabInstance: {fileID: 5629476028978920326}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2330243120634706457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a007dd88fb88f4927be9d860b4585720, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8799707580136468089 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3747344485739517439, guid: 395d52593b5d24933a9c37bc16aeb2ca, type: 3}

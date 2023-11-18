@@ -16,6 +16,8 @@ public class LobbyListController : MonoBehaviour
     private Text NoLobbyText;
     [SerializeField]
     private GameObject LoadingObject;
+    [SerializeField]
+    private GameWidget GameWidget;
     private List<LobbyItemUIController> _lobbyItems = new();
     private List<ListItemAnimation> _listItemAnimations = new();
     void Awake()
@@ -23,13 +25,19 @@ public class LobbyListController : MonoBehaviour
         Debug.Assert(LobbyItemPrefab != null);
         Debug.Assert(NoLobbyText != null);
         Debug.Assert(LoadingObject != null);
+        Debug.Assert(GameWidget != null);
     }
-    public void StartDisplay(){
+
+    public void Show(){
+        GameWidget.Show();
         _lobbyItems.ForEach(lobbyItem => Destroy(lobbyItem.gameObject));
         _listItemAnimations.Clear();
         _lobbyItems.Clear();
         NoLobbyText.enabled = false;
         LoadingObject.SetActive(true);
+    }
+    public void Close(){
+        GameWidget.Close();
     }
     public void SetLobbyList(List<Lobby> lobbies)
     {

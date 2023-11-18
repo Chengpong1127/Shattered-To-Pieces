@@ -5,7 +5,7 @@ using System;
 using DG.Tweening;
 
 [RequireComponent(typeof(CanvasGroup))]
-public abstract class GameWidget : MonoBehaviour
+public class GameWidget : MonoBehaviour
 {
     protected CanvasGroup CanvasGroup;
     [SerializeField]
@@ -24,10 +24,12 @@ public abstract class GameWidget : MonoBehaviour
         CanvasGroup = GetComponent<CanvasGroup>();
         StateMachine = StateMachine<GamePanelState>.Initialize(this);
         StateMachine.ChangeState(GamePanelState.Close);
+        CanvasGroup.interactable = false;
+        CanvasGroup.blocksRaycasts = false;
     }
 
     public async void Show(){
-        if(IsShowing) { Debug.LogWarning("Panel is already showing!"); return; }
+        if(IsShowing) { return; }
         gameObject.SetActive(true);
         await ShowAnimation();
         CanvasGroup.interactable = true;
@@ -35,10 +37,10 @@ public abstract class GameWidget : MonoBehaviour
         StateMachine.ChangeState(GamePanelState.Show);
     }
     public async void Close(){
-        if(IsClose) { Debug.LogWarning("Panel is already close!"); return; }
+        if(IsClose) { return; }
+        await CloseAnimation();
         CanvasGroup.interactable = false;
         CanvasGroup.blocksRaycasts = false;
-        await CloseAnimation();
         StateMachine.ChangeState(GamePanelState.Close);
         if(DeactivateOnHide)
             gameObject.SetActive(false);
