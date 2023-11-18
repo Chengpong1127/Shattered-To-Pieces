@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class LobbyItemUIController : MonoBehaviour
 {
     [SerializeField]
-    private TMP_Text _lobbyName;
+    private Text _lobbyName;
     [SerializeField]
-    private TMP_Text _lobbyPlayerCount;
+    private Text _lobbyPlayerCount;
     [SerializeField]
     private Button _joinButton;
     public event Action<Lobby> OnPressJoin;

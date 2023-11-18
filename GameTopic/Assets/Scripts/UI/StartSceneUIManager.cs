@@ -67,10 +67,13 @@ public class StartSceneUIManager : MonoBehaviour
     }
     private async void PlayerSelectLobbyHandler(Lobby lobby){
         try{
+            LoadingUIController.ShowLoading();
             await LocalGameManager.Instance.JoinLobby(lobby);
+            LoadingUIController.FinishLoading();
             LobbyListController.Close();
         }catch(LobbyServiceException){
             await NotificationWindowController.ShowNotification("Join Lobby Failed", "Please try again later");
+            LoadingUIController.FinishLoading();
             LobbyListController.Close();
         }
     }
@@ -93,12 +96,15 @@ public class StartSceneUIManager : MonoBehaviour
     private async void OnCreateLobbyHandler(string lobbyName){
         if (lobbyName == "") lobbyName = "Room";
         try{
+            LoadingUIController.ShowLoading();
             await LocalGameManager.Instance.CreateLobby(lobbyName);
             CreateLobbyPanelController.Close();
+            LoadingUIController.FinishLoading();
         }catch(LobbyServiceException e){
             Debug.Log(e.Message);
             await NotificationWindowController.ShowNotification("Create Lobby Failed", "Please try again later");
             CreateLobbyPanelController.Close();
+            LoadingUIController.FinishLoading();
         }
         
     }

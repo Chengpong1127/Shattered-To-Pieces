@@ -248,8 +248,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0007043c77a84a39875ef3bf507b93b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lobbyName: {fileID: 0}
-  _lobbyPlayerCount: {fileID: 0}
+  _lobbyName: {fileID: 4660783761809985715}
+  _lobbyPlayerCount: {fileID: 8825195370876865550}
   _joinButton: {fileID: 4170276120518472722}
 --- !u!114 &833192562924498308
 MonoBehaviour:
