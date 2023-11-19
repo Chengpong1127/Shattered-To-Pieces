@@ -24,6 +24,14 @@ public class AbilitySelectHandler: BaseGameEventHandler{
     }
 
     private void GameComponentAbilitySelectedHandler(GameComponent gameComponent) {
+        StartOutlineAnimation(gameComponent);
+    }
+
+    private void GameComponentAbilitySelectedEndHandler(GameComponent gameComponent) {
+        StopOutlineAnimation(gameComponent);
+    }
+
+    private void StartColorAnimation(GameComponent gameComponent){
         gameComponent.BodyRenderers.ToList().ForEach(renderer => {
             if (renderer is SpriteRenderer spriteRenderer){
                 if (!_colorTweenMap.ContainsKey(spriteRenderer)) {
@@ -34,7 +42,7 @@ public class AbilitySelectHandler: BaseGameEventHandler{
         });
     }
 
-    private void GameComponentAbilitySelectedEndHandler(GameComponent gameComponent) {
+    private void StopColorAnimation(GameComponent gameComponent){
         gameComponent.BodyRenderers.ToList().ForEach(renderer => {
             if (renderer is SpriteRenderer spriteRenderer){
                 if (_colorTweenMap.ContainsKey(spriteRenderer)) {
@@ -46,6 +54,18 @@ public class AbilitySelectHandler: BaseGameEventHandler{
         });
     }
 
+    private void StartOutlineAnimation(GameComponent gameComponent){
+        var outlineController = gameComponent.GetComponent<OutlineController>();
+        if (outlineController != null){
+            outlineController.SetOutline(true);
+        }
+    }
 
+    private void StopOutlineAnimation(GameComponent gameComponent){
+        var outlineController = gameComponent.GetComponent<OutlineController>();
+        if (outlineController != null){
+            outlineController.SetOutline(false);
+        }
+    }
 
 }

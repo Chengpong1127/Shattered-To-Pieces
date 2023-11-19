@@ -444,6 +444,22 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 1.684
       objectReference: {fileID: 0}
+    - target: {fileID: 7705299509711324854, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_EffectColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7705299509711324854, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_EffectColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7705299509711324854, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_EffectColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7705299509711324854, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
+      propertyPath: m_EffectDistance.x
+      value: 7.07
+      objectReference: {fileID: 0}
     - target: {fileID: 8272447847809035679, guid: dd00e032c1821489f92f9664bc2d5478, type: 3}
       propertyPath: m_BreakForce
       value: 4000

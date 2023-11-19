@@ -145,4 +145,13 @@ public class ResourceManager: Singleton<ResourceManager>
     public MapInfo LoadMapInfo(string name){
         return LoadAllMapInfo().ToList().Find((mapInfo) => mapInfo.MapName == name);
     }
+
+    public Material LoadMaterial(string name){
+        var path = Path.Combine("Materials", name);
+        var material = Resources.Load<Material>(path);
+        if(material == null){
+            Debug.LogWarning("Cannot load material: " + path);
+        }
+        return material;
+    }
 }
