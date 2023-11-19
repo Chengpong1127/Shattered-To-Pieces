@@ -2068,7 +2068,7 @@ PrefabInstance:
       propertyPath: m_Text
       value: 'Create
 
-        Lobby'
+        Room'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2230,6 +2230,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShowLobbiesButton
       objectReference: {fileID: 0}
+    - target: {fileID: 5591048940284724343, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
+      propertyPath: m_Text
+      value: 'Show
+
+        Room'
+      objectReference: {fileID: 0}
     - target: {fileID: 5960458701900561261, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
       propertyPath: m_Type
       value: 0
@@ -2332,6 +2338,14 @@ PrefabInstance:
     - target: {fileID: 2579983766593045099, guid: f8204632a0a604f009c5619199b1e0ad, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3650995250891149477, guid: f8204632a0a604f009c5619199b1e0ad, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 3650995250891149477, guid: f8204632a0a604f009c5619199b1e0ad, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 3836701397115369988, guid: f8204632a0a604f009c5619199b1e0ad, type: 3}
       propertyPath: m_Pivot.x
