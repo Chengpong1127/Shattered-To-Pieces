@@ -16,14 +16,14 @@ public class GameWidget : MonoBehaviour
     protected bool DeactivateOnHide = true;
 
     public event Action<string> OnSendMessage;
-    public StateMachine<GamePanelState> StateMachine;
-    public bool IsShowing => StateMachine == null ? false : StateMachine.State == GamePanelState.Show;
-    public bool IsClose => StateMachine == null ? true : StateMachine.State == GamePanelState.Close;
+    public StateMachine<GameWidgetState> StateMachine;
+    public bool IsShowing => StateMachine == null ? false : StateMachine.State == GameWidgetState.Show;
+    public bool IsClose => StateMachine == null ? true : StateMachine.State == GameWidgetState.Close;
     protected virtual void Awake()
     {
         CanvasGroup = GetComponent<CanvasGroup>();
-        StateMachine = StateMachine<GamePanelState>.Initialize(this);
-        StateMachine.ChangeState(GamePanelState.Close);
+        StateMachine = StateMachine<GameWidgetState>.Initialize(this);
+        StateMachine.ChangeState(GameWidgetState.Close);
         CanvasGroup.interactable = false;
         CanvasGroup.blocksRaycasts = false;
     }
@@ -34,14 +34,14 @@ public class GameWidget : MonoBehaviour
         await ShowAnimation();
         CanvasGroup.interactable = true;
         CanvasGroup.blocksRaycasts = true;
-        StateMachine.ChangeState(GamePanelState.Show);
+        StateMachine.ChangeState(GameWidgetState.Show);
     }
     public async void Close(){
         if(IsClose) { return; }
         await CloseAnimation();
         CanvasGroup.interactable = false;
         CanvasGroup.blocksRaycasts = false;
-        StateMachine.ChangeState(GamePanelState.Close);
+        StateMachine.ChangeState(GameWidgetState.Close);
         if(DeactivateOnHide)
             gameObject.SetActive(false);
     }
@@ -59,7 +59,7 @@ public class GameWidget : MonoBehaviour
     }
 
 
-    public enum GamePanelState
+    public enum GameWidgetState
     {
         Show,
         Close

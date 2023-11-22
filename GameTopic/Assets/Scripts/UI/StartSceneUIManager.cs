@@ -2,6 +2,7 @@ using System.Linq;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StartSceneUIManager : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class StartSceneUIManager : MonoBehaviour
     private LoadingUIController LoadingUIController;
     [SerializeField]
     private PlayerProfileController PlayerProfileController;
+
+    [SerializeField]
+    private Text _nameText;
     
 
     void Awake()
@@ -31,6 +35,7 @@ public class StartSceneUIManager : MonoBehaviour
         Debug.Assert(NotificationWindowController != null);
         Debug.Assert(LoadingUIController != null);
         Debug.Assert(PlayerProfileController != null);
+        Debug.Assert(_nameText != null);
         LobbyUIManager.OnExitLobby += OnExitLobbyHandler;
         CreateLobbyPanelController.OnCreateLobby += OnCreateLobbyHandler;
         LobbyListController.OnPlayerSelectLobby += PlayerSelectLobbyHandler;
@@ -86,6 +91,9 @@ public class StartSceneUIManager : MonoBehaviour
     private void EnterHome(){
         HomePanel.SetActive(true);
         LobbyUIManager.gameObject.SetActive(false);
+
+        var profile = ResourceManager.Instance.LoadLocalPlayerProfile();
+        _nameText.text = profile.Name;
     }
     private void EnterLobby(){
         HomePanel.SetActive(false);
@@ -118,5 +126,12 @@ public class StartSceneUIManager : MonoBehaviour
 
     public void ShowPlayerProfile_ButtonAction(){
         PlayerProfileController.Show();
+        PlayerProfileController.OnClose += PlayerProfileControllerCloseHandler;
     }
+    private void PlayerProfileControllerCloseHandler(){
+        PlayerProfileController.OnClose -= PlayerProfileControllerCloseHandler;
+        var profile = ResourceManager.Instance.LoadLocalPlayerProfile();
+        _nameText.text = profile.Name;
+    }
+
 }
