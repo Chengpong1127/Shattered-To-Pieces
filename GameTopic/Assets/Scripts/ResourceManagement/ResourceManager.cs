@@ -19,9 +19,11 @@ public class ResourceManager: Singleton<ResourceManager>
     public readonly string GameplayEffectDir = "GameplayEffects";
 
     private SaveLoadManager localDeviceStorageManager;
+    private SaveLoadManager localPlayerProfileStorageManager;
     private AbstractAbilityScriptableObject[] _allAbilities;
     public ResourceManager() { 
         localDeviceStorageManager = SaveLoadManager.Create("BaseDirectory", "SavedDevice", SerializationMethodType.JsonDotNet);
+        localPlayerProfileStorageManager = SaveLoadManager.Create("BaseDirectory", "SavedPlayerProfile", SerializationMethodType.JsonDotNet);
     }
     public GameObject LoadPrefab(string filename){
         var path = Path.Combine(PrefabPath, filename);
@@ -153,5 +155,13 @@ public class ResourceManager: Singleton<ResourceManager>
             Debug.LogWarning("Cannot load material: " + path);
         }
         return material;
+    }
+
+    public PlayerProfile LoadLocalPlayerProfile(){
+        var profile = localPlayerProfileStorageManager.Load<PlayerProfile>("PlayerProfile.json");
+        return profile == null ? new PlayerProfile() : profile;
+    }
+    public void SaveLocalPlayerProfile(PlayerProfile profile){
+        localPlayerProfileStorageManager.Save(profile, "PlayerProfile.json");
     }
 }

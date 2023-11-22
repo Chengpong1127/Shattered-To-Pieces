@@ -18,6 +18,8 @@ public class StartSceneUIManager : MonoBehaviour
     private NotificationWindowController NotificationWindowController;
     [SerializeField]
     private LoadingUIController LoadingUIController;
+    [SerializeField]
+    private PlayerProfileController PlayerProfileController;
     
 
     void Awake()
@@ -28,6 +30,7 @@ public class StartSceneUIManager : MonoBehaviour
         Debug.Assert(HomePanel != null);
         Debug.Assert(NotificationWindowController != null);
         Debug.Assert(LoadingUIController != null);
+        Debug.Assert(PlayerProfileController != null);
         LobbyUIManager.OnExitLobby += OnExitLobbyHandler;
         CreateLobbyPanelController.OnCreateLobby += OnCreateLobbyHandler;
         LobbyListController.OnPlayerSelectLobby += PlayerSelectLobbyHandler;
@@ -111,5 +114,9 @@ public class StartSceneUIManager : MonoBehaviour
     private void OnExitLobbyHandler(){
         LobbyUIManager.ExitLobbyMode();
         LocalGameManager.Instance.PlayerExitLobby();
+    }
+
+    public void ShowPlayerProfile_ButtonAction(){
+        PlayerProfileController.Show();
     }
 }

@@ -49,7 +49,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
             Debug.Log("Signed In with ID: " + AuthenticationService.Instance.PlayerId);
         };
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        var player = new Player(AuthenticationService.Instance.PlayerId, profile: new PlayerProfile("Player"));
+        var player = new Player(AuthenticationService.Instance.PlayerId);
         return player;
     }
     #region Lobby
