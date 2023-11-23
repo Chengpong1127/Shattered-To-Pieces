@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 public class AssemblyRoomRunner: GameRunner, IAssemblyRoom{
+    [SerializeField]
+    private Transform _spawnPoint;
     public GamePlayer ControlledPlayer => PlayerMap.Values.First() as GamePlayer;
     public Device ControlledDevice => ControlledPlayer.SelfDevice;
 
@@ -88,7 +90,7 @@ public class AssemblyRoomRunner: GameRunner, IAssemblyRoom{
 
     public override void SpawnDevice(BasePlayer player, string filename){
         CleanAllGameComponents();
-        player.ServerLoadDevice(filename, Vector3.zero);
+        player.ServerLoadDevice(filename, _spawnPoint.position);
     }
 
     public IGameComponent CreateNewGameComponent(GameComponentData componentData, Vector2 position)
