@@ -41,10 +41,10 @@ public class LobbyManager
             CurrentLobby = null;
             throw e;
         }
-        
         await BindHostLobbyHandler(CurrentLobby);
         Identity = LobbyIdentity.Host;
         OnPlayerJoinOrLeave?.Invoke();
+        LobbyHeartbeat(CurrentLobby.Id);
         return CurrentLobby;
     }
 
@@ -66,13 +66,12 @@ public class LobbyManager
                     mapInfo.MapName) 
                 }
             } });
-        LobbyHeartbeat(CurrentLobby.Id);
         return CurrentLobby;
     }
     private async void LobbyHeartbeat(string lobbyId){
         while(CurrentLobby != null && CurrentLobby.Id == lobbyId){
             await LobbyService.Instance.SendHeartbeatPingAsync(lobbyId);
-            await UniTask.WaitForSeconds(5);
+            await UniTask.WaitForSeconds(15);
         }
     }
 
