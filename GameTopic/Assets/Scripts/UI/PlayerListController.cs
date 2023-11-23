@@ -22,7 +22,8 @@ public class PlayerListController : MonoBehaviour
         {
             var playerItem = Instantiate(_playerItemPrefab,transform).GetComponent<PlayerItemController>();
             playerItem.transform.Translate(Vector2.down * 50f);
-            playerItem.SetPlayer(player.Data["PlayerName"].Value, readyPlayers.Contains(player));
+            PlayerProfile playerProfile = PlayerProfile.FromJson(player.Data["PlayerProfileJson"].Value);
+            playerItem.SetPlayer(playerProfile.Name, readyPlayers.Contains(player));
             return playerItem;
         }).ToList();
         playerItemControllers[localPlayerIndex].SetLocalPlayer();

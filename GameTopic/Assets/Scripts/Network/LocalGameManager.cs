@@ -56,7 +56,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
     public async UniTask CreateLobby(string lobbyName, MapInfo mapInfo){
         try{
-            await LobbyManager.CreateLobby(lobbyName, mapInfo);
+            await LobbyManager.CreateLobby(lobbyName, mapInfo, ResourceManager.Instance.LoadLocalPlayerProfile());
             StateMachine.ChangeState(GameState.Lobby);
             LobbyManager.OnLobbyReady += LobbyReadyHandler;
             Debug.Log("Lobby Created with ID: " + LobbyManager.CurrentLobby.Id);
@@ -86,7 +86,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
     public async UniTask JoinLobby(Lobby lobby){
         try {
-            await LobbyManager.JoinLobby(lobby);
+            await LobbyManager.JoinLobby(lobby, ResourceManager.Instance.LoadLocalPlayerProfile());
             StateMachine.ChangeState(GameState.Lobby);
             LobbyManager.OnLobbyReady += LobbyReadyHandler;
             Debug.Log("Lobby Joined with ID: " + LobbyManager.CurrentLobby.Id);

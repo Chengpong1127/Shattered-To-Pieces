@@ -24,11 +24,11 @@ public class LobbyManager
     public LobbyManager(Player player){
         SelfPlayer = player;
     }
-    public async UniTask<Lobby> CreateLobby(string lobbyName, MapInfo defaultMapInfo){
+    public async UniTask<Lobby> CreateLobby(string lobbyName, MapInfo defaultMapInfo, PlayerProfile playerProfile){
         if (CurrentLobby != null){
             throw new Exception("Already in a lobby");
         }
-        SelfPlayer.Data = GetDefaultPlayerData("Player");
+        SelfPlayer.Data = GetDefaultPlayerData(playerProfile);
         var createLobbyOptions = new CreateLobbyOptions(){
             IsPrivate = false,
             IsLocked = false,
@@ -85,6 +85,10 @@ public class LobbyManager
         CurrentLobby = null;
     }
 
+    public PlayerProfile GetPlayerProfile(Player player){
+        return PlayerProfile.FromJson(player.Data["PlayerProfileJson"].Value);
+    }
+
 
     private Dictionary<string, DataObject> GetDefaultLobbyData(string mapName){
         return new Dictionary<string, DataObject>(){
@@ -94,10 +98,10 @@ public class LobbyManager
             {"MapName", new DataObject(DataObject.VisibilityOptions.Public, mapName)},
         };
     }
-    private Dictionary<string, PlayerDataObject> GetDefaultPlayerData(string playerName){
+    private Dictionary<string, PlayerDataObject> GetDefaultPlayerData(PlayerProfile profile){
         return new Dictionary<string, PlayerDataObject>(){
             {"Ready", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, "false")},
-            {"PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, playerName)},
+            {"PlayerProfileJson", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, profile.ToJson())},
         };
     }
 
@@ -114,11 +118,11 @@ public class LobbyManager
         return responce.Results.ToArray();
     }
 
-    public async UniTask JoinLobby(Lobby lobby){
+    public async UniTask JoinLobby(Lobby lobby, PlayerProfile playerProfile){
         if (CurrentLobby != null){
             throw new Exception("Already in a lobby");
         }
-        SelfPlayer.Data = GetDefaultPlayerData(SelfPlayer.Profile.Name);
+        SelfPlayer.Data = GetDefaultPlayerData(playerProfile);
         var joinLobbyOptions = new JoinLobbyByIdOptions(){
             Player = SelfPlayer,
         };
