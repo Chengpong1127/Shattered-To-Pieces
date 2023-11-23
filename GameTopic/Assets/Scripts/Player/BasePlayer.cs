@@ -41,17 +41,13 @@ public class BasePlayer : NetworkBehaviour
         if (ServerAbilityRunner != null){
             Destroy(ServerAbilityRunner);
         }
-        SelfDevice = new Device(new NetworkGameComponentFactory());
+        SelfDevice = new Device(new NetworkGameComponentFactory(OwnerClientId));
         await SelfDevice.LoadAsync(info, position);
         ServerAbilityRunner = AbilityRunner.CreateInstance(gameObject, SelfDevice.AbilityManager, OwnerClientId);
         OnPlayerLoaded?.Invoke();
         RootNetworkObjectID.Value = SelfDevice.RootGameComponent.NetworkObjectId;
         SelfDevice.OnDeviceDied += DeviceDiedHandler;
-        SelfDevice.ForEachGameComponent(component => {
-            (component as GameComponent).NetworkObject.ChangeOwnership(OwnerClientId);
-        });
         IsAlive.Value = true;
-
     }
     [ServerRpc]
     private void StartAbility_ServerRPC(int abilityNumber)

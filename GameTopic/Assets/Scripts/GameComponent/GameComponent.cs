@@ -77,8 +77,14 @@ public class GameComponent : AbilityEntity, IGameComponent
         var componentInfo = info as GameComponentInfo;
 
         ComponentName = componentInfo.ComponentName;
-        AssemblyTransform.rotation = Quaternion.Euler(0, 0, componentInfo.ConnectionZRotation);
-        AssemblyTransform.localScale = new Vector3(componentInfo.ToggleXScale ? -1 : 1, 1, 1);
+        SetAssemblyTransform_ClientRpc(Quaternion.Euler(0, 0, componentInfo.ConnectionZRotation), new Vector3(componentInfo.ToggleXScale ? -1 : 1, 1, 1));
+    }
+    [ClientRpc]
+    private void SetAssemblyTransform_ClientRpc(Quaternion rotation, Vector3 scale){
+        if (IsOwner){
+            AssemblyTransform.rotation = rotation;
+            AssemblyTransform.localScale = scale;
+        }
     }
     public void SetSelected(bool selected){
         IsSelected.Value = selected;

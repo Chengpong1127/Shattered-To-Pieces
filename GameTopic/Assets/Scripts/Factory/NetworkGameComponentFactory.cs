@@ -5,8 +5,9 @@ using System;
 using Unity.Netcode;
 public class NetworkGameComponentFactory : IGameComponentFactory
 {
-    public NetworkGameComponentFactory(){
-
+    public ulong OwnerClientId { get; private set; }
+    public NetworkGameComponentFactory(ulong ownerClientId = 0){
+        OwnerClientId = ownerClientId;
     }
 
     public IGameComponent CreateGameComponentObject(string gameComponentName, Vector3 position)
@@ -15,7 +16,7 @@ public class NetworkGameComponentFactory : IGameComponentFactory
         if (prefab != null)
         {
             var obj = GameObject.Instantiate(prefab, position, Quaternion.identity);
-            obj.GetComponent<NetworkObject>()?.Spawn();
+            obj.GetComponent<NetworkObject>()?.SpawnWithOwnership(OwnerClientId);
             var component = obj.GetComponent<IGameComponent>();
             component.ComponentName = gameComponentName;
             return component;
