@@ -20,10 +20,12 @@ public class ResourceManager: Singleton<ResourceManager>
 
     private SaveLoadManager localDeviceStorageManager;
     private SaveLoadManager localPlayerProfileStorageManager;
+    private SaveLoadManager localGameSettingsStorageManager;
     private AbstractAbilityScriptableObject[] _allAbilities;
     public ResourceManager() { 
         localDeviceStorageManager = SaveLoadManager.Create("BaseDirectory", "SavedDevice", SerializationMethodType.JsonDotNet);
         localPlayerProfileStorageManager = SaveLoadManager.Create("BaseDirectory", "SavedPlayerProfile", SerializationMethodType.JsonDotNet);
+        localGameSettingsStorageManager = SaveLoadManager.Create("BaseDirectory", "SavedGameSettings", SerializationMethodType.JsonDotNet);
     }
     public GameObject LoadPrefab(string filename){
         var path = Path.Combine(PrefabPath, filename);
@@ -163,5 +165,13 @@ public class ResourceManager: Singleton<ResourceManager>
     }
     public void SaveLocalPlayerProfile(PlayerProfile profile){
         localPlayerProfileStorageManager.Save(profile, "PlayerProfile.json");
+    }
+
+    public GameSetting LoadLocalGameSetting(){
+        var settings = localGameSettingsStorageManager.Load<GameSetting>("GameSettings.json");
+        return settings == null ? new GameSetting() : settings;
+    }
+    public void SaveLocalGameSetting(GameSetting settings){
+        localGameSettingsStorageManager.Save(settings, "GameSettings.json");
     }
 }
