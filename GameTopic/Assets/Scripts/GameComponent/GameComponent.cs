@@ -153,7 +153,9 @@ public class GameComponent : AbilityEntity, IGameComponent
     }
     [ServerRpc]
     protected void JointBreakHandler_ServerRpc(){
-        DisconnectFromParent();
+        if(!IsSelected.Value){
+            DisconnectFromParent();
+        }
     }
 
     public override void Die()
