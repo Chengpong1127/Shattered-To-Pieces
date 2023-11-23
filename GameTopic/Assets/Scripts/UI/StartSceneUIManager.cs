@@ -134,4 +134,8 @@ public class StartSceneUIManager : MonoBehaviour
         _nameText.text = profile.Name;
     }
 
+    public void QuitGame_ButtonAction(){
+        Application.Quit();
+    }
+
 }
