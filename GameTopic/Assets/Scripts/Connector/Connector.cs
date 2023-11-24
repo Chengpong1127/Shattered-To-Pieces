@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Unity.Netcode;
+using Cysharp.Threading.Tasks;
 [RequireComponent(typeof(AnchoredJoint2D))]
 public class Connector : NetworkBehaviour, IConnector
 {
@@ -88,17 +89,20 @@ public class Connector : NetworkBehaviour, IConnector
     }
     [ClientRpc]
     private void ConnectToComponent_ClientRpc(ulong parentID, ConnectionInfo info){
+        ConnectToComponent(parentID, info);
+    }
+    private void ConnectToComponent(ulong parentID, ConnectionInfo info){
         if (!IsServer){
-            var newParent = Utils.GetLocalGameObjectByNetworkID(parentID).GetComponent<IConnector>();
+            var newParent = Utils.GetLocalGameObjectByNetworkID(parentID).GetComponent<Connector>();
             if (newParent == null) throw new ArgumentException("newParent is null");
             if (info == null) throw new ArgumentException("info is null");
+            GameComponent.BodyTransform.position = newParent.GameComponent.BodyTransform.position + new Vector3(newParent.Joint.anchor.x, newParent.Joint.anchor.y, 0);
             _currentLinkedTarget = newParent.GetTarget(info.linkedTargetID);
             Joint.connectedAnchor = _currentLinkedTarget.ConnectionPosition;
             Joint.connectedBody = newParent.GameComponent.BodyRigidbody;
             _currentLinkedTarget.SetLink(this);
             Joint.enabled = true;
         }
-
     }
     public void BreakConnection(){
         BreakConnectionClientRpc();

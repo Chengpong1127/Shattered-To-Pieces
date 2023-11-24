@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using Unity.Netcode;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 
 [RequireComponent(typeof(Connector))]
 public class GameComponent : AbilityEntity, IGameComponent
@@ -39,7 +40,7 @@ public class GameComponent : AbilityEntity, IGameComponent
 
         Parent = parent;
         Parent.Children.Add(this);
-        BodyTransform.position = parentComponent.BodyTransform.position;
+        //BodyTransform.position = parentComponent.BodyTransform.position;
         connector.ConnectToComponent(parent.Connector, info);
         NetworkObject.ChangeOwnership(parent.NetworkObject.OwnerClientId);
 
@@ -64,6 +65,8 @@ public class GameComponent : AbilityEntity, IGameComponent
         {
             ComponentName = ComponentName,
             ConnectionInfo = connector.Dump() as ConnectionInfo,
+            RelativePositionToRoot_X = BodyTransform.position.x - (GetRoot() as GameComponent).BodyTransform.position.x,
+            RelativePositionToRoot_Y = BodyTransform.position.y - (GetRoot() as GameComponent).BodyTransform.position.y,
             ConnectionZRotation = AssemblyTransform.rotation.eulerAngles.z,
             ToggleXScale = AssemblyTransform.localScale.x < 0,
         };
@@ -77,11 +80,13 @@ public class GameComponent : AbilityEntity, IGameComponent
         var componentInfo = info as GameComponentInfo;
 
         ComponentName = componentInfo.ComponentName;
-        SetAssemblyTransform_ClientRpc(Quaternion.Euler(0, 0, componentInfo.ConnectionZRotation), new Vector3(componentInfo.ToggleXScale ? -1 : 1, 1, 1));
+        Vector3 movePosition = new Vector3(componentInfo.RelativePositionToRoot_X, componentInfo.RelativePositionToRoot_Y, 0);
+        SetAssemblyTransform_ClientRpc(movePosition, Quaternion.Euler(0, 0, componentInfo.ConnectionZRotation), new Vector3(componentInfo.ToggleXScale ? -1 : 1, 1, 1));
     }
     [ClientRpc]
-    private void SetAssemblyTransform_ClientRpc(Quaternion rotation, Vector3 scale){
+    private void SetAssemblyTransform_ClientRpc(Vector3 movePosition, Quaternion rotation, Vector3 scale){
         if (IsOwner){
+            AssemblyTransform.position += movePosition;
             AssemblyTransform.rotation = rotation;
             AssemblyTransform.localScale = scale;
         }
