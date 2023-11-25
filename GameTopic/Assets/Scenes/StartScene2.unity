@@ -21290,6 +21290,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8009161918947203955, guid: c3acb7ae312d641f1b6aa13c20f061fa, type: 3}
+      propertyPath: LoadingText
+      value: 
+      objectReference: {fileID: 997519124}
     - target: {fileID: 8922424198396580699, guid: c3acb7ae312d641f1b6aa13c20f061fa, type: 3}
       propertyPath: m_Name
       value: Loading
