@@ -33,7 +33,7 @@ public class InvisibleAbility : DisplayableAbilityScriptableObject
         public Material invisible;
         public BaseCoreComponent ControlRoom;
         public float DurationTime;
-        public BaseCoreComponent[] baseCoreComponents;
+        public List<BaseCoreComponent> baseCoreComponents;
         public InvisibleAbilitySpec(AbstractAbilityScriptableObject ability, AbilitySystemCharacter owner) : base(ability, owner)
         {
 
@@ -52,24 +52,25 @@ public class InvisibleAbility : DisplayableAbilityScriptableObject
         protected override IEnumerator ActivateAbility()
         {
             ControlRoom = (SelfEntity as BaseCoreComponent).Root as ControlRoom;
-            baseCoreComponents = ControlRoom.GetAllChildren();
+            baseCoreComponents = ControlRoom.GetAllChildrenList();
+            baseCoreComponents.Add((SelfEntity as BaseCoreComponent).Root);
             ClientRpcParams clientRpcParams = new ClientRpcParams(){
                 Send = new ClientRpcSendParams(){
                     TargetClientIds = new List<ulong>() { Runner.OwnerPlayerID }
                 }
             };
-            baseCoreComponents.ToList().ForEach(baseCoreComponent =>
+            baseCoreComponents.ForEach(baseCoreComponent =>
             {
-                baseCoreComponent.SetVisible_ClientRpc(false);
+                baseCoreComponent.SetVisible_ClientRpc(false,1);
             });
-            baseCoreComponents.ToList().ForEach(baseCoreComponent =>
+            baseCoreComponents.ForEach(baseCoreComponent =>
             {
-                baseCoreComponent.SetVisible_ClientRpc(true, clientRpcParams);
+                baseCoreComponent.SetVisible_ClientRpc(true, 0.5f, clientRpcParams);
             });
             yield return new WaitForSeconds(DurationTime);
-            baseCoreComponents.ToList().ForEach(baseCoreComponent =>
+            baseCoreComponents.ForEach(baseCoreComponent =>
             {
-                baseCoreComponent.SetVisible_ClientRpc(true);
+                baseCoreComponent.SetVisible_ClientRpc(true,1);
             });
             yield return null;
         }

@@ -1,11 +1,11 @@
 using UnityEngine;
 using TMPro;
 using System;
-
+using UnityEngine.UI;
 public class ProfileSetNameController : GameWidgetController
 {
     [SerializeField]
-    private TMP_InputField _inputField;
+    private InputField _inputField;
     public event Action<string> OnSetName;
     void Awake()
     {

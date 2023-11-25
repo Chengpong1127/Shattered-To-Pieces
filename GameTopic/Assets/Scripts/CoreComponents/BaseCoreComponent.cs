@@ -23,6 +23,18 @@ public class BaseCoreComponent : GameComponent, ICoreComponent
         });
         return children.ToArray();
     }
+    public List<BaseCoreComponent> GetAllChildrenList()
+    {
+        var children = new List<BaseCoreComponent>();
+        var tree = new Tree(this);
+        tree.TraverseBFS((node) => {
+            if (node is GameComponent gameComponent)
+            {
+                children.Add(gameComponent as BaseCoreComponent);
+            }
+        });
+        return children;
+    }
 
     public GameComponentAbility[] GameComponentAbilities {
         get{
@@ -54,14 +66,22 @@ public class BaseCoreComponent : GameComponent, ICoreComponent
     }
 
     [ClientRpc]
-    public void SetVisible_ClientRpc(bool visible, ClientRpcParams clientRpcParams = default)
+    public void SetVisible_ClientRpc(bool visible,float colarAlpha, ClientRpcParams clientRpcParams = default)
     {
-        var renderers = GetComponentsInChildren<Renderer>();
+        var renderers = BodyRenderers;
         foreach (var renderer in renderers)
         {
             if (renderer?.GetComponent<Target>() == null)
-            renderer.enabled = visible;
+            {
+                Color newColor = renderer.gameObject.GetComponent<SpriteRenderer>().color;
+                newColor.a = colarAlpha;
+                renderer.gameObject.GetComponent<SpriteRenderer>().color = newColor;
+                renderer.enabled = visible;
+            }
+
         }
+
+
     }
 
     

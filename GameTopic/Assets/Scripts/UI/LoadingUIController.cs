@@ -1,10 +1,10 @@
 using UnityEngine;
 using TMPro;
-
+using UnityEngine.UI;
 public class LoadingUIController : MonoBehaviour
 {
     [SerializeField]
-    private TMP_Text LoadingText;
+    private Text LoadingText;
     [SerializeField]
     private GameWidget GameWidget;
 

@@ -15390,7 +15390,7 @@ PrefabInstance:
     - target: {fileID: 7186260762548639609, guid: e3185ff791c85460996ab253f4a2a15b, type: 3}
       propertyPath: _inputField
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 495203705}
     - target: {fileID: 7207371800239763181, guid: e3185ff791c85460996ab253f4a2a15b, type: 3}
       propertyPath: m_SizeDelta.x
       value: 800
@@ -21360,6 +21360,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 160
       objectReference: {fileID: 0}
+    - target: {fileID: 4823157622709814824, guid: 3796151ffef1841839e4df51c94c38d7, type: 3}
+      propertyPath: LoadingText
+      value: 
+      objectReference: {fileID: 1981217788}
     - target: {fileID: 5179750676929406118, guid: 3796151ffef1841839e4df51c94c38d7, type: 3}
       propertyPath: m_SizeDelta.x
       value: 600
