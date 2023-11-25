@@ -9,7 +9,7 @@ public class CreateLobbyPanelController : MonoBehaviour
 {
     public event Action<string, MapInfo> OnCreateLobby;
     [SerializeField]
-    private TMP_InputField _lobbyNameInput;
+    private InputField _lobbyNameInput;
     [SerializeField]
     private GameWidget _gameWidget;
     [SerializeField]
