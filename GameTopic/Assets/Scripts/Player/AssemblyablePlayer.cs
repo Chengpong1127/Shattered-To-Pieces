@@ -18,6 +18,12 @@ public class AssemblyablePlayer: BasePlayer{
             GameEvents.RebindEvents.OnFinishRebinding += OnFinishRebindingHandler_ServerRpc;
         }
     }
+    public override void OnDestroy() {
+        if(IsOwner){
+            GameEvents.RebindEvents.OnFinishRebinding -= OnFinishRebindingHandler_ServerRpc;
+        }
+        base.OnDestroy();
+    }
 
     [ClientRpc]
     public virtual void SetAssemblyMode_ClientRpc(bool enabled){

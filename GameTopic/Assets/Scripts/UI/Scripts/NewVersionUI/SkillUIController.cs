@@ -16,10 +16,10 @@ public class SkillUIController : NetworkBehaviour {
         Debug.Assert(Droppers != null);
         Debug.Assert(player != null);
 
-        GameEvents.AbilityManagerEvents.OnSetBinding += (eID, _) => UpdateSkillBoxKeyText(eID);
+        GameEvents.AbilityManagerEvents.OnSetBinding += OnSetBindingHandler;
         GameEvents.AbilityManagerEvents.OnAbilityManagerUpdated += ServerRequestUpdateAllSkillBox;
-        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += (am, _, _) => ServerRequestUpdateAllSkillBox(am);
-        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += (am, _) => ServerRequestUpdateAllSkillBox(am);
+        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry += OnSetAbilityToEntryHandler;
+        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry += OnSetAbilityOutOfEntryHandler;
 
         NonDropper.OnAddNewSkill += BindAbilityToEntry;
         NonDropper.draggerList.ForEach(d => {
@@ -39,11 +39,23 @@ public class SkillUIController : NetworkBehaviour {
 
 
     public override void OnDestroy() {
-        base.OnDestroy();
-        GameEvents.AbilityManagerEvents.OnSetBinding -= (eID, _) => UpdateSkillBoxKeyText(eID);
+        GameEvents.AbilityManagerEvents.OnSetBinding -= OnSetBindingHandler;
         GameEvents.AbilityManagerEvents.OnAbilityManagerUpdated -= ServerRequestUpdateAllSkillBox;
-        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry -= (am, _, _) => ServerRequestUpdateAllSkillBox(am);
-        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry -= (am, _) => ServerRequestUpdateAllSkillBox(am);
+        GameEvents.AbilityManagerEvents.OnSetAbilityToEntry -= OnSetAbilityToEntryHandler;
+        GameEvents.AbilityManagerEvents.OnSetAbilityOutOfEntry -= OnSetAbilityOutOfEntryHandler;
+        base.OnDestroy();
+    }
+
+    private void OnSetBindingHandler(int entryID, string path) {
+        UpdateSkillBoxKeyText(entryID);
+    }
+
+    private void OnSetAbilityToEntryHandler(AbilityManager abilityManager, GameComponentAbility ability, int entryID) {
+        ServerRequestUpdateAllSkillBox(abilityManager);
+    }
+
+    private void OnSetAbilityOutOfEntryHandler(AbilityManager abilityManager, GameComponentAbility ability) {
+        ServerRequestUpdateAllSkillBox(abilityManager);
     }
 
     public async UniTask Initialize(){
