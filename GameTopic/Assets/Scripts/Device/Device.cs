@@ -18,17 +18,21 @@ public class Device: IDevice
     public Device(IGameComponentFactory gameComponentFactory){
         GameComponentFactory = gameComponentFactory;
         AbilityManager = new AbilityManager(this);
-        GameEvents.GameComponentEvents.OnEntityDied += entity => {
-            if (entity.Equals(RootGameComponent)){
-                OnDeviceDied?.Invoke();
-            }
-        };
-        GameEvents.GameComponentEvents.OnGameComponentDisconnected += (component, parent) => {
-            AbilityManager
-                .Where(ability => ability.OwnerGameComponentID.Equals(component))
-                .ToList()
-                .ForEach(ability => ability.AbilitySpec.CancelAbility());
-        };
+        GameEvents.GameComponentEvents.OnEntityDied += OnEntityDiedHandler;
+        GameEvents.GameComponentEvents.OnGameComponentDisconnected += OnGameComponentDisconnectedHandler;
+    }
+    private void OnEntityDiedHandler(BaseEntity entity){
+        GameEvents.GameComponentEvents.OnEntityDied -= OnEntityDiedHandler;
+        if (entity.Equals(RootGameComponent)){
+            OnDeviceDied?.Invoke();
+        }
+    }
+    private void OnGameComponentDisconnectedHandler(GameComponent component, GameComponent parent){
+        GameEvents.GameComponentEvents.OnGameComponentDisconnected -= OnGameComponentDisconnectedHandler;
+        AbilityManager
+            .Where(ability => ability.OwnerGameComponentID.Equals(component))
+            .ToList()
+            .ForEach(ability => ability.AbilitySpec.CancelAbility());
     }
     public IInfo Dump()
     {
