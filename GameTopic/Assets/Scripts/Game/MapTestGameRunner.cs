@@ -17,6 +17,14 @@ public class MapTestGameRunner : SimpleGameRunner
             StartCoroutine(RepeatSetRandomComponents());
         }
     }
+    public override void OnDestroy()
+    {
+        if (IsServer)
+        {
+            GameEvents.GameComponentEvents.OnGameComponentSelected -= HandleGameComponentConnected;
+        }
+        base.OnDestroy();
+    }
     private int[] GetShuffledIndices(int length)
     {
         int[] indices = new int[length];

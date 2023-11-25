@@ -78,6 +78,7 @@ public class BasePlayer : NetworkBehaviour
         IsAlive.Value = false;
         OnPlayerDied?.Invoke();
         Destroy(ServerAbilityRunner);
+        SelfDevice = null;
     }
     public void ServerLoadDevice(string filename, Vector3 position){
         if (IsServer){
