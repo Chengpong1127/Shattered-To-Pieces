@@ -12,11 +12,11 @@ public class Pipeline : MonoBehaviour
     public void AnimationTrigger(IGameComponent gameComponent)
     {
         var renderers = gameComponent.BodyTransform.gameObject.GetComponentsInChildren<Renderer>();
-        foreach (var renderer in renderers)
-        {
-            if (renderer?.GetComponent<Target>() == null)
-                renderer.enabled = false;
-        }
+        // foreach (var renderer in renderers)
+        // {
+        //     if (renderer?.GetComponent<Target>() == null)
+        //         renderer.enabled = false;
+        // }
         this.GetComponent<Animator>().SetTrigger("Trigger");
         StartCoroutine(SetSprite(gameComponent));
     }
@@ -24,11 +24,11 @@ public class Pipeline : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
         var renderers = gameComponent.BodyTransform.gameObject.GetComponentsInChildren<Renderer>();
-        foreach (var renderer in renderers)
-        {
-            if (renderer?.GetComponent<Target>() == null)
-                renderer.enabled = true;
-        }
+        // foreach (var renderer in renderers)
+        // {
+        //     if (renderer?.GetComponent<Target>() == null)
+        //         renderer.enabled = true;
+        // }
         yield return null;
     }
 }
