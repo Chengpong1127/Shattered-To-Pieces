@@ -13,7 +13,7 @@ public class AssemblyRoomRunner: GameRunner, IAssemblyRoom{
 
     public AssemblyController assemblyController => ControlledPlayer.AssemblyController;
 
-    public int PlayerInitMoney { get; set; } = 1000;
+    public int PlayerInitMoney { get; set; } = 200;
     public event Action<IGameComponent> OnBuyingGameComponent;
 
     public AbilityManager AbilityManager => ControlledDevice.AbilityManager;

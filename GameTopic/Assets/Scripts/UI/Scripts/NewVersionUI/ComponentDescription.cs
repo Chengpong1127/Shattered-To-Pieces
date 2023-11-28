@@ -9,10 +9,10 @@ public class ComponentDescription : MonoBehaviour
     [SerializeField] Image displayImage;
     [SerializeField] TMP_Text descriptionText;
 
-    Vector2 maxSpriteSize;
+    Vector2 maxSpriteSize = new Vector2(400f, 256f);
 
     private void Awake() {
-        maxSpriteSize = displayImage.rectTransform.sizeDelta;
+        // maxSpriteSize = displayImage.rectTransform.sizeDelta;
     }
 
     private void Start() {
