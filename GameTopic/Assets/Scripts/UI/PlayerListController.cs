@@ -18,6 +18,7 @@ public class PlayerListController : MonoBehaviour
     public void SetPlayerList(List<Player> players, List<Player> readyPlayers, int localPlayerIndex)
     {
         playerItemControllers.ForEach(playerItem => Destroy(playerItem.gameObject));
+        playerItemControllers.Clear();
         playerItemControllers = players.Select(player =>
         {
             var playerItem = Instantiate(_playerItemPrefab,transform).GetComponent<PlayerItemController>();
@@ -27,5 +28,10 @@ public class PlayerListController : MonoBehaviour
             return playerItem;
         }).ToList();
         playerItemControllers[localPlayerIndex].SetLocalPlayer();
+    }
+    void OnDestroy()
+    {
+        playerItemControllers.ForEach(playerItem => Destroy(playerItem.gameObject));
+        playerItemControllers.Clear();
     }
 }
