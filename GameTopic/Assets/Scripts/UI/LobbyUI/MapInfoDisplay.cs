@@ -7,19 +7,19 @@ public class MapInfoDisplay : MonoBehaviour
     [SerializeField]
     private Image mapImage;
     [SerializeField]
-    private TMP_Text mapName;
-    [SerializeField]
-    private TMP_Text mapDescription;
+    private Text mapName;
+    //[SerializeField]
+    //private Text mapDescription;
     void Awake()
     {
         Debug.Assert(mapImage != null);
         Debug.Assert(mapName != null);
-        Debug.Assert(mapDescription != null);
+      //Debug.Assert(mapDescription != null);
     }
     public void SetMapInfo(MapInfo mapInfo){
         
         mapImage.sprite = mapInfo.MapImage;
         mapName.text = mapInfo.MapName;
-        mapDescription.text = mapInfo.MapDescription;
+        //mapDescription.text = mapInfo.MapDescription;
     }
 }
