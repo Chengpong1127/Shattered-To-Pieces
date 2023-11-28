@@ -18,6 +18,8 @@ public class LobbyUIManager : MonoBehaviour
     private ReadyButtonController _readyButtonController;
     [SerializeField]
     private Text _playerCountText;
+    [SerializeField]
+    private MapInfoDisplay _mapInfoDisplay;
     private LobbyManager _lobbyManager;
     public event Action OnExitLobby;
     void Awake()
@@ -26,7 +28,9 @@ public class LobbyUIManager : MonoBehaviour
         Debug.Assert(_playerListController != null);
         Debug.Assert(_readyButtonController != null);
         Debug.Assert(_playerCountText != null);
+        Debug.Assert(_mapInfoDisplay != null);
 
+        _readyButtonController.SetReady();
         _readyButtonController.OnReadyButtonPressed += OnReadyButtonPressed;
     }
     public async void SetLobbyManager(LobbyManager lobbyManager){
@@ -37,6 +41,9 @@ public class LobbyUIManager : MonoBehaviour
         UpdatePlayerList();
 
         _lobbyManager.OnLobbyChanged += LobbyChangedHandler;
+        string mapName = lobbyManager.CurrentLobby.Data["MapName"].Value;
+        MapInfo mapInfo = ResourceManager.Instance.LoadMapInfo(mapName);
+        _mapInfoDisplay.SetMapInfo(mapInfo);
     }
 
     public void ExitLobbyMode(){
