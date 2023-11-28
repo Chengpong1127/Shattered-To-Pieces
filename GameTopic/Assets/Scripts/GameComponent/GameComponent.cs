@@ -40,7 +40,6 @@ public class GameComponent : AbilityEntity, IGameComponent
 
         Parent = parent;
         Parent.Children.Add(this);
-        //BodyTransform.position = parentComponent.BodyTransform.position;
         connector.ConnectToComponent(parent.Connector, info);
         NetworkObject.ChangeOwnership(parent.NetworkObject.OwnerClientId);
 

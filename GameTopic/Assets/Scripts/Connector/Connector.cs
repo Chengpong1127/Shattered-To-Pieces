@@ -82,6 +82,7 @@ public class Connector : NetworkBehaviour, IConnector
         if (newParent == null) throw new ArgumentException("newParent is null");
         if (info == null) throw new ArgumentException("info is null");
         _currentLinkedTarget = newParent.GetTarget(info.linkedTargetID);
+        GameComponent.BodyTransform.position = _currentLinkedTarget.transform.position;
         Joint.connectedAnchor = _currentLinkedTarget.ConnectionPosition;
         Joint.connectedBody = newParent.GameComponent.BodyRigidbody;
         _currentLinkedTarget.SetLink(this);
@@ -96,8 +97,8 @@ public class Connector : NetworkBehaviour, IConnector
             var newParent = Utils.GetLocalGameObjectByNetworkID(parentID).GetComponent<Connector>();
             if (newParent == null) throw new ArgumentException("newParent is null");
             if (info == null) throw new ArgumentException("info is null");
-            GameComponent.BodyTransform.position = newParent.GameComponent.BodyTransform.position + new Vector3(newParent.Joint.anchor.x, newParent.Joint.anchor.y, 0);
             _currentLinkedTarget = newParent.GetTarget(info.linkedTargetID);
+            GameComponent.BodyTransform.position = _currentLinkedTarget.transform.position;
             Joint.connectedAnchor = _currentLinkedTarget.ConnectionPosition;
             Joint.connectedBody = newParent.GameComponent.BodyRigidbody;
             _currentLinkedTarget.SetLink(this);
