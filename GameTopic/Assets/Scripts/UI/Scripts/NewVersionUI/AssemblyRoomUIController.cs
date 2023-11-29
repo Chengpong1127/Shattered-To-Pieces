@@ -35,7 +35,7 @@ public class AssemblyRoomUIController : MonoBehaviour , ISellElementSubmitable {
     }
     private async void Start() {
         await UniTask.WaitUntil(() => assemblyRoomRunner.StateMachine.State == AssemblyRoomRunner.GameStates.Gaming);
-        SetAssimblyRoom(assemblyRoomRunner);
+        Init();
         Shop.UpdateSellElements();
         CostRemain.SetPrice(assemblyRoomRunner.GetPlayerRemainedMoney());
     }
@@ -46,14 +46,9 @@ public class AssemblyRoomUIController : MonoBehaviour , ISellElementSubmitable {
         Buy = null;
         OpenDescription = null;
         CloseDescription = null;
-        SetAssimblyRoom(null);
     }
 
-    public void SetAssimblyRoom(AssemblyRoomRunner Iar) {
-        // remove leasteners
-        if (Iar == null) { return; }
-        assemblyRoomRunner = Iar;
-
+    public void Init() {
         componentList[(int)GameComponentType.Attack] = assemblyRoomRunner.GetGameComponentDataListByTypeForShop(GameComponentType.Attack);
         componentList[(int)GameComponentType.Basic] = assemblyRoomRunner.GetGameComponentDataListByTypeForShop(GameComponentType.Basic);
         componentList[(int)GameComponentType.Functional] = assemblyRoomRunner.GetGameComponentDataListByTypeForShop(GameComponentType.Functional);
@@ -64,8 +59,6 @@ public class AssemblyRoomUIController : MonoBehaviour , ISellElementSubmitable {
     }
 
     void BuyComponent(int elementID) {
-        // room?.CreateNewGameComponent(gcd, Vector2.zero);// IDK position value.
-        if (assemblyRoomRunner == null) { return; }
 
         assemblyRoomRunner.CreateNewGameComponent(componentList[(int)Shop.displayComponentType][elementID], new Vector2(0.5f,0));
     }
