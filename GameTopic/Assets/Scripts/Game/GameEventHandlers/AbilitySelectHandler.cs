@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using DG.Tweening.Core;
 public class AbilitySelectHandler: BaseGameEventHandler{
-    private Dictionary<SpriteRenderer, TweenerCore<Color, Color, DG.Tweening.Plugins.Options.ColorOptions>> _colorTweenMap = new();
+    private Dictionary<SpriteRenderer, Tween> _colorTweenMap = new();
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();

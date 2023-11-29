@@ -8,7 +8,7 @@ using DG.Tweening.Core;
 using DG.Tweening;
 public class GameComponentSelectedHandler : BaseGameEventHandler
 {
-    private Dictionary<SpriteRenderer, TweenerCore<Color, Color, DG.Tweening.Plugins.Options.ColorOptions>> _colorTweenMap = new();
+    private Dictionary<SpriteRenderer, Tween> _colorTweenMap = new();
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();

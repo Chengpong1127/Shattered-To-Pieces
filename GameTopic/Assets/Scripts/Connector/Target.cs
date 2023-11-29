@@ -61,5 +61,9 @@ public class Target : MonoBehaviour
             Renderer.DOKill();
         }
     }
+    void OnDestroy()
+    {
+        Renderer.DOKill();
+    }
 
 }
