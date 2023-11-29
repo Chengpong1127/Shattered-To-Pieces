@@ -21,6 +21,8 @@ public class LobbyUIManager : MonoBehaviour
     [SerializeField]
     private MapInfoDisplay _mapInfoDisplay;
     private LobbyManager _lobbyManager;
+    [SerializeField]
+    private MapDetailController _mapDetailController;
     public event Action OnExitLobby;
     void Awake()
     {
@@ -29,6 +31,7 @@ public class LobbyUIManager : MonoBehaviour
         Debug.Assert(_readyButtonController != null);
         Debug.Assert(_playerCountText != null);
         Debug.Assert(_mapInfoDisplay != null);
+        Debug.Assert(_mapDetailController != null);
 
         _readyButtonController.SetReady();
         _readyButtonController.OnReadyButtonPressed += OnReadyButtonPressed;
@@ -44,6 +47,7 @@ public class LobbyUIManager : MonoBehaviour
         string mapName = lobbyManager.CurrentLobby.Data["MapName"].Value;
         MapInfo mapInfo = ResourceManager.Instance.LoadMapInfo(mapName);
         _mapInfoDisplay.SetMapInfo(mapInfo);
+        _mapDetailController.SetMapInfo(mapInfo);
     }
 
     public void ExitLobbyMode(){
