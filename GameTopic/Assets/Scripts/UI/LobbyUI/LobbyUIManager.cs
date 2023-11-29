@@ -23,6 +23,7 @@ public class LobbyUIManager : MonoBehaviour
     private LobbyManager _lobbyManager;
     [SerializeField]
     private MapDetailController _mapDetailController;
+    [SerializeField] private GameObject playerProfileBtn;
     public event Action OnExitLobby;
     void Awake()
     {
@@ -36,6 +37,16 @@ public class LobbyUIManager : MonoBehaviour
         _readyButtonController.SetReady();
         _readyButtonController.OnReadyButtonPressed += OnReadyButtonPressed;
     }
+
+    private void OnEnable()
+    {
+        playerProfileBtn.SetActive(false);
+    }
+    private void OnDisable()
+    {
+        playerProfileBtn.SetActive(true);
+    }
+
     public async void SetLobbyManager(LobbyManager lobbyManager){
         _lobbyManager = lobbyManager;
         await UniTask.WaitUntil(() => lobbyManager.CurrentLobby != null);
