@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-public class AssemblyRoomRunner: GameRunner, IAssemblyRoom{
+public class AssemblyRoomRunner: GameRunner{
     [SerializeField]
     private Transform _spawnPoint;
     public GamePlayer ControlledPlayer => PlayerMap.Values.First() as GamePlayer;
@@ -13,15 +13,15 @@ public class AssemblyRoomRunner: GameRunner, IAssemblyRoom{
 
     public AssemblyController assemblyController => ControlledPlayer.AssemblyController;
 
-    public int PlayerInitMoney { get; set; } = 200;
+    public int PlayerInitMoney = 200;
     public event Action<IGameComponent> OnBuyingGameComponent;
 
     public AbilityManager AbilityManager => ControlledDevice.AbilityManager;
+    public event Action<int> OnMoneyChanged;
 
-    public IAbilityRebinder AbilityRebinder => ControlledPlayer.AbilityRebinder;
     public int GetPlayerRemainedMoney()
     {
-        return PlayerInitMoney - GetDeviceTotalCost();
+        return PlayerInitMoney - GetTotalCost();
     }
     public event Action OnLoadedDevice;
     public event Action OnSavedDevice;
@@ -33,16 +33,29 @@ public class AssemblyRoomRunner: GameRunner, IAssemblyRoom{
         }
     }
     private List<GameComponentData> _gameComponentDataList;
-    public int GetDeviceTotalCost() {
-        if (ControlledPlayer.SelfDevice == null) return 0;
-        var cost = 0;
-        ControlledPlayer.SelfDevice.ForEachGameComponent((component) => {
-            var data = GameComponentDataList.Where((data) => data.ResourcePath == component.ComponentName);
-            Debug.Assert(data.Count() == 1, "GameComponentDataList should have data for data name: " + component.ComponentName + " but it doesn't.");
-            cost += data.First().Price;
-        });
-        return cost;
-    
+    private List<GameComponent> _allGameComponents = new List<GameComponent>();
+    protected override void Awake() {
+        base.Awake();
+        GameEvents.GameComponentEvents.OnEntityDied += OnEntityDiedHandler;
+    }
+    private void OnEntityDiedHandler(BaseEntity entity){
+        if (entity is GameComponent component){
+            _allGameComponents.Remove(component);
+            OnMoneyChanged?.Invoke(GetPlayerRemainedMoney());
+        }
+    }
+    public override void OnDestroy() {
+        base.OnDestroy();
+        GameEvents.GameComponentEvents.OnEntityDied -= OnEntityDiedHandler;
+    }
+    public int GetTotalCost()
+    {
+        var allGameComponentsCost = _allGameComponents
+            .Sum(component => GameComponentDataList
+                .Where(data => data.ResourcePath == component.ComponentName)
+                .Select(data => data.Price)
+                .FirstOrDefault());
+        return allGameComponentsCost;
     }
     public void SaveCurrentDevice()
     {
@@ -71,21 +84,11 @@ public class AssemblyRoomRunner: GameRunner, IAssemblyRoom{
     }
 
     public void CleanAllGameComponents(){
-        PlayerMap.Values.ToList().ForEach(player => {
-            if(player.IsAlive.Value)
-                player?.SelfDevice.ForEachGameComponent((component) => {
-                    component.Die();
-                }
-            );
+        _allGameComponents.ForEach(component => {
+            component.Die();
         });
-        NetworkManager.Singleton.SpawnManager.SpawnedObjectsList
-            .Select((obj) => obj.GetComponentInParent<BaseEntity>())
-            .Where((entity) => entity != null)
-            .Where(entity => entity.NetworkObject.IsSceneObject == false)
-            .ToList()
-            .ForEach((component) => {
-                component.Die();
-        });
+        _allGameComponents.Clear();
+        OnMoneyChanged?.Invoke(GetPlayerRemainedMoney());
     }
 
     public override void SpawnDevice(BasePlayer player, string filename){
@@ -97,10 +100,12 @@ public class AssemblyRoomRunner: GameRunner, IAssemblyRoom{
     {
         IGameComponent component = _gameComponentFactory.CreateGameComponentObject(componentData.ResourcePath, position);
         OnBuyingGameComponent?.Invoke(component);
+        _allGameComponents.Add(component as GameComponent);
+        OnMoneyChanged?.Invoke(GetPlayerRemainedMoney());
         return component;
     }
 
-    public void LoadDevice(int DeviceID)
+    public async void LoadDevice(int DeviceID)
     {
         SaveCurrentDevice();
         SpawnDevice(ControlledPlayer, DeviceID.ToString());
@@ -108,8 +113,17 @@ public class AssemblyRoomRunner: GameRunner, IAssemblyRoom{
         CurrentDeviceID = DeviceID;
         OnLoadedDevice?.Invoke();
         GameEvents.AssemblyRoomEvents.OnLoadedDevice.Invoke();
+        await UniTask.WaitUntil(() => ControlledPlayer.IsAlive.Value);
+        _allGameComponents.AddRange(ControlledPlayer.SelfDevice.GetAllGameComponents());
+        OnMoneyChanged?.Invoke(GetPlayerRemainedMoney());
     }
     private void OnApplicationQuit() {
         SaveCurrentDevice();
     }
 }
+public enum GameComponentType{
+    Basic,
+    Attack,
+    Movement,
+    Functional
+}   

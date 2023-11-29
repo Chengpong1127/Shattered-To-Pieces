@@ -24,7 +24,7 @@ public class BaseGameRunner: NetworkBehaviour{
     /// This event will be invoked when a player is spawned. The parameter is the player's network object id.
     /// </summary>
     public event Action<ulong> OnPlayerSpawned;
-    void Awake()
+    protected virtual void Awake()
     {
         StateMachine = new StateMachine<GameStates>(this);
         StateMachine.ChangeState(GameStates.Idle);
