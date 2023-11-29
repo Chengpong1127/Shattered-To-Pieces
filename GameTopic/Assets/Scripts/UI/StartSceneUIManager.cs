@@ -39,6 +39,7 @@ public class StartSceneUIManager : MonoBehaviour
         LobbyUIManager.OnExitLobby += OnExitLobbyHandler;
         CreateLobbyPanelController.OnCreateLobby += OnCreateLobbyHandler;
         LobbyListController.OnPlayerSelectLobby += PlayerSelectLobbyHandler;
+        GameEvents.OnPlayerProfileUpdated += PlayerProfileUpdatedHandler;
         HomePanel.SetActive(true);
     }
     void Start()
@@ -53,6 +54,7 @@ public class StartSceneUIManager : MonoBehaviour
         CreateLobbyPanelController.OnCreateLobby -= OnCreateLobbyHandler;
         LobbyListController.OnPlayerSelectLobby -= PlayerSelectLobbyHandler;
         LobbyUIManager.OnExitLobby -= OnExitLobbyHandler;
+        GameEvents.OnPlayerProfileUpdated -= PlayerProfileUpdatedHandler;
     }
     private void GameStateMachineChangedHandler(LocalGameManager.GameState state){
         switch(state){
@@ -123,13 +125,7 @@ public class StartSceneUIManager : MonoBehaviour
         LobbyUIManager.ExitLobbyMode();
         LocalGameManager.Instance.PlayerExitLobby();
     }
-
-    public void ShowPlayerProfile_ButtonAction(){
-        PlayerProfileController.Show();
-        PlayerProfileController.OnClose += PlayerProfileControllerCloseHandler;
-    }
-    private void PlayerProfileControllerCloseHandler(){
-        PlayerProfileController.OnClose -= PlayerProfileControllerCloseHandler;
+    private void PlayerProfileUpdatedHandler(){
         var profile = ResourceManager.Instance.LoadLocalPlayerProfile();
         _nameText.text = profile.Name;
     }

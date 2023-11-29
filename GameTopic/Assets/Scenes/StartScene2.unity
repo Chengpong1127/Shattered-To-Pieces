@@ -10689,11 +10689,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8335830392834984052, guid: e3185ff791c85460996ab253f4a2a15b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1820
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8335830392834984052, guid: e3185ff791c85460996ab253f4a2a15b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 980
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8335830392834984052, guid: e3185ff791c85460996ab253f4a2a15b, type: 3}
       propertyPath: m_LocalScale.x
@@ -34054,18 +34054,18 @@ PrefabInstance:
     - target: {fileID: 4447325378853286093, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1338424655}
+      objectReference: {fileID: 1011734195}
     - target: {fileID: 4447325378853286093, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4447325378853286093, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ShowPlayerProfile_ButtonAction
+      value: Show
       objectReference: {fileID: 0}
     - target: {fileID: 4447325378853286093, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: StartSceneUIManager, Scripts
+      value: PlayerProfileController, Scripts
       objectReference: {fileID: 0}
     - target: {fileID: 4447325378853286093, guid: aa8796ea5ca544116bd1b6af7ec8721d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -49161,11 +49161,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3836701397115369988, guid: f8204632a0a604f009c5619199b1e0ad, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1820
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3836701397115369988, guid: f8204632a0a604f009c5619199b1e0ad, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 980
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3836701397115369988, guid: f8204632a0a604f009c5619199b1e0ad, type: 3}
       propertyPath: m_LocalPosition.x

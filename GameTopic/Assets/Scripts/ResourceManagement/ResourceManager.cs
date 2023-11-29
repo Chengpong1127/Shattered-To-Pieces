@@ -165,6 +165,7 @@ public class ResourceManager: Singleton<ResourceManager>
     }
     public void SaveLocalPlayerProfile(PlayerProfile profile){
         localPlayerProfileStorageManager.Save(profile, "PlayerProfile.json");
+        GameEvents.OnPlayerProfileUpdated?.Invoke();
     }
 
     public GameSetting LoadLocalGameSetting(){
@@ -173,5 +174,6 @@ public class ResourceManager: Singleton<ResourceManager>
     }
     public void SaveLocalGameSetting(GameSetting settings){
         localGameSettingsStorageManager.Save(settings, "GameSettings.json");
+        GameEvents.OnSettingsUpdated?.Invoke();
     }
 }

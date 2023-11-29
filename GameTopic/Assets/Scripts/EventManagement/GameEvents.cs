@@ -129,4 +129,6 @@ public static class GameEvents{
         public static Action<GameComponent> OnGameComponentAbilitySelected = delegate { };
         public static Action<GameComponent> OnGameComponentAbilitySelectedEnd = delegate { };
     }
+    public static Action OnPlayerProfileUpdated = delegate { };
+    public static Action OnSettingsUpdated = delegate { };
 }
