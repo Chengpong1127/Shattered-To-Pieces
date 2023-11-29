@@ -129,13 +129,15 @@ public class Device: IDevice
         });
     }
 
-    public async UniTask ForEachGameComponentAsync(Func<IGameComponent, UniTask> action){
+    public List<GameComponent> GetAllGameComponents(){
         var tree = new Tree(RootGameComponent);
-        await tree.TraverseBFSAsync(async (node) => {
-            var component = node as IGameComponent;
+        var list = new List<GameComponent>();
+        tree.TraverseBFS((node) => {
+            var component = node as GameComponent;
             Debug.Assert(component != null);
-            await action(component);
+            list.Add(component);
         });
+        return list;
     }
 
 }

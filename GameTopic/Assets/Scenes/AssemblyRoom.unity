@@ -712,6 +712,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3498636857044157329, guid: 8c88a059ed1bc8b4ca2a2ce02bc1e7e3, type: 3}
+      propertyPath: assemblyRoomRunner
+      value: 
+      objectReference: {fileID: 1281276211}
     - target: {fileID: 3555219785219658478, guid: 8c88a059ed1bc8b4ca2a2ce02bc1e7e3, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2538,6 +2542,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapManager: {fileID: 1281276216}
   _spawnPoint: {fileID: 946738545}
+  PlayerInitMoney: 200
 --- !u!114 &1281276213
 MonoBehaviour:
   m_ObjectHideFlags: 0
