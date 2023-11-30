@@ -9,14 +9,8 @@ public class AssemblyRoomRunner: GameRunner{
     [SerializeField]
     private Transform _spawnPoint;
     public GamePlayer ControlledPlayer => PlayerMap.Values.First() as GamePlayer;
-    public Device ControlledDevice => ControlledPlayer.SelfDevice;
-
-    public AssemblyController assemblyController => ControlledPlayer.AssemblyController;
-
     public int PlayerInitMoney = 200;
     public event Action<IGameComponent> OnBuyingGameComponent;
-
-    public AbilityManager AbilityManager => ControlledDevice.AbilityManager;
     public event Action<int> OnMoneyChanged;
 
     public int GetPlayerRemainedMoney()
