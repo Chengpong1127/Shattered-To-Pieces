@@ -1,9 +1,11 @@
 using System;
+using UnityEngine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 public class FightGameRunner: GameRunner{
     protected override void PlayerDiedHandler(BasePlayer player)
     {
+        Debug.Log("FightGameRunner.PlayerDiedHandler");
         base.PlayerDiedHandler(player);
         GameOver(GetGameResult(player));
     }

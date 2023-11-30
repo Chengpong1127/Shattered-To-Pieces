@@ -2,28 +2,27 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
+using System.Linq;
 
-public class ChooseMapEditor : EditorWindow
+public class DamageEntityEditor : EditorWindow
 {
-    [MenuItem("Tools/ChooseMapEditor")]
+    [MenuItem("Tools/DamageEntityEditor")]
     static void Init()
     {
-        ChooseMapEditor chooseMapEditor = GetWindow<ChooseMapEditor>();
+        DamageEntityEditor chooseMapEditor = GetWindow<DamageEntityEditor>();
         chooseMapEditor.Show();
     }
 
     public void CreateGUI(){
         VisualElement root = rootVisualElement;
-        var mapInfos = ResourceManager.Instance.LoadAllMapInfo();
-
-        // list all map button to choose
-
-        foreach(var mapInfo in mapInfos){
+        var allEntities = GameObject.FindObjectsOfType<Entity>();
+        var damageEffect = ResourceManager.Instance.LoadGameplayEffect("SimpleDamage");
+        damageEffect.gameplayEffect.Modifiers[0].Multiplier = -50;
+        foreach(var entity in allEntities){
             var button = new Button();
-            button.text = mapInfo.MapName;
-            button.clicked += async () => {
-                Debug.Log("Choose map: " + mapInfo.MapName);
-                await LocalGameManager.Instance.LobbyManager.ChangeLobbyMap(mapInfo);
+            button.text = entity.gameObject.name;
+            button.clicked += () => {
+                GameEvents.GameEffectManagerEvents.RequestGiveGameEffect(entity, entity, damageEffect);
             };
             root.Add(button);
         }

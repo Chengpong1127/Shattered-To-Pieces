@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using AbilitySystem.Authoring;
 
 public interface IDevice{
-    public IGameComponent RootGameComponent { get; }
+    public GameComponent RootGameComponent { get; }
     /// <summary>
     /// Get all of the ability list of this device.
     /// </summary>

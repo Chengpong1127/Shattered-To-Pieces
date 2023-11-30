@@ -13,19 +13,16 @@ public class Device: IDevice
     public event Action OnDeviceConnectionChanged;
     public event Action OnDeviceDied;
     public IGameComponentFactory GameComponentFactory { get; private set; }
-    public IGameComponent RootGameComponent { get; private set; }
+    public GameComponent RootGameComponent { get; private set; }
     public AbilityManager AbilityManager { get; private set; }
     public Device(IGameComponentFactory gameComponentFactory){
         GameComponentFactory = gameComponentFactory;
         AbilityManager = new AbilityManager(this);
-        GameEvents.GameComponentEvents.OnEntityDied += OnEntityDiedHandler;
         GameEvents.GameComponentEvents.OnGameComponentDisconnected += OnGameComponentDisconnectedHandler;
     }
-    private void OnEntityDiedHandler(BaseEntity entity){
-        GameEvents.GameComponentEvents.OnEntityDied -= OnEntityDiedHandler;
-        if (entity.Equals(RootGameComponent)){
-            OnDeviceDied?.Invoke();
-        }
+    private void OnRootDiedHandler(){
+        RootGameComponent.OnEntityDied -= OnRootDiedHandler;
+        OnDeviceDied?.Invoke();
     }
     private void OnGameComponentDisconnectedHandler(GameComponent component, GameComponent parent){
         GameEvents.GameComponentEvents.OnGameComponentDisconnected -= OnGameComponentDisconnectedHandler;
@@ -67,7 +64,8 @@ public class Device: IDevice
             component.Load(pair.Value);
         });
         await UniTask.NextFrame();
-        RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID];
+        RootGameComponent = tempDictionary[deviceInfo.TreeInfo.rootID] as GameComponent;
+        RootGameComponent.OnEntityDied += OnRootDiedHandler;
         ConnectAllComponents(tempDictionary, deviceInfo.TreeInfo.NodeInfoMap, deviceInfo.TreeInfo.EdgeInfoList); 
         tempDictionary.Values.ToList().ForEach((component) => {
             component.SetSelected(false);
