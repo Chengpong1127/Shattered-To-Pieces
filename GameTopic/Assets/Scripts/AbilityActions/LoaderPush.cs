@@ -55,6 +55,7 @@ public class LoaderPush : DisplayableAbilityScriptableObject {
 
         IEnumerator ApplyBreakComponent()
         {
+            bool isBreakObject = false;
             while (skillPlaying)
             {
                 colliders.Clear();
@@ -67,7 +68,10 @@ public class LoaderPush : DisplayableAbilityScriptableObject {
                     if (et is BaseCoreComponent coreComponent && (SelfEntity as BaseCoreComponent).HasTheSameRootWith(coreComponent)) continue;
 
                     et.gameObject.GetComponent<Connector>().BreakConnection();
+                    isBreakObject = true;
+                    break;
                 }
+                if (isBreakObject) yield break;
                 yield return new WaitForFixedUpdate();
             }
             yield return null;
