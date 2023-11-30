@@ -6,6 +6,10 @@ public class EnergyDisplay : NetworkBehaviour
 {
     public EnergyManager energyManager;
     public Image energyBar;
+    private void Awake() {
+        Debug.Assert(energyManager != null);
+        Debug.Assert(energyBar != null);
+    }
     private void Start() {
         if (!IsOwner)
         {

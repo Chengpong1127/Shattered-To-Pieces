@@ -21,7 +21,6 @@ public class SellElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         Debug.Assert(priceCtrl != null);
         Debug.Assert(canvasGroup != null);
         maxSpriteSize = displayImage.rectTransform.sizeDelta;
-        SetEmpty();
     }
 
     public void OnPointerClick(PointerEventData eventData) {
