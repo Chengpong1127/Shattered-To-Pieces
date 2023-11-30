@@ -9,7 +9,7 @@ using Cysharp.Threading.Tasks;
 public class BasePlayer : NetworkBehaviour
 {
     public event Action OnPlayerLoaded;
-    public event Action OnPlayerDied;
+    public event Action<BasePlayer> OnPlayerDied;
     public Device SelfDevice { get; private set; }
     public NetworkVariable<ulong> RootNetworkObjectID = new NetworkVariable<ulong>(
         readPerm: NetworkVariableReadPermission.Owner,

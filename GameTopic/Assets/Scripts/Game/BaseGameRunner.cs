@@ -49,7 +49,7 @@ public class BaseGameRunner: NetworkBehaviour{
     private async UniTask CreateAllPlayers(){
         var playerSpawner = new PlayerSpawner();
         PlayerMap = playerSpawner.SpawnAllPlayers();
-        PlayerMap.Values.ToList().ForEach(player => player.OnPlayerDied += () => PlayerDiedHandler(player));
+        PlayerMap.Values.ToList().ForEach(player => player.OnPlayerDied += PlayerDiedHandler);
         GameStartSpawnAllPlayer();
         PlayerMap.Keys.ToList().ForEach(playerID => OnPlayerSpawned?.Invoke(playerID));
         await UniTask.WaitUntil(() => PlayerMap.Values.All(player => player.IsAlive.Value));
@@ -67,6 +67,8 @@ public class BaseGameRunner: NetworkBehaviour{
     protected virtual void PlayerDiedHandler(BasePlayer player){
     }
     public virtual void GameOver(GameResult result){
+        PlayerMap.Values.ToList().ForEach(player => player.OnPlayerDied -= PlayerDiedHandler);
+        PlayerMap.Clear();
         StateMachine.ChangeState(GameStates.GameOver);
         OnGameOver?.Invoke(result);
     }
