@@ -8,6 +8,7 @@ public class Egg : BaseEntity, ICreated {
     public BaseCoreComponent Owner { get; set; } = null;
 
     [SerializeField] public GameplayEffectScriptableObject DamageEffect;
+    [SerializeField] GameObject ExplosionObj;
 
     bool hit = false;
 
@@ -17,15 +18,32 @@ public class Egg : BaseEntity, ICreated {
             if (Owner == null) { hit = true; }
 
             var hitComponent = collision.gameObject.GetComponentInChildren<BaseCoreComponent>();
-            if (hitComponent == null) { Destroy(gameObject.transform.root.gameObject); return; }
+            if (hitComponent == null) { StartCoroutine(ExplosionAnimation()); return; }
             if (Owner.HasTheSameRootWith(hitComponent)) { return; }
 
 
             hit = true;
             var entity = hitComponent as Entity;
             GameEvents.GameEffectManagerEvents.RequestGiveGameEffect.Invoke(Owner, entity, DamageEffect);
-            Destroy(gameObject.transform.root.gameObject);
+            StartCoroutine(ExplosionAnimation());
         }
         
+    }
+
+    IEnumerator ExplosionAnimation() {
+        foreach (var collider in BodyColliders) { collider.enabled = false; }
+        foreach (var renderer in BodyRenderers) { renderer.enabled = false; }
+        BodyRigidbody.velocity = Vector3.zero;
+        BodyRigidbody.isKinematic = true;
+
+        ExplosionObj.SetActive(true);
+        ExplosionObj.GetComponent<Animator>().enabled = true;
+
+        yield return new WaitForSeconds(.6f);
+
+        Destroy(gameObject.transform.root.gameObject);
+        this.NetworkObject.Despawn();
+
+        yield return null;
     }
 }
