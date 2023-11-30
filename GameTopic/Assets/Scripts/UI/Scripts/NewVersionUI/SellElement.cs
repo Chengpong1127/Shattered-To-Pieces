@@ -8,6 +8,7 @@ public class SellElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     [SerializeField] Image reycastedImage;
     [SerializeField] Image displayImage;
     [SerializeField] PriceCtrl priceCtrl;
+    [SerializeField] CanvasGroup canvasGroup;
 
     Vector2 maxSpriteSize;
 
@@ -15,8 +16,11 @@ public class SellElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     public ISellElementSubmitable EventSubmitter;
 
     private void Awake() {
+        Debug.Assert(reycastedImage != null);
+        Debug.Assert(displayImage != null);
+        Debug.Assert(priceCtrl != null);
+        Debug.Assert(canvasGroup != null);
         maxSpriteSize = displayImage.rectTransform.sizeDelta;
-        SetDisplay(null, 0); // Clear Display.
     }
 
     public void OnPointerClick(PointerEventData eventData) {
@@ -28,17 +32,15 @@ public class SellElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     public void OnPointerExit(PointerEventData eventData) {
         EventSubmitter?.CloseDescription?.Invoke(SellID);
     }
+    public void SetNormalColor() {
+        priceCtrl.SetNormalColor();
+    }
+    public void SetNotEnoughColor() {
+        priceCtrl.SetNotEnoughColor();
+    }
 
     public void SetDisplay(Sprite sprite, int price) {
-        if(sprite == null) {
-            displayImage.color = Color.clear;
-            priceCtrl.gameObject.SetActive(false);
-            if(reycastedImage != null) {
-                reycastedImage.raycastTarget = false;
-            }
-            return;
-        }
-
+        canvasGroup.alpha = 1f;
         // resize Image for new sprite.
         Vector2 newSpriteSize = sprite.rect.size / displayImage.pixelsPerUnit;
         float sizeScale = maxSpriteSize.x / newSpriteSize.x;
@@ -54,6 +56,14 @@ public class SellElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
         if (reycastedImage != null) {
             reycastedImage.raycastTarget = true;
+        }
+    }
+    public void SetEmpty() {
+        canvasGroup.alpha = 0.5f;
+        displayImage.color = Color.clear;
+        priceCtrl.gameObject.SetActive(false);
+        if(reycastedImage != null) {
+            reycastedImage.raycastTarget = false;
         }
     }
 }

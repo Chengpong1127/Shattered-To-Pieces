@@ -99,7 +99,7 @@ public class SideBar : MonoBehaviour
             index++;
         }
         while(index < Sells.Count) {
-            Sells[index].SetDisplay(null, 0);
+            Sells[index].SetEmpty();
             index++;
         }
     }
