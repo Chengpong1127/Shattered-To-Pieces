@@ -76,7 +76,7 @@ public class BasePlayer : NetworkBehaviour
     protected virtual void DeviceDiedHandler(){
         SelfDevice.OnDeviceDied -= DeviceDiedHandler;
         IsAlive.Value = false;
-        OnPlayerDied?.Invoke();
+        OnPlayerDied?.Invoke(this);
         Destroy(ServerAbilityRunner);
         SelfDevice = null;
     }
