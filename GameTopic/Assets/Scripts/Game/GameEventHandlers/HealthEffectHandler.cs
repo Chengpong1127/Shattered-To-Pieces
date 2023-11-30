@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using System.Threading;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class HealthEffectHandler: BaseGameEventHandler
 {
@@ -50,23 +51,17 @@ public class HealthEffectHandler: BaseGameEventHandler
     private void ColorAnimation(ulong entityID, Color startColor){
         var entity = Utils.GetLocalGameObjectByNetworkID(entityID).GetComponent<BaseEntity>();
         entity.BodyRenderers.Select(renderer => renderer as SpriteRenderer).
-            Where(renderer => renderer != null).
-            ToList().ForEach(async renderer => {
-                try{
-                    renderer.color = startColor;
-                    float elapsedTime = 0f;
-                    Color endColor = Color.white;
-                    while (elapsedTime < Duration)
-                    {
-                        renderer.color = Color.Lerp(startColor, endColor, elapsedTime / Duration);
-                        elapsedTime += Time.deltaTime;
-                        await UniTask.Yield();
+            Where(renderer => renderer != null)
+                .ToList().ForEach(renderer => {
+                    try{
+                        Color originalColor = renderer.color;
+                        renderer.color = startColor;
+                        renderer.DOColor(originalColor, Duration).SetEase(Ease.OutCubic);
+                    }catch{
+                        return;
                     }
-                    renderer.color = endColor;
-                }catch{
-                    return;
+                    
                 }
-                
-            });
+        );
     }
 }
