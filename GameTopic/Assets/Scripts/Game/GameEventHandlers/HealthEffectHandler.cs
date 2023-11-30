@@ -11,6 +11,7 @@ public class HealthEffectHandler: BaseGameEventHandler
     public float Duration = 0.2f;
     public Color RecoveryColor = Color.green;
     public Color DamageColor = Color.red;
+    private Dictionary<SpriteRenderer, Color> _originalColors = new Dictionary<SpriteRenderer, Color>();
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -53,12 +54,14 @@ public class HealthEffectHandler: BaseGameEventHandler
         entity.BodyRenderers.Select(renderer => renderer as SpriteRenderer).
             Where(renderer => renderer != null)
                 .ToList().ForEach(renderer => {
+                    if (!_originalColors.ContainsKey(renderer)){
+                        _originalColors.Add(renderer, renderer.color);
+                    }
                     try{
-                        Color originalColor = renderer.color;
                         renderer.color = startColor;
-                        renderer.DOColor(originalColor, Duration).SetEase(Ease.OutCubic);
+                        renderer.DOColor(_originalColors[renderer], Duration).SetEase(Ease.OutCubic);
                     }catch{
-                        return;
+                        renderer.color = _originalColors[renderer];
                     }
                     
                 }

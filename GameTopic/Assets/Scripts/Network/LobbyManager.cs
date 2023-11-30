@@ -113,8 +113,10 @@ public class LobbyManager
                 new QueryFilter(field: QueryFilter.FieldOptions.AvailableSlots, op: QueryFilter.OpOptions.GE, value: "1")
             }
         };
-        var responce = await LobbyService.Instance.QueryLobbiesAsync(queryLobbiesOptions);
-        return responce.Results.ToArray();
+        var response = await LobbyService.Instance.QueryLobbiesAsync(queryLobbiesOptions);
+        var lobbies = response.Results;
+        lobbies = lobbies.Where(lobby => GetLobbyHostIP(lobby) != null).ToList();
+        return lobbies.ToArray();
     }
 
     public async UniTask JoinLobby(Lobby lobby, PlayerProfile playerProfile){
@@ -213,7 +215,7 @@ public class LobbyManager
             var lobbyReadyInfo = new PlayerLobbyReadyInfo(){
                 Identity = Identity,
                 Player = SelfPlayer,
-                HostAddress = GetLobbyHostIP(),
+                HostAddress = GetLobbyHostIP(CurrentLobby),
                 MapName = CurrentLobby.Data["MapName"].Value
             };
             OnLobbyReady?.Invoke(lobbyReadyInfo);
@@ -266,14 +268,14 @@ public class LobbyManager
         var lobbyReadyInfo = new PlayerLobbyReadyInfo(){
             Identity = Identity,
             Player = SelfPlayer,
-            HostAddress = GetLobbyHostIP(),
+            HostAddress = GetLobbyHostIP(CurrentLobby),
             MapName = CurrentLobby.Data["MapName"].Value
         };
         OnLobbyReady?.Invoke(lobbyReadyInfo);
     }
-    private string GetLobbyHostIP(){
+    private string GetLobbyHostIP(Lobby lobby){
         try{
-            var networkHost = NetworkHost.FromJson(CurrentLobby.Data["HostNetworkInfo"].Value);
+            var networkHost = NetworkHost.FromJson(lobby.Data["HostNetworkInfo"].Value);
             var selfNetworkHost = NetworkTool.GetLocalNetworkHost();
             (string, string) resultIPs;
             if (NetworkTool.AtSameSubnet(networkHost, selfNetworkHost, out resultIPs)){

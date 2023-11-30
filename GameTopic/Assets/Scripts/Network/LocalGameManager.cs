@@ -75,6 +75,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         }else{
             networkType = NetworkType.Client;
         }
+        Debug.Assert(playerLobbyReadyInfo.HostAddress != null);
         Debug.Log("Lobby Start Game. Host Address: " + playerLobbyReadyInfo.HostAddress + " NetworkType: " + networkType);
         var mapInfo = ResourceManager.Instance.LoadMapInfo(playerLobbyReadyInfo.MapName);
         EnterRoom(mapInfo, networkType, playerLobbyReadyInfo.HostAddress);
