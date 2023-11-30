@@ -17,7 +17,7 @@ public class SideBar : MonoBehaviour
 
     Animator sideBarAnimator;
     int displayTypeID = 0;
-    bool IsDisplaying = true;
+    bool IsDisplaying = false;
     bool IsSwitching = false;
     public GameComponentType displayComponentType = GameComponentType.Attack;
 
