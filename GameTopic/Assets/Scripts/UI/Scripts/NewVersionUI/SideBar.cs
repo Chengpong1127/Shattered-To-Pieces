@@ -62,6 +62,7 @@ public class SideBar : MonoBehaviour
 
         // finish changing.
         IsSwitching = false;
+        IsDisplaying = true;
     }
 
     void UpdateSlideBarColor() {
