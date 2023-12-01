@@ -3,7 +3,6 @@ using System.Collections.Generic;
 public interface IConnector: IDumpable<IInfo>
 {
     public event System.Action OnJointBreak;
-    public AnchoredJoint2D Joint { get; }
     public GameComponent GameComponent { get; }
     Target GetTarget(int targetID);
     public void SetNonConnectedTargetsDisplay(bool display);

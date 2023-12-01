@@ -9,13 +9,14 @@ using Cysharp.Threading.Tasks;
 public class Connector : NetworkBehaviour, IConnector
 {
     public event Action OnJointBreak;
-    public AnchoredJoint2D Joint { get; set; }
+    [SerializeField]
+    public AnchoredJoint2D Joint;
     public GameComponent GameComponent { get; private set; }
     List<Target> targetList;
 
     Target _currentLinkedTarget = null;
     private void Awake() {
-        Joint = GetComponent<AnchoredJoint2D>();
+        Debug.Assert(Joint != null);
         targetList = GetComponentsInChildren<Target>().ToList();
         GameComponent = GetComponentInParent<GameComponent>();
         SetTargetList(targetList);
@@ -79,14 +80,7 @@ public class Connector : NetworkBehaviour, IConnector
     public void ConnectToComponent(IConnector newParent, ConnectionInfo info)
     {
         ConnectToComponent_ClientRpc(newParent.GameComponent.NetworkObjectId, info);
-        if (newParent == null) throw new ArgumentException("newParent is null");
-        if (info == null) throw new ArgumentException("info is null");
-        _currentLinkedTarget = newParent.GetTarget(info.linkedTargetID);
-        GameComponent.BodyTransform.position = _currentLinkedTarget.transform.position;
-        Joint.connectedAnchor = _currentLinkedTarget.ConnectionPosition;
-        Joint.connectedBody = newParent.GameComponent.BodyRigidbody;
-        _currentLinkedTarget.SetLink(this);
-        Joint.enabled = true;
+        ConnectToComponentInternal(newParent, info);
     }
     [ClientRpc]
     private void ConnectToComponent_ClientRpc(ulong parentID, ConnectionInfo info){
@@ -95,16 +89,23 @@ public class Connector : NetworkBehaviour, IConnector
     private void ConnectToComponent(ulong parentID, ConnectionInfo info){
         if (!IsServer){
             var newParent = Utils.GetLocalGameObjectByNetworkID(parentID).GetComponent<Connector>();
-            if (newParent == null) throw new ArgumentException("newParent is null");
-            if (info == null) throw new ArgumentException("info is null");
-            _currentLinkedTarget = newParent.GetTarget(info.linkedTargetID);
-            GameComponent.BodyTransform.position = _currentLinkedTarget.transform.position;
-            Joint.connectedAnchor = _currentLinkedTarget.ConnectionPosition;
-            Joint.connectedBody = newParent.GameComponent.BodyRigidbody;
-            _currentLinkedTarget.SetLink(this);
-            Joint.enabled = true;
+            ConnectToComponentInternal(newParent, info);
         }
     }
+    private void ConnectToComponentInternal(IConnector parentConnector, ConnectionInfo info){
+        if (parentConnector == null) throw new ArgumentException("connector is null");
+        if (info == null) throw new ArgumentException("info is null");
+        _currentLinkedTarget = parentConnector.GetTarget(info.linkedTargetID);
+        GameComponent.BodyTransform.position = _currentLinkedTarget.transform.position;
+        JointConnection(_currentLinkedTarget.ConnectionPosition, parentConnector.GameComponent.BodyRigidbody);
+        _currentLinkedTarget.SetLink(this);
+    }
+    private void JointConnection(Vector3 ConnectionPosition, Rigidbody2D connectedBody){
+        Joint.connectedAnchor = ConnectionPosition;
+        Joint.connectedBody = connectedBody;
+        Joint.enabled = true;
+    }
+
     public void BreakConnection(){
         BreakConnectionClientRpc();
     }

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 5723220871665956862}
   - component: {fileID: 4486550233622886721}
   - component: {fileID: 2915875519370769303}
+  - component: {fileID: 6577866906530160367}
   m_Layer: 6
   m_Name: GameComponentTemplate
   m_TagString: Untagged
@@ -103,6 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d1af8e55226334a88c765539831e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Joint: {fileID: 8272447847809035679}
 --- !u!114 &6795010306233276680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,7 +153,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 1000
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -266,6 +268,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1723397326f4bdb81ee34f1ee33cef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!257 &6577866906530160367
+TargetJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2569851066582173084}
+  m_Enabled: 0
+  serializedVersion: 4
+  m_EnableCollision: 1
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_BreakAction: 3
+  m_Anchor: {x: 0, y: 0}
+  m_Target: {x: 0, y: 0}
+  m_AutoConfigureTarget: 0
+  m_MaxForce: 10000
+  m_DampingRatio: 1
+  m_Frequency: 5
 --- !u!1 &6248433714480983650
 GameObject:
   m_ObjectHideFlags: 0
