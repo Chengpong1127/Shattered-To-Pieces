@@ -20,11 +20,10 @@ public abstract class RunnerAbilitySpec : EntityAbilitySpec
             return base.CanActivateAbility() && EnergyManager.HasEnergy(Ability.EnergyCost);
     }
 
-    protected override IEnumerator PreActivate()
+    protected override void PreActivate()
     {
         if (EnergyManager != null)
             EnergyManager.CostEnergy(Ability.EnergyCost);
-        return base.PreActivate();
     }
 }
 

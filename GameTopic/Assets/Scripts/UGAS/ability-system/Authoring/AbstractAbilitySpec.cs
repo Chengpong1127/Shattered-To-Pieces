@@ -52,7 +52,7 @@ namespace AbilitySystem.Authoring
             if (!CanActivateAbility()) yield break;
 
             isActive = true;
-            yield return PreActivate();
+            PreActivate();
             yield return ActivateAbility();
             EndAbility();
 
@@ -135,7 +135,7 @@ namespace AbilitySystem.Authoring
         /// <summary>
         /// Method to activate before activating this ability.  This method is run after activation checks.
         /// </summary>
-        protected abstract IEnumerator PreActivate();
+        protected abstract void PreActivate();
 
         /// <summary>
         /// The logic that dictates what the ability does.  Targetting logic should be placed here.

@@ -87,9 +87,8 @@ namespace AbilitySystem.Authoring
             /// </summary>
             /// <returns></returns>
 
-            protected override IEnumerator PreActivate()
+            protected override void PreActivate()
             {
-                yield return null;
             }
         }
     }

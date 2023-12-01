@@ -40,10 +40,9 @@ public class RotatorAbility : DisplayableAbilityScriptableObject {
             yield return null;
         }
 
-        protected override IEnumerator PreActivate() {
+        protected override void PreActivate() {
             Active = true;
             animator.SetFloat("Speed", Speed);
-            yield return base.PreActivate();
         }
     }
 }

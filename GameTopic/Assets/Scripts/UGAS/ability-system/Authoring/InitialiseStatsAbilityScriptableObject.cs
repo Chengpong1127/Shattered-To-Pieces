@@ -33,6 +33,7 @@ namespace AbilitySystem.Authoring
 
             protected override IEnumerator ActivateAbility()
             {
+                yield return null;
                 InitialiseStatsAbilityScriptableObject abilitySO = this.Ability as InitialiseStatsAbilityScriptableObject;
 
                 for (var i = 0; i < abilitySO.InitialisationGE.Length; i++)
@@ -44,9 +45,8 @@ namespace AbilitySystem.Authoring
                 yield break;
             }
 
-            protected override IEnumerator PreActivate()
+            protected override void PreActivate()
             {
-                yield return null;
             }
         }
     }

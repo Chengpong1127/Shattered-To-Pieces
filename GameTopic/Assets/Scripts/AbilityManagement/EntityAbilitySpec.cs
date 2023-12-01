@@ -19,7 +19,7 @@ public abstract class EntityAbilitySpec: AbstractAbilitySpec{
         }
     }
 
-    protected override IEnumerator PreActivate()
+    protected override void PreActivate()
     {
         if (Ability.Cooldown != null) {
             var cooldownSpec = Owner.MakeOutgoingSpec(Ability.Cooldown);
@@ -29,7 +29,6 @@ public abstract class EntityAbilitySpec: AbstractAbilitySpec{
             var costSpec = Owner.MakeOutgoingSpec(Ability.Cost);
             Owner.ApplyGameplayEffectSpecToSelf(costSpec);
         }
-        yield return null;
     }
     public override bool CheckGameplayTags(){
         return AscHasAllTags(Owner, this.Ability.AbilityTags.OwnerTags.RequireTags)

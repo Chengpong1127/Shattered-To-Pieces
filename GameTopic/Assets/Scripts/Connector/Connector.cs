@@ -16,7 +16,7 @@ public class Connector : NetworkBehaviour, IConnector
 
     Target _currentLinkedTarget = null;
     private void Awake() {
-        Debug.Assert(Joint != null);
+        Joint = GetComponent<AnchoredJoint2D>();
         targetList = GetComponentsInChildren<Target>().ToList();
         GameComponent = GetComponentInParent<GameComponent>();
         SetTargetList(targetList);
@@ -97,10 +97,10 @@ public class Connector : NetworkBehaviour, IConnector
         if (info == null) throw new ArgumentException("info is null");
         _currentLinkedTarget = parentConnector.GetTarget(info.linkedTargetID);
         GameComponent.BodyTransform.position = _currentLinkedTarget.transform.position;
-        JointConnection(_currentLinkedTarget.ConnectionPosition, parentConnector.GameComponent.BodyRigidbody);
+        JointConnection(_currentLinkedTarget.transform.position, _currentLinkedTarget.ConnectionPosition, parentConnector.GameComponent.BodyRigidbody);
         _currentLinkedTarget.SetLink(this);
     }
-    private void JointConnection(Vector3 ConnectionPosition, Rigidbody2D connectedBody){
+    private void JointConnection(Vector3 targetPosition, Vector3 ConnectionPosition, Rigidbody2D connectedBody){
         Joint.connectedAnchor = ConnectionPosition;
         Joint.connectedBody = connectedBody;
         Joint.enabled = true;

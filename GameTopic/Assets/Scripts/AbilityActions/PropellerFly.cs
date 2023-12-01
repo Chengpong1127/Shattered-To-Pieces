@@ -1,5 +1,6 @@
 using AbilitySystem;
 using AbilitySystem.Authoring;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -42,8 +43,9 @@ public class PropellerFly : DisplayableAbilityScriptableObject {
             animator = (SelfEntity as BaseCoreComponent)?.BodyAnimator ?? throw new System.ArgumentNullException("The entity should have animator.");
         }
 
-        public override void CancelAbility()
+        public override async void CancelAbility()
         {
+            await UniTask.NextFrame();
             IsAnimatorFly = false;
             EndAbility();
         }
