@@ -10,6 +10,7 @@ using MonsterLove.StateMachine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Unity.Services.Lobbies;
+using NPBehave;
 
 
 public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
@@ -36,10 +37,29 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         var player = await PlayerSignIn();
         LobbyManager = new LobbyManager(player);
         StateMachine.ChangeState(GameState.Home);
+
+        Application.wantsToQuit += WantsToQuitHandler;
     }
-    void OnApplicationQuit()
-    {
-        Destroy(gameObject);
+
+    private bool WantsToQuitHandler(){
+        switch(StateMachine.State){
+            case GameState.Home:
+                return true;
+            case GameState.Lobby:
+                PlayerExitLobby();
+                WaitToQuit();
+                return false;
+            case GameState.GameRoom:
+                RequestExitRoom();
+                WaitToQuit();
+                return false;
+            default:
+                return false;
+        }
+    }
+    private async void WaitToQuit(){
+        await UniTask.WaitUntil(() => StateMachine.State == GameState.Home);
+        Application.Quit();
     }
 
     public async UniTask<Player> PlayerSignIn(){

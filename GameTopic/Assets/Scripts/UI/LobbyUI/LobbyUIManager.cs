@@ -71,7 +71,9 @@ public class LobbyUIManager : MonoBehaviour
             UpdatePlayerList();
         if(changed.LobbyDeleted && _lobbyManager.Identity != LobbyManager.LobbyIdentity.Host)
             OnExitLobby?.Invoke();
-        _playerCountText.text = GetPlayerCountText(_lobbyManager.CurrentLobby);
+        if(!changed.LobbyDeleted){
+            _playerCountText.text = GetPlayerCountText(_lobbyManager.CurrentLobby);
+        }
     }
 
     public void ExitLobby_ButtonAction(){

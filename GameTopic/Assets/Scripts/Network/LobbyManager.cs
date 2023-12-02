@@ -79,7 +79,10 @@ public class LobbyManager
         if (Identity == LobbyIdentity.Host){
             await LobbyService.Instance.DeleteLobbyAsync(CurrentLobby.Id);
         }else{
-            await LobbyService.Instance.RemovePlayerAsync(CurrentLobby.Id, SelfPlayer.Id);
+            try{
+                await LobbyService.Instance.RemovePlayerAsync(CurrentLobby.Id, SelfPlayer.Id);
+            }catch(LobbyServiceException){
+            }
         }
         CurrentLobby = null;
     }
