@@ -3,6 +3,9 @@ using UnityEngine;
 using AbilitySystem.Authoring;
 using Unity.Netcode;
 using System;
+using System.Linq;
+using DG.Tweening;
+using Cysharp.Threading.Tasks;
 
 public class BaseCoreComponent : GameComponent, ICoreComponent
 {
@@ -66,24 +69,13 @@ public class BaseCoreComponent : GameComponent, ICoreComponent
     }
 
     [ClientRpc]
-    public void SetVisible_ClientRpc(bool visible,float colarAlpha, ClientRpcParams clientRpcParams = default)
+    public void SetAlpha_ClientRpc(float alpha, float time, ClientRpcParams clientRpcParams = default)
     {
-        var renderers = BodyRenderers;
-        foreach (var renderer in renderers)
-        {
-            if (renderer?.GetComponent<Target>() == null)
+        BodyRenderers.ToList().ForEach(async renderer => {
+            if (renderer is SpriteRenderer spriteRenderer)
             {
-                Color newColor = renderer.gameObject.GetComponent<SpriteRenderer>().color;
-                newColor.a = colarAlpha;
-                renderer.gameObject.GetComponent<SpriteRenderer>().color = newColor;
-                renderer.enabled = visible;
+                await spriteRenderer.DOFade(alpha, time).ToUniTask();
             }
-
-        }
-
-
+        });
     }
-
-    
-
 }
