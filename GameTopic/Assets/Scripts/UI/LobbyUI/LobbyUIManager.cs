@@ -102,4 +102,8 @@ public class LobbyUIManager : MonoBehaviour
     private string GetPlayerCountText(Lobby lobby){
         return lobby.Players.Count.ToString() + "/" + lobby.MaxPlayers.ToString();
     }
+    void OnDestroy()
+    {
+        ExitLobbyMode();
+    }
 }

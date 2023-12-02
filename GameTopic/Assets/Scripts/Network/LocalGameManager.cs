@@ -143,6 +143,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
     public void RequestExitRoom(){
         StateMachine.ChangeState(GameState.Home);
+        LobbyManager.LeaveLobby();
         var operation = SceneManager.LoadSceneAsync(_startSceneName);
         SceneLoader?.LoadScene(operation);
     }
