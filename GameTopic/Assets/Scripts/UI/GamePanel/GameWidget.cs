@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using MonsterLove.StateMachine;
 using System;
 using DG.Tweening;
+using DigitalRuby.SoundManagerNamespace;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class GameWidget : MonoBehaviour
@@ -14,6 +15,12 @@ public class GameWidget : MonoBehaviour
     protected float Duration = 0.5f;
     [SerializeField]
     protected bool DeactivateOnHide = true;
+    [SerializeField]
+    protected AudioSource AudioSource;
+    [SerializeField]
+    protected AudioClip ShowSound;
+    [SerializeField]
+    protected AudioClip CloseSound;
 
     public event Action<string> OnSendMessage;
     public StateMachine<GameWidgetState> StateMachine;
@@ -31,6 +38,10 @@ public class GameWidget : MonoBehaviour
     public async void Show(){
         if(IsShowing) { return; }
         gameObject.SetActive(true);
+        if(ShowSound != null){
+            Debug.Assert(AudioSource != null);
+            AudioSource.PlayOneShotSoundManaged(ShowSound);
+        }
         await ShowAnimation();
         CanvasGroup.interactable = true;
         CanvasGroup.blocksRaycasts = true;
@@ -38,6 +49,10 @@ public class GameWidget : MonoBehaviour
     }
     public async void Close(){
         if(IsClose) { return; }
+        if(CloseSound != null){
+            Debug.Assert(AudioSource != null);
+            AudioSource.PlayOneShotSoundManaged(CloseSound);
+        }
         await CloseAnimation();
         CanvasGroup.interactable = false;
         CanvasGroup.blocksRaycasts = false;

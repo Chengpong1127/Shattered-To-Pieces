@@ -25,6 +25,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     public StateMachine<GameState> StateMachine;
     public LobbyManager LobbyManager;
     private string _startSceneName;
+    private LocalPlayerManager localPlayerManager;
 
     async void Start()
     {
@@ -50,7 +51,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
                 WaitToQuit();
                 return false;
             case GameState.GameRoom:
-                RequestExitRoom();
+                PlayerExitRoomHandler();
                 WaitToQuit();
                 return false;
             default:
@@ -154,16 +155,19 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     }
 
     private void OnEnterRoom(NetworkType networkType, MapInfo mapInfo, string ServerAddress){
-        var playerManager = FindObjectOfType<LocalPlayerManager>();
-        playerManager.OnPlayerExitRoom += RequestExitRoom;
-        playerManager.StartPlayerSetup(networkType, mapInfo, ServerAddress);
+        localPlayerManager = FindObjectOfType<LocalPlayerManager>();
+        Debug.Assert(localPlayerManager != null);
+        localPlayerManager.OnPlayerExitRoom += PlayerExitRoomHandler;
+        localPlayerManager.StartPlayerSetup(networkType, mapInfo, ServerAddress);
     }
 
 
 
-    public void RequestExitRoom(){
+    private void PlayerExitRoomHandler(){
+        localPlayerManager.OnPlayerExitRoom -= PlayerExitRoomHandler;
         StateMachine.ChangeState(GameState.Home);
-        LobbyManager.LeaveLobby();
+        if(LobbyManager.CurrentLobby != null)
+            LobbyManager.LeaveLobby();
         var operation = SceneManager.LoadSceneAsync(_startSceneName);
         SceneLoader?.LoadScene(operation);
     }
