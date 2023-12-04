@@ -21,7 +21,8 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
         Lobby,
         GameRoom,
     }
-    public BaseSceneLoader SceneLoader;
+    [SerializeField]
+    private BaseSceneLoader SceneLoader;
     public StateMachine<GameState> StateMachine;
     public LobbyManager LobbyManager;
     private string _startSceneName;
