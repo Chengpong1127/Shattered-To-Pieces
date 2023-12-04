@@ -17178,6 +17178,8 @@ GameObject:
   m_Component:
   - component: {fileID: 715222137}
   - component: {fileID: 715222136}
+  - component: {fileID: 715222139}
+  - component: {fileID: 715222138}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -17213,6 +17215,116 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &715222138
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715222135}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &715222139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715222135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63384b03f896b4ad281d206635b5ab6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  homeBGM: {fileID: 0}
+  gameRoomBGM: {fileID: 0}
 --- !u!1 &762497627
 GameObject:
   m_ObjectHideFlags: 0
@@ -28263,10 +28375,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8799707580136468089, guid: 2f64f70870ab04e28bf8ac602c0d54bb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1528954038}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2330243120634706457, guid: 2f64f70870ab04e28bf8ac602c0d54bb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1399356646}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f64f70870ab04e28bf8ac602c0d54bb, type: 3}
 --- !u!224 &1263831676 stripped
 RectTransform:
@@ -28414,7 +28523,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1399356646}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TutorialPanelController, Scripts
         m_MethodName: Show
         m_Mode: 1
@@ -28667,49 +28776,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8002669c13f1c404ebcbef7c534cc4be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1399356645 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2330243120634706457, guid: 2f64f70870ab04e28bf8ac602c0d54bb, type: 3}
-  m_PrefabInstance: {fileID: 1254290687}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1399356646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1399356645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c4328dcf28d5c141bbb59d8801133b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  images:
-  - {fileID: 21300000, guid: 9b4e29070c76883459d427f822193e75, type: 3}
-  - {fileID: 21300000, guid: ffbe0ea4b6b5485468a51ed5e1be7ec0, type: 3}
-  - {fileID: 21300000, guid: 84c09510545098b438d64b5d0a4fb786, type: 3}
-  - {fileID: 21300000, guid: d980967d99f185e488de2bc8efe30c95, type: 3}
-  - {fileID: 21300000, guid: e2842cf9388cc044c827dfc1f7bbb2ef, type: 3}
-  descriptions:
-  - First, click this button to enter assembly room.
-  - In assembly room, you have <color=#FF5809>200$</color> to buy any components
-    on the list.
-  - Press <color=#FF5809>"1"</color> to enter assembly mode. <color=#FF5809>Left
-    click</color> the component and <color=#FF5809>left click</color> the <color=#73BF00>green
-    point</color> to put it on your device.
-  - <color=#FF5809>Left click</color> component ability image and drag it to any
-    empty ability slot. You can <color=#FF5809>left click</color> the ability slot
-    to set a key to activate the ability on this slot.
-  - When you activate one(or more) ability. It will cost your <color=#2828FF>energy</color>.
-  NextPageButton: {fileID: 1528954041}
-  text: {fileID: 1782773083}
-  now_Img: {fileID: 370211216}
 --- !u!114 &1399356648 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4751873186912811363, guid: 2f64f70870ab04e28bf8ac602c0d54bb, type: 3}
   m_PrefabInstance: {fileID: 1254290687}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1399356645}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a007dd88fb88f4927be9d860b4585720, type: 3}
@@ -28993,7 +29065,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1399356646}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TutorialPanelController, Scripts
         m_MethodName: OnChangePage
         m_Mode: 1

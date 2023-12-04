@@ -27,12 +27,16 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     public LobbyManager LobbyManager;
     private string _startSceneName;
     private LocalPlayerManager localPlayerManager;
+    protected override void Awake()
+    {
+        base.Awake();
+        StateMachine = new StateMachine<GameState>(this);
+        StateMachine.ChangeState(GameState.Init);
+    }
 
     async void Start()
     {
         Debug.Assert(SceneLoader != null);
-        StateMachine = new StateMachine<GameState>(this);
-        StateMachine.ChangeState(GameState.Init);
         DontDestroyOnLoad(gameObject);
         _startSceneName = SceneManager.GetActiveScene().name;
 
