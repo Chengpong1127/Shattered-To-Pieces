@@ -5,11 +5,16 @@ using Unity.Netcode;
 using UnityEngine.InputSystem;
 using System;
 using Cysharp.Threading.Tasks;
+using UnityEditor.iOS;
 
 public class BasePlayer : NetworkBehaviour
 {
     public event Action OnPlayerLoaded;
     public event Action<BasePlayer> OnPlayerDied;
+    public NetworkVariable<PlayerProfile> playerProfile = new NetworkVariable<PlayerProfile>(
+        new PlayerProfile(),
+        writePerm: NetworkVariableWritePermission.Owner
+    );
     public Device SelfDevice { get; private set; }
     public NetworkVariable<ulong> RootNetworkObjectID = new NetworkVariable<ulong>(
         readPerm: NetworkVariableReadPermission.Owner,
@@ -48,6 +53,7 @@ public class BasePlayer : NetworkBehaviour
         RootNetworkObjectID.Value = SelfDevice.RootGameComponent.NetworkObjectId;
         SelfDevice.OnDeviceDied += DeviceDiedHandler;
         IsAlive.Value = true;
+        SelfDevice.SetDeviceName(playerProfile.Value.Name);
     }
     [ServerRpc]
     private void StartAbility_ServerRPC(int abilityNumber)
@@ -63,6 +69,7 @@ public class BasePlayer : NetworkBehaviour
         if (IsOwner){
             GameEvents.AbilityRunnerEvents.OnLocalInputStartAbility += StartAbility_ServerRPC;
             GameEvents.AbilityRunnerEvents.OnLocalInputCancelAbility += CancelAbility_ServerRPC;
+            playerProfile.Value = ResourceManager.Instance.LoadLocalPlayerProfile();
         }
     }
     public override void OnDestroy()

@@ -138,4 +138,10 @@ public class Device: IDevice
         return list;
     }
 
+    public void SetDeviceName(string name){
+        if (RootGameComponent is IDeviceRoot root){
+            root.PlayerDisplayer.SetPlayerName(name);
+        }
+    }
+
 }

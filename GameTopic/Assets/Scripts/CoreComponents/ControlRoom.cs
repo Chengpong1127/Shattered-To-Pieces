@@ -10,6 +10,9 @@ using System.Collections;
 
 public class ControlRoom : BaseCoreComponent, IDeviceRoot {
     public Device Device { get; set; }
+    [SerializeField]
+    private PlayerNameDisplay playerNameDisplay;
+    public PlayerNameDisplay PlayerDisplayer => playerNameDisplay;
 
     int currentRunningAbility = 0;
     bool useAbility = false;

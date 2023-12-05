@@ -22,6 +22,7 @@ public class GameComponent : AbilityEntity, IGameComponent
     public string ComponentName { get; set; }
     public Transform AssemblyTransform => BodyTransform;
     public bool CanSelected = true;
+    [HideInInspector]
     public NetworkVariable<bool> IsSelected = new(false);
 
     #region Inspector
