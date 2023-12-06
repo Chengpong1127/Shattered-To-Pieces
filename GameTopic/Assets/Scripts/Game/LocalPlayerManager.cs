@@ -77,7 +77,7 @@ public class LocalPlayerManager : NetworkBehaviour
     [ClientRpc]
     private void GameOverHandler_ClientRpc(GameResult result){
         _gameResult = result;
-        _gameResult.SelfPlayerId = OwnerClientId;
+        _gameResult.SelfPlayerId = Player.OwnerClientId;
         _gameResult.IsGameAborted = false;
         _gameResult.IsRankingGame = _mapInfo.IsRankingMap;
         _gameResult.GameMapName = _mapInfo.MapName;
