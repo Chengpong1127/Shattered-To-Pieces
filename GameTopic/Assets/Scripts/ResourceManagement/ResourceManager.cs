@@ -170,7 +170,7 @@ public class ResourceManager: Singleton<ResourceManager>
 
     public GameSetting LoadLocalGameSetting(){
         var settings = localGameSettingsStorageManager.Load<GameSetting>("GameSettings.json");
-        return settings == null ? new GameSetting() : settings;
+        return settings == null ? GameSetting.DefaultSetting() : settings;
     }
     public void SaveLocalGameSetting(GameSetting settings){
         localGameSettingsStorageManager.Save(settings, "GameSettings.json");
