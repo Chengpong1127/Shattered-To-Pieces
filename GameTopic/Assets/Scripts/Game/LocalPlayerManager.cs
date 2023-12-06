@@ -23,7 +23,6 @@ public class LocalPlayerManager : NetworkBehaviour
 
     public void Awake()
     {
-        Application.targetFrameRate = 30;
         StateMachine = StateMachine<LocalPlayerStates>.Initialize(this);
         StateMachine.ChangeState(LocalPlayerStates.Initializing);
         if (RoomInstance != null)
