@@ -80,6 +80,7 @@ public class LocalPlayerManager : NetworkBehaviour
         _gameResult.SelfPlayerId = OwnerClientId;
         _gameResult.IsGameAborted = false;
         _gameResult.IsRankingGame = _mapInfo.IsRankingMap;
-        GameOverHandler(result);
+        _gameResult.GameMapName = _mapInfo.MapName;
+        GameOverHandler(_gameResult);
     }
 }

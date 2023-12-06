@@ -5,7 +5,6 @@ using Unity.Netcode;
 using UnityEngine.InputSystem;
 using System;
 using Cysharp.Threading.Tasks;
-using UnityEditor.iOS;
 
 public class BasePlayer : NetworkBehaviour
 {

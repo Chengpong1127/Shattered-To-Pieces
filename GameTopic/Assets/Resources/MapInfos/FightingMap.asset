@@ -16,5 +16,6 @@ MonoBehaviour:
   MapSceneName: FightingMap
   MapImage: {fileID: 21300000, guid: 0d202e727d9527a499e9655c8b78fb4c, type: 3}
   MapDescription: Defeat the opponent to win!
+  IsRankingMap: 1
   MapPlayerCount: 2
   Available: 1

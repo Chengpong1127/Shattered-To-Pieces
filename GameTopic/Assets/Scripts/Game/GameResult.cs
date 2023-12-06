@@ -7,6 +7,7 @@ public class GameResult: INetworkSerializable{
     public ulong SelfPlayerId = 0;
     public bool IsGameAborted = false;
     public bool IsRankingGame = false;
+    public string GameMapName = "";
     public int GetSelfRank(){
         return PlayerRankMap[SelfPlayerId];
     }
@@ -16,6 +17,7 @@ public class GameResult: INetworkSerializable{
         serializer.SerializeValue(ref SelfPlayerId);
         serializer.SerializeValue(ref IsGameAborted);
         serializer.SerializeValue(ref IsRankingGame);
+        serializer.SerializeValue(ref GameMapName);
         if (serializer.IsWriter){
             string json = JsonConvert.SerializeObject(this);
             serializer.SerializeValue(ref json);

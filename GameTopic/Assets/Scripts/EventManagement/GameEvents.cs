@@ -131,4 +131,5 @@ public static class GameEvents{
     }
     public static Action OnPlayerProfileUpdated = delegate { };
     public static Action<GameSetting> OnSettingsUpdated = delegate { };
+    public static Action<GameRecord> OnGameRecordUpdated = delegate { };
 }
