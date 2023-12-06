@@ -28,10 +28,6 @@ public class PendantController : MonoBehaviour
                 break;
         }
     }
-    public void OnSettingClick()
-    {
-        Debug.Log("Setting");
-    }
     public void OnExitClick()
     {
         ExitPanel.Show();
