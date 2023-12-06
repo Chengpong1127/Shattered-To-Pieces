@@ -4,11 +4,6 @@ public class GameRecorder : MonoBehaviour
 {
     public void AddNewGameResult(GameResult result)
     {
-        // print result.PlayerRankMap each item
-        foreach (var item in result.PlayerRankMap)
-        {
-            Debug.Log(item.Key + " " + item.Value);
-        }
         if (result.IsRankingGame && !result.IsGameAborted && result.GetSelfRank() == 1){
             AddNewCount(result.GameMapName);
         }
