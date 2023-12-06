@@ -174,6 +174,6 @@ public class ResourceManager: Singleton<ResourceManager>
     }
     public void SaveLocalGameSetting(GameSetting settings){
         localGameSettingsStorageManager.Save(settings, "GameSettings.json");
-        GameEvents.OnSettingsUpdated?.Invoke();
+        GameEvents.OnSettingsUpdated?.Invoke(settings);
     }
 }
