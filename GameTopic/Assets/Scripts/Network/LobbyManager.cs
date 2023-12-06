@@ -47,27 +47,6 @@ public class LobbyManager
         LobbyHeartbeat(CurrentLobby.Id);
         return CurrentLobby;
     }
-
-    public void HostDeleteLobby(){
-        if (Identity != LobbyIdentity.Host){
-            throw new Exception("Only Host can delete lobby");
-        }
-        LobbyService.Instance.DeleteLobbyAsync(CurrentLobby.Id);
-        CurrentLobby = null;
-    }
-
-    public async UniTask<Lobby> ChangeLobbyMap(MapInfo mapInfo){
-        Debug.Assert(Identity == LobbyIdentity.Host, "Only Host can change map");
-        CurrentLobby = await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions { 
-            MaxPlayers = mapInfo.MapPlayerCount,
-            Data = new Dictionary<string, DataObject> {
-                { "MapName", new DataObject(
-                    DataObject.VisibilityOptions.Public, 
-                    mapInfo.MapName) 
-                }
-            } });
-        return CurrentLobby;
-    }
     private async void LobbyHeartbeat(string lobbyId){
         while(CurrentLobby != null && CurrentLobby.Id == lobbyId){
             await LobbyService.Instance.SendHeartbeatPingAsync(lobbyId);
@@ -85,10 +64,6 @@ public class LobbyManager
             }
         }
         CurrentLobby = null;
-    }
-
-    public PlayerProfile GetPlayerProfile(Player player){
-        return PlayerProfile.FromJson(player.Data["PlayerProfileJson"].Value);
     }
 
 
