@@ -161,7 +161,7 @@ public class ResourceManager: Singleton<ResourceManager>
 
     public PlayerProfile LoadLocalPlayerProfile(){
         var profile = localPlayerProfileStorageManager.Load<PlayerProfile>("PlayerProfile.json");
-        return profile == null ? new PlayerProfile() : profile;
+        return profile == null ? PlayerProfile.DefaultPlayerProfile() : profile;
     }
     public void SaveLocalPlayerProfile(PlayerProfile profile){
         localPlayerProfileStorageManager.Save(profile, "PlayerProfile.json");

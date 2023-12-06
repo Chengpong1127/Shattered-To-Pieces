@@ -4,6 +4,13 @@ using Unity.Netcode;
 public class PlayerProfile: INetworkSerializable{
     public string Name = "";
     public string Avatar = "";
+
+    public static PlayerProfile DefaultPlayerProfile(){
+        return new PlayerProfile(){
+            Name = "Player",
+            Avatar = "",
+        };
+    }
     public string ToJson(){
         return JsonConvert.SerializeObject(this);
     }
