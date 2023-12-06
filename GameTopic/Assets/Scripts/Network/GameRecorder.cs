@@ -21,7 +21,6 @@ public class GameRecorder : MonoBehaviour
         }else{
             record.PlayerWinCountMap[mapName] = 1;
         }
-        GameEvents.OnGameRecordUpdated?.Invoke(record);
         ResourceManager.Instance.SaveLocalGameRecord(record);
     }
 }

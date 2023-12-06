@@ -125,8 +125,7 @@ public class StartSceneUIManager : MonoBehaviour
         LobbyUIManager.ExitLobbyMode();
         LocalGameManager.Instance.PlayerExitLobby();
     }
-    private void PlayerProfileUpdatedHandler(){
-        var profile = ResourceManager.Instance.LoadLocalPlayerProfile();
+    private void PlayerProfileUpdatedHandler(PlayerProfile profile){
         _nameText.text = profile.Name;
     }
 

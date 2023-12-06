@@ -166,8 +166,8 @@ public class ResourceManager: Singleton<ResourceManager>
         return profile == null ? PlayerProfile.DefaultPlayerProfile() : profile;
     }
     public void SaveLocalPlayerProfile(PlayerProfile profile){
+        GameEvents.OnPlayerProfileUpdated?.Invoke(profile);
         localPlayerProfileStorageManager.Save(profile, "PlayerProfile.json");
-        GameEvents.OnPlayerProfileUpdated?.Invoke();
     }
 
     public GameSetting LoadLocalGameSetting(){
@@ -175,10 +175,11 @@ public class ResourceManager: Singleton<ResourceManager>
         return settings == null ? GameSetting.DefaultSetting() : settings;
     }
     public void SaveLocalGameSetting(GameSetting settings){
-        localGameSettingsStorageManager.Save(settings, "GameSettings.json");
         GameEvents.OnSettingsUpdated?.Invoke(settings);
+        localGameSettingsStorageManager.Save(settings, "GameSettings.json");
     }
     public void SaveLocalGameRecord(GameRecord record){
+        GameEvents.OnGameRecordUpdated?.Invoke(record);
         localGameRecordStorageManager.Save(record, "GameRecord.json");
     }
     public GameRecord LoadLocalGameRecord(){
