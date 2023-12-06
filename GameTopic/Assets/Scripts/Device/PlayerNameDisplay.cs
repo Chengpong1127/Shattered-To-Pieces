@@ -18,6 +18,12 @@ public class PlayerNameDisplay : NetworkBehaviour
 
     public void SetPlayerName(string playerName)
     {
+        Debug.Assert(IsServer);
+        SetPlayerName_ClientRpc(playerName);
+    }
+    [ClientRpc]
+    private void SetPlayerName_ClientRpc(string playerName)
+    {
         playerNameText.text = playerName;
         playerNameText.color = IsOwner ? LocalPlayerColor : RemotePlayerColor;
     }
