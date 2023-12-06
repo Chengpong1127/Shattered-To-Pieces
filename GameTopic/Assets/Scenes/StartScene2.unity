@@ -16027,6 +16027,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 370211213}
   m_CullTransparentMesh: 1
+--- !u!1 &371103552 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2330243120634706457, guid: 2f64f70870ab04e28bf8ac602c0d54bb, type: 3}
+  m_PrefabInstance: {fileID: 1254290687}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &378815312
 GameObject:
   m_ObjectHideFlags: 0
@@ -28029,7 +28034,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8799707580136468089, guid: 2f64f70870ab04e28bf8ac602c0d54bb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1528954038}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2330243120634706457, guid: 2f64f70870ab04e28bf8ac602c0d54bb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1399356652}
   m_SourcePrefab: {fileID: 100100000, guid: 2f64f70870ab04e28bf8ac602c0d54bb, type: 3}
 --- !u!224 &1263831676 stripped
 RectTransform:
@@ -28177,7 +28185,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1399356652}
         m_TargetAssemblyTypeName: TutorialPanelController, Scripts
         m_MethodName: Show
         m_Mode: 1
@@ -28434,7 +28442,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4751873186912811363, guid: 2f64f70870ab04e28bf8ac602c0d54bb, type: 3}
   m_PrefabInstance: {fileID: 1254290687}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 371103552}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a007dd88fb88f4927be9d860b4585720, type: 3}
@@ -28445,6 +28453,35 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 141935729496387244, guid: 2f64f70870ab04e28bf8ac602c0d54bb, type: 3}
   m_PrefabInstance: {fileID: 1254290687}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1399356652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371103552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80b4b9ac85b774de68a263eaed489395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  images:
+  - {fileID: 21300000, guid: 28771d3de1e6649f3bbecaa60000548c, type: 3}
+  - {fileID: 21300000, guid: 8742320db0fa440a18fdb79d4089f453, type: 3}
+  - {fileID: 21300000, guid: 89a60bb93ad7d47b2805fb09a2e11aaa, type: 3}
+  - {fileID: 21300000, guid: bfc68f0ac1eac451abd14e569f2ebf2c, type: 3}
+  - {fileID: 21300000, guid: 0d06b9fa13ce242a8affbc763db8fff6, type: 3}
+  descriptions:
+  - first, click this button to enter the assembly room.
+  - you can use 200$ to  buy any component on the list.
+  - <color=#FF5809>Left click</color> the component to your device. you can also
+    <color=#FF5809>roll mouse wheel</color>, <color=#FF5809>click middle button</color>
+    to change its rotation or direction.
+  - drag icon to slot to set ability.
+  - every conponent ability costs <color=#2828FF>energy</color>.
+  NextPageButton: {fileID: 1528954041}
+  text: {fileID: 1782773083}
+  now_Img: {fileID: 370211216}
 --- !u!114 &1470895323 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8009161918947203955, guid: c3acb7ae312d641f1b6aa13c20f061fa, type: 3}
@@ -28718,7 +28755,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1399356652}
         m_TargetAssemblyTypeName: TutorialPanelController, Scripts
         m_MethodName: OnChangePage
         m_Mode: 1
