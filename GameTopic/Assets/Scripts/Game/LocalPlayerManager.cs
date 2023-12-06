@@ -11,8 +11,10 @@ public class LocalPlayerManager : NetworkBehaviour
     [SerializeField]
     protected BaseConnectionManager connectionManager;
     public GameRunner GameRunner;
-    public event Action OnPlayerExitRoom;
+    public event Action<GameResult> OnPlayerExitRoom;
     public StateMachine<LocalPlayerStates> StateMachine;
+    private GameResult _gameResult;
+    private MapInfo _mapInfo;
     public enum LocalPlayerStates
     {
         Initializing,
@@ -36,9 +38,10 @@ public class LocalPlayerManager : NetworkBehaviour
     /// <summary>
     /// Start the player setup. This method need to be invoked after enter a scene.
     /// </summary>
-    public void StartPlayerSetup(NetworkType type, MapInfo mapinfo, string ServerAddress){
+    public void StartPlayerSetup(NetworkType type, MapInfo mapInfo, string ServerAddress){
+        _mapInfo = mapInfo;
         StateMachine.ChangeState(LocalPlayerStates.Loading);
-        connectionManager.StartConnection(type, ServerAddress, mapinfo.MapPlayerCount);
+        connectionManager.StartConnection(type, ServerAddress, mapInfo.MapPlayerCount);
         connectionManager.OnAllClientConnected += AllClientConnectedHandler;
     }
     private void AllClientConnectedHandler(){
@@ -61,13 +64,22 @@ public class LocalPlayerManager : NetworkBehaviour
     public virtual void ExitGame(){
         StateMachine.ChangeState(LocalPlayerStates.Exiting);
         connectionManager.StopConnection();
-        OnPlayerExitRoom?.Invoke();
+        if (_gameResult == null){
+            _gameResult = new GameResult(){
+                IsGameAborted = true
+            };
+        }
+        OnPlayerExitRoom?.Invoke(_gameResult);
     }
     protected virtual void GameOverHandler(GameResult result){
         ExitGame();
     }
     [ClientRpc]
     private void GameOverHandler_ClientRpc(GameResult result){
+        _gameResult = result;
+        _gameResult.SelfPlayerId = OwnerClientId;
+        _gameResult.IsGameAborted = false;
+        _gameResult.IsRankingGame = _mapInfo.IsRankingMap;
         GameOverHandler(result);
     }
 }

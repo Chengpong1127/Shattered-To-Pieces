@@ -23,6 +23,8 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     }
     [SerializeField]
     private BaseSceneLoader SceneLoader;
+    [SerializeField]
+    private GameRecorder GameRecorder;
     public StateMachine<GameState> StateMachine;
     public LobbyManager LobbyManager;
     private string _startSceneName;
@@ -37,6 +39,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     async void Start()
     {
         Debug.Assert(SceneLoader != null);
+        Debug.Assert(GameRecorder != null);
         DontDestroyOnLoad(gameObject);
         _startSceneName = SceneManager.GetActiveScene().name;
 
@@ -55,12 +58,8 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
                 PlayerExitLobby();
                 WaitToQuit();
                 return false;
-            case GameState.GameRoom:
-                PlayerExitRoomHandler();
-                WaitToQuit();
-                return false;
             default:
-                return false;
+                return true;
         }
     }
     private async void WaitToQuit(){
@@ -168,7 +167,8 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
 
 
-    private void PlayerExitRoomHandler(){
+    private void PlayerExitRoomHandler(GameResult result){
+        GameRecorder.AddNewGameResult(result);
         localPlayerManager.OnPlayerExitRoom -= PlayerExitRoomHandler;
         StateMachine.ChangeState(GameState.Home);
         if(LobbyManager.CurrentLobby != null)

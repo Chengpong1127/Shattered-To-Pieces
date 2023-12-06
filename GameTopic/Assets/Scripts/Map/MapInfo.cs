@@ -8,6 +8,7 @@ public class MapInfo : ScriptableObject
     public Sprite MapImage;
     [TextArea(3, 10)]
     public string MapDescription;
+    public bool IsRankingMap = false;
     public int MapPlayerCount;
     public bool Available;
 }
