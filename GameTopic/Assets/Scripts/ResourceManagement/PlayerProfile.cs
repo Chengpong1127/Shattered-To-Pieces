@@ -2,13 +2,13 @@ using Newtonsoft.Json;
 using Unity.Netcode;
 
 public class PlayerProfile: INetworkSerializable{
-    public string Name = "";
-    public string Avatar = "";
+    public string Name = "Player";
+    public string Avatar = "Avatar1";
 
     public static PlayerProfile DefaultPlayerProfile(){
         return new PlayerProfile(){
             Name = "Player",
-            Avatar = "",
+            Avatar = "Avatar1",
         };
     }
     public string ToJson(){
