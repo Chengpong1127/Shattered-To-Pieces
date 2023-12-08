@@ -8,12 +8,8 @@ public class RainbowText : MonoBehaviour
 {
     public float speed;  
 
-    private Text textMesh;
+    public Text textMesh;
 
-    void Awake()
-    {
-        textMesh = GetComponent<Text>();
-    }
     public void StarRainbow()
     {
         StartCoroutine(RainbowColorChange());

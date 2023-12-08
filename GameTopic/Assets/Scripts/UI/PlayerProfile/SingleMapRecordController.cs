@@ -1,35 +1,35 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+using Unity.Netcode;
 public class SingleMapRecordController : MonoBehaviour
 {
     [SerializeField] private Text MapNameText;
     [SerializeField] private Text RecordText;
-    [SerializeField] private Sprite[] Medal;
+    [SerializeField] private Sprite[] MedalSprite;
     [SerializeField] private Image Background;
     [SerializeField] private GameObject particle;
+    [SerializeField] private RainbowText rainbowText;
+    [SerializeField] private GameObject medal;
     public void SetRecord(string mapName, int record)
     {
+        rainbowText.StarRainbow();
         MapNameText.text = mapName;
         RecordText.text = record.ToString();
         switch (record){
             case 0:
-                particle.SetActive(false);
                 break;
             case 1:
             case 2:
-                particle.SetActive(false);
-                Background.sprite = Medal[0];
+                Background.sprite = MedalSprite[0];
                 break;
             case 3:
             case 4:
-                particle.SetActive(false);
-                Background.sprite = Medal[1];
+                Background.sprite = MedalSprite[1];
                 break;
             default:
-                particle.SetActive(true);
-                particle.GetComponent<ParticleSystem>().Play();
-                Background.sprite = Medal[2];
+                var p=Instantiate(particle);
+                p.transform.SetParent(medal.transform, false);
+                Background.sprite = MedalSprite[2];
                 break;
         }
     }

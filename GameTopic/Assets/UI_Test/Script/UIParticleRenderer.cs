@@ -10,7 +10,7 @@ namespace SpriteParticleEmitter
     /// This class is a modification on the class shared publicly by Glenn Powell (glennpow) tha can be found here
     /// http://forum.unity3d.com/threads/free-script-particle-systems-in-ui-screen-space-overlay.406862/
     /// </summary>
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     [RequireComponent(typeof(CanvasRenderer))]
     [RequireComponent(typeof(ParticleSystem))]
     [AddComponentMenu("UI/Effects/Extensions/UI Particle System")]
