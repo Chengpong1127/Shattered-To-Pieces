@@ -6,6 +6,8 @@ public class SettingUpdater : MonoBehaviour
     void Awake()
     {
         GameEvents.OnSettingsUpdated += OnSettingsUpdatedHandler;
+        GameSetting setting = ResourceManager.Instance.LoadLocalGameSetting();
+        OnSettingsUpdatedHandler(setting);
     }
 
     private void OnSettingsUpdatedHandler(GameSetting setting)
