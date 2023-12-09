@@ -17017,8 +17017,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63384b03f896b4ad281d206635b5ab6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  homeBGM: {fileID: 0}
-  gameRoomBGM: {fileID: 0}
+  homeBGM: {fileID: 8300000, guid: 72e794e950fbb094f84757a8f3f9c9cd, type: 3}
+  gameRoomBGM: {fileID: 8300000, guid: 8f044c96b0121924986c6525d7d89434, type: 3}
 --- !u!114 &715222140
 MonoBehaviour:
   m_ObjectHideFlags: 0
