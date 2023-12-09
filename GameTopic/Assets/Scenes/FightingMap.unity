@@ -1529,8 +1529,8 @@ MonoBehaviour:
   GameRunner: {fileID: 1585596239}
   VirtualCamera: {fileID: 2013529658}
   EndGame: {fileID: 668567903}
-  WinMusic: {fileID: 0}
-  LoseMusic: {fileID: 0}
+  WinMusic: {fileID: 8300000, guid: 263241ce7d7d05b40b04fd8f41f89427, type: 3}
+  LoseMusic: {fileID: 8300000, guid: 8d695c889bab29040a8a752af51159bf, type: 3}
   audioSource: {fileID: 1585596241}
 --- !u!4 &1585596236
 Transform:
