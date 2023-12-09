@@ -14,6 +14,7 @@ public class SellElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     public int SellID = -1;
     public ISellElementSubmitable EventSubmitter;
+    private int _price;
 
     private void Awake() {
         Debug.Assert(reycastedImage != null);
@@ -21,9 +22,35 @@ public class SellElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         Debug.Assert(priceCtrl != null);
         Debug.Assert(canvasGroup != null);
         maxSpriteSize = displayImage.rectTransform.sizeDelta;
+        GameRunner.OnRunGame += RunGameHandler;
+    }
+    private void RunGameHandler(GameRunner gameRunner) {
+        if (gameRunner is AssemblyRoomRunner assemblyRoomRunner) {
+            assemblyRoomRunner.OnMoneyChanged += OnMoneyChangedHandler;
+        }
+    }
+    private void OnDestroy() {
+        GameRunner.OnRunGame -= RunGameHandler;
+        if(GameRunner.ServerGameRunnerInstance is AssemblyRoomRunner assemblyRoomRunner) {
+            assemblyRoomRunner.OnMoneyChanged -= OnMoneyChangedHandler;
+        }
+    }
+
+    private void OnMoneyChangedHandler(int money) {
+        if (SellID == -1) { return; }
+        if (money < _price) {
+            priceCtrl.SetNotEnoughColor();
+        } else {
+            priceCtrl.SetNormalColor();
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData) {
+        if (GameRunner.ServerGameRunnerInstance is AssemblyRoomRunner assemblyRoomRunner) {
+            if (assemblyRoomRunner.GetPlayerRemainedMoney() < _price) {
+                return;
+            }
+        }
         EventSubmitter?.Buy?.Invoke(SellID);
     }
     public void OnPointerEnter(PointerEventData eventData) {
@@ -32,14 +59,9 @@ public class SellElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     public void OnPointerExit(PointerEventData eventData) {
         EventSubmitter?.CloseDescription?.Invoke(SellID);
     }
-    public void SetNormalColor() {
-        priceCtrl.SetNormalColor();
-    }
-    public void SetNotEnoughColor() {
-        priceCtrl.SetNotEnoughColor();
-    }
 
     public void SetDisplay(Sprite sprite, int price) {
+        _price = price;
         canvasGroup.alpha = 1f;
         // resize Image for new sprite.
         Vector2 newSpriteSize = sprite.rect.size / displayImage.pixelsPerUnit;
@@ -56,6 +78,9 @@ public class SellElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
         if (reycastedImage != null) {
             reycastedImage.raycastTarget = true;
+        }
+        if (GameRunner.ServerGameRunnerInstance is AssemblyRoomRunner assemblyRoomRunner) {
+            OnMoneyChangedHandler(assemblyRoomRunner.GetPlayerRemainedMoney());
         }
     }
     public void SetEmpty() {

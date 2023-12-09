@@ -169,3 +169,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selfTMP: {fileID: 2095431637635101748}
+  normalColor: {r: 0, g: 0, b: 0, a: 1}
+  notEnoughColor: {r: 1, g: 0, b: 0, a: 1}
