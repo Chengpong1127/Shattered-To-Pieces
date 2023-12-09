@@ -216,8 +216,8 @@ MonoBehaviour:
   Duration: 0.7
   DeactivateOnHide: 1
   AudioSource: {fileID: 6522047301571859806}
-  ShowSound: {fileID: 0}
-  CloseSound: {fileID: 0}
+  ShowSound: {fileID: 8300000, guid: b51a54ddae89af2448858e3991a2fb1f, type: 3}
+  CloseSound: {fileID: 8300000, guid: b51a54ddae89af2448858e3991a2fb1f, type: 3}
   BackgroundImage: {fileID: 5309781971547013268}
   MainPanel: {fileID: 3747344485739517439}
 --- !u!225 &5855308680702820358
