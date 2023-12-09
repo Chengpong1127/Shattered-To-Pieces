@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 5424247412985335016}
   - component: {fileID: 2919651056493672023}
   - component: {fileID: 5133973694646773788}
+  - component: {fileID: 7230684246600447307}
   m_Layer: 5
   m_Name: BoxFrame
   m_TagString: Untagged
@@ -141,6 +142,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7230684246600447307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4562961803097732113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &5730592360775722355
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,7 +449,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eb5130bb20062742a26e3cd1c9d516b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RBDisplayer: {fileID: 8938933120142979026}
   draggerList:
   - {fileID: 3786923334569400971}
   - {fileID: 8375552109856103789}
