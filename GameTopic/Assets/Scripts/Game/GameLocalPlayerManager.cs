@@ -9,7 +9,9 @@ public class GameLocalPlayerManager: LocalPlayerManager{
 
     [SerializeField] EndGameUI EndGame;
     [SerializeField] AudioClip WinMusic;
+    [SerializeField] [Range(0, 1)] float WinMusicVolume = 1;
     [SerializeField] AudioClip LoseMusic;
+    [SerializeField] [Range(0, 1)] float LoseMusicVolume = 1;
     [SerializeField] AudioSource audioSource;
 
     private async void SetCamera(){
@@ -30,7 +32,7 @@ public class GameLocalPlayerManager: LocalPlayerManager{
         if (audioSource != null)
         {
             audioSource.Stop();
-            audioSource.PlayOneShotMusicManaged(rank == 1 ? WinMusic : LoseMusic);
+            audioSource.PlayOneShotMusicManaged(rank == 1 ? WinMusic : LoseMusic, rank == 1 ? WinMusicVolume : LoseMusicVolume);
         }
 
         await UniTask.WaitForSeconds(5);

@@ -31,6 +31,7 @@ public class AbilityRebinder : IAbilityRebinder
         if (rebindingOperation != null){
             CancelRebinding();
         }
+        GameEvents.RebindEvents.OnStartRebinding?.Invoke(abilityButtonID);
         var action = AbilityActionMap.FindAction("Ability" + abilityButtonID.ToString(), true);
         actionEnabled = action.enabled;
         action.Disable();
