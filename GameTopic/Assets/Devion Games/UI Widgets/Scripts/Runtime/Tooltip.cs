@@ -162,7 +162,7 @@ namespace DevionGames.UIWidgets{
             {
                 this.m_SlotParent.gameObject.SetActive(false);
             }
-            m_RectTransform.sizeDelta = new Vector2(width, m_RectTransform.sizeDelta.y);
+            m_RectTransform.sizeDelta = new Vector2(width,1.0f);
            
             this.m_Background.gameObject.SetActive(showBackground);
 

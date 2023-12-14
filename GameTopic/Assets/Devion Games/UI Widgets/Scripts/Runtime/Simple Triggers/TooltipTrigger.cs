@@ -97,7 +97,7 @@ namespace DevionGames.UIWidgets
             }
 
    
-            instance.Show(WidgetUtility.ColorString(tooltipTitle, color), WidgetUtility.ColorString(tooltip, color), icon, m_PropertyPairs, width, showBackground);
+            instance.Show(tooltipTitle,tooltip, icon, m_PropertyPairs, width, showBackground);
         }
 
         private void ShowTooltip()
