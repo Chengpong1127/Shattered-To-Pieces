@@ -185,7 +185,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 652f7165b7c30ab46af6c4aad90a639b, type: 2}
-    m_FontSize: 16
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -226,8 +226,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
   m_MinWidth: -1
-  m_MinHeight: 20
-  m_PreferredWidth: 160
+  m_MinHeight: 80
+  m_PreferredWidth: 300
   m_PreferredHeight: -1
   m_FlexibleWidth: 1
   m_FlexibleHeight: 1
@@ -264,10 +264,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8250916554171118082}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 25, y: -25}
-  m_SizeDelta: {x: 48, y: 48}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5573115076374295902
 CanvasRenderer:
@@ -699,7 +699,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 409.65002, y: 55.118958}
-  m_SizeDelta: {x: 260, y: 0}
+  m_SizeDelta: {x: 500, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &5265656962636116051
 CanvasGroup:
@@ -1219,11 +1219,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 652f7165b7c30ab46af6c4aad90a639b, type: 2}
-    m_FontSize: 20
+    m_FontSize: 50
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 40
+    m_MaxSize: 50
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1260,7 +1260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
   m_MinWidth: -1
-  m_MinHeight: 20
+  m_MinHeight: 50
   m_PreferredWidth: -1
   m_PreferredHeight: 20
   m_FlexibleWidth: 1
@@ -1463,7 +1463,7 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: 50
   m_MinHeight: 50
-  m_PreferredWidth: 50
+  m_PreferredWidth: 100
   m_PreferredHeight: 50
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
