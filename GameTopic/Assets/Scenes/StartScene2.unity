@@ -17070,7 +17070,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   homeBGM: {fileID: 8300000, guid: 72e794e950fbb094f84757a8f3f9c9cd, type: 3}
+  homeBGMVolume: 1
   gameRoomBGM: {fileID: 8300000, guid: 8f044c96b0121924986c6525d7d89434, type: 3}
+  gameRoomBGMVolume: 1
 --- !u!114 &715222140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29027,8 +29029,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClickSound: {fileID: 8300000, guid: 41fe389abc552ae4ea67e78dcfbfa9fb, type: 3}
+  ClickSoundVolume: 1
   HoverSound: {fileID: 8300000, guid: cad11a4481c77fe4aabeb5563cb0bd6c, type: 3}
+  HoverSoundVolume: 1
   HoverOutSound: {fileID: 8300000, guid: 625ad317b451ec147984e94636d712a6, type: 3}
+  HoverOutSoundVolume: 1
 --- !u!82 &1528954045
 AudioSource:
   m_ObjectHideFlags: 0
