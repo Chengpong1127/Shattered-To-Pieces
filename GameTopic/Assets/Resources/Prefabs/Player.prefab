@@ -294,24 +294,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25491532a6d0a405091b1edc4957ddee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartAbilityClip: {fileID: 0}
-  StartAbilityVolume: 1
+  StartAbilityClip: {fileID: 8300000, guid: 36ffcfb856e1890478e35b405de0e264, type: 3}
+  StartAbilityVolume: 0.2
   CancelAbilityClip: {fileID: 0}
-  CancelAbilityVolume: 1
-  StartRebindClip: {fileID: 0}
+  CancelAbilityVolume: 0.2
+  StartRebindClip: {fileID: 8300000, guid: 7251a78d89c16a94a995e03eea147bd7, type: 3}
   StartRebindVolume: 1
-  EndRebindClip: {fileID: 0}
+  EndRebindClip: {fileID: 8300000, guid: 6be665538b409b546963f612f72396d3, type: 3}
   EndRebindVolume: 1
-  AbilitySelectedClip: {fileID: 0}
+  AbilitySelectedClip: {fileID: 8300000, guid: 1d0650fe52cadee4cb5b86747240cd09, type: 3}
   AbilitySelectedVolume: 1
-  AbilitySelectedEndClip: {fileID: 0}
-  AbilitySelectedEndVolume: 1
-  GameComponentSelectedClip: {fileID: 0}
+  AbilitySelectedEndClip: {fileID: 8300000, guid: b8677c35248911b4e88f68976aafbcef, type: 3}
+  AbilitySelectedEndVolume: 0.5
+  GameComponentSelectedClip: {fileID: 8300000, guid: 1d0650fe52cadee4cb5b86747240cd09, type: 3}
   GameComponentSelectedVolume: 1
-  GameComponentConnectedClip: {fileID: 0}
-  GameComponentConnectedVolume: 1
-  GameComponentDisconnectedClip: {fileID: 0}
-  GameComponentDisconnectedVolume: 1
+  GameComponentConnectedClip: {fileID: 8300000, guid: b8677c35248911b4e88f68976aafbcef, type: 3}
+  GameComponentConnectedVolume: 0.5
+  GameComponentDisconnectedClip: {fileID: 8300000, guid: a0bed6dfd190b5745a208b302978ee69, type: 3}
+  GameComponentDisconnectedVolume: 0.8
 --- !u!1 &2462728483751661828
 GameObject:
   m_ObjectHideFlags: 0
