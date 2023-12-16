@@ -24,31 +24,34 @@ public class GameComponentSelectedHandler : BaseGameEventHandler
     }
     [ClientRpc]
     private void OnGameComponentSelected_ClientRpc(ulong gameComponentID, bool selected){
-        var gameComponent = Utils.GetLocalGameObjectByNetworkID(gameComponentID).GetComponent<GameComponent>();
-        switch (selected)
-        {
-            case true:
-                gameComponent.BodyRenderers.ToList().ForEach(renderer => {
-                    if (renderer is SpriteRenderer spriteRenderer){
-                        if (!_colorTweenMap.ContainsKey(spriteRenderer)) {
-                            _colorTweenMap[spriteRenderer] = (renderer as SpriteRenderer)
-                                .DOFade(0.5f, 0.3f)
-                                .SetEase(Ease.InOutSine)
-                                .SetLoops(-1, LoopType.Yoyo);
+        try{
+            var gameComponent = Utils.GetLocalGameObjectByNetworkID(gameComponentID).GetComponent<GameComponent>();
+            switch (selected)
+            {
+                case true:
+                    gameComponent.BodyRenderers.ToList().ForEach(renderer => {
+                        if (renderer is SpriteRenderer spriteRenderer){
+                            if (!_colorTweenMap.ContainsKey(spriteRenderer)) {
+                                _colorTweenMap[spriteRenderer] = (renderer as SpriteRenderer)
+                                    .DOFade(0.5f, 0.3f)
+                                    .SetEase(Ease.InOutSine)
+                                    .SetLoops(-1, LoopType.Yoyo);
+                            }
                         }
-                    }
-                });
-                break;
-            case false:
-                gameComponent.BodyRenderers.ToList().ForEach(renderer => {
-                    if (renderer is SpriteRenderer spriteRenderer){
-                        if (_colorTweenMap.ContainsKey(spriteRenderer)) {
-                            _colorTweenMap[spriteRenderer].SmoothRewind();
-                            _colorTweenMap.Remove(spriteRenderer);
+                    });
+                    break;
+                case false:
+                    gameComponent.BodyRenderers.ToList().ForEach(renderer => {
+                        if (renderer is SpriteRenderer spriteRenderer){
+                            if (_colorTweenMap.ContainsKey(spriteRenderer)) {
+                                _colorTweenMap[spriteRenderer].SmoothRewind();
+                                _colorTweenMap.Remove(spriteRenderer);
+                            }
                         }
-                    }
-                });
-                break;
+                    });
+                    break;
+            }
+        }catch{
         }
     }
     public override void OnDestroy() {
