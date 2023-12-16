@@ -106,7 +106,7 @@ MonoBehaviour:
     m_InternalValue: 0
   IsAlive:
     m_InternalValue: 0
-  AssemblyRange: 5
+  AssemblyRange: 100000
   AssemblyController: {fileID: 983135910985303398}
   SkillUI: {fileID: 3430896342196276027}
   _cameraZoomInCurve:
