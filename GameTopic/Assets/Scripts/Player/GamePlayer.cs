@@ -3,14 +3,15 @@ using Unity.Netcode;
 using System.Linq;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 
 public class GamePlayer: AssemblyablePlayer{
     public SkillUIController SkillUI;
     private CinemachineVirtualCamera VirtualCamera;
     [SerializeField]
-    private AnimationCurve _cameraZoomInCurve;
+    private float _zoomInValue = 3;
     [SerializeField]
-    private AnimationCurve _cameraZoomOutCurve;
+    private float _zoomOutValue = 10;
     [SerializeField]
     private float _cameraZoomDuration = 0.5f;
     protected override async void Start(){
@@ -43,19 +44,17 @@ public class GamePlayer: AssemblyablePlayer{
                     break;
             }
             if (VirtualCamera != null)
-                ZoomCamera(enabled ? _cameraZoomInCurve : _cameraZoomOutCurve);
+                DOZoomCamera(enabled ? _zoomInValue : _zoomOutValue);
         }
         
     }
-    private async void ZoomCamera(AnimationCurve curve){
-        VirtualCamera.m_Lens.OrthographicSize = curve.Evaluate(0);
-        var timer = 0f;
-        while(timer < _cameraZoomDuration){
-            timer += Time.deltaTime;
-            VirtualCamera.m_Lens.OrthographicSize = curve.Evaluate(timer / _cameraZoomDuration);
-            await UniTask.Yield();
-        }
-        VirtualCamera.m_Lens.OrthographicSize = curve.Evaluate(1);
+    private void DOZoomCamera(float endValue){
+        DOTween.To(
+            () => VirtualCamera.m_Lens.OrthographicSize,
+            x => VirtualCamera.m_Lens.OrthographicSize = x,
+            endValue,
+            _cameraZoomDuration
+        ).SetEase(Ease.InOutSine);
     }
 
 
