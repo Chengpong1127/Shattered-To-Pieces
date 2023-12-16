@@ -6,8 +6,6 @@ public class BGMController : MonoBehaviour
 {
     [SerializeField] public AudioClip homeBGM;
     [SerializeField] [Range(0, 1)] public float homeBGMVolume = 1;
-    [SerializeField] public AudioClip gameRoomBGM;
-    [SerializeField] [Range(0, 1)] public float gameRoomBGMVolume = 1;
     private AudioSource audioSource;
     private LocalGameManager localGameManager;
     private void Start()
@@ -28,10 +26,11 @@ public class BGMController : MonoBehaviour
                 audioSource.PlayLoopingMusicManaged(homeBGMVolume, 1, false);
                 break;
             case LocalGameManager.GameState.GameRoom:
-                if (gameRoomBGM == null) return;
+                var info = localGameManager.CurrentMapInfo;
+                if (info.BackgroundMusic == null) return;
                 audioSource.Stop();
-                audioSource.clip = gameRoomBGM;
-                audioSource.PlayLoopingMusicManaged(gameRoomBGMVolume, 1, false);
+                audioSource.clip = info.BackgroundMusic;
+                audioSource.PlayLoopingMusicManaged(info.BackgroundMusicVolume, 1, false);
                 break;
         }
     }

@@ -31,12 +31,14 @@ public class PlayerAudioController : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         audioSource = GetComponent<AudioSource>();
-        if (IsServer){
+        if (IsServer)
+        {
             GameEvents.GameComponentEvents.OnGameComponentSelected += GameComponentSelectedHandler;
             GameEvents.GameComponentEvents.OnGameComponentConnected += GameComponentConnectedHandler;
             GameEvents.GameComponentEvents.OnGameComponentDisconnected += GameComponentDisconnectedHandler;
         }
-        if (IsOwner){
+        if (IsOwner)
+        {
             GameEvents.UIEvents.OnGameComponentAbilitySelected += GameComponentAbilitySelectedHandler;
             GameEvents.UIEvents.OnGameComponentAbilitySelectedEnd += GameComponentAbilitySelectedEndHandler;
             GameEvents.RebindEvents.OnStartRebinding += StartRebindingHandler;
@@ -49,12 +51,14 @@ public class PlayerAudioController : NetworkBehaviour
     public override void OnDestroy()
     {
         base.OnDestroy();
-        if (IsServer){
+        if (IsServer)
+        {
             GameEvents.GameComponentEvents.OnGameComponentSelected -= GameComponentSelectedHandler;
             GameEvents.GameComponentEvents.OnGameComponentConnected -= GameComponentConnectedHandler;
             GameEvents.GameComponentEvents.OnGameComponentDisconnected -= GameComponentDisconnectedHandler;
         }
-        if (IsOwner){
+        if (IsOwner)
+        {
             GameEvents.UIEvents.OnGameComponentAbilitySelected -= GameComponentAbilitySelectedHandler;
             GameEvents.UIEvents.OnGameComponentAbilitySelectedEnd -= GameComponentAbilitySelectedEndHandler;
             GameEvents.RebindEvents.OnStartRebinding -= StartRebindingHandler;
@@ -71,12 +75,9 @@ public class PlayerAudioController : NetworkBehaviour
     [ClientRpc]
     private void PlayGameComponentSelectedSound_ClientRpc(bool isSelected)
     {
-        if (isSelected && GameComponentSelectedClip != null){
-            audioSource.PlayOneShotSoundManaged(GameComponentSelectedClip, GameComponentSelectedVolume);
-        }
-        else
+        if (isSelected && GameComponentSelectedClip != null)
         {
-            Debug.LogWarning("GameComponentSelectedClip is null");
+            audioSource.PlayOneShotSoundManaged(GameComponentSelectedClip, GameComponentSelectedVolume);
         }
     }
     private void GameComponentConnectedHandler(GameComponent gameComponent, GameComponent parentComponent)
@@ -86,12 +87,9 @@ public class PlayerAudioController : NetworkBehaviour
     [ClientRpc]
     private void PlayGameComponentConnectedSound_ClientRpc()
     {
-        if (GameComponentConnectedClip != null){
-            audioSource.PlayOneShotSoundManaged(GameComponentConnectedClip, GameComponentConnectedVolume);
-        }
-        else
+        if (GameComponentConnectedClip != null)
         {
-            Debug.LogWarning("GameComponentConnectedClip is null");
+            audioSource.PlayOneShotSoundManaged(GameComponentConnectedClip, GameComponentConnectedVolume);
         }
     }
     private void GameComponentDisconnectedHandler(GameComponent gameComponent, GameComponent parentComponent)
@@ -101,73 +99,51 @@ public class PlayerAudioController : NetworkBehaviour
     [ClientRpc]
     private void PlayGameComponentDisconnectedSound_ClientRpc()
     {
-        if (GameComponentDisconnectedClip != null){
-            audioSource.PlayOneShotSoundManaged(GameComponentDisconnectedClip, GameComponentDisconnectedVolume);
-        }
-        else
+        if (GameComponentDisconnectedClip != null)
         {
-            Debug.LogWarning("GameComponentDisconnectedClip is null");
+            audioSource.PlayOneShotSoundManaged(GameComponentDisconnectedClip, GameComponentDisconnectedVolume);
         }
     }
     private void GameComponentAbilitySelectedHandler(GameComponent gameComponent)
     {
-        if (AbilitySelectedClip != null){
-            audioSource.PlayOneShotSoundManaged(AbilitySelectedClip, AbilitySelectedVolume);
-        }
-        else
+        if (AbilitySelectedClip != null)
         {
-            Debug.LogWarning("AbilitySelectedClip is null");
+            audioSource.PlayOneShotSoundManaged(AbilitySelectedClip, AbilitySelectedVolume);
         }
     }
     private void GameComponentAbilitySelectedEndHandler(GameComponent gameComponent)
     {
-        if (AbilitySelectedEndClip != null){
-            audioSource.PlayOneShotSoundManaged(AbilitySelectedEndClip, AbilitySelectedEndVolume);
-        }
-        else
+        if (AbilitySelectedEndClip != null)
         {
-            Debug.LogWarning("AbilitySelectedEndClip is null");
+            audioSource.PlayOneShotSoundManaged(AbilitySelectedEndClip, AbilitySelectedEndVolume);
         }
     }
     private void StartRebindingHandler(int entryID)
     {
-        if (StartRebindClip != null){
-            audioSource.PlayOneShotSoundManaged(StartRebindClip, StartRebindVolume);
-        }
-        else
+        if (StartRebindClip != null)
         {
-            Debug.LogWarning("StartRebindClip is null");
+            audioSource.PlayOneShotSoundManaged(StartRebindClip, StartRebindVolume);
         }
     }
     private void FinishRebindingHandler(int entryID, string path)
     {
-        if (EndRebindClip != null){
-            audioSource.PlayOneShotSoundManaged(EndRebindClip, EndRebindVolume);
-        }
-        else
+        if (EndRebindClip != null)
         {
-            Debug.LogWarning("EndRebindClip is null");
+            audioSource.PlayOneShotSoundManaged(EndRebindClip, EndRebindVolume);
         }
     }
     private void LocalInputStartAbilityHandler(int abilityNumber)
     {
-        if (StartAbilityClip != null){
-            audioSource.PlayOneShotSoundManaged(StartAbilityClip, StartAbilityVolume);
-        }
-        else
+        if (StartAbilityClip != null)
         {
-            Debug.LogWarning("StartAbilityClip is null");
+            audioSource.PlayOneShotSoundManaged(StartAbilityClip, StartAbilityVolume);
         }
     }
     private void LocalInputCancelAbilityHandler(int abilityNumber)
     {
-        if (CancelAbilityClip != null){
+        if (CancelAbilityClip != null)
+        {
             audioSource.PlayOneShotSoundManaged(CancelAbilityClip, CancelAbilityVolume);
         }
-        else
-        {
-            Debug.LogWarning("CancelAbilityClip is null");
-        }
     }
-
 }

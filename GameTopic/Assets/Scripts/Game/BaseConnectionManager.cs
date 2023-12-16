@@ -53,7 +53,6 @@ public class BaseConnectionManager: MonoBehaviour{
             var networkManagerPrefab = ResourceManager.Instance.LoadPrefab("NetworkManager");
             Instantiate(networkManagerPrefab);
             NetworkManager = FindObjectOfType<NetworkManager>();
-            Debug.Log("Add NetworkManager at runtime");
         }
         var transports = NetworkManager.GetComponents<UnityTransport>();
         RelayTransport = transports.First(t => t.Protocol == UnityTransport.ProtocolType.RelayUnityTransport);

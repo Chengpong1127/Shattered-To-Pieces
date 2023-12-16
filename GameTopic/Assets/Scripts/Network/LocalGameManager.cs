@@ -27,6 +27,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     private GameRecorder GameRecorder;
     public StateMachine<GameState> StateMachine;
     public LobbyManager LobbyManager;
+    public MapInfo CurrentMapInfo { get; private set;}
     private string _startSceneName;
     private LocalPlayerManager localPlayerManager;
     protected override void Awake()
@@ -152,6 +153,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
     }
 
     public void EnterRoom(MapInfo mapInfo, NetworkType networkType, string ServerAddress = null){
+        CurrentMapInfo = mapInfo;
         StateMachine.ChangeState(GameState.GameRoom);
         var operation = SceneManager.LoadSceneAsync(mapInfo.MapSceneName);
         SceneLoader?.LoadScene(operation);
@@ -168,6 +170,7 @@ public class LocalGameManager: SingletonMonoBehavior<LocalGameManager>{
 
 
     private void PlayerExitRoomHandler(GameResult result){
+        CurrentMapInfo = null;
         GameRecorder.AddNewGameResult(result);
         localPlayerManager.OnPlayerExitRoom -= PlayerExitRoomHandler;
         StateMachine.ChangeState(GameState.Home);

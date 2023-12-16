@@ -11,4 +11,7 @@ public class MapInfo : ScriptableObject
     public bool IsRankingMap = false;
     public int MapPlayerCount;
     public bool Available;
+    public AudioClip BackgroundMusic;
+    [Range(0, 1)]
+    public float BackgroundMusicVolume = 1;
 }
