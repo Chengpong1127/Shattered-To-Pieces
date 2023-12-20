@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapName: AssemblyRoom
   MapSceneName: AssemblyRoom
+  MapImage: {fileID: 0}
   MapDescription: 
+  IsRankingMap: 0
   MapPlayerCount: 1
   Available: 0
+  BackgroundMusic: {fileID: 8300000, guid: 8f044c96b0121924986c6525d7d89434, type: 3}
+  BackgroundMusicVolume: 1

@@ -19,3 +19,5 @@ MonoBehaviour:
   IsRankingMap: 1
   MapPlayerCount: 2
   Available: 1
+  BackgroundMusic: {fileID: 8300000, guid: 5bab3157970de4e4d800269b6d7d85a9, type: 3}
+  BackgroundMusicVolume: 1
