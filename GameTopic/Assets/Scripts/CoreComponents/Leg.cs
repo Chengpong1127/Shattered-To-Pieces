@@ -63,7 +63,7 @@ public class Leg : BaseCoreComponent, IGroundCheckable, IMovable, IForceAddable 
         }
         else if (CurrentDirection == direction) return;
         else if (CurrentDirection != direction){
-            CurrentDirection = null;
+            CurrentDirection = MoveDirection.Both;
             Speed = 0;
             return;
         }
@@ -71,7 +71,11 @@ public class Leg : BaseCoreComponent, IGroundCheckable, IMovable, IForceAddable 
 
     public void StopMoveDirection(MoveDirection direction)
     {
-        if (CurrentDirection == direction){
+        if(CurrentDirection == MoveDirection.Both) {
+            CurrentDirection = null;
+            if(direction == MoveDirection.Left) { SetMoveDirection(MoveDirection.Right); }
+            else { SetMoveDirection(MoveDirection.Left); }
+        } else if (CurrentDirection == direction || direction == MoveDirection.Both){
             CurrentDirection = null;
             Speed = 0;
         }

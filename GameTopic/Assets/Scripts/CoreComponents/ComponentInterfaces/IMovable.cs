@@ -7,4 +7,5 @@ public interface IMovable{
 public enum MoveDirection{
     Left,
     Right,
+    Both
 }
