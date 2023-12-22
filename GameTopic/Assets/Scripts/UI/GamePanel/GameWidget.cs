@@ -19,8 +19,10 @@ public class GameWidget : MonoBehaviour
     protected AudioSource AudioSource;
     [SerializeField]
     protected AudioClip ShowSound;
+    [SerializeField] [Range(0, 1)] public float ShowSoundVolume = 1;
     [SerializeField]
     protected AudioClip CloseSound;
+    [SerializeField] [Range(0, 1)] public float CloseSoundVolume = 1;
 
     public event Action<string> OnSendMessage;
     public StateMachine<GameWidgetState> StateMachine;
@@ -40,7 +42,7 @@ public class GameWidget : MonoBehaviour
         gameObject.SetActive(true);
         if(ShowSound != null){
             Debug.Assert(AudioSource != null);
-            AudioSource.PlayOneShotSoundManaged(ShowSound);
+            AudioSource.PlayOneShotSoundManaged(ShowSound, ShowSoundVolume);
         }
         await ShowAnimation();
         CanvasGroup.interactable = true;
@@ -51,7 +53,7 @@ public class GameWidget : MonoBehaviour
         if(IsClose) { return; }
         if(CloseSound != null){
             Debug.Assert(AudioSource != null);
-            AudioSource.PlayOneShotSoundManaged(CloseSound);
+            AudioSource.PlayOneShotSoundManaged(CloseSound, CloseSoundVolume);
         }
         await CloseAnimation();
         CanvasGroup.interactable = false;
